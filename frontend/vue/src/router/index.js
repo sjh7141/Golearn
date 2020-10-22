@@ -2,8 +2,9 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 import Index from '@/views/Index.vue';
-
 import PlayVideo from '@/views/video/play.vue';
+import Login from '@/views/Login.vue';
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -16,6 +17,11 @@ const routes = [
 		path: '/video/play',
 		name: 'PlayVideo',
 		component: PlayVideo,
+	},
+	{
+		path: '/login',
+		name: 'Login',
+		component: Login,
 	},
 ];
 
