@@ -72,9 +72,7 @@
 					<v-container class="justify-center wrap" fluid fill-height>
 						<v-row justify="center"> </v-row>
 						<v-row justify="center" class="mt-3">
-							<span style="font-weight:700;"
-								>회원가입을 축하드립니다</span
-							>
+							<span style="font-weight:700;">회원가입을 축하드립니다</span>
 						</v-row>
 					</v-container>
 				</v-card-title>
@@ -83,11 +81,7 @@
 				</v-card-text>
 				<v-card-actions style="text-align:center">
 					<v-spacer></v-spacer>
-					<v-btn
-						color="primary darken-1"
-						text
-						@click="success = false"
-					>
+					<v-btn color="primary darken-1" text @click="success = false">
 						확인
 					</v-btn>
 				</v-card-actions>

@@ -1,9 +1,11 @@
 <template>
-	<v-app id="app">
-		<Header v-if="showHeader" />
-		<Navigation v-if="showHeader" />
-		<Content />
-		<Footer />
+	<v-app>
+		<div id="app">
+			<Header v-if="showHeader" />
+			<Navigation v-if="showHeader" />
+			<Content />
+			<Footer />
+		</div>
 	</v-app>
 </template>
 
