@@ -1,0 +1,71 @@
+server:
+  port: 8801
+  
+spring:
+  application:
+    name: gateway-service
+  datasource:
+    url: jdbc:mysql://k3a402.p.ssafy.io:3306/ssafy?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+    hikari:
+      connection-timeout: 20000
+      minimum-idle: 5
+      maximum-pool-size: 12
+      idle-timeout: 300000
+      max-lifetime: 1200000
+      auto-commit: true
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
+      
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://k3a402.p.ssafy.io:8761/eureka
+      #defaultZone: http://localhost:8761/eureka
+      
+zuul:
+  ignored-headers:
+  - Access-Control-Allow-Credentials
+  - Access-Control-Allow-Origin
+  routes:
+    auth-service:
+      path: /auth/**
+      service-id: auth-service
+      sensitive-headers:
+      -
+    account-service:
+      path: /account/**
+      service-id: account-service
+    course-service:
+      path: /course/**
+      service-id: course-service
+    video-service:
+      path: /video/**
+      service-id: video-service
+    loadmap-service:
+      path: /loadmap/**
+      service-id: loadmap-service
+    board-service:
+      path: /board/**
+      service-id: board-service
+    notification-service:
+      path: /notification/**
+      service-id: notification-service
+    file-service:
+      path: /file/**
+      service-id: file-service
+      sensitive-headers:
+      -
+      
+logging:
+  pattern:
+    console: '%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n'
+    file: '%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n'
+  level:
+    org.springframework.web: INFO
+  file:
+    path: /logging
+    name: /logging/gateway-service.log
