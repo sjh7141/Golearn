@@ -17,7 +17,7 @@ spring:
       auto-commit: true
       
 mybatis:
-  type-aliases-package: com.learn.mapper
+  type-aliases-package: com.golearn.mapper
   mapper-locations:
   - classpath:/mapper/**/*Mapper.xml
   configuration:
