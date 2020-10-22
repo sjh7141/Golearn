@@ -42,7 +42,9 @@
 			</v-card>
 			<v-spacer />
 			<div>
-				<v-btn light depressed outlined> 로그인</v-btn>
+				<v-btn light depressed outlined @click="goToLogin">
+					로그인
+				</v-btn>
 			</div>
 		</v-app-bar>
 	</v-layout>
@@ -72,7 +74,11 @@ export default {
 
 	methods: {
 		keywordSearch() {},
+		goToLogin() {
+			this.$router.push('/login');
+		},
 	},
+	mounted() {},
 };
 </script>
 
