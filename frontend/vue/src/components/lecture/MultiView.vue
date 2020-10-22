@@ -16,7 +16,7 @@
 				id="video-player"
 				controls
 				data-setup="{}"
-				poster="@/assets/logo.png"
+				poster="https://cdn.inflearn.com/wp-content/uploads/ktw_algorithm3.jpg"
 				style="height:100%; width:100%"
 			>
 				<source src="@/assets/sample.mp4" />

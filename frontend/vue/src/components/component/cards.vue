@@ -14,7 +14,7 @@
 					<v-card
 						:elevation="hover ? 12 : 0"
 						height="300"
-						style="position:relative; min-width:250px;"
+						style="position:relative; min-width:250px; cursor: pointer;"
 					>
 						<v-img
 							:src="i.thumbnail"
@@ -22,6 +22,7 @@
 							gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
 							width="100%"
 							height="210px"
+							@click="$router.push('/video/play')"
 						>
 						</v-img>
 						<v-card-actions
