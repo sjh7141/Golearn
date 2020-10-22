@@ -26,15 +26,13 @@ export default {
 	},
 	actions: {
 		login(context) {
-			console.log(URL.loginBuild());
-			axios
-				.get(URL.loginBuild())
-				.then(({ data }) => {
-					context.commit('setToken', data.token);
-				})
-				.catch(error => {
-					console.log(error);
-				});
+			// console.log(URL.loginBuild());
+			axios.get(URL.loginBuild()).then(({ data }) => {
+				context.commit('setToken', data.token);
+			});
+			// .catch(error => {
+			// 	console.log(error);
+			// });
 		},
 	},
 };
