@@ -1,9 +1,9 @@
 <template>
-    <div>zz</div>
+	<div>zz</div>
 </template>
 
 <script>
-    export default {};
+export default {};
 </script>
 
 <style></style>

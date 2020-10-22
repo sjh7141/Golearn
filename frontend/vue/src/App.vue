@@ -1,32 +1,32 @@
 <template>
-    <div id="app">
-        <Header />
-        <Navigation />
-        <Content />
-        <Footer />
-    </div>
+	<div id="app">
+		<Header />
+		<Navigation />
+		<Content />
+		<Footer />
+	</div>
 </template>
 
 <script>
-    import Header from "@/components/layouts/Header.vue";
-    import Navigation from "@/components/layouts/Navigation.vue";
-    import Content from "@/components/layouts/Content.vue";
-    import Footer from "@/components/layouts/Footer.vue";
+import Header from '@/components/layouts/Header.vue';
+import Navigation from '@/components/layouts/Navigation.vue';
+import Content from '@/components/layouts/Content.vue';
+import Footer from '@/components/layouts/Footer.vue';
 
-    export default {
-        name: "App",
+export default {
+	name: 'App',
 
-        components: {
-            Header,
-            Navigation,
-            Content,
-            Footer,
-        },
+	components: {
+		Header,
+		Navigation,
+		Content,
+		Footer,
+	},
 
-        data() {
-            return {};
-        },
-    };
+	data() {
+		return {};
+	},
+};
 </script>
 
 <style src="@/assets/css/style.css" />
