@@ -1,4 +1,4 @@
-package com.golean.config;
+package com.golearn.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
