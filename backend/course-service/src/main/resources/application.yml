@@ -1,0 +1,45 @@
+server:
+  port: 8804
+  
+spring:
+  application:
+    name: course-service
+  datasource:
+    url: jdbc:mysql://k3a402.p.ssafy.io:3306/ssafy?allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowMultiQueries=true
+    username: 
+    password: 
+    hikari:
+      connection-timeout: 20000
+      minimum-idle: 5
+      maximum-pool-size: 12
+      idle-timeout: 300000
+      max-lifetime: 1200000
+      auto-commit: true
+      
+mybatis:
+  type-aliases-package: com.cloud.mapper
+  mapper-locations:
+  - classpath:/mapper/**/*Mapper.xml
+  configuration:
+    map-underscore-to-camel-case: true
+  
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      #defaultZone: http://k3a402.p.ssafy.io:8761/eureka
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    instance-id: course-service
+    prefer-ip-address: true
+      
+logging:
+  pattern:
+    console: "%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"
+    file: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  level:
+    org.springframework.web: INFO
+  file:
+    path: /logging
+    name: /logging/course-service.log
