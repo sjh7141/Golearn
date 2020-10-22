@@ -77,7 +77,6 @@
 </script>
 
 <style scoped>
-    @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
     .nav {
         font-family: "Noto Sans KR", sans-serif !important;
         font-size: 18px;
