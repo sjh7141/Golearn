@@ -1,32 +1,42 @@
 <template>
-    <div id="app">
-        <Header />
-        <Navigation />
-        <Content />
-        <Footer />
-    </div>
+	<v-app id="app">
+		<Header v-if="showHeader" />
+		<Navigation v-if="showHeader" />
+		<Content />
+		<Footer />
+	</v-app>
 </template>
 
 <script>
-    import Header from "@/components/layouts/Header.vue";
-    import Navigation from "@/components/layouts/Navigation.vue";
-    import Content from "@/components/layouts/Content.vue";
-    import Footer from "@/components/layouts/Footer.vue";
+import Header from '@/components/layouts/Header.vue';
+import Navigation from '@/components/layouts/Navigation.vue';
+import Content from '@/components/layouts/Content.vue';
+import Footer from '@/components/layouts/Footer.vue';
 
-    export default {
-        name: "App",
+export default {
+	name: 'App',
 
-        components: {
-            Header,
-            Navigation,
-            Content,
-            Footer,
-        },
+	components: {
+		Header,
+		Navigation,
+		Content,
+		Footer,
+	},
 
-        data() {
-            return {};
-        },
-    };
+	data() {
+		return {};
+	},
+
+	computed: {
+		showHeader() {
+			let render = true;
+			if (this.$route.path.indexOf('/login') > -1) {
+				render = false;
+			}
+			return render;
+		},
+	},
+};
 </script>
 
 <style src="@/assets/css/style.css" />
