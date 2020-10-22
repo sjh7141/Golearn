@@ -1,4 +1,4 @@
-package com.golean.config;
+package com.golearn.config;
 
 import java.util.List;
 import java.util.stream.Collectors;
