@@ -1,7 +1,5 @@
 <template>
-    <div>
-        index
-    </div>
+    <div>zz</div>
 </template>
 
 <script>
