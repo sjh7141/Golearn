@@ -80,23 +80,23 @@ export default {
 			resultHeight: 0,
 
 			source_code: `import java.util.ArrayList;
-    import java.util.Vector;
+import java.util.Vector;
 
-    public class InfiniteLoop {
+public class InfiniteLoop {
 
-        /*
-         * This will cause the program to hang...
-         *
-         * Taken from:
-         * http://www.exploringbinary.com/java-hangs-when-converting-2-2250738585072012e-308/
-         */
-        public static void main(String[] args) {
-            double d = Double.parseDouble("2.2250738585072012e-308");
+	/*
+    * This will cause the program to hang...
+    *
+    * Taken from:
+    * http://www.exploringbinary.com/java-hangs-when-converting-2-2250738585072012e-308/
+    */
+	public static void main(String[] args) {
+        double d = Double.parseDouble("2.2250738585072012e-308");
 
-            // unreachable code
-            System.out.println("Value: " + d);
-        }
-    }`,
+        // unreachable code
+        System.out.println("Value: " + d);
+    }
+}`,
 			isHorizontalDrag: false,
 			isVerticalDrag: false,
 		};
@@ -185,5 +185,6 @@ export default {
 	font-size: 14px;
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
 		Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	overflow-y: auto;
 }
 </style>
