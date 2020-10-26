@@ -3,14 +3,14 @@ spring:
     name: discovery-service 
     
 server:
-  port: 8762
+  port: 8761
  
 eureka:
   client:
     register-with-eureka: false
     fetch-registry: false
     service-url:
-      default-zone: http://k3a402.p.ssafy.io:8762/eureka/
+      default-zone: http://k3a402.p.ssafy.io:8761/eureka/
     
   
 logging:
