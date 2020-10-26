@@ -11,7 +11,8 @@ eureka:
     fetch-registry: false
     service-url:
       default-zone: http://k3a402.p.ssafy.io:8761/eureka/
-    
+  instance:
+    prefer-ip-address: true
   
 logging:
   pattern:
