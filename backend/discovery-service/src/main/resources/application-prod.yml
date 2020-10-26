@@ -10,7 +10,7 @@ eureka:
     register-with-eureka: false
     fetch-registry: false
     service-url:
-      default-zone: http://localhost:8761/eureka/
+      default-zone: http://k3a402.p.ssafy.io:8761/eureka/
     
   
 logging:
