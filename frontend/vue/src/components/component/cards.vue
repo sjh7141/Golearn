@@ -22,7 +22,7 @@
 							gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
 							width="100%"
 							height="210px"
-							@click="$router.push('/video/play')"
+							@click="$router.push('/channel/play')"
 						>
 						</v-img>
 						<v-card-actions

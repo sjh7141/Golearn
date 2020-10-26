@@ -9,8 +9,15 @@
 			resizeWidth($event);
 			resizeHeight($event);
 		"
+		style="z-index:5"
+		:style="{ position: editMode ? 'fixed' : 'static' }"
 	>
-		<div :style="{ height: totalHeight + 'px', width: videoWidth + 'px' }">
+		<div
+			:style="{
+				width: (editMode ? videoWidth : width) + 'px',
+				height: (editMode ? totalHeight : height) + 'px',
+			}"
+		>
 			<video
 				class="video-js vjs-default-skin vjs-big-play-centered"
 				id="video-player"
@@ -26,8 +33,12 @@
 			style="cursor:e-resize; background-color:grey"
 			:style="{ height: totalHeight + 'px', width: BORDER_SIZE + 'px' }"
 			@mousedown="isHorizontalDrag = true"
+			v-show="editMode"
 		></div>
-		<div :style="{ height: totalHeight + 'px', width: editorWidth + 'px' }">
+		<div
+			:style="{ height: totalHeight + 'px', width: editorWidth + 'px' }"
+			v-show="editMode"
+		>
 			<div
 				id="editor"
 				:style="{
@@ -67,7 +78,8 @@
 <script src="" />
 <script>
 export default {
-	name: 'Video',
+	name: 'MultiView',
+	props: ['width', 'height'],
 	data() {
 		return {
 			BORDER_SIZE: 4,
@@ -99,21 +111,23 @@ public class InfiniteLoop {
 }`,
 			isHorizontalDrag: false,
 			isVerticalDrag: false,
+
+			editMode: false,
 		};
 	},
 	mounted() {
 		this.createChapterButton();
 		this.initCodeEditer();
 
-		window.addEventListener('resize', this.resizeHandler);
-		this.videoWidth = window.innerWidth * 0.5;
+		window.addEventListener('resize', this.resizeVideo);
+		this.videoWidth = window.innerWidth * 0.6;
 		this.totalHeight = window.innerHeight - this.$refs.app.offsetTop;
 		this.editorHeight = this.totalHeight * 0.66 - this.BORDER_SIZE;
 
-		this.resizeHandler();
+		this.resizeVideo();
 	},
 	beforeDestroy() {
-		window.removeEventListener('resize', this.resizeHandler);
+		window.removeEventListener('resize', this.resizeVideo);
 	},
 	methods: {
 		dragStart(e) {},
@@ -133,7 +147,7 @@ public class InfiniteLoop {
 					this.totalHeight - this.editorHeight - this.BORDER_SIZE;
 			}
 		},
-		resizeHandler() {
+		resizeVideo() {
 			this.totalHeight = window.innerHeight - this.$refs.app.offsetTop;
 
 			if (this.videoWidth > window.innerWidth)
@@ -147,6 +161,8 @@ public class InfiniteLoop {
 				this.totalHeight - this.editorHeight - this.BORDER_SIZE;
 		},
 		createChapterButton() {
+			const self = this;
+
 			var Button = videojs.getComponent('Button');
 			var MyButton = videojs.extend(Button, {
 				constructor: function() {
@@ -154,7 +170,7 @@ public class InfiniteLoop {
 					this.addClass('vjs-chapters-button');
 				},
 				handleClick: function() {
-					// todo
+					self.editMode = !self.editMode;
 				},
 			});
 			videojs.registerComponent('MyButton', MyButton);
@@ -172,13 +188,7 @@ public class InfiniteLoop {
 };
 </script>
 
-<style>
-.ace_scrollbar-h,
-.ace_scrollbar-v {
-	overflow-x: hidden;
-	overflow-y: hidden;
-}
-
+<style scoped>
 #result {
 	color: rgb(230, 225, 220);
 	font-weight: 500;
