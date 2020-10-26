@@ -4,4 +4,4 @@ VOLUME /a402
 
 COPY backend/auth-service/build/libs/*.jar auth-service.jar
 
-ENTRYPOINT ["java", "-jar", "auth-service.jar"]
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=prod" "auth-service.jar"]
