@@ -6,25 +6,23 @@
 		outlined
 		flat
 		tile
-		class="pa-1"
+		class="pa-2 mr-6"
+		style="overflow-y: auto; position:fixed; right:0;"
+		:style="{ top: top }"
 	>
-		<div style="padding:4px; font-size:16px; font-weight:400;">
-			다음 동영상
+		<div style="font-size:16px; font-weight:400;">
+			코린아, 코딩하자! with 파이썬
 		</div>
-		<v-list>
-			<v-list-item class="pa-1">
-				<v-list-avatar>
-					<v-img
-						:width="100"
-						src="https://picsum.photos/500/300?image=20"
-						aspect-ratio="1.7"
-					></v-img>
-				</v-list-avatar>
-				<v-list-content>
-					<v-list-item-title>제목</v-list-item-title>
-				</v-list-content>
-			</v-list-item>
-		</v-list>
+		<v-row class="pl-3 my-4" v-for="i in 10" :key="`test_${i}`">
+			<v-col class="pa-0" :cols="3">
+				<v-img
+					:src="`https://picsum.photos/500/300?image=${i * 10 + 10}`"
+				></v-img>
+			</v-col>
+			<v-col class="pa-0" :cols="9">
+				제목
+			</v-col>
+		</v-row>
 	</v-card>
 </template>
 
@@ -35,6 +33,7 @@ export default {
 		return {
 			width: 0,
 			height: 0,
+			top: 64,
 		};
 	},
 	mounted() {
@@ -50,8 +49,9 @@ export default {
 				this.width = '100%';
 				this.height = 500;
 			} else {
-				this.width = 442;
-				this.height = window.innerHeight - this.$refs.app.$el.offsetTop;
+				this.width = 418;
+				this.height =
+					window.innerHeight - this.$refs.app.$el.offsetTop - 20;
 			}
 			console.log(this.height);
 		},

@@ -2,28 +2,10 @@
 	<div ref="app">
 		<div
 			id="left-panel"
+			class="px-6"
 			:style="{ width: width + 'px', height: totalHeight + 'px' }"
-			style="overflow-y:auto;"
 		>
-			<multi-view
-				:width="width"
-				:height="height"
-				@toggleEditor="editor = !editor"
-			/>
-			zz<br />
-			zz<br />
-			zz<br />
-			zz<br />
-			zz<br />
-			zz<br />
-			zz<br />
-			zz<br />
-			zz<br />
-			zz<br />
-			zz<br />
-			zz<br />
-			zz<br />
-			zz<br />
+			<multi-view :width="width" :height="height" />
 		</div>
 		<div id="right-panel">
 			<Chapter />

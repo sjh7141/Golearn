@@ -10,7 +10,7 @@
 			resizeHeight($event);
 		"
 		style="z-index:5"
-		:style="{ position: editMode ? 'fixed' : 'static' }"
+		:style="{ position: editMode ? 'fixed' : 'static', left: 0 }"
 	>
 		<div
 			:style="{
