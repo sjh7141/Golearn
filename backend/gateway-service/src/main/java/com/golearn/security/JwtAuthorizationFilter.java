@@ -37,19 +37,20 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 		}
 
 		try {
-			DecodedJWT verifier = JWT.require(Algorithm.HMAC512(jwt.getSecret().getBytes())).build()
+			DecodedJWT verifier = JWT.require(Algorithm.HMAC256(jwt.getSecret().getBytes())).build()
 					.verify(header.replace(jwt.getTokenPrefix(), ""));
 			String username = verifier.getSubject();
 			String[] role = verifier.getClaims().get("role").asArray(String.class);
-			String no = verifier.getClaim("no").asInt() +"";
+			String no = verifier.getClaim("no").asInt() + "";
 			List<GrantedAuthority> authority = new ArrayList<>();
 			for (int i = 0; i < role.length; i++) {
 				authority.add(new SimpleGrantedAuthority(role[i]));
 			}
-			UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(no, null,
-					authority);
+			UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username + "," + no,
+					null, authority);
 			SecurityContextHolder.getContext().setAuthentication(auth);
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			SecurityContextHolder.clearContext();
 		}
 		filterChain.doFilter(request, response);

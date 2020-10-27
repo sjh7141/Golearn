@@ -20,10 +20,12 @@ public class JwtPreFilter extends ZuulFilter {
 	@Override
 	public Object run() throws ZuulException {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (username != null) {
-			logger.info(username);
+		if (!username.equals("anonymousUser")) {
+			String[] data = username.split(",");
 			RequestContext context = RequestContext.getCurrentContext();
-			context.addZuulRequestHeader("X-USERNO", username);
+			context.addZuulRequestHeader("X-USERNAME", data[0]);
+			context.addZuulRequestHeader("X-USERNO", data[1]);
+			
 		}
 		return null;
 	}
