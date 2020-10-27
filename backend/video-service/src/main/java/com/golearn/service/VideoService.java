@@ -1,17 +1,20 @@
 package com.golearn.service;
 
 import com.golearn.model.Video;
+import com.golearn.model.VideoCompositekey;
 import com.golearn.model.VideoLike;
 import com.golearn.repository.VideoLikeRepository;
 import com.golearn.repository.VideoRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
-import javax.xml.ws.Response;
+import java.nio.file.AccessDeniedException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
+@Slf4j
 @Service
 public class VideoService {
     @Autowired
@@ -21,31 +24,44 @@ public class VideoService {
     private VideoLikeRepository videoLikeRepository;
 
     public Video getVideo(int vidNo) {
-        return videoRepository.getOne(vidNo);
+        if(videoRepository.existsById(vidNo)){
+
+            videoRepository.addViewCount(vidNo);
+            return videoRepository.findById(vidNo).get();
+        }
+        return null;
     }
 
-    public void hideVideo(int vidNo, int mbrNo) {
-        videoRepository.hideVideo(vidNo, mbrNo);
+    public int hideVideo(int vidNo, int mbrNo){
+
+        return videoRepository.hideVideo(vidNo, mbrNo);
+    }
+
+    public void saveVideo(int mbrNo){
+
     }
 
     public Map isLikeVideo(int vidNo, int mbrNo) {
         Map<String, Boolean> result = new HashMap();
-        result.put("isLike", videoLikeRepository.existsVideoLikeByVidNoAndMbrNo(vidNo, mbrNo));
+        result.put("isLike", videoLikeRepository.existsById(new VideoCompositekey(vidNo, mbrNo)));
         return result;
     }
 
     public void likeVideo(int vidNo, int mbrNo) {
-        if (!videoLikeRepository.existsVideoLikeByVidNoAndMbrNo(vidNo, mbrNo)) {
-            VideoLike videoLike = new VideoLike(vidNo, mbrNo);
+        VideoCompositekey videoCompositekey = new VideoCompositekey(vidNo, mbrNo);
+        if (!videoLikeRepository.existsById(videoCompositekey)) {
+            VideoLike videoLike = new VideoLike(videoCompositekey);
             videoLikeRepository.save(videoLike);
         }
     }
 
     public void unlikeVideo(int vidNo, int mbrNo) {
-        if (videoLikeRepository.existsVideoLikeByVidNoAndMbrNo(vidNo, mbrNo)) {
-            videoLikeRepository.deleteByVidNoAndMbrNo(vidNo, mbrNo);
+        VideoCompositekey videoCompositekey = new VideoCompositekey(vidNo, mbrNo);
+        if (videoLikeRepository.existsById(videoCompositekey)) {
+            videoLikeRepository.deleteById(videoCompositekey);
         }
     }
 
 
 }
+//

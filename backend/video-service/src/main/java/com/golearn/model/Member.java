@@ -25,3 +25,4 @@ public class Member {
     private boolean ckActive;
 
 }
+//

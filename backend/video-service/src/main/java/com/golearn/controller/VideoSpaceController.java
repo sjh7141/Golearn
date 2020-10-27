@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.Map;
+
+@RestController
 @Api("VideoSpace")
 @Slf4j
 public class VideoSpaceController {
@@ -21,8 +21,20 @@ public class VideoSpaceController {
     private VideoSpaceService videoSpaceService;
 
     @GetMapping("/save")
-    public ResponseEntity<VideoSpace> getVideo(@RequestHeader("X-USERNAME") int mbrNo) {
-        return new ResponseEntity(videoSpaceService.getVideos(mbrNo), HttpStatus.OK);
+    public ResponseEntity<Video> getVideoInSpace(@RequestHeader("X-USERNAME") int mbrNo) {
+        return new ResponseEntity(videoSpaceService.getVideosInSpace(mbrNo), HttpStatus.OK);
     }
 
+    @PostMapping("/save")
+    public ResponseEntity saveVideoInSpace(@RequestBody Map<String,Integer> map, @RequestHeader("X-USERNAME") int mbrNo) {
+        videoSpaceService.saveVideoInSpace(map.get("vid_no"), mbrNo);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/save/{vid_no}")
+    public ResponseEntity removeVideoInSpace(@PathVariable("vid_no") int vidNo, @RequestHeader("X-USERNAME") int mbrNo) {
+        videoSpaceService.removeVideoInSpace(vidNo, mbrNo);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }
+//

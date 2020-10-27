@@ -1,8 +1,12 @@
 package com.golearn.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -10,18 +14,18 @@ import java.util.Date;
 
 @Entity(name="gl_video_like")
 @Data
-@NoArgsConstructor
+@DynamicInsert
+@AllArgsConstructor
 public class VideoLike {
-
-    @Id
-    private int vidNo;
-    @Id
-    private int mbrNo;
+    @EmbeddedId
+    private VideoCompositekey videoCompositekey;
 
     private Date regDt;
 
-    public VideoLike(int vidNo, int mbrNo){
-        this.vidNo = vidNo;
-        this.mbrNo = mbrNo;
+    public VideoLike(VideoCompositekey videoCompositekey){
+        this.videoCompositekey = videoCompositekey;
+    }
+    public VideoLike(){
+
     }
 }

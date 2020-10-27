@@ -5,7 +5,7 @@ spring:
   application:
     name: video-service
   datasource:
-    url: jdbc:mysql://k3a402.p.ssafy.io:3306/ssafy?allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowMultiQueries=true
+    url: jdbc:mysql://k3a402.p.ssafy.io:3306/golearn?allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowMultiQueries=true
     username: root
     password: admingolearn
     hikari:

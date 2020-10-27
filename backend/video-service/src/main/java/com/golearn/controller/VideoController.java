@@ -1,5 +1,6 @@
 package com.golearn.controller;
 
+import com.golearn.exception.UnAuthorizationException;
 import com.golearn.model.Video;
 import com.golearn.service.VideoService;
 import io.swagger.annotations.Api;
@@ -10,8 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 
-@Controller
+
+@RestController
 @Slf4j
 @Api("Video")
 public class VideoController {
@@ -30,8 +33,11 @@ public class VideoController {
     }
 
     @DeleteMapping("{vid_no}")
-    public ResponseEntity hideVideo(@PathVariable("vid_no") int vidNo, @RequestHeader("X-USERNAME") int mbrNo) {
-        videoService.hideVideo(vidNo, mbrNo);
+    public ResponseEntity hideVideo(@PathVariable("vid_no") int vidNo, @RequestHeader("X-USERNAME") int mbrNo){
+        int success = videoService.hideVideo(vidNo, mbrNo);
+        if(success==0){
+            throw new UnAuthorizationException();
+        }
         return new ResponseEntity(HttpStatus.OK);
     }
 

@@ -1,14 +1,15 @@
 package com.golearn.repository;
 
 import com.golearn.model.Video;
+import com.golearn.model.VideoCompositekey;
 import com.golearn.model.VideoSpace;
-import com.golearn.model.VideoSpaceId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+@Repository
+public interface VideoSpaceRepository extends JpaRepository<VideoSpace, VideoCompositekey> {
 
-public interface VideoSpaceRepository extends JpaRepository<VideoSpace, VideoSpaceId> {
-    @Query(value = "select * from Video v, VideoSpace vs where vs.mbrNo = :mbrNo and v.vidNo = vs.vidNo",nativeQuery = true)
-    List<Video> findAllByMbrNo(int mbrNo);
 }
