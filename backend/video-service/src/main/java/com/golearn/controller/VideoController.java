@@ -35,6 +35,11 @@ public class VideoController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @GetMapping("/like/{vid_no}")
+    public ResponseEntity isLikeVideo(@PathVariable("vid_no") int vidNo, @RequestHeader("X-USERNAME") int mbrNo){
+        return new ResponseEntity(videoService.isLikeVideo(vidNo, mbrNo),HttpStatus.OK);
+    }
+
     @PostMapping("/like/{vid_no}")
     public ResponseEntity likeVideo(@PathVariable("vid_no") int vidNo, @RequestHeader("X-USERNAME") int mbrNo) {
         videoService.likeVideo(vidNo, mbrNo);
