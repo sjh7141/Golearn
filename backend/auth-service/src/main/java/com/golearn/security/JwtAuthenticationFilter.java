@@ -39,7 +39,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		UserDto credentials = null;
 		try {
 			credentials = new ObjectMapper().readValue(request.getInputStream(), UserDto.class);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
 
@@ -66,7 +66,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				.sign(Algorithm.HMAC256(jwtProperties.getSecret().getBytes()));
 		response.addHeader(jwtProperties.getHeader(), jwtProperties.getTokenPrefix() + token);
 	}
-	
+
 	@Override
 	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException failed) throws IOException, ServletException {
@@ -74,7 +74,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		response.setContentType("application/json;charset=utf-8");
 		Gson gson = new Gson();
 		String json = "{'status' : '401', 'message' : '아이디 및 비밀번호 일치하지 않음'}";
-		
+
 		response.getWriter().print(gson.toJson(json));
 	}
 }
