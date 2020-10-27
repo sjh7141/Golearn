@@ -21,6 +21,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.golearn.domain.UserDto;
+import com.google.gson.Gson;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -60,8 +61,20 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			role[idx++] = iter.next().getAuthority();
 		}
 		String token = JWT.create().withSubject(principal.getUsername()).withArrayClaim("role", role)
+				.withClaim("no", principal.getUserNo())
 				.withExpiresAt(new Date(System.currentTimeMillis() + jwtProperties.getExpirationTime()))
 				.sign(Algorithm.HMAC256(jwtProperties.getSecret().getBytes()));
 		response.addHeader(jwtProperties.getHeader(), jwtProperties.getTokenPrefix() + token);
+	}
+	
+	@Override
+	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException failed) throws IOException, ServletException {
+		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		response.setContentType("application/json;charset=utf-8");
+		Gson gson = new Gson();
+		String json = "{'status' : '401', 'message' : '아이디 및 비밀번호 일치하지 않음'}";
+		
+		response.getWriter().print(gson.toJson(json));
 	}
 }
