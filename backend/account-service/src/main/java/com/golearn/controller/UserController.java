@@ -71,4 +71,14 @@ public class UserController {
 		return ResponseEntity.ok(false);
 	}
 	
+	@ApiOperation(value = "Nickname 중복 체크하기(true : 사용가능, false : 사용불가능)")
+	@GetMapping(value = "/nickname-check/{mbr_nickname}")
+	public ResponseEntity<Boolean> isDuplicationNickname(@PathVariable("mbr_nickname") String nickname){
+		int res = userService.checkByNickname(nickname);
+		if(res == 0) {
+			return ResponseEntity.ok(true);
+		}
+		return ResponseEntity.ok(false);
+	}
+	
 }
