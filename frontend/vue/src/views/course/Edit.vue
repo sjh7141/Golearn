@@ -62,7 +62,7 @@ export default {
 
 <style>
 .course-wrapper {
-	min-height: 869px;
+	min-height: 719px;
 }
 
 .list-icon {

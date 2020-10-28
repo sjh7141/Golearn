@@ -4,7 +4,7 @@
 			<Header v-if="showHeader" />
 			<Navigation v-if="showHeader" />
 			<Content />
-			<Footer />
+			<Footer v-if="showFooter" />
 		</div>
 	</v-app>
 </template>
@@ -31,6 +31,13 @@ export default {
 
 	computed: {
 		showHeader() {
+			let render = true;
+			if (this.$route.path.indexOf('/login') > -1) {
+				render = false;
+			}
+			return render;
+		},
+		showFooter() {
 			let render = true;
 			if (this.$route.path.indexOf('/login') > -1) {
 				render = false;
