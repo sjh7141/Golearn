@@ -9,7 +9,7 @@ public interface UserService {
 	public int disableUser(int no);
 	public UserDto findByUsername(int no);
 	public int checkByUsername(String username);
-	public int chekcByEmail(String email);
+	public int checkByEmail(String email);
 	public int checkByNickname(String nickname);
 	public int updatePassword(String password, int no);
 	public int subscribe(int from, int to);

@@ -42,8 +42,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int chekcByEmail(String email) {
-		return userMapper.chekcByEmail(email);
+	public int checkByEmail(String email) {
+		return userMapper.checkByEmail(email);
 	}
 
 	@Override
