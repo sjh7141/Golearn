@@ -1,5 +1,6 @@
 package com.golearn.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.golearn.domain.SubscribeDto;
 import com.golearn.domain.UserDto;
 import com.golearn.service.UserService;
 
@@ -94,6 +96,13 @@ public class UserController {
 		return ResponseEntity.ok("변경 성공");
 	}
 	
+	@ApiOperation(value = "채널 구독 목록 가져오기")
+	@GetMapping(value = "/like")
+	public ResponseEntity<List<SubscribeDto>> channelGetLike(@ApiIgnore @RequestHeader("X-USERNO") String no){
+		List<SubscribeDto> res = userService.subscribeList(Integer.parseInt(no));
+		return ResponseEntity.ok(res);
+	}
+	
 	@ApiOperation(value = "채널 구독하기")
 	@PostMapping(value = "/like")
 	public ResponseEntity<String> channelLike(@ApiIgnore @RequestHeader("X-USERNO") String no, @RequestBody Map<String, Integer> map){
@@ -109,9 +118,9 @@ public class UserController {
 	public ResponseEntity<String> channelDislike(@ApiIgnore @RequestHeader("X-USERNO") String no, @RequestBody Map<String, Integer> map){
 		int res = userService.subscribeCancle(Integer.parseInt(no), map.get("mbr_no"));
 		if(res == 0) {
-			return ResponseEntity.ok("구독 실패");
+			return ResponseEntity.ok("구독 취소 실패");
 		}
-		return ResponseEntity.ok("구독 성공");
+		return ResponseEntity.ok("구독 취소 성공");
 	}
 	
 }

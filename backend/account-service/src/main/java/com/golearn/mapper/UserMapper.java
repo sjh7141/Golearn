@@ -1,7 +1,11 @@
 package com.golearn.mapper;
 
-import org.apache.ibatis.annotations.Mapper;
+import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import com.golearn.domain.SubscribeDto;
 import com.golearn.domain.UserDto;
 
 @Mapper
@@ -14,7 +18,8 @@ public interface UserMapper {
 	public int checkByUsername(String username);
 	public int checkByEmail(String email);
 	public int checkByNickname(String nickname);
-	public int updatePassword(String password, int no);
-	public int subscribe(int from, int to);
-	public int subscribeCancle(int from, int to);
+	public int updatePassword(@Param("password") String password, @Param("no") int no);
+	public int subscribe(@Param("from") int from, @Param("to") int to);
+	public List<SubscribeDto> subscribeList(int no);
+	public int subscribeCancle(@Param("from") int from, @Param("to") int to);
 }

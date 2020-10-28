@@ -43,6 +43,16 @@
 		update gl_member set mbr_pwd = #{password} where mbr_no = #{no}
 	</update>
 	
+	<select id="subscribeList" resultType="com.golearn.domain.SubscribeDto">
+		select mgm.mbr_no as no, mgm.mbr_id as username
+		from (
+			select gms.mbr_is_subscribed as no
+			from gl_member gm inner join gl_member_subscribe gms
+			on gm.mbr_no = 1 and gm.mbr_no = gms.mbr_no
+		    ) as sub join gl_member mgm
+		on sub.no = mgm.mbr_no;
+	</select>
+	
 	<insert id="subscribe">
 		insert into gl_member_subscribe values(#{from}, #{to})
 	</insert>
