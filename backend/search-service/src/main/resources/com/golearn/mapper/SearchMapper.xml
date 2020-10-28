@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.golearn.mapper.SearchMapper">
+
+	<select id="findTag" resultType="com.golearn.domain.TagDto">
+		select *
+		from gl_tag
+	</select>
+	
+	<select id="findVideo" resultType="com.golearn.domain.VideoDto">
+		select *
+		from gl_video
+		where vid_title like CONCAT('%', #{search}, '%')
+		limit #{startIndex}, #{perPageNum}
+	</select>
+
+	<select id="countByVideo" resultType="Integer">
+		select count(*)
+		from gl_video
+		where vid_title like CONCAT('%', #{search}, '%')
+	</select>
+	
+	<select id="findChannel" resultType="com.golearn.domain.ChannelDto">
+		select mbr_no as no, mbr_id as username, mbr_nickname as nickname
+		from gl_member
+		where mbr_id like CONCAT('%', #{search}, '%')
+		limit #{startIndex}, #{perPageNum}
+	</select>
+	
+	<select id="countByChannel" resultType="Integer">
+		select count(*)
+		from gl_member
+		where mbr_id like CONCAT('%', #{search}, '%')
+	</select>
+	
+	<select id="findLoadmap" resultType="com.golearn.domain.LoadmapDto">
+		select *
+		from gl_loadmap
+		where ldm_title like CONCAT('%', #{search}, '%')
+		limit #{startIndex}, #{perPageNum}
+	</select>
+	
+	<select id="countByLoadmap" resultType="Integer">
+		select count(*)
+		from gl_loadmap
+		where ldm_title like CONCAT('%', #{search}, '%')
+	</select>
+	
+	<select id="findCourse" resultType="com.golearn.domain.CourseDto">
+		select *
+		from gl_course
+		where cos_title like CONCAT('%', #{search}, '%')
+		limit #{startIndex}, #{perPageNum}
+	</select>
+	
+	<select id="countByCourse" resultType="Integer">
+		select count(*)
+		from gl_course
+		where cos_title like CONCAT('%', #{search}, '%')
+	</select>
+</mapper>
