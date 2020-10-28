@@ -4,9 +4,18 @@ import java.util.List;
 
 public class UserDto {
 
+	private int no;
 	private String username;
 	private String password;
 	private List<String> authority;
+	
+	public int getNo() {
+		return no;
+	}
+
+	public void setNo(int no) {
+		this.no = no;
+	}
 
 	public String getUsername() {
 		return username;
