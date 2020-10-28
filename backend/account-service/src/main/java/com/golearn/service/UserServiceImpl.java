@@ -1,9 +1,12 @@
 package com.golearn.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.golearn.domain.SubscribeDto;
 import com.golearn.domain.UserDto;
 import com.golearn.mapper.UserMapper;
 
@@ -42,8 +45,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int chekcByEmail(String email) {
-		return userMapper.chekcByEmail(email);
+	public int checkByEmail(String email) {
+		return userMapper.checkByEmail(email);
 	}
 
 	@Override
@@ -59,6 +62,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int subscribe(int from, int to) {
 		return userMapper.subscribe(from, to);
+	}
+	
+	@Override
+	public List<SubscribeDto> subscribeList(int no) {
+		return userMapper.subscribeList(no);
 	}
 
 	@Override
