@@ -5,9 +5,9 @@ spring:
   application:
     name: course-service
   datasource:
-    url: jdbc:mysql://k3a402.p.ssafy.io:3306/ssafy?allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowMultiQueries=true
-    username: 
-    password: 
+    url: jdbc:mysql://k3a402.p.ssafy.io:3306/golearn?allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowMultiQueries=true
+    username: root
+    password: admingolearn
     hikari:
       connection-timeout: 20000
       minimum-idle: 5
@@ -15,7 +15,13 @@ spring:
       idle-timeout: 300000
       max-lifetime: 1200000
       auto-commit: true
-      
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+        
 mybatis:
   type-aliases-package: com.cloud.mapper
   mapper-locations:
