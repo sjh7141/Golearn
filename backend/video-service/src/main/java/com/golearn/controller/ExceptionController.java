@@ -14,30 +14,24 @@ import java.nio.file.AccessDeniedException;
 @RestControllerAdvice
 @Slf4j
 public class ExceptionController {
-    @ExceptionHandler({
-            RuntimeException.class,
-            HttpMessageNotReadableException.class
-    })
-    public ResponseEntity handleBadRequestException(final RuntimeException ex) {
-        log.warn("error", ex);
-        return new ResponseEntity(HttpStatus.BAD_REQUEST);
-    }
+
 
     // 401
     @ExceptionHandler({ AccessDeniedException.class })
     public ResponseEntity handleAccessDeniedException(final AccessDeniedException ex) {
-        log.warn("error", ex);
+        log.info(ex.getClass().getName());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
     }
     @ExceptionHandler({UnAuthorizationException.class})
     public ResponseEntity handleUnAuthorizationException(final UnAuthorizationException ex){
-        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        log.info(ex.getClass().getName());
+        return new ResponseEntity(HttpStatus.FORBIDDEN);
     }
-    // 500
+    // 400
     @ExceptionHandler({ Exception.class })
     public ResponseEntity<Object> handleAll(final Exception ex) {
         log.info(ex.getClass().getName());
-        log.error("error", ex);
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 }

@@ -1,20 +1,18 @@
 package com.golearn.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
-
-@Data
-@Entity(name="gl_save_video")
-@AllArgsConstructor
+@Entity(name = "gl_video_record")
 @NoArgsConstructor
-public class VideoSpace {
+@AllArgsConstructor
+public class VideoRecord {
     @EmbeddedId
     private VideoCompositekey videoCompositekey;
 
+    private int vid_rec_time;
+
 }
-//

@@ -15,21 +15,26 @@ import java.util.List;
 @Service
 @Slf4j
 public class VideoSpaceService {
-    @Autowired
     private VideoSpaceRepository videoSpaceRepository;
-    @Autowired
+
     private VideoRepository videoRepository;
+
+    VideoSpaceService(VideoSpaceRepository videoSpaceRepository, VideoRepository videoRepository) {
+        this.videoRepository = videoRepository;
+        this.videoSpaceRepository = videoSpaceRepository;
+    }
 
     public List<Video> getVideosInSpace(int mbrNo) {
         return videoRepository.findAllByMbrNo(mbrNo);
     }
-    public void saveVideoInSpace(int vidNo, int mbrNo){
+
+    public void saveVideoInSpace(int vidNo, int mbrNo) {
         VideoCompositekey videoCompositekey = new VideoCompositekey(vidNo, mbrNo);
         videoSpaceRepository.save(new VideoSpace(videoCompositekey));
     }
-    public void removeVideoInSpace(int vidNo, int mbrNo){
+
+    public void removeVideoInSpace(int vidNo, int mbrNo) {
         VideoCompositekey videoCompositekey = new VideoCompositekey(vidNo, mbrNo);
         videoSpaceRepository.deleteById(videoCompositekey);
     }
 }
-//

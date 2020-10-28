@@ -17,22 +17,26 @@ import java.util.Map;
 @Api("VideoSpace")
 @Slf4j
 public class VideoSpaceController {
-    @Autowired
+
     private VideoSpaceService videoSpaceService;
 
+    VideoSpaceController(VideoSpaceService videoSpaceService){
+        this.videoSpaceService = videoSpaceService;
+    }
+
     @GetMapping("/save")
-    public ResponseEntity<Video> getVideoInSpace(@RequestHeader("X-USERNAME") int mbrNo) {
+    public ResponseEntity<Video> getVideoInSpace(@RequestHeader("X-USERNO") int mbrNo) {
         return new ResponseEntity(videoSpaceService.getVideosInSpace(mbrNo), HttpStatus.OK);
     }
 
     @PostMapping("/save")
-    public ResponseEntity saveVideoInSpace(@RequestBody Map<String,Integer> map, @RequestHeader("X-USERNAME") int mbrNo) {
+    public ResponseEntity saveVideoInSpace(@RequestBody Map<String,Integer> map, @RequestHeader("X-USERNO") int mbrNo) {
         videoSpaceService.saveVideoInSpace(map.get("vid_no"), mbrNo);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping("/save/{vid_no}")
-    public ResponseEntity removeVideoInSpace(@PathVariable("vid_no") int vidNo, @RequestHeader("X-USERNAME") int mbrNo) {
+    public ResponseEntity removeVideoInSpace(@PathVariable("vid_no") int vidNo, @RequestHeader("X-USERNO") int mbrNo) {
         videoSpaceService.removeVideoInSpace(vidNo, mbrNo);
         return new ResponseEntity(HttpStatus.OK);
     }

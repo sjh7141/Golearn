@@ -18,8 +18,12 @@ import java.nio.file.AccessDeniedException;
 @Slf4j
 @Api("Video")
 public class VideoController {
-    @Autowired
+
     private VideoService videoService;
+
+    VideoController(VideoService videoService){
+        this.videoService = videoService;
+    }
 
     @GetMapping("{vid_no}")
     public ResponseEntity<Video> getVideo(@PathVariable("vid_no") int vidNo) {
@@ -33,27 +37,24 @@ public class VideoController {
     }
 
     @DeleteMapping("{vid_no}")
-    public ResponseEntity hideVideo(@PathVariable("vid_no") int vidNo, @RequestHeader("X-USERNAME") int mbrNo){
-        int success = videoService.hideVideo(vidNo, mbrNo);
-        if(success==0){
-            throw new UnAuthorizationException();
-        }
+    public ResponseEntity hideVideo(@PathVariable("vid_no") int vidNo, @RequestHeader("X-USERNO") int mbrNo){
+        videoService.hideVideo(vidNo, mbrNo);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("/like/{vid_no}")
-    public ResponseEntity isLikeVideo(@PathVariable("vid_no") int vidNo, @RequestHeader("X-USERNAME") int mbrNo){
+    public ResponseEntity isLikeVideo(@PathVariable("vid_no") int vidNo, @RequestHeader("X-USERNO") int mbrNo){
         return new ResponseEntity(videoService.isLikeVideo(vidNo, mbrNo),HttpStatus.OK);
     }
 
     @PostMapping("/like/{vid_no}")
-    public ResponseEntity likeVideo(@PathVariable("vid_no") int vidNo, @RequestHeader("X-USERNAME") int mbrNo) {
+    public ResponseEntity likeVideo(@PathVariable("vid_no") int vidNo, @RequestHeader("X-USERNO") int mbrNo) {
         videoService.likeVideo(vidNo, mbrNo);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping("/like/{vid_no}")
-    public ResponseEntity unlikeVideo(@PathVariable("vid_no") int vidNo, @RequestHeader("X-USERNAME") int mbrNo) {
+    public ResponseEntity unlikeVideo(@PathVariable("vid_no") int vidNo, @RequestHeader("X-USERNO") int mbrNo) {
         videoService.unlikeVideo(vidNo, mbrNo);
         return new ResponseEntity(HttpStatus.OK);
     }
