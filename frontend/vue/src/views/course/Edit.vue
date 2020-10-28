@@ -60,7 +60,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .course-wrapper {
 	min-height: 869px;
 }
