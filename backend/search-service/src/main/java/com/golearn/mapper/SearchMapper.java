@@ -17,7 +17,10 @@ public interface SearchMapper {
 	public List<TagDto> findTag();
 	public List<VideoDto> findVideo(@Param("search") String search, @Param("startIndex") int startIndex, @Param("perPageNum")int perPageNum);
 	public int countByVideo(String search);
-	public List<ChannelDto> findChannel();
-	public List<LoadmapDto> findLoadmap();
-	public List<CourseDto> findCource();
+	public List<ChannelDto> findChannel(@Param("search") String search, @Param("startIndex") int startIndex, @Param("perPageNum")int perPageNum);
+	public int countByChannel(String search);
+	public List<LoadmapDto> findLoadmap(@Param("search") String search, @Param("startIndex") int startIndex, @Param("perPageNum")int perPageNum);
+	public int countByLoadmap(String search);
+	public List<CourseDto> findCourse(@Param("search") String search, @Param("startIndex") int startIndex, @Param("perPageNum")int perPageNum);
+	public int countByCourse(String search);
 }

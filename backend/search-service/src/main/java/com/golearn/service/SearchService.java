@@ -13,7 +13,10 @@ public interface SearchService {
 	public List<TagDto> findTag();
 	public List<VideoDto> findVideo(String search, int startIndex, int perPageNum);
 	public int countByVideo(String search);
-	public List<ChannelDto> findChannel();
-	public List<LoadmapDto> findLoadmap();
-	public List<CourseDto> findCource();
+	public List<ChannelDto> findChannel(String search, int startIndex, int perPageNum);
+	public int countByChannel(String search);
+	public List<LoadmapDto> findLoadmap(String search, int startIndex, int perPageNum);
+	public int countByLoadmap(String search);
+	public List<CourseDto> findCourse(String search, int startIndex, int perPageNum);
+	public int countByCourse(String search);
 }

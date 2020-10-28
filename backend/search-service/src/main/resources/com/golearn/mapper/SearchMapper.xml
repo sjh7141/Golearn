@@ -11,12 +11,39 @@
 		select *
 		from gl_video
 		where vid_title like CONCAT('%', #{search}, '%')
-		limit #{startIndex}, #{perPageNum} ;
+		limit #{startIndex}, #{perPageNum}
 	</select>
 
 	<select id="countByVideo" resultType="Integer">
 		select count(*)
 		from gl_video
 		where vid_title like CONCAT('%', #{search}, '%')
-	</select>	
+	</select>
+	
+	<select id="findChannel" resultType="com.golearn.domain.ChannelDto">
+	
+	</select>
+	
+	<select id="countByChannel" resultType="Integer">
+	</select>
+	
+	<select id="findLoadmap" resultType="com.golearn.domain.LoadmapDto">
+	
+	</select>
+	
+	<select id="countByLoadmap" resultType="Integer">
+	</select>
+	
+	<select id="findCourse" resultType="com.golearn.domain.CourseDto">
+		select *
+		from gl_course
+		where cos_title like CONCAT('%', #{search}, '%')
+		limit #{startIndex}, #{perPageNum}
+	</select>
+	
+	<select id="countByCourse" resultType="Integer">
+		select count(*)
+		from gl_course
+		where cos_title like CONCAT('%', #{search}, '%')
+	</select>
 </mapper>

@@ -29,25 +29,41 @@ public class SearchServiceImpl implements SearchService {
 	}
 
 	@Override
-	public List<ChannelDto> findChannel() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<LoadmapDto> findLoadmap() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<CourseDto> findCource() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public int countByVideo(String search) {
 		return searchMapper.countByVideo(search);
+	}
+
+	@Override
+	public List<ChannelDto> findChannel(String search, int startIndex, int perPageNum) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int countByChannel(String search) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<LoadmapDto> findLoadmap(String search, int startIndex, int perPageNum) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int countByLoadmap(String search) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<CourseDto> findCourse(String search, int startIndex, int perPageNum) {
+		return searchMapper.findCourse(search, startIndex, perPageNum);
+	}
+
+	@Override
+	public int countByCourse(String search) {
+		return searchMapper.countByCourse(search);
 	}
 }
