@@ -35,26 +35,22 @@ public class SearchServiceImpl implements SearchService {
 
 	@Override
 	public List<ChannelDto> findChannel(String search, int startIndex, int perPageNum) {
-		// TODO Auto-generated method stub
-		return null;
+		return searchMapper.findChannel(search, startIndex, perPageNum);
 	}
 
 	@Override
 	public int countByChannel(String search) {
-		// TODO Auto-generated method stub
-		return 0;
+		return searchMapper.countByChannel(search);
 	}
 
 	@Override
 	public List<LoadmapDto> findLoadmap(String search, int startIndex, int perPageNum) {
-		// TODO Auto-generated method stub
-		return null;
+		return searchMapper.findLoadmap(search, startIndex, perPageNum);
 	}
 
 	@Override
 	public int countByLoadmap(String search) {
-		// TODO Auto-generated method stub
-		return 0;
+		return searchMapper.countByLoadmap(search);
 	}
 
 	@Override

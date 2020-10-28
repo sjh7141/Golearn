@@ -21,17 +21,29 @@
 	</select>
 	
 	<select id="findChannel" resultType="com.golearn.domain.ChannelDto">
-	
+		select mbr_no as no, mbr_id as username, mbr_nickname as nickname
+		from gl_member
+		where mbr_id like CONCAT('%', #{search}, '%')
+		limit #{startIndex}, #{perPageNum}
 	</select>
 	
 	<select id="countByChannel" resultType="Integer">
+		select count(*)
+		from gl_member
+		where mbr_id like CONCAT('%', #{search}, '%')
 	</select>
 	
 	<select id="findLoadmap" resultType="com.golearn.domain.LoadmapDto">
-	
+		select *
+		from gl_loadmap
+		where ldm_title like CONCAT('%', #{search}, '%')
+		limit #{startIndex}, #{perPageNum}
 	</select>
 	
 	<select id="countByLoadmap" resultType="Integer">
+		select count(*)
+		from gl_loadmap
+		where ldm_title like CONCAT('%', #{search}, '%')
 	</select>
 	
 	<select id="findCourse" resultType="com.golearn.domain.CourseDto">

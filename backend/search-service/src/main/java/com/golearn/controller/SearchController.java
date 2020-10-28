@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.golearn.domain.ChannelDto;
 import com.golearn.domain.CourseDto;
+import com.golearn.domain.LoadmapDto;
 import com.golearn.domain.PageDto;
 import com.golearn.domain.VideoDto;
 import com.golearn.service.SearchService;
@@ -40,9 +42,16 @@ public class SearchController {
 			map.put("video", video);
 		} else if (type.equals("course")) {
 			page.setTotalCount(searchService.countByCourse(search));
-			System.out.println(page.getStartIndex() + " " +page.getPerPageNum() + " "+ search);
 			List<CourseDto> course = searchService.findCourse(search, page.getStartIndex(), page.getPerPageNum());
 			map.put("course", course);
+		} else if (type.equals("channel")) {
+			page.setTotalCount(searchService.countByChannel(search));
+			List<ChannelDto> channel = searchService.findChannel(search, page.getStartIndex(), page.getPerPageNum());
+			map.put("channel", channel);
+		} else if (type.equals("loadmap")) {
+			page.setTotalCount(searchService.countByLoadmap(search));
+			List<LoadmapDto> loadmap = searchService.findLoadmap(search, page.getStartIndex(), page.getPerPageNum());
+			map.put("loadmap", loadmap);
 		}
 
 		map.put("page", page);
