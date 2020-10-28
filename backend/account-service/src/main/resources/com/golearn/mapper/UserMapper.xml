@@ -21,19 +21,19 @@
 		where mbr_no = #{no}
 	</select>
 	
-	<select id="checkByUsername">
+	<select id="checkByUsername" resultType="Integer">
 		select count(*)
 		from gl_member
 		where mbr_id = #{username}
 	</select>
 	
-	<select id="checkByEmail">
+	<select id="checkByEmail" resultType="Integer">
 		select count(*)
 		from gl_member
 		where mbr_email = #{email}
 	</select>
 	
-	<select id="checkByNickname">
+	<select id="checkByNickname" resultType="Integer">
 		select count(*)
 		from gl_member
 		where mbr_nickname = #{nickname}

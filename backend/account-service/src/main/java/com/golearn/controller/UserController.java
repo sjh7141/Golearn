@@ -1,10 +1,13 @@
 package com.golearn.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -79,6 +82,36 @@ public class UserController {
 			return ResponseEntity.ok(true);
 		}
 		return ResponseEntity.ok(false);
+	}
+	
+	@ApiOperation(value = "비밀번호 변경하기")
+	@PatchMapping(value = "/password")
+	public ResponseEntity<String> changePassword(@ApiIgnore @RequestHeader("X-USERNO") String no, @RequestBody Map<String, String> map){
+		int res = userService.updatePassword(map.get("password"), Integer.parseInt(no));
+		if(res == 0) {
+			return ResponseEntity.ok("변경 실패");
+		}
+		return ResponseEntity.ok("변경 성공");
+	}
+	
+	@ApiOperation(value = "채널 구독하기")
+	@PostMapping(value = "/like")
+	public ResponseEntity<String> channelLike(@ApiIgnore @RequestHeader("X-USERNO") String no, @RequestBody Map<String, Integer> map){
+		int res = userService.subscribe(Integer.parseInt(no), map.get("mbr_no"));
+		if(res == 0) {
+			return ResponseEntity.ok("구독 실패");
+		}
+		return ResponseEntity.ok("구독 성공");
+	}
+	
+	@ApiOperation(value = "채널 구독 취소하기")
+	@DeleteMapping(value = "/like")
+	public ResponseEntity<String> channelDislike(@ApiIgnore @RequestHeader("X-USERNO") String no, @RequestBody Map<String, Integer> map){
+		int res = userService.subscribeCancle(Integer.parseInt(no), map.get("mbr_no"));
+		if(res == 0) {
+			return ResponseEntity.ok("구독 실패");
+		}
+		return ResponseEntity.ok("구독 성공");
 	}
 	
 }
