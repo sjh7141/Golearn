@@ -1,29 +1,28 @@
 <template>
 	<div>
 		<v-progress-linear :value="(select + 1) * 25"></v-progress-linear>
-		<v-container fluid class="course-wrapper py-0">
+		<v-container fluid class="course-wrapper py-0 ">
 			<v-row class="height-100">
 				<v-col md="2">
 					<v-row class="mx-2">
 						<v-col
 							v-for="(list, index) in iconList"
 							cols="12"
-							class="pa-3 my-2 list-wrapper"
+							class="pa-3 my-2 list-wrapper d-flex align-center"
 							:class="{ 'list-active': isActive(index) }"
-							justify="center"
 							:key="list"
 							@click="select = index"
 						>
 							<div class="list-icon mr-3">{{ index + 1 }}</div>
-							{{ list }}
+							<span>{{ list }}</span>
 						</v-col>
 					</v-row>
 				</v-col>
 				<v-col md="10" style="border-left: 1px solid #f2f2f2">
-					<edit-info v-if="select == 0" />
-					<edit-cover v-if="select == 1" />
-					<edit-index v-if="select == 2" />
-					<edit-manager v-if="select == 3" />
+					<edit-info v-show="select == 0" />
+					<edit-cover v-show="select == 1" />
+					<edit-index v-show="select == 2" />
+					<edit-manager v-show="select == 3" />
 				</v-col>
 			</v-row>
 		</v-container>
@@ -46,7 +45,7 @@ export default {
 	data() {
 		return {
 			id: this.$route.params.id,
-			iconList: ['강의정보', '목차', '커버 이미지', '관리자'],
+			iconList: ['강의정보', '커버 이미지', '목차', '관리자'],
 			select: 0,
 		};
 	},
@@ -61,16 +60,16 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .course-wrapper {
-	height: 869px;
+	min-height: 869px;
 }
 
 .list-icon {
 	display: inline-block;
 	border: 1px solid gray;
-	width: 22px;
-	height: 22px;
+	width: 23px;
+	height: 23px;
 	text-align: center;
 	font-size: 13px;
 	border-radius: 6px;
