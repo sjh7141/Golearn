@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.golearn.mapper.SearchMapper">
+
+	<select id="findTag" resultType="com.golearn.domain.TagDto">
+		select *
+		from gl_tag
+	</select>
+	
+	<select id="findVideo" resultType="com.golearn.domain.VideoDto">
+		select *
+		from gl_video
+		where vid_title like CONCAT('%', #{search}, '%')
+		limit #{startIndex}, #{perPageNum} ;
+	</select>
+
+	<select id="countByVideo" resultType="Integer">
+		select count(*)
+		from gl_video
+		where vid_title like CONCAT('%', #{search}, '%')
+	</select>	
+</mapper>
