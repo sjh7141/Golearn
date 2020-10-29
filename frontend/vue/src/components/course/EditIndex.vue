@@ -28,7 +28,7 @@
 				<v-divider class="pb-8"></v-divider>
 				<div>
 					<div class="pb-8" style="text-align:end;">
-						<v-btn outlined class="add-btn" @click="add">
+						<v-btn outlined class="add-btn" @click="setAdd">
 							<v-icon color="darken-3">
 								mdi-plus
 							</v-icon>
@@ -44,32 +44,31 @@
 						@start="dragging = true"
 						@end="dragging = false"
 					>
-						<transition-group type="transition" name="flip-list">
-							<v-row
-								class="list-group-item ma-1 pa-3 mb-5 index-box"
-								v-for="(element, index) in list"
-								:key="element.name"
-							>
-								<v-col cols="10">
-									{{ element.name }}
-								</v-col>
-								<v-col cols="2" align="end">
-									<v-icon
-										class="pr-2 pointer"
-										color="darken-2"
-									>
-										mdi-file-edit-outline
-									</v-icon>
-									<v-icon
-										class="pointer"
-										color="darken-2"
-										@click="deleteIndex(index)"
-									>
-										mdi-trash-can-outline
-									</v-icon>
-								</v-col>
-							</v-row>
-						</transition-group>
+						<v-row
+							class="list-group-item ma-1 pa-3 mb-5 index-box"
+							v-for="(element, index) in list"
+							:key="element.index"
+						>
+							<v-col cols="10">
+								목차{{ index + 1 }}: {{ element.name }}
+							</v-col>
+							<v-col cols="2" align="end">
+								<v-icon
+									class="pr-2 pointer"
+									color="darken-2"
+									@click="setEditIndex(index)"
+								>
+									mdi-file-edit-outline
+								</v-icon>
+								<v-icon
+									class="pointer"
+									color="darken-2"
+									@click="setDeleteIndex(index)"
+								>
+									mdi-trash-can-outline
+								</v-icon>
+							</v-col>
+						</v-row>
 					</draggable>
 				</div>
 			</div>
@@ -81,6 +80,82 @@
 					다음
 				</v-btn>
 			</div>
+			<!-- 추가&수정 dialog -->
+			<v-dialog v-model="isAdd" max-width="600">
+				<v-card>
+					<v-card-title class="headline pb-6">
+						<span class="bold">
+							목차 {{ isEdit ? editIdx + 1 : getOrder() }}
+						</span>
+					</v-card-title>
+					<div class="bold px-6 pb-2">제목</div>
+					<v-card-text class="pb-0">
+						<v-text-field
+							v-model="editTitle"
+							:rules="rules"
+							filled
+							placeholder="제목입력과 강의영상을 선택해 주세요."
+							maxlength="30"
+						></v-text-field>
+					</v-card-text>
+					<div class="bold px-6 pb-2">영상목록</div>
+					<v-card-text>
+						<template v-for="(element, index) in videoList">
+							<div
+								class="mb-2 border-radius-10"
+								:class="{
+									selectBorder: index == selectVideoNo,
+								}"
+								:key="element.vidno"
+							>
+								<index-video
+									:video="element"
+									:idx="index"
+									@selectVideo="selectVideo"
+								/>
+							</div>
+						</template>
+					</v-card-text>
+					<v-card-actions>
+						<v-spacer></v-spacer>
+						<v-btn color="error darken-1" text @click="resetVideo">
+							취소
+						</v-btn>
+						<v-btn
+							color="darken-1"
+							text
+							@click="isEdit ? confirmEdit() : confirmAdd()"
+						>
+							확인
+						</v-btn>
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
+			<!-- 삭제 dialog -->
+			<v-dialog v-model="isDelete" max-width="350">
+				<v-card>
+					<v-card-title class="headline">
+						<span class="bold">정말 삭제하시겠습니까?</span>
+					</v-card-title>
+					<v-card-text>
+						삭제된 목차는 복구되지 않으며 <br />
+						그 동안 사용되었던 기록이 제거됩니다.
+					</v-card-text>
+					<v-card-actions>
+						<v-spacer></v-spacer>
+						<v-btn
+							color="error darken-1"
+							text
+							@click="isDelete = false"
+						>
+							취소
+						</v-btn>
+						<v-btn color="darken-1" text @click="confirmDelete">
+							확인
+						</v-btn>
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
 		</v-col>
 		<v-col cols="3">
 			<div>📑목차 작성 방법</div>
@@ -89,33 +164,182 @@
 </template>
 <script>
 import draggable from 'vuedraggable';
-let id = 2;
+import IndexVideo from '@/components/course/IndexVideo.vue';
+let order = 3;
+let nameTemplate = '제목입력과 강의영상을 선택해 주세요.';
 export default {
 	components: {
 		draggable,
+		IndexVideo,
 	},
 	data() {
 		return {
 			enabled: true,
-			list: [{ name: '목차의 제목을 입력해 주세요.', id: 1 }],
+			list: [
+				{ name: nameTemplate, no: 122, order: 1, vid_no: 0 },
+				{ name: nameTemplate, no: 232, order: 2, vid_no: 0 },
+			],
+			deleteList: [],
 			dragging: false,
+			rules: [v => v.length > 4 || '5자이상 입력이 필요합니다.'],
+			isDelete: false,
+			deleteIdx: -1,
+			isAdd: false,
+			isEdit: false,
+			editIdx: -1,
+			editTitle: '',
+			videoList: [
+				{
+					vidNo: 3,
+					mbrNo: 2,
+					vidPno: 0,
+					vidTitle: '테스트 영상',
+					vidContent: null,
+					vidUrl: null,
+					vidView: 18,
+					regDt: '2020-10-27T11:26:14.000+00:00',
+					vidHide: true,
+					vidThumbnail: 'video_default_thumbnail.png',
+					vidLength: 0,
+				},
+				{
+					vidNo: 3,
+					mbrNo: 2,
+					vidPno: 0,
+					vidTitle: '테스트 영상',
+					vidContent: null,
+					vidUrl: null,
+					vidView: 18,
+					regDt: '2020-10-27T11:26:14.000+00:00',
+					vidHide: true,
+					vidThumbnail: 'video_default_thumbnail.png',
+					vidLength: 0,
+				},
+				{
+					vidNo: 3,
+					mbrNo: 2,
+					vidPno: 0,
+					vidTitle: '테스트 영상',
+					vidContent: null,
+					vidUrl: null,
+					vidView: 18,
+					regDt: '2020-10-27T11:26:14.000+00:00',
+					vidHide: true,
+					vidThumbnail: 'video_default_thumbnail.png',
+					vidLength: 0,
+				},
+				{
+					vidNo: 3,
+					mbrNo: 2,
+					vidPno: 0,
+					vidTitle: '테스트 영상 테스트 영상 테스트 영상',
+					vidContent: null,
+					vidUrl: null,
+					vidView: 18,
+					regDt: '2020-10-27T11:26:14.000+00:00',
+					vidHide: true,
+					vidThumbnail: 'video_default_thumbnail.png',
+					vidLength: 0,
+				},
+				{
+					vidNo: 3,
+					mbrNo: 2,
+					vidPno: 0,
+					vidTitle: '테스트 영상',
+					vidContent: null,
+					vidUrl: null,
+					vidView: 18,
+					regDt: '2020-10-27T11:26:14.000+00:00',
+					vidHide: true,
+					vidThumbnail: 'video_default_thumbnail.png',
+					vidLength: 0,
+				},
+				{
+					vidNo: 3,
+					mbrNo: 2,
+					vidPno: 0,
+					vidTitle: '테스트 영상',
+					vidContent: null,
+					vidUrl: null,
+					vidView: 18,
+					regDt: '2020-10-27T11:26:14.000+00:00',
+					vidHide: true,
+					vidThumbnail: 'video_default_thumbnail.png',
+					vidLength: 0,
+				},
+				{
+					vidNo: 3,
+					mbrNo: 2,
+					vidPno: 0,
+					vidTitle: '테스트 영상',
+					vidContent: null,
+					vidUrl: null,
+					vidView: 18,
+					regDt: '2020-10-27T11:26:14.000+00:00',
+					vidHide: true,
+					vidThumbnail: 'video_default_thumbnail.png',
+					vidLength: 0,
+				},
+			],
+			selectVideoNo: -1,
 		};
 	},
 	methods: {
-		add() {
+		setAdd() {
+			this.isAdd = true;
+			this.editTitle = '';
+		},
+		confirmAdd() {
 			this.list.push({
-				name: '목차의 제목을 입력해 주세요.' + id,
-				id: id++,
+				name: this.editTitle,
+				no: 0,
+				order: order++,
 			});
+			this.editTitle = '';
+			this.isAdd = false;
+			this.resetVideo();
 		},
-		replace() {
-			this.list = [{ name: 'Edgard', id: id++ }];
+		checkMove() {
+			//e) {
+			// window.console.log('Future index: ' + e.draggedContext.futureIndex);
 		},
-		checkMove(e) {
-			window.console.log('Future index: ' + e.draggedContext.futureIndex);
+		setDeleteIndex(idx) {
+			this.isDelete = true;
+			this.deleteIdx = idx;
 		},
-		deleteIndex(idx) {
-			console.log(idx);
+		setEditIndex(idx) {
+			this.isEdit = true;
+			this.isAdd = true;
+			this.editIdx = idx;
+			this.editTitle = this.list[idx].name;
+		},
+		confirmDelete() {
+			const temp = this.list[this.deleteIdx];
+			this.list.splice(this.deleteIdx, 1);
+			if (temp.no != 0) {
+				this.deleteList.push(temp);
+			}
+			order--;
+			this.deleteIdx = -1;
+			this.isDelete = false;
+		},
+		confirmEdit() {
+			this.list[this.editIdx].name = this.editTitle;
+			this.editIdx = -1;
+			this.editTitle = '';
+			this.isEdit = false;
+			this.isAdd = false;
+			this.resetVideo();
+		},
+		getOrder() {
+			return order;
+		},
+		selectVideo(idx) {
+			this.selectVideoNo = idx;
+		},
+		resetVideo() {
+			this.isAdd = false;
+			this.selectVideoNo = -1;
 		},
 	},
 };
@@ -141,5 +365,9 @@ export default {
 .ghost {
 	opacity: 0.5;
 	background: #abb1ff;
+}
+
+.selectBorder {
+	border: 3px solid #30dcff;
 }
 </style>
