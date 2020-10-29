@@ -37,7 +37,12 @@
 				></v-combobox>
 			</div>
 			<div style="text-align:end;">
-				<v-btn outlined class="mr-3" @click="getHTML">
+				<v-btn
+					outlined
+					class="mr-3"
+					@click="getHTML"
+					style="border: 1px solid #c9c9c9;"
+				>
 					저장
 				</v-btn>
 				<v-btn dark color="#5500ff" @click="getHTML">

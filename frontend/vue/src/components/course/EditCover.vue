@@ -140,7 +140,7 @@
 				</div>
 			</div>
 			<div class="mt-6" style="text-align:end;">
-				<v-btn outlined class="mr-3">
+				<v-btn outlined class="mr-3" style="border: 1px solid #c9c9c9;">
 					저장
 				</v-btn>
 				<v-btn dark color="#5500ff">
