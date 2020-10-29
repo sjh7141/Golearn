@@ -11,7 +11,8 @@ import java.io.Serializable;
 @Embeddable
 @AllArgsConstructor
 @NoArgsConstructor
-public class VideoCompositekey implements Serializable {
+public class VideoCompositeKey implements Serializable {
+
     private int vidNo;
     private int mbrNo;
 }

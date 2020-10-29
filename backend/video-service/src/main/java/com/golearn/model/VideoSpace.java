@@ -14,7 +14,7 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 public class VideoSpace {
     @EmbeddedId
-    private VideoCompositekey videoCompositekey;
+    private VideoCompositeKey videoCompositekey;
 
 }
 //

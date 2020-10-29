@@ -2,18 +2,15 @@ package com.golearn.service;
 
 import com.golearn.exception.UnAuthorizationException;
 import com.golearn.model.Video;
-import com.golearn.model.VideoCompositekey;
+import com.golearn.model.VideoCompositeKey;
 import com.golearn.model.VideoLike;
 import com.golearn.repository.VideoLikeRepository;
 import com.golearn.repository.VideoRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.AccessDeniedException;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -48,12 +45,12 @@ public class VideoService {
 
     public Map isLikeVideo(int vidNo, int mbrNo) {
         Map<String, Boolean> result = new HashMap();
-        result.put("isLike", videoLikeRepository.existsById(new VideoCompositekey(vidNo, mbrNo)));
+        result.put("isLike", videoLikeRepository.existsById(new VideoCompositeKey(vidNo, mbrNo)));
         return result;
     }
 
     public void likeVideo(int vidNo, int mbrNo) {
-        VideoCompositekey videoCompositekey = new VideoCompositekey(vidNo, mbrNo);
+        VideoCompositeKey videoCompositekey = new VideoCompositeKey(vidNo, mbrNo);
         if (!videoLikeRepository.existsById(videoCompositekey)) {
             VideoLike videoLike = new VideoLike(videoCompositekey);
             videoLikeRepository.save(videoLike);
@@ -61,12 +58,18 @@ public class VideoService {
     }
 
     public void unlikeVideo(int vidNo, int mbrNo) {
-        VideoCompositekey videoCompositekey = new VideoCompositekey(vidNo, mbrNo);
+        VideoCompositeKey videoCompositekey = new VideoCompositeKey(vidNo, mbrNo);
         if (videoLikeRepository.existsById(videoCompositekey)) {
             videoLikeRepository.deleteById(videoCompositekey);
         }
     }
 
+    public List<Video> getLikeVideo(int mbrNo) {
+        return videoRepository.findAllByMbrNoAndLikeVideo(mbrNo);
+    }
 
+    public List<Video> getVideos(int mbrNo) {
+        return videoRepository.findAllByMbrNo(mbrNo);
+    }
 }
 //

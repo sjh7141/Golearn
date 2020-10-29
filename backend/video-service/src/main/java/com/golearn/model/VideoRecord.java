@@ -11,7 +11,7 @@ import javax.persistence.Entity;
 @AllArgsConstructor
 public class VideoRecord {
     @EmbeddedId
-    private VideoCompositekey videoCompositekey;
+    private VideoCompositeKey videoCompositekey;
 
     private int vid_rec_time;
 

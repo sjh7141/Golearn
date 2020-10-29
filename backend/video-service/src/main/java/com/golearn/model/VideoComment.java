@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -24,11 +26,10 @@ public class VideoComment {
     private int vidCmtPno;
     @Column(columnDefinition = "TEXT")
     private String vidComment;
-
+    @CreationTimestamp
     private Date regDt;
-
+    @UpdateTimestamp
     private Date chgDt;
 
-    @Transient
-    private long numOfReply;
+
 }
