@@ -6,24 +6,28 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 
-@Entity(name = "gl_course_like")
-@Table(name = "gl_course_like")
-@IdClass(value = LikeKey.class)
-public class Like {
+@Entity(name = "gl_course_viewer")
+@Table(name = "gl_course_viewer")
+@IdClass(value = CourseViewerKey.class)
+public class CourseViewer {
 	@Id
 	@Column(name = "mbr_no")
 	private long mbrNo;
 	@Id
 	@Column(name = "cos_no")
 	private long cosNo;
+	@Id
+	@Column(name = "idx_no")
+	private long idxNo;
 
-	public Like() {
+	public CourseViewer() {
 
 	}
 
-	public Like(long mbrNo, long cosNo) {
+	public CourseViewer(long mbrNo, long cosNo, long idxNo) {
 		this.mbrNo = mbrNo;
 		this.cosNo = cosNo;
+		this.idxNo = idxNo;
 	}
 
 	public long getMbrNo() {
@@ -40,6 +44,14 @@ public class Like {
 
 	public void setCosNo(long cosNo) {
 		this.cosNo = cosNo;
+	}
+
+	public long getIdxNo() {
+		return idxNo;
+	}
+
+	public void setIdxNo(long idxNo) {
+		this.idxNo = idxNo;
 	}
 
 }
