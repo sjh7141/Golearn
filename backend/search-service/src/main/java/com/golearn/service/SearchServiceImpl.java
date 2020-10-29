@@ -62,4 +62,9 @@ public class SearchServiceImpl implements SearchService {
 	public int countByCourse(String search) {
 		return searchMapper.countByCourse(search);
 	}
+	
+	@Override
+	public List<TagDto> findTagByCourse(List<Integer> list) {
+		return searchMapper.findTagByCourse(list);
+	}
 }

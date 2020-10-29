@@ -1,31 +1,42 @@
 package com.golearn.domain;
 
 import java.util.Date;
+import java.util.List;
 
 public class CourseDto {
 
-	private long cosNo;
-	private long mbrNo;
+	private int cosNo;
+	private int mbrNo;
+	private String mbrNickname;
 	private String cosTitle;
 	private String cosContent;
 	private String cosThumbnail;
+	private int likeCount;
 	private Date regDt;
 	private Date chgDt;
 
-	public long getCosNo() {
+	public int getCosNo() {
 		return cosNo;
 	}
 
-	public void setCosNo(long cosNo) {
+	public void setCosNo(int cosNo) {
 		this.cosNo = cosNo;
 	}
 
-	public long getMbrNo() {
+	public int getMbrNo() {
 		return mbrNo;
 	}
 
-	public void setMbrNo(long mbrNo) {
+	public void setMbrNo(int mbrNo) {
 		this.mbrNo = mbrNo;
+	}
+	
+	public String getMbrNickname() {
+		return mbrNickname;
+	}
+
+	public void setMbrNickname(String mbrNickname) {
+		this.mbrNickname = mbrNickname;
 	}
 
 	public String getCosTitle() {
@@ -67,5 +78,15 @@ public class CourseDto {
 	public void setChgDt(Date chgDt) {
 		this.chgDt = chgDt;
 	}
+
+	public int getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
+	}
+	
+	
 
 }

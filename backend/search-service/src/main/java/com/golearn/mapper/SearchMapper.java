@@ -23,4 +23,5 @@ public interface SearchMapper {
 	public int countByLoadmap(String search);
 	public List<CourseDto> findCourse(@Param("search") String search, @Param("startIndex") int startIndex, @Param("perPageNum")int perPageNum);
 	public int countByCourse(String search);
+	public List<TagDto>findTagByCourse(List<Integer> list);
 }

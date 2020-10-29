@@ -19,4 +19,5 @@ public interface SearchService {
 	public int countByLoadmap(String search);
 	public List<CourseDto> findCourse(String search, int startIndex, int perPageNum);
 	public int countByCourse(String search);
+	public List<TagDto>findTagByCourse(List<Integer> list);
 }
