@@ -1,9 +1,9 @@
 <template>
 	<v-row class="ml-3 height-100">
 		<v-col cols="9">
-			<h2>커버 이미지</h2>
+			<h2>이미지</h2>
 			<h4 class="pb-5 pl-3" style="color:gray;">
-				"강의 커버 이미지(썸네일)를 등록 하실 수 있습니다."
+				"강의 커버 이미지(썸네일)와 배너를 등록 하실 수 있습니다."
 			</h4>
 			<div justify="center" class="mt-5">
 				<div class="label">
@@ -15,8 +15,10 @@
 					</div>
 					<ol>
 						<li>
-							이미지(썸네일)를 직접 제작하실 경우,
-							<span class="bold">768 × 500(px)</span>에
+							커버 이미지(썸네일)를 직접 제작하실 경우,
+							<span class="bold">768 × 500(px)</span>에, <br />
+							배너 이미지는
+							<span class="bold">1920 x 720(px)</span>에
 							맞춰주세요. 가로형 이미지에 최적화되어있습니다.
 						</li>
 						<li>
@@ -31,7 +33,26 @@
 					</ol>
 				</div>
 				<div>
-					<div class="bold">미리보기</div>
+					<div class="bold">배너 이미지</div>
+					<v-row>
+						<v-col>
+							<v-btn
+								tile
+								class="py-7"
+								text
+								color="gray"
+								id="banner-btn"
+								@click="clickBanner"
+							>
+								<v-icon class="upload-icon">
+									mdi-image-plus
+								</v-icon>
+							</v-btn>
+						</v-col>
+					</v-row>
+				</div>
+				<div>
+					<div class="bold">커버 이미지</div>
 					<v-row>
 						<v-col md="5">
 							<v-btn
@@ -130,6 +151,14 @@
 						</v-col>
 					</v-row>
 					<input
+						ref="banner"
+						type="file"
+						id="banner"
+						v-show="false"
+						accept="image/png, image/jpeg, image/bmp"
+						@change="setBanner"
+					/>
+					<input
 						ref="file"
 						type="file"
 						id="file"
@@ -178,9 +207,26 @@ export default {
 				reader.readAsDataURL(file);
 			}
 		},
+		setBanner() {
+			var self = this;
+			var file = document.getElementById('banner').files[0];
+			var reader = new FileReader();
+
+			reader.onloadend = function() {
+				self.$emit('setBanner', reader.result);
+			};
+
+			if (file) {
+				reader.readAsDataURL(file);
+			}
+		},
 		clickImg() {
 			this.$refs.file.value = null;
 			$('#file').click();
+		},
+		clickBanner() {
+			this.$refs.banner.value = null;
+			$('#banner').click();
 		},
 		deleteImg() {
 			this.isImg = false;
@@ -206,6 +252,13 @@ export default {
 #img-btn {
 	width: 100%;
 	height: 300px;
+	border: 1px solid #c9c9c9;
+	border-radius: 10px;
+}
+
+#banner-btn {
+	width: 100%;
+	height: 100px;
 	border: 1px solid #c9c9c9;
 	border-radius: 10px;
 }

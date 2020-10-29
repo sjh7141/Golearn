@@ -13,7 +13,7 @@
 					v-model="title"
 					:rules="rules"
 					filled
-					placeholder="김쌤의 즐거운 CSS 강의"
+					placeholder="[예시 코스 이름] CSS의 시작"
 					maxlength="30"
 				></v-text-field>
 			</div>
@@ -120,6 +120,11 @@ export default {
 	methods: {
 		getHTML() {
 			// console.log(this.$refs.editor.getHTML());
+		},
+	},
+	watch: {
+		title() {
+			this.$emit('setTitle', this.title);
 		},
 	},
 	mounted() {},

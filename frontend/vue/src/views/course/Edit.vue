@@ -1,6 +1,32 @@
 <template>
 	<div>
-		<v-progress-linear :value="(select + 1) * 25"></v-progress-linear>
+		<v-row align="center">
+			<v-img
+				src="@/assets/golearn_banner.jpg"
+				height="200"
+				style="filter: grayscale(50%);"
+				ref="img"
+			>
+				<v-col style="height:100%;">
+					<div class="banner-wrapper">
+						<div
+							style="width:1000px; height:100%; margin:0 auto; padding-top:60px;"
+						>
+							{{
+								title == ''
+									? '[예시 코스 이름] CSS의 시작'
+									: title
+							}}
+						</div>
+					</div>
+				</v-col>
+			</v-img>
+		</v-row>
+		<v-progress-linear
+			color="#47e0ff"
+			height="6"
+			:value="(select + 1) * 25"
+		></v-progress-linear>
 		<v-container fluid class="course-wrapper py-0 ">
 			<v-row class="height-100">
 				<v-col md="2">
@@ -19,8 +45,8 @@
 					</v-row>
 				</v-col>
 				<v-col md="10" style="border-left: 1px solid #f2f2f2">
-					<edit-info v-show="select == 0" />
-					<edit-cover v-show="select == 1" />
+					<edit-info @setTitle="setTitle" v-show="select == 0" />
+					<edit-cover @setBanner="setBanner" v-show="select == 1" />
 					<edit-index v-show="select == 2" />
 					<edit-manager v-show="select == 3" />
 				</v-col>
@@ -45,8 +71,9 @@ export default {
 	data() {
 		return {
 			id: this.$route.params.id,
-			iconList: ['강의정보', '커버 이미지', '목차', '관리자'],
+			iconList: ['강의정보', '이미지', '목차', '관리자'],
 			select: 0,
+			title: '',
 		};
 	},
 	methods: {
@@ -55,6 +82,12 @@ export default {
 				return true;
 			}
 			return false;
+		},
+		setTitle(newTitle) {
+			this.title = newTitle;
+		},
+		setBanner(src) {
+			this.$refs.img.src = src;
 		},
 	},
 };
@@ -68,16 +101,17 @@ export default {
 .list-icon {
 	display: inline-block;
 	border: 1px solid gray;
-	width: 23px;
-	height: 23px;
+	width: 25px;
+	height: 25px;
 	text-align: center;
-	font-size: 13px;
+	font-size: 15px;
 	border-radius: 6px;
 }
 
 .list-wrapper {
 	border-radius: 6px;
 	cursor: pointer;
+	font-weight: 600;
 }
 
 .list-active {
@@ -86,5 +120,15 @@ export default {
 
 .list-wrapper:hover {
 	background-color: #e3e3e3;
+}
+
+.banner-wrapper {
+	height: 100%;
+	font-size: 40px;
+	color: white;
+	font-weight: 500;
+	font-family: NanumSquareWebFont, NanumSquareWebFont, '나눔고딕', NanumGothic,
+		'맑은 고딕', Malgun Gothic, 'Apple SD Gothic Neo', '돋움', dotum,
+		Helvetica, arial, sans-serif;
 }
 </style>
