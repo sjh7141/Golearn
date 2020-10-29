@@ -1,6 +1,6 @@
 server:
-  port: 8804
-  
+  port: 8809
+
 spring:
   application:
     name: course-service
@@ -21,14 +21,14 @@ spring:
         show_sql: true
         format_sql: true
         use_sql_comments: true
-        
+
 mybatis:
   type-aliases-package: com.cloud.mapper
   mapper-locations:
-  - classpath:/mapper/**/*Mapper.xml
+    - classpath:/mapper/**/*Mapper.xml
   configuration:
     map-underscore-to-camel-case: true
-  
+
 eureka:
   client:
     register-with-eureka: true
@@ -39,7 +39,7 @@ eureka:
   instance:
     instance-id: course-service
     prefer-ip-address: true
-      
+
 logging:
   pattern:
     console: "%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"
