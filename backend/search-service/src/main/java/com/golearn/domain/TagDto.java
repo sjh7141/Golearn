@@ -3,7 +3,8 @@ package com.golearn.domain;
 public class TagDto {
 
 	private int no;
-	private int name;
+	private String name;
+	private int targetNo;
 
 	public int getNo() {
 		return no;
@@ -13,12 +14,20 @@ public class TagDto {
 		this.no = no;
 	}
 
-	public int getName() {
+	public String getName() {
 		return name;
 	}
 
-	public void setName(int name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
+	public int getTargetNo() {
+		return targetNo;
+	}
+
+	public void setTargetNo(int targetNo) {
+		this.targetNo = targetNo;
+	}
+	
 }

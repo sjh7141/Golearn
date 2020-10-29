@@ -3,7 +3,7 @@
 <mapper namespace="com.golearn.mapper.SearchMapper">
 
 	<select id="findTag" resultType="com.golearn.domain.TagDto">
-		select *
+		select tag_no as no, tag_name as name
 		from gl_tag
 	</select>
 	
@@ -13,17 +13,27 @@
 		where vid_title like CONCAT('%', #{search}, '%')
 		limit #{startIndex}, #{perPageNum}
 	</select>
-
+	
 	<select id="countByVideo" resultType="Integer">
 		select count(*)
 		from gl_video
 		where vid_title like CONCAT('%', #{search}, '%')
 	</select>
 	
+	<select id="findTagByVideo" resultType="com.golearn.domain.TagDto">
+		select gl.tag_no as no, gl.tag_name as name, gvt.vid_no as targetNo
+		from gl_tag gl inner join gl_video_tag gvt
+		on gl.tag_no = gvt.tag_no and gvt.vid_no in 
+		<foreach collection='list' index='index' item='item' open='(' separator=',' close=')'>
+			#{item.value}
+		</foreach>
+	</select>
+	
 	<select id="findChannel" resultType="com.golearn.domain.ChannelDto">
-		select mbr_no as no, mbr_id as username, mbr_nickname as nickname
-		from gl_member
-		where mbr_id like CONCAT('%', #{search}, '%')
+        select gl.mbr_no as no, gl.mbr_id as username, gl.mbr_nickname as nickname, gl.mbr_profile as profile, count(gms.mbr_no) as likeCount
+		from gl_member gl left join gl_member_subscribe gms
+		on gl.mbr_id like CONCAT('%', #{search}, '%') and gl.mbr_no = gms.mbr_no
+        group by gms.mbr_no
 		limit #{startIndex}, #{perPageNum}
 	</select>
 	
@@ -34,9 +44,9 @@
 	</select>
 	
 	<select id="findLoadmap" resultType="com.golearn.domain.LoadmapDto">
-		select *
-		from gl_loadmap
-		where ldm_title like CONCAT('%', #{search}, '%')
+		select gl.*, gm.mbr_nickname
+		from gl_loadmap gl inner join gl_member gm
+		on ldm_title like CONCAT('%', #{search}, '%') and gl.mbr_no = gm.mbr_no
 		limit #{startIndex}, #{perPageNum}
 	</select>
 	
@@ -47,15 +57,35 @@
 	</select>
 	
 	<select id="findCourse" resultType="com.golearn.domain.CourseDto">
-		select *
-		from gl_course
-		where cos_title like CONCAT('%', #{search}, '%')
-		limit #{startIndex}, #{perPageNum}
+	select sub1.*, sub2.likeCount
+	from (
+			(
+				select gc.*, gm.mbr_nickname
+				from gl_course gc inner join gl_member gm
+				on gc.cos_title like CONCAT('%', #{search}, '%') and gc.mbr_no = gm.mbr_no
+			) sub1
+		left join
+			(
+				select cos_no, count(cos_no) as likeCount
+				from gl_course_like
+				group by cos_no
+			) sub2
+	        on sub1.cos_no = sub2.cos_no
+		)
 	</select>
 	
 	<select id="countByCourse" resultType="Integer">
 		select count(*)
 		from gl_course
 		where cos_title like CONCAT('%', #{search}, '%')
+	</select>
+	
+	<select id="findTagByCourse" resultType="com.golearn.domain.TagDto">
+		select gl.tag_no as no, gl.tag_name as name, gct.cos_no as targetNo
+		from gl_tag gl inner join gl_course_tag gct
+		on gl.tag_no = gct.tag_no and gct.cos_no in 
+		<foreach collection='list' index='index' item='item' open='(' separator=',' close=')'>
+			#{item.value}
+		</foreach>
 	</select>
 </mapper>

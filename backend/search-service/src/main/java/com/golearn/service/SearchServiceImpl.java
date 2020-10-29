@@ -34,6 +34,11 @@ public class SearchServiceImpl implements SearchService {
 	}
 
 	@Override
+	public List<TagDto> findTagByVideo(List<Integer> list) {
+		return searchMapper.findTagByVideo(list);
+	}
+	
+	@Override
 	public List<ChannelDto> findChannel(String search, int startIndex, int perPageNum) {
 		return searchMapper.findChannel(search, startIndex, perPageNum);
 	}
@@ -61,5 +66,10 @@ public class SearchServiceImpl implements SearchService {
 	@Override
 	public int countByCourse(String search) {
 		return searchMapper.countByCourse(search);
+	}
+	
+	@Override
+	public List<TagDto> findTagByCourse(List<Integer> list) {
+		return searchMapper.findTagByCourse(list);
 	}
 }

@@ -6,6 +6,7 @@ public class LoadmapDto {
 
 	private int ldmNo;
 	private int mbrNo;
+	private String mbrNickname;
 	private String ldmContent;
 	private String ldmTuhmbnail;
 	private Date regDt;
@@ -25,6 +26,14 @@ public class LoadmapDto {
 
 	public void setMbrNo(int mbrNo) {
 		this.mbrNo = mbrNo;
+	}
+
+	public String getMbrNickname() {
+		return mbrNickname;
+	}
+
+	public void setMbrNickname(String mbrNickname) {
+		this.mbrNickname = mbrNickname;
 	}
 
 	public String getLdmContent() {

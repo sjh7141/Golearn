@@ -5,6 +5,8 @@ public class ChannelDto {
 	private int no;
 	private String username;
 	private String nickname;
+	private String profile;
+	private int likeCount;
 
 	public int getNo() {
 		return no;
@@ -28,6 +30,22 @@ public class ChannelDto {
 
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+
+	public String getProfile() {
+		return profile;
+	}
+
+	public void setProfile(String profile) {
+		this.profile = profile;
+	}
+
+	public int getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
 	}
 
 }
