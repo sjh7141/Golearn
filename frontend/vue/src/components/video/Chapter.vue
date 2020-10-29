@@ -6,21 +6,35 @@
 		outlined
 		flat
 		tile
-		class="pa-2 mr-6"
+		class="mr-6"
 		style="overflow-y: auto; position:fixed; right:0;"
 		:style="{ top: top }"
 	>
-		<div style="font-size:16px; font-weight:400;">
-			코린아, 코딩하자! with 파이썬
-		</div>
-		<v-row class="pl-3 my-4" v-for="i in 10" :key="`test_${i}`">
+		<v-row
+			class="pl-5 my-4"
+			v-for="(item, i) in chapters"
+			:key="`chapter_${i}`"
+		>
 			<v-col class="pa-0" :cols="3">
 				<v-img
-					:src="`https://picsum.photos/500/300?image=${i * 10 + 10}`"
-				></v-img>
+					:src="`https://picsum.photos/500/300?image=${i * 5 + 10}`"
+					style="border-radius:3px;"
+				>
+					<v-layout
+						style="position: absolute; bottom:3px; right:3px; background-color:rgba(0,0,0,0.8); color:white; font-size: 12px;line-height: 18px;border-radius: 2px;padding: 0 4px;"
+						>{{ item.time }}</v-layout
+					>
+				</v-img>
 			</v-col>
-			<v-col class="pa-0" :cols="9">
-				제목
+			<v-col class="pa-0 pl-2" :cols="9">
+				<div>
+					<span style="font-size:14px; font-weight:500;">
+						{{ i + 1 }}. {{ item.title }}</span
+					><br />
+					<span style="font-size: 12px;color: #949596;">
+						미용쓰기
+					</span>
+				</div>
 			</v-col>
 		</v-row>
 	</v-card>
@@ -34,6 +48,25 @@ export default {
 			width: 0,
 			height: 0,
 			top: 64,
+
+			chapters: [
+				{ title: '구름IDE에서 파이썬 코딩 시작하기', time: '14 : 27' },
+				{ title: '수와 연산', time: '28: 11' },
+				{ title: '변수: 대입과 비교 연산', time: '30 : 01' },
+				{ title: '논리 연산과 조건문', time: '31 : 54' },
+				{ title: '리스트와 반복문', time: '38 : 56' },
+				{ title: '열린 사물함의 갯수 문제', time: '31 : 44' },
+				{ title: '함수의 활용과 소수의 판별', time: '43 : 49' },
+				{ title: '에라토스테네스의 체', time: '27 : 13' },
+				{ title: '소인수 분해', time: '28 : 20' },
+				{ title: '최대공약수 구하기', time: '23 : 02' },
+				{ title: '최소 공배수 구하기', time: '24 : 48' },
+				{ title: '구름IDE에서 파이썬 코딩 시작하기', time: '14 : 27' },
+				{ title: '수와 연산', time: '28: 11' },
+				{ title: '변수: 대입과 비교 연산', time: '30 : 01' },
+				{ title: '논리 연산과 조건문', time: '31 : 54' },
+				{ title: '리스트와 반복문', time: '38 : 56' },
+			],
 		};
 	},
 	mounted() {
@@ -50,8 +83,9 @@ export default {
 				this.height = 500;
 			} else {
 				this.width = 418;
+				console.log(this.$refs.app.$el.offsetTop);
 				this.height =
-					window.innerHeight - this.$refs.app.$el.offsetTop - 20;
+					window.innerHeight - this.$refs.app.$el.offsetTop - 10;
 			}
 			console.log(this.height);
 		},

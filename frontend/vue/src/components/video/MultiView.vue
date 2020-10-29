@@ -9,7 +9,7 @@
 			resizeWidth($event);
 			resizeHeight($event);
 		"
-		style="z-index:5"
+		style="z-index:500"
 		:style="{ position: editMode ? 'fixed' : 'static', left: 0 }"
 	>
 		<div
@@ -121,7 +121,7 @@ public class InfiniteLoop {
 
 		window.addEventListener('resize', this.resizeVideo);
 		this.videoWidth = window.innerWidth * 0.6;
-		this.totalHeight = window.innerHeight - this.$refs.app.offsetTop;
+		this.totalHeight = window.innerHeight - 64;
 		this.editorHeight = this.totalHeight * 0.66 - this.BORDER_SIZE;
 
 		this.resizeVideo();
@@ -148,7 +148,7 @@ public class InfiniteLoop {
 			}
 		},
 		resizeVideo() {
-			this.totalHeight = window.innerHeight - this.$refs.app.offsetTop;
+			this.totalHeight = window.innerHeight - 64;
 
 			if (this.videoWidth > window.innerWidth)
 				this.videoWidth = window.innerWidth - this.BORDER_SIZE;
