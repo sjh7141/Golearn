@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.golearn.domain.CourseViewer;
 import com.golearn.domain.Index;
+import com.golearn.service.CourseViewerService;
 import com.golearn.service.IndexService;
 
 import io.swagger.annotations.ApiOperation;
@@ -28,6 +30,9 @@ public class IndexController {
 	
 	@Autowired
 	IndexService indexService;
+	
+	@Autowired
+	CourseViewerService courseViewerService;
 	
 	// 목차 생성|수정|삭제
 	@RequestMapping(method = RequestMethod.PUT, value = "/index")
@@ -61,5 +66,14 @@ public class IndexController {
 		logger.info(">> LOAD getIndex <<");
 		Index response = indexService.findById(idxNo);
 		return new ResponseEntity<Index>(response, HttpStatus.OK);
+	}
+	
+	// 목차 수강 완료
+	@RequestMapping(method = RequestMethod.POST, value = "/index-complete")
+	@ApiOperation(value = "목차 수강 완료")
+	public ResponseEntity completeIndex(@RequestBody CourseViewer request) {
+		logger.info(">> LOAD completeIndex <<");
+		courseViewerService.save(request);
+		return new ResponseEntity(HttpStatus.NO_CONTENT);
 	}
 }

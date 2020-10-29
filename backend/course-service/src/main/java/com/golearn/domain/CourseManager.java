@@ -6,10 +6,10 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 
-@Entity(name = "gl_course_like")
-@Table(name = "gl_course_like")
-@IdClass(value = LikeKey.class)
-public class Like {
+@Entity(name = "gl_course_manager")
+@Table(name = "gl_course_manager")
+@IdClass(value = CourseManagerKey.class)
+public class CourseManager {
 	@Id
 	@Column(name = "mbr_no")
 	private long mbrNo;
@@ -17,11 +17,11 @@ public class Like {
 	@Column(name = "cos_no")
 	private long cosNo;
 
-	public Like() {
+	public CourseManager() {
 
 	}
 
-	public Like(long mbrNo, long cosNo) {
+	public CourseManager(long mbrNo, long cosNo) {
 		this.mbrNo = mbrNo;
 		this.cosNo = cosNo;
 	}

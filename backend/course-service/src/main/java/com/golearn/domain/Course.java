@@ -26,6 +26,8 @@ public class Course {
 	private String cosContent;
 	@Column(name = "cos_thumbnail")
 	private String cosThumbnail;
+	@Column(name = "cos_banner")
+	private String cosBanner;
 	@Column(name = "reg_dt")
 	private Date regDt;
 	@Column(name = "chg_dt")
@@ -33,13 +35,6 @@ public class Course {
 
 	public Course() {
 
-	}
-
-	public Course(long mbrNo, String cosTitle, String cosContent, String cosThumbnail) {
-		this.mbrNo = mbrNo;
-		this.cosTitle = cosTitle;
-		this.cosContent = cosContent;
-		this.cosThumbnail = cosThumbnail;
 	}
 
 	public long getCosNo() {
@@ -82,6 +77,14 @@ public class Course {
 		this.cosThumbnail = cosThumbnail;
 	}
 
+	public String getCosBanner() {
+		return cosBanner;
+	}
+
+	public void setCosBanner(String cosBanner) {
+		this.cosBanner = cosBanner;
+	}
+
 	public Date getRegDt() {
 		return regDt;
 	}
@@ -102,6 +105,7 @@ public class Course {
 	void prePersist() {
 		this.regDt = this.chgDt = new Date();
 		this.cosThumbnail = "course_default_thumbnail.png";
+		this.cosBanner = "course_banner_default.png";
 	}
 
 	@PreUpdate
