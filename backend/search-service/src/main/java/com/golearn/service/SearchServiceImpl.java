@@ -34,6 +34,11 @@ public class SearchServiceImpl implements SearchService {
 	}
 
 	@Override
+	public List<TagDto> findTagByVideo(List<Integer> list) {
+		return searchMapper.findTagByVideo(list);
+	}
+	
+	@Override
 	public List<ChannelDto> findChannel(String search, int startIndex, int perPageNum) {
 		return searchMapper.findChannel(search, startIndex, perPageNum);
 	}
