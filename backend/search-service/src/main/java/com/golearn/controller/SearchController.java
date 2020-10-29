@@ -66,4 +66,11 @@ public class SearchController {
 
 		return ResponseEntity.ok(map);
 	}
+	
+	@ApiOperation(value = "태그 목록 가져오기")
+	@GetMapping(value = "/tag")
+	public ResponseEntity<List<TagDto>> getTag(){
+		List<TagDto> tag = searchService.findTag();
+		return ResponseEntity.ok(tag);
+	}
 }
