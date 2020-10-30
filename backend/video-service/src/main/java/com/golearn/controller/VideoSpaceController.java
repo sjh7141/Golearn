@@ -19,7 +19,7 @@ import java.util.Map;
 @Slf4j
 public class VideoSpaceController {
 
-    private VideoSpaceService videoSpaceService;
+    private final VideoSpaceService videoSpaceService;
 
     VideoSpaceController(VideoSpaceService videoSpaceService){
         this.videoSpaceService = videoSpaceService;

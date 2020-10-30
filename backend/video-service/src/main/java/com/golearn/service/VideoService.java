@@ -16,9 +16,9 @@ import java.util.Map;
 @Slf4j
 @Service
 public class VideoService {
-    private VideoRepository videoRepository;
+    private final VideoRepository videoRepository;
 
-    private VideoLikeRepository videoLikeRepository;
+    private final VideoLikeRepository videoLikeRepository;
 
     VideoService(VideoRepository videoRepository, VideoLikeRepository videoLikeRepository) {
         this.videoRepository = videoRepository;
