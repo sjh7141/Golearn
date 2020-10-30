@@ -6,6 +6,26 @@
     color: rgb(60, 65, 223) !important;
 }
 
+.ace_scrollbar-h,
+.ace_scrollbar-v {
+	overflow-x: hidden;
+	overflow-y: hidden;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 0) and (min-device-width: 1025px) {
+    ::-webkit-scrollbar {
+       width: 8px;
+   }
+
+   ::-webkit-scrollbar-thumb:vertical {
+       height: 50px;
+       background-color:rgb(187, 187, 187);
+       border-radius: 5px;
+       
+        /* background-image: linear-gradient(-45deg, rgba(0, 160, 255, 0.86), rgb(0, 72, 162)); */
+   }
+}
+
 /* @media only screen and (-webkit-min-device-pixel-ratio: 0) and (min-device-width: 1025px) {
     ::-webkit-scrollbar {
         width: 0px;

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.golearn.mapper.UserMapper">
+
+	<select id="findByUsername" resultType="com.golearn.domain.UserDto">
+		select mbr_id as username, mbr_pwd as password
+		from gl_member
+		where mbr_id = #{username}
+	</select>
+	
+	<select id="findAuthority" resultType="String">
+		select mbr_role
+		from gl_authority as ga inner join gl_member_authority as gma
+		on (
+			select mbr_no
+            from gl_member
+            where mbr_id='test'
+           ) = gma.mbr_no and gma.auth_no = ga.auth_no
+	</select>
+	
+</mapper>
