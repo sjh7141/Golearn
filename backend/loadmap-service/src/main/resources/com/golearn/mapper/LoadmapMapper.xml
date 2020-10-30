@@ -23,21 +23,33 @@
 	</select>
 	
 	<select id="findByCourse" resultType="com.golearn.domain.LoadmapCourseDto">
-		select gc.*, glc.ldm_order as order
+		select gc.*, glc.ldm_order, glc.no
 		from gl_loadmap_course glc inner join gl_course gc
 		on glc.ldm_no = #{ldmNo} and glc.cos_no = gc.cos_no
         order by glc.ldm_order asc
 	</select>
 	
-	<update id="updateInCourse" parameterType="com.golearn.domain.LoadmapDto">
+	<update id="updateInCourse" parameterType="java.util.List">
 		<foreach collection="list" item="item" index="index">
 			update gl_loadmap_course 
-			set cos_no = #{item.cosNo}, ldm_order = #{item.order}
+			set cos_no = #{item.cosNo}, ldm_order = #{item.ldmOrder}
 			where ldm_no = #{item.ldmNo} and no = #{item.no}
 		</foreach>
 	</update>
 	
-	<delete id="deleteInCourse"> 
-		
+	<delete id="deleteInCourse" parameterType="java.util.List"> 
+		<foreach collection="list" item="item" index="index">
+			delete
+			from gl_loadmap_course
+			where no = #{item.no}
+		</foreach>
 	</delete>
+	
+	<insert id="registInCourse" parameterType="java.util.List">
+			insert into gl_loadmap_course (cos_no, ldm_no, ldm_order)
+			values
+		<foreach collection="list" item="item" index="index" separator=", ">
+			(#{item.cosNo}, #{item.ldmNo}, #{item.ldmOrder})
+		</foreach>
+	</insert>
 </mapper>

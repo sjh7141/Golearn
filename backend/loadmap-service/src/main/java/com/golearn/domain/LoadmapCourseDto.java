@@ -1,12 +1,16 @@
 package com.golearn.domain;
 
+/**
+ * @author HS
+ *
+ */
 public class LoadmapCourseDto {
 
 	private int no;
 	private int cosNo;
 	private int ldmNo;
 	private int mbrNo;
-	private int order;
+	private int ldmOrder;
 	private String cosTitle;
 	private String cosContent;
 	private String cosThumbnail;
@@ -76,12 +80,12 @@ public class LoadmapCourseDto {
 		this.cosBanner = cosBanner;
 	}
 
-	public int getOrder() {
-		return order;
+	public int getLdmOrder() {
+		return ldmOrder;
 	}
 
-	public void setOrder(int order) {
-		this.order = order;
+	public void setLdmOrder(int ldmOrder) {
+		this.ldmOrder = ldmOrder;
 	}
 
 }
