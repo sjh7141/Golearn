@@ -5,9 +5,9 @@ spring:
   application:
     name: auth-service
   datasource:
-    url: jdbc:mysql://k3a402.p.ssafy.io:3306/ssafy?allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
-    username: 
-    password: 
+    url: jdbc:mysql://k3a402.p.ssafy.io:3306/golearn?allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: admingolearn
     hikari:
       connection-timeout: 20000
       minimum-idle: 5
@@ -26,7 +26,9 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://k3a402.p.ssafy.io:8761/eureka
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
       
 logging:
   pattern:

@@ -1,0 +1,44 @@
+server:
+  port: 8804
+  
+spring:
+  application:
+    name: search-service
+  datasource:
+    url: jdbc:mysql://k3a402.p.ssafy.io:3306/golearn?allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowMultiQueries=true
+    username: root
+    password: admingolearn
+    hikari:
+      connection-timeout: 20000
+      minimum-idle: 5
+      maximum-pool-size: 12
+      idle-timeout: 300000
+      max-lifetime: 1200000
+      auto-commit: true
+      
+mybatis:
+  type-aliases-package: com.golearn.mapper
+  mapper-locations:
+  - classpath:/mapper/**/*Mapper.xml
+  configuration:
+    map-underscore-to-camel-case: true
+  
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    instance-id: search-service
+    prefer-ip-address: true
+      
+logging:
+  pattern:
+    console: "%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"
+    file: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  level:
+    org.springframework.web: INFO
+  file:
+    path: /logging
+    name: /logging/search-service.log

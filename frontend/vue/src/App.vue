@@ -1,10 +1,12 @@
 <template>
-	<div id="app">
-		<Header />
-		<Navigation />
-		<Content />
-		<Footer />
-	</div>
+	<v-app>
+		<div id="app">
+			<Header v-if="showHeader" />
+			<Navigation v-if="showHeader" />
+			<Content />
+			<Footer />
+		</div>
+	</v-app>
 </template>
 
 <script>
@@ -25,6 +27,16 @@ export default {
 
 	data() {
 		return {};
+	},
+
+	computed: {
+		showHeader() {
+			let render = true;
+			if (this.$route.path.indexOf('/login') > -1) {
+				render = false;
+			}
+			return render;
+		},
 	},
 };
 </script>
