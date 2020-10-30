@@ -17,7 +17,7 @@ import java.util.List;
 @Api("Video")
 public class VideoController {
 
-    private VideoService videoService;
+    private final VideoService videoService;
 
     VideoController(VideoService videoService) {
         this.videoService = videoService;

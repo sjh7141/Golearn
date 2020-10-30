@@ -17,7 +17,7 @@ import java.util.List;
 @Api("VideoComment")
 public class VideoCommentController {
 
-    private VideoCommentService videoCommentService;
+    private final VideoCommentService videoCommentService;
 
     VideoCommentController(VideoCommentService videoCommentService) {
         this.videoCommentService = videoCommentService;
@@ -30,31 +30,33 @@ public class VideoCommentController {
     }
 
     @ApiOperation(value = "댓글 쓰기")
-    @PostMapping("/comment")
-    public ResponseEntity saveVideoComment(@RequestHeader("X-USERNO") int mbrNo, @RequestBody VideoComment videoComment) {
+    @PostMapping("/comment/{vid_no}")
+    public ResponseEntity saveVideoComment(@RequestHeader("X-USERNO") int mbrNo, @PathVariable("vid_no") int vidNo, @RequestBody VideoComment videoComment) {
+        videoComment.setVidNo(vidNo);
         videoComment.setMbrNo(mbrNo);
         videoCommentService.saveVideoComment(videoComment);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @ApiOperation(value = "대댓글, 댓글 수정")
-    @PutMapping("/comment/{vid_cmt_no}")
-    public ResponseEntity updateVideoComment(@RequestHeader("X-USERNO") int mbrNo, @PathVariable("vid_cmt_no") int vidCmtNo, @RequestBody VideoComment videoComment) {
+    @ApiOperation(value = "댓글 수정")
+    @PutMapping("/comment/{vid_no}/{vid_cmt_no}")
+    public ResponseEntity updateVideoComment(@RequestHeader("X-USERNO") int mbrNo, @PathVariable("vid_no") int vidNo, @PathVariable("vid_cmt_no") int vidCmtNo, @RequestBody VideoComment videoComment) {
         videoComment.setVidCmtNo(vidCmtNo);
+        videoComment.setVidNo(vidNo);
         videoCommentService.updateVideoComment(videoComment, mbrNo);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @ApiOperation(value = "대댓글, 댓글 삭제")
-    @DeleteMapping("/comment/{vid_cmt_no}")
+    @ApiOperation(value = "댓글 삭제")
+    @DeleteMapping("/comment/{vid_no}/{vid_cmt_no}")
     public ResponseEntity removeVideoComment(@RequestHeader("X-USERNO") int mbrNo, @PathVariable("vid_cmt_no") int vidCmtNo) {
         videoCommentService.removeVideoComment(vidCmtNo, mbrNo);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @ApiOperation(value = "대댓글 쓰기")
-    @PostMapping("/comment/{vid_cmt_no}")
-    public ResponseEntity saveVideoReply(@RequestHeader("X-USERNO") int mbrNo, @PathVariable("vid_cmt_no") int vidCmtNo, @RequestBody VideoComment videoComment) {
+    @PostMapping("/comment/{vid_cmt_pno}")
+    public ResponseEntity saveVideoReply(@RequestHeader("X-USERNO") int mbrNo, @PathVariable("vid_cmt_pno") int vidCmtNo, @RequestBody VideoComment videoComment) {
         videoComment.setMbrNo(mbrNo);
         videoComment.setVidCmtPno(vidCmtNo);
         videoCommentService.saveVideoComment(videoComment);
@@ -62,8 +64,23 @@ public class VideoCommentController {
     }
 
     @ApiOperation(value = "대댓글 조회")
-    @GetMapping("/comment/{vid_no}/{vid_cmt_no}")
-    public ResponseEntity<List<VideoComment>> getVideoReplies(@PathVariable("vid_cmt_no") int vidCmtNo, @RequestParam(value = "page_no", required = false, defaultValue = "0") int pageNo) {
+    @GetMapping("/comment/{vid_no}/{vid_cmt_pno}")
+    public ResponseEntity<List<VideoComment>> getVideoReplies(@PathVariable("vid_cmt_pno") int vidCmtNo, @RequestParam(value = "page_no", required = false, defaultValue = "0") int pageNo) {
         return new ResponseEntity(videoCommentService.getVideoReplies(vidCmtNo, pageNo), HttpStatus.OK);
     }
+    @ApiOperation(value = "대댓글 수정")
+    @PutMapping("/comment/{vid_no}/{vid_cmt_pno}/{vid_cmt_no}")
+    public ResponseEntity updateVideoReply(@RequestHeader("X-USERNO") int mbrNo, @PathVariable("vid_cmt_no") int vidCmtNo, @RequestBody VideoComment videoComment) {
+        videoComment.setVidCmtNo(vidCmtNo);
+        videoCommentService.updateVideoComment(videoComment, mbrNo);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "대댓글 삭제")
+    @DeleteMapping("/comment/{vid_no}/{vid_cmt_pno}/{vid_cmt_no}")
+    public ResponseEntity removeVideoReply(@RequestHeader("X-USERNO") int mbrNo, @PathVariable("vid_cmt_no") int vidCmtNo) {
+        videoCommentService.removeVideoComment(vidCmtNo, mbrNo);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 }

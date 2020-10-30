@@ -17,7 +17,7 @@ import java.util.List;
 @Slf4j
 public class VideoCommentService {
 
-    private VideoCommentRepository videoCommentRepository;
+    private final VideoCommentRepository videoCommentRepository;
 
     VideoCommentService(VideoCommentRepository videoCommentRepository){
         this.videoCommentRepository = videoCommentRepository;

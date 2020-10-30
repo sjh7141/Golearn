@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class VideoRecordService {
 
-    private VideoRecordRepository videoRecordRepository;
+    private final VideoRecordRepository videoRecordRepository;
 
     VideoRecordService(VideoRecordRepository videoRecordRepository) {
         this.videoRecordRepository = videoRecordRepository;

@@ -13,9 +13,9 @@ import java.util.List;
 @Service
 @Slf4j
 public class VideoSpaceService {
-    private VideoSpaceRepository videoSpaceRepository;
+    private final VideoSpaceRepository videoSpaceRepository;
 
-    private VideoRepository videoRepository;
+    private final VideoRepository videoRepository;
 
     VideoSpaceService(VideoSpaceRepository videoSpaceRepository, VideoRepository videoRepository) {
         this.videoRepository = videoRepository;
