@@ -15,8 +15,8 @@ public interface CourseManagerRepository extends CrudRepository<CourseManager, L
 	// 코스 관리자 생성
 	@Modifying
 	@Transactional
-	@Query(value = "INSERT INTO gl_course_manager VALUES(:mbrNo, :cosNo)", nativeQuery = true)
-	void save(@Param("mbrNo") long mbrNo, @Param("cosNo") long cosNo);
+	@Query(value = "INSERT INTO gl_course_manager(mbr_no, cos_no, authority) VALUES(:mbrNo, :cosNo, :authority)", nativeQuery = true)
+	void save(@Param("mbrNo") long mbrNo, @Param("cosNo") long cosNo, @Param("authority") String authority);
 	
 	// 코스 관리자 삭제
 	@Modifying
@@ -25,7 +25,7 @@ public interface CourseManagerRepository extends CrudRepository<CourseManager, L
 	void delete(@Param("mbrNo") long mbrNo, @Param("cosNo") long cosNo);
 	
 	// 코스 관리자 목록 조회
-	@Query(value="SELECT glcm.mbr_no mbrNo, mbr_nickname mbrNickname, mbr_profile mbrProfile, mbr_id mbrId\r\n" + 
+	@Query(value="SELECT glcm.mbr_no mbrNo, mbr_nickname mbrNickname, mbr_profile mbrProfile, mbr_id mbrId, mbr_email mbrEmail, glcm.reg_dt regDt, glcm.authority\r\n" + 
 			"       FROM gl_course_manager glcm\r\n" + 
 			"		    LEFT OUTER JOIN gl_member glm\r\n" + 
 			"             ON glm.mbr_no = glcm.mbr_no\r\n" + 
@@ -33,7 +33,7 @@ public interface CourseManagerRepository extends CrudRepository<CourseManager, L
 	List<CourseManagerResopnse> findManagers(@Param("cosNo") long cosNo);
 	
 	// 코스 관리자를 추가하기위한 검색
-	@Query(value="SELECT mbr_no mbrNo, mbr_nickname mbrNickname, mbr_profile mbrProfile, mbr_id mbrId\r\n" + 
+	@Query(value="SELECT mbr_no mbrNo, mbr_nickname mbrNickname, mbr_profile mbrProfile, mbr_id mbrId, mbr_email mbrEmail\r\n" + 
 			"       FROM gl_member gm\r\n" + 
 			"      WHERE gm.mbr_no NOT IN(SELECT mbr_no\r\n" + 
 			"						        FROM gl_course_manager\r\n" + 

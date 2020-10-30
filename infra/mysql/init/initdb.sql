@@ -193,6 +193,8 @@ CREATE TABLE `gl_course_like` (
 CREATE TABLE `gl_course_manager` (
   `mbr_no` int(11) NOT NULL COMMENT '회원 일련번호',
   `cos_no` int(11) NOT NULL COMMENT '코스 일련번호',
+  `reg_dt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `authority` varchar(45) NOT NULL,
   PRIMARY KEY (`mbr_no`,`cos_no`),
   KEY `gl_fk_cmm_no_idx` (`mbr_no`),
   KEY `gl_fk_cmc_no_idx` (`cos_no`),
