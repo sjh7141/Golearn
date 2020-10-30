@@ -13,7 +13,7 @@
 					v-model="title"
 					:rules="rules"
 					filled
-					placeholder="[예시 코스 이름] CSS의 시작"
+					placeholder="[코스 이름 예시] CSS의 시작"
 					maxlength="30"
 				></v-text-field>
 			</div>
@@ -83,6 +83,7 @@ export default {
 				'JavaScript',
 			],
 			preContent: `
+						<h3>[강의 예시]</h3>
 						<h2>
 							'css 마스터' 코스에 오신걸 환영합니다.
 						</h2>
@@ -92,7 +93,6 @@ export default {
 						<pre><code>body { display: none; } \nheader { display: none; } \nfooter { display: none; } \naside { display: none; } \ndiv { display: none; }
 						</code></pre>
 						\n
-						<h3>(강의 예시)</h3>
 						<ul>
 							<li>
 							선택자
