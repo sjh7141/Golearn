@@ -65,4 +65,11 @@ public class BoardController {
 		}
 		return ResponseEntity.ok("수정 성공");
 	}
+	
+	@ApiOperation(value = "게시글 상세 보기")
+	@GetMapping(value = "/details/{brdNo}")
+	public ResponseEntity<BoardDto> getBoardDetails(@PathVariable("brdNo") int brdNo){
+		BoardDto board = boardService.findBoardDetails(brdNo);
+		return ResponseEntity.ok(board);
+	}
 }
