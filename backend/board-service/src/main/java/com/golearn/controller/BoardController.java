@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,6 +19,7 @@ import com.golearn.domain.PageDto;
 import com.golearn.service.BoardService;
 
 import io.swagger.annotations.ApiOperation;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 public class BoardController {
@@ -35,5 +39,17 @@ public class BoardController {
 		map.put("board", board);
 		map.put("page", page);
 		return ResponseEntity.ok(map);
+	}
+	
+	@ApiOperation(value = "게시글 작성하기")
+	@PostMapping(value = "/")
+	public ResponseEntity<String> registBoard(@ApiIgnore @RequestHeader("X-USERNO") String userNo, @RequestBody BoardDto dto){
+		dto.setMbrNo(Integer.parseInt(userNo));
+		int res = boardService.registBoard(dto);
+		
+		if(res == 0) {
+			return ResponseEntity.ok("등록 실패");
+		}
+		return ResponseEntity.ok("등록 성공");
 	}
 }
