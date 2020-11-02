@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -78,5 +79,16 @@ public class CommentController {
 			return ResponseEntity.ok("수정 실패");
 		}
 		return ResponseEntity.ok("수정 성공");
+	}
+	
+	@ApiOperation(value = "댓글 삭제하기")
+	@DeleteMapping(value = "/")
+	public ResponseEntity<String> removeComment(@ApiIgnore @RequestHeader("X-USERNO") String userNo, @RequestBody Map<String, Object> map){
+		int cmtNo = (int)map.get("cmt_no");
+		int res = commentService.deleteComment(cmtNo, Integer.parseInt(userNo));
+		if(res == 0) {
+			return ResponseEntity.ok("삭제 실패");
+		}
+		return ResponseEntity.ok("삭제 성공");
 	}
 }

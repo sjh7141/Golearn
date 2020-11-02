@@ -29,7 +29,7 @@
 	<delete id="deleteComment">
 		delete
 		from gl_board_comment
-		where cmt_no = #{cmt_no} and mbr_no = #{mbrNo}
+		where brd_cmt_no = #{cmtNo} and mbr_no = #{mbrNo}
 	</delete>
 	
 </mapper>
