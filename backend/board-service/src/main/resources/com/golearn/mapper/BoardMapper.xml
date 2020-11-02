@@ -17,7 +17,7 @@
 		where brd_no = #{brdNo}
 	</update>
 	
-	<delete id="deleteBaord">
+	<delete id="deleteBoard">
 		delete
 		from gl_board
 		where brd_no = #{brdNo} and mbr_no = #{mbrNo}

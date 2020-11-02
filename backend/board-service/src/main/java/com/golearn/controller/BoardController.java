@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,5 +72,16 @@ public class BoardController {
 	public ResponseEntity<BoardDto> getBoardDetails(@PathVariable("brdNo") int brdNo){
 		BoardDto board = boardService.findBoardDetails(brdNo);
 		return ResponseEntity.ok(board);
+	}
+	
+	@ApiOperation(value = "게시글 삭제하기")
+	@DeleteMapping(value = "/")
+	public ResponseEntity<String> removeBoard(@ApiIgnore @RequestHeader("X-USERNO") String userNo, @RequestBody Map<String, Object> map){
+		int brdNo = (int)map.get("brdNo");
+		int res = boardService.deleteBoard(brdNo, Integer.parseInt(userNo));
+		if(res == 0) {
+			return ResponseEntity.ok("삭제 실패");
+		}
+		return ResponseEntity.ok("삭제 성공");
 	}
 }
