@@ -72,6 +72,7 @@
 			) sub2
 	        on sub1.cos_no = sub2.cos_no
 		)
+	limit #{startIndex}, #{perPageNum}
 	</select>
 	
 	<select id="countByCourse" resultType="Integer">
