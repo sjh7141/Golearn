@@ -54,4 +54,8 @@ public class VideoCommentService {
         PageRequest pageRequest = PageRequest.of(pageNo,20, Sort.by("regDt").ascending());
         return videoCommentRepository.findAllByVidCmtNo(vidCmtNo,pageRequest);
     }
+
+    public VideoComment getVideoComment(int vidCmtNo) {
+        return videoCommentRepository.findById(vidCmtNo).get();
+    }
 }

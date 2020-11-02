@@ -23,6 +23,12 @@ public class VideoCommentController {
         this.videoCommentService = videoCommentService;
     }
 
+    @ApiOperation(value = "댓글 상세")
+    @GetMapping("/comment/details/{vid_cmt_no}")
+    public ResponseEntity<VideoComment> getVideoComment(@PathVariable("vid_cmt_no") int vidCmtNo){
+        return new ResponseEntity(videoCommentService.getVideoComment(vidCmtNo),HttpStatus.OK);
+    }
+
     @ApiOperation(value = "댓글 조회")
     @GetMapping("/comment/{vid_no}")
     public ResponseEntity<List<VideoCommentPayload>> getVideoComments(@PathVariable("vid_no") int vidNo, @RequestParam(value = "page_no", required = false, defaultValue = "0") int pageNo) {
@@ -55,7 +61,7 @@ public class VideoCommentController {
     }
 
     @ApiOperation(value = "대댓글 쓰기")
-    @PostMapping("/comment/{vid_cmt_pno}")
+    @PostMapping("/comment/{vid_no}/{vid_cmt_pno}")
     public ResponseEntity saveVideoReply(@RequestHeader("X-USERNO") int mbrNo, @PathVariable("vid_cmt_pno") int vidCmtNo, @RequestBody VideoComment videoComment) {
         videoComment.setMbrNo(mbrNo);
         videoComment.setVidCmtPno(vidCmtNo);
