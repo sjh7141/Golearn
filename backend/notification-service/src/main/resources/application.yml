@@ -5,9 +5,9 @@ spring:
   application:
     name: notification-service
   datasource:
-    url: jdbc:mysql://k3a402.p.ssafy.io:3306/ssafy?allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowMultiQueries=true
-    username: 
-    password: 
+    url: jdbc:mysql://k3a402.p.ssafy.io:3306/golearn?allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowMultiQueries=true
+    username: root
+    password: admingolearn
     hikari:
       connection-timeout: 20000
       minimum-idle: 5
@@ -15,13 +15,22 @@ spring:
       idle-timeout: 300000
       max-lifetime: 1200000
       auto-commit: true
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        char_set:
+    generate-ddl: true
       
-mybatis:
-  type-aliases-package: com.golearn.mapper
-  mapper-locations:
-  - classpath:/mapper/**/*Mapper.xml
-  configuration:
-    map-underscore-to-camel-case: true
+
   
 eureka:
   client:
@@ -33,7 +42,17 @@ eureka:
   instance:
     instance-id: notification-service
     prefer-ip-address: true
-      
+
+feign:
+  course-api:
+    url: http://k3a402.p.ssafy.io:8801/course
+  video-api:
+#    url: http://k3a402.p.ssafy.io:8801/video
+    url: http://localhost:8801/video
+  board-api:
+    url: http://k3a402.p.ssafy.io:8801/board
+
+
 logging:
   pattern:
     console: "%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"
