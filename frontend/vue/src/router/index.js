@@ -6,6 +6,7 @@ import PlayChannel from '@/views/channel/play.vue';
 import Login from '@/views/Login.vue';
 import EditCourse from '@/views/course/Edit.vue';
 import PlayCource from '@/views/course/play.vue';
+import EditLoadMap from '@/views/loadmap/Edit.vue';
 
 Vue.use(VueRouter);
 
@@ -34,6 +35,11 @@ const routes = [
 		path: '/course/play',
 		name: 'PlayCourse',
 		component: PlayCource,
+	},
+	{
+		path: '/loadmap-management/:id',
+		name: 'EditLoadMap',
+		component: EditLoadMap,
 	},
 ];
 
