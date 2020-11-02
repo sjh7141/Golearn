@@ -8,6 +8,7 @@ public class CourseDto {
 	private int cosNo;
 	private int mbrNo;
 	private String mbrNickname;
+	private String mbrProfile;
 	private String cosTitle;
 	private String cosContent;
 	private String cosThumbnail;
@@ -37,6 +38,14 @@ public class CourseDto {
 
 	public void setMbrNickname(String mbrNickname) {
 		this.mbrNickname = mbrNickname;
+	}
+	
+	public String getMbrProfile() {
+		return mbrProfile;
+	}
+
+	public void setMbrProfile(String mbrProfile) {
+		this.mbrProfile = mbrProfile;
 	}
 
 	public String getCosTitle() {

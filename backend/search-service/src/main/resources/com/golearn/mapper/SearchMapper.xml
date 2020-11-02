@@ -60,7 +60,7 @@
 	select sub1.*, sub2.likeCount
 	from (
 			(
-				select gc.*, gm.mbr_nickname
+				select gc.*, gm.mbr_nickname, gm.mbr_profile
 				from gl_course gc inner join gl_member gm
 				on gc.cos_title like CONCAT('%', #{search}, '%') and gc.mbr_no = gm.mbr_no
 			) sub1
