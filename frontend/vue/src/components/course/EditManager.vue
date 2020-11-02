@@ -75,6 +75,7 @@
 													/>
 												</v-avatar>
 												{{ item.mbr_nickname }}
+												(@{{ item.mbr_id }})
 											</td>
 											<td>{{ item.mbr_email }}</td>
 											<td
@@ -114,10 +115,15 @@
 				</div>
 			</div>
 			<div class="mt-6" style="text-align:end;">
-				<v-btn outlined class="mr-3" style="border: 1px solid #c9c9c9;">
+				<v-btn
+					outlined
+					class="mr-3"
+					style="border: 1px solid #c9c9c9;"
+					@click="saveManager"
+				>
 					저장
 				</v-btn>
-				<v-btn dark color="#5500ff">
+				<v-btn dark color="#5500ff" @click="changeActive">
 					다음
 				</v-btn>
 			</div>
@@ -138,7 +144,7 @@
 						multiple
 						color="blue-grey lighten-2"
 						item-text="mbr_nickname"
-						item-value="mbr_nickname"
+						return-object
 						class="mx-3"
 					>
 						<template v-slot:selection="data">
@@ -169,7 +175,9 @@
 								</v-list-item-avatar>
 								<v-list-item-content>
 									<v-list-item-title
-										v-html="data.item.mbr_nickname"
+										v-html="
+											`${data.item.mbr_nickname} (@${data.item.mbr_id})`
+										"
 									></v-list-item-title>
 									<v-list-item-subtitle
 										v-html="data.item.mbr_email"
@@ -187,7 +195,7 @@
 						>
 							취소
 						</v-btn>
-						<v-btn color="darken-1" text @click="isAdd = false">
+						<v-btn color="darken-1" text @click="addManager()">
 							확인
 						</v-btn>
 					</v-card-actions>
@@ -231,6 +239,7 @@ export default {
 			manager: [
 				{
 					mbr_nickname: '김길동',
+					mbr_id: 'go1234',
 					mbr_no: 122,
 					mbr_profile: 1,
 					mbr_email: 'gildong@gmail.com',
@@ -240,6 +249,7 @@ export default {
 				},
 				{
 					mbr_nickname: '코런코런코런코런코런',
+					mbr_id: 'go12345',
 					mbr_no: 232,
 					mbr_profile: 2,
 					mbr_email: 'gildong@gmail.com',
@@ -249,6 +259,7 @@ export default {
 				},
 				{
 					mbr_nickname: '김길동1',
+					mbr_id: 'go123456',
 					mbr_no: 123,
 					mbr_profile: 1,
 					mbr_email: 'gildong@gmail.com',
@@ -258,6 +269,7 @@ export default {
 				},
 				{
 					mbr_nickname: '코런코런1',
+					mbr_id: 'la1234',
 					mbr_no: 234,
 					mbr_profile: 2,
 					mbr_email: 'gildong@gmail.com',
@@ -267,6 +279,7 @@ export default {
 				},
 				{
 					mbr_nickname: '김길동5',
+					mbr_id: 'la12345',
 					mbr_no: 125,
 					mbr_profile: 1,
 					mbr_email: 'gildong@gmail.com',
@@ -276,6 +289,7 @@ export default {
 				},
 				{
 					mbr_nickname: '코런코런123',
+					mbr_id: 'la123456',
 					mbr_no: 2321,
 					mbr_profile: 2,
 					mbr_email: 'gildong@gmail.com',
@@ -285,6 +299,7 @@ export default {
 				},
 				{
 					mbr_nickname: '김길동6',
+					mbr_id: 'da1234',
 					mbr_no: 1226,
 					mbr_profile: 1,
 					mbr_email: 'gildong@gmail.com',
@@ -294,6 +309,7 @@ export default {
 				},
 				{
 					mbr_nickname: '코런코런6',
+					mbr_id: 'da12345',
 					mbr_no: 23216,
 					mbr_profile: 2,
 					mbr_email: 'gildong@gmail.com',
@@ -307,17 +323,19 @@ export default {
 			isAdd: false,
 			people: [
 				{
-					mbr_nickname: '김길동',
-					mbr_no: 122,
+					mbr_nickname: '마이',
+					mbr_id: 'pa1234',
+					mbr_no: 1221111111,
 					mbr_profile: 1,
 					mbr_email: 'gildong@gmail.com',
-					authority: '마스터',
+					authority: '매니저',
 					ck_email: 1,
 					regist_date: '19/01/24 14:30',
 				},
 				{
-					mbr_nickname: '코런코런코런코런코런',
-					mbr_no: 232,
+					mbr_nickname: '구미',
+					mbr_id: 'pa12345',
+					mbr_no: 232222222222222,
 					mbr_profile: 2,
 					mbr_email: 'gildong@gmail.com',
 					authority: '매니저',
@@ -325,8 +343,9 @@ export default {
 					regist_date: '19/01/24 14:30',
 				},
 				{
-					mbr_nickname: '김길동1',
-					mbr_no: 123,
+					mbr_nickname: '복숭',
+					mbr_id: 'gpa123456',
+					mbr_no: 12333333333,
 					mbr_profile: 1,
 					mbr_email: 'gildong@gmail.com',
 					authority: '매니저',
@@ -334,8 +353,9 @@ export default {
 					regist_date: '19/01/24 14:30',
 				},
 				{
-					mbr_nickname: '코런코런1',
-					mbr_no: 234,
+					mbr_nickname: '아맛',
+					mbr_id: 'lapa1234',
+					mbr_no: 234444444444,
 					mbr_profile: 2,
 					mbr_email: 'gildong@gmail.com',
 					authority: '매니저',
@@ -343,8 +363,9 @@ export default {
 					regist_date: '19/01/24 14:30',
 				},
 				{
-					mbr_nickname: '김길동5',
-					mbr_no: 125,
+					mbr_nickname: '딸기맛',
+					mbr_id: 'lapa12345',
+					mbr_no: 12555555555555,
 					mbr_profile: 1,
 					mbr_email: 'gildong@gmail.com',
 					authority: '매니저',
@@ -352,8 +373,9 @@ export default {
 					regist_date: '19/01/24 14:30',
 				},
 				{
-					mbr_nickname: '코런코런123',
-					mbr_no: 2321,
+					mbr_nickname: '왕꿈틀이',
+					mbr_id: 'lpa123456',
+					mbr_no: 23211111111,
 					mbr_profile: 2,
 					mbr_email: 'gildong@gmail.com',
 					authority: '매니저',
@@ -361,8 +383,9 @@ export default {
 					regist_date: '19/01/24 14:30',
 				},
 				{
-					mbr_nickname: '김길동6',
-					mbr_no: 1226,
+					mbr_nickname: '젤리',
+					mbr_id: 'dpa1234',
+					mbr_no: 12266666666666,
 					mbr_profile: 1,
 					mbr_email: 'gildong@gmail.com',
 					authority: '매니저',
@@ -370,8 +393,9 @@ export default {
 					regist_date: '19/01/24 14:30',
 				},
 				{
-					mbr_nickname: '코런코런6',
-					mbr_no: 23216,
+					mbr_nickname: '대왕고래',
+					mbr_id: 'dpa12345',
+					mbr_no: 232162222222222,
 					mbr_profile: 2,
 					mbr_email: 'gildong@gmail.com',
 					authority: '매니저',
@@ -397,6 +421,16 @@ export default {
 			const index = this.candidate.indexOf(item.mbr_nickname);
 			if (index >= 0) this.candidate.splice(index, 1);
 		},
+		changeActive() {
+			this.$emit('changeActive');
+		},
+		addManager() {
+			for (var people of this.candidate) {
+				this.manager.push(people);
+			}
+			this.isAdd = false;
+		},
+		saveManager() {},
 	},
 };
 </script>

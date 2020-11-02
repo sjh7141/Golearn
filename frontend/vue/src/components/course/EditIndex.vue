@@ -76,7 +76,7 @@
 				<v-btn outlined class="mr-3" style="border: 1px solid #c9c9c9;">
 					저장
 				</v-btn>
-				<v-btn dark color="#5500ff">
+				<v-btn dark color="#5500ff" @click="changeActive">
 					다음
 				</v-btn>
 			</div>
@@ -93,8 +93,9 @@
 						<v-text-field
 							v-model="editTitle"
 							:rules="rules"
+							ref="title"
 							filled
-							placeholder="제목입력과 강의영상을 선택해 주세요."
+							placeholder="제목입력 후 강의 영상을 선택해 주세요."
 							maxlength="30"
 						></v-text-field>
 					</v-card-text>
@@ -126,7 +127,7 @@
 							text
 							@click="isEdit ? confirmEdit() : confirmAdd()"
 						>
-							확인
+							<span class="bold">확인</span>
 						</v-btn>
 					</v-card-actions>
 				</v-card>
@@ -165,8 +166,10 @@
 <script>
 import draggable from 'vuedraggable';
 import IndexVideo from '@/components/course/IndexVideo.vue';
+import { mapGetters } from 'vuex';
+
 let order = 3;
-let nameTemplate = '제목입력과 강의영상을 선택해 주세요.';
+const nameTemplate = '제목입력과 강의영상을 선택해 주세요.';
 export default {
 	components: {
 		draggable,
@@ -176,8 +179,8 @@ export default {
 		return {
 			enabled: true,
 			list: [
-				{ name: nameTemplate, no: 122, order: 1, vid_no: 0 },
-				{ name: nameTemplate, no: 232, order: 2, vid_no: 0 },
+				{ name: nameTemplate, no: 122, order: 1, vid_no: 1 },
+				{ name: nameTemplate, no: 232, order: 2, vid_no: 2 },
 			],
 			deleteList: [],
 			dragging: false,
@@ -290,10 +293,18 @@ export default {
 			this.editTitle = '';
 		},
 		confirmAdd() {
+			if (this.editTitle.length < 5) {
+				this.$refs.title.focus();
+				return;
+			} else if (this.selectVideoNo == -1) {
+				alert('영상을 선택해 주세요.');
+				return;
+			}
 			this.list.push({
 				name: this.editTitle,
 				no: 0,
 				order: order++,
+				vid_no: this.selectVideoNo,
 			});
 			this.editTitle = '';
 			this.isAdd = false;
@@ -338,9 +349,15 @@ export default {
 			this.selectVideoNo = idx;
 		},
 		resetVideo() {
-			this.isAdd = false;
 			this.selectVideoNo = -1;
+			this.isAdd = false;
 		},
+		changeActive() {
+			this.$emit('changeActive');
+		},
+	},
+	computed: {
+		...mapGetters(['course']),
 	},
 };
 </script>

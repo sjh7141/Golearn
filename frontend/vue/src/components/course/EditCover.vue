@@ -169,10 +169,15 @@
 				</div>
 			</div>
 			<div class="mt-6" style="text-align:end;">
-				<v-btn outlined class="mr-3" style="border: 1px solid #c9c9c9;">
+				<v-btn
+					outlined
+					class="mr-3"
+					style="border: 1px solid #c9c9c9;"
+					@click="saveCover"
+				>
 					저장
 				</v-btn>
-				<v-btn dark color="#5500ff">
+				<v-btn dark color="#5500ff" @click="changeActive">
 					다음
 				</v-btn>
 			</div>
@@ -231,6 +236,10 @@ export default {
 		deleteImg() {
 			this.isImg = false;
 		},
+		changeActive() {
+			this.$emit('changeActive');
+		},
+		saveCover() {},
 	},
 };
 </script>

@@ -9,14 +9,8 @@
 			>
 				<v-col style="height:100%;">
 					<div class="banner-wrapper">
-						<div
-							style="width:1000px; height:100%; margin:0 auto; padding-top:60px;"
-						>
-							{{
-								title == ''
-									? '[코스 이름 예시] CSS의 시작'
-									: title
-							}}
+						<div id="banner-text">
+							{{ title == '' ? title_default : title }}
 						</div>
 					</div>
 				</v-col>
@@ -45,10 +39,24 @@
 					</v-row>
 				</v-col>
 				<v-col md="10" style="border-left: 1px solid #f2f2f2">
-					<edit-info @setTitle="setTitle" v-show="select == 0" />
-					<edit-cover @setBanner="setBanner" v-show="select == 1" />
-					<edit-index v-show="select == 2" />
-					<edit-manager v-show="select == 3" />
+					<edit-info
+						@setTitle="setTitle"
+						v-show="select == 0"
+						@changeActive="changeActive"
+					/>
+					<edit-cover
+						@setBanner="setBanner"
+						v-show="select == 1"
+						@changeActive="changeActive"
+					/>
+					<edit-index
+						v-show="select == 2"
+						@changeActive="changeActive"
+					/>
+					<edit-manager
+						v-show="select == 3"
+						@changeActive="changeActive"
+					/>
 				</v-col>
 			</v-row>
 		</v-container>
@@ -60,6 +68,7 @@ import EditInfo from '@/components/course/EditInfo.vue';
 import EditCover from '@/components/course/EditCover.vue';
 import EditIndex from '@/components/course/EditIndex.vue';
 import EditManager from '@/components/course/EditManager.vue';
+import { mapGetters } from 'vuex';
 
 export default {
 	components: {
@@ -74,6 +83,7 @@ export default {
 			iconList: ['강의정보', '이미지', '목차', '관리자'],
 			select: 0,
 			title: '',
+			title_default: '[코스 이름 예시] CSS의 시작',
 		};
 	},
 	methods: {
@@ -89,6 +99,15 @@ export default {
 		setBanner(src) {
 			this.$refs.img.src = src;
 		},
+		changeActive() {
+			this.select = (this.select + 1) % this.iconList.length;
+			if (this.select == 0) {
+				this.$router.push('/');
+			}
+		},
+	},
+	computed: {
+		...mapGetters(['course']),
 	},
 };
 </script>
@@ -130,5 +149,12 @@ export default {
 	font-family: NanumSquareWebFont, NanumSquareWebFont, '나눔고딕', NanumGothic,
 		'맑은 고딕', Malgun Gothic, 'Apple SD Gothic Neo', '돋움', dotum,
 		Helvetica, arial, sans-serif;
+}
+
+#banner-text {
+	width: 1000px;
+	height: 100%;
+	margin: 0 auto;
+	padding-top: 60px;
 }
 </style>

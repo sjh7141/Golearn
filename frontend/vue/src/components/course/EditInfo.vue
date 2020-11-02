@@ -12,6 +12,7 @@
 				<v-text-field
 					v-model="title"
 					:rules="rules"
+					ref="title"
 					filled
 					placeholder="[코스 이름 예시] CSS의 시작"
 					maxlength="30"
@@ -21,7 +22,11 @@
 				<div class="label">
 					<h4>강의내용</h4>
 				</div>
-				<editor ref="editor" :preContent="preContent"></editor>
+				<editor
+					v-if="content != null"
+					ref="editor"
+					:preContent="content"
+				></editor>
 			</div>
 			<div class="pt-5">
 				<div class="label">
@@ -40,12 +45,12 @@
 				<v-btn
 					outlined
 					class="mr-3"
-					@click="getHTML"
 					style="border: 1px solid #c9c9c9;"
+					@click="saveInfo"
 				>
 					저장
 				</v-btn>
-				<v-btn dark color="#5500ff" @click="getHTML">
+				<v-btn dark color="#5500ff" @click="changeActive">
 					다음
 				</v-btn>
 			</div>
@@ -58,6 +63,8 @@
 
 <script>
 import Editor from '@/components/component/editor.vue';
+import { mapGetters } from 'vuex';
+
 export default {
 	components: {
 		Editor,
@@ -66,21 +73,21 @@ export default {
 		return {
 			title: '',
 			rules: [v => v.length > 4 || '5자이상 입력이 필요합니다.'],
-			selectTags: ['CSS'],
+			selectTags: ['C++'],
 			tags: [
-				'C',
-				'C++',
-				'Java',
-				'Python',
-				'CSS',
-				'Vue',
-				'React',
-				'Angular',
-				'Video',
-				'Clean Code',
-				'Spring',
-				'TypeScript',
-				'JavaScript',
+				// 'C',
+				// 'C++',
+				// 'Java',
+				// 'Python',
+				// 'CSS',
+				// 'Vue',
+				// 'React',
+				// 'Angular',
+				// 'Video',
+				// 'Clean Code',
+				// 'Spring',
+				// 'TypeScript',
+				// 'JavaScript',
 			],
 			preContent: `
 						<h3>[강의 예시]</h3>
@@ -114,12 +121,19 @@ export default {
 							– 스티브 잡스(Steve Jobs)
 						</blockquote>
 						`,
-			content: '',
+			content: null,
 		};
 	},
 	methods: {
-		getHTML() {
-			// console.log(this.$refs.editor.getHTML());
+		changeActive() {
+			this.$emit('changeActive');
+		},
+		saveInfo() {
+			if (!this.title.length || this.title.length < 5) {
+				this.$refs.title.focus();
+				return;
+			}
+			this.content = this.$refs.editor.getHTML();
 		},
 	},
 	watch: {
@@ -127,8 +141,29 @@ export default {
 			this.$emit('setTitle', this.title);
 		},
 	},
-	mounted() {},
-	beforeDestroy() {},
+	computed: {
+		...mapGetters(['course']),
+	},
+	created() {
+		this.$store
+			.dispatch('getCourse', this.$route.params.id)
+			.then(({ data }) => {
+				this.$store.commit('setCourse', data);
+				this.title =
+					this.course.cosTitle == null
+						? '[코스 이름 예시] CSS의 시작'
+						: this.course.cosTitle;
+				this.content =
+					this.course.cosContent == null
+						? this.preContent
+						: this.course.cosContent;
+			});
+		this.$store.dispatch('getTags').then(({ data }) => {
+			for (var tag of data) {
+				this.tags.push(tag.name);
+			}
+		});
+	},
 };
 </script>
 
