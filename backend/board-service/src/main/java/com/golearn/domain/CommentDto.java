@@ -8,7 +8,7 @@ public class CommentDto {
 	private int brdNo;
 	private int parentNo;
 	private int mbrNo;
-	private int commnet;
+	private String comment;
 	private Date regDate;
 	private Date updateDate;
 
@@ -44,12 +44,12 @@ public class CommentDto {
 		this.mbrNo = mbrNo;
 	}
 
-	public int getCommnet() {
-		return commnet;
+	public String getComment() {
+		return comment;
 	}
 
-	public void setCommnet(int commnet) {
-		this.commnet = commnet;
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 	public Date getRegDate() {
