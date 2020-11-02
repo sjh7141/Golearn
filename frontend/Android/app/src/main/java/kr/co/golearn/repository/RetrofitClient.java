@@ -1,5 +1,6 @@
 package kr.co.golearn.repository;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -21,12 +22,22 @@ public class RetrofitClient {
     }
 
     public static AccountService accountService() {
-        Gson gson = new GsonBuilder().setLenient().create();
+        Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
         retrofit = new Retrofit.Builder()
                 .baseUrl(CommonUtils.BASE_URL + CommonUtils.ACCOUNT_URL)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         return retrofit.create(AccountService.class);
+    }
+
+    public static SearchService searchService() {
+        Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+        retrofit = new Retrofit.Builder()
+                .baseUrl(CommonUtils.BASE_URL + CommonUtils.SEARCH_URL)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+        return retrofit.create(SearchService.class);
     }
 }

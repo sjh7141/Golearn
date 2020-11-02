@@ -2,14 +2,12 @@ package kr.co.golearn.view.account;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -24,8 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import kr.co.golearn.R;
 import kr.co.golearn.util.ProgressLoadingDialog;
-import kr.co.golearn.view.main.MainActivity;
-import kr.co.golearn.viewmodel.account.AccountViewModel;
+import kr.co.golearn.viewmodel.AccountViewModel;
 
 public class JoinIdActivity extends AppCompatActivity {
     @BindView(R.id.join_id_txt_info1)

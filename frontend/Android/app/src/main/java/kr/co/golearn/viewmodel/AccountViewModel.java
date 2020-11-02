@@ -1,4 +1,4 @@
-package kr.co.golearn.viewmodel.account;
+package kr.co.golearn.viewmodel;
 
 import android.content.Context;
 import android.util.Log;
