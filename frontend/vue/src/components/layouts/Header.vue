@@ -1,7 +1,5 @@
 <template>
-	<v-layout
-		style="position:fixed; top:0;left:0;z-index:100; width:100%; border-bottom:2px solid rgb(60, 65, 223);"
-	>
+	<v-layout style="position:fixed; top:0;left:0;z-index:100; width:100%;">
 		<v-app-bar
 			flat
 			tile

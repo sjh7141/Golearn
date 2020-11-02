@@ -5,7 +5,12 @@
 .basic {
     color: rgb(60, 65, 223) !important;
 }
-
+.v-btn {
+    letter-spacing: 0 !important;
+}
+button {
+    text-align: left !important;
+}
 .ace_scrollbar-h,
 .ace_scrollbar-v {
 	overflow-x: hidden;
