@@ -1,6 +1,7 @@
 package com.golearn.service;
 
 import com.golearn.factory.NotificationGeneratorFactory;
+import com.golearn.generator.NotificationGenerator;
 import com.golearn.model.Notification;
 import com.golearn.model.NotificationPayload;
 import com.golearn.repository.NotificationRepository;
@@ -16,14 +17,17 @@ import java.util.List;
 @Slf4j
 public class NotificationService {
     private final NotificationRepository notificationRepository;
-    private NotificationGeneratorFactory notificationGeneratorFactory;
-    NotificationService(NotificationRepository notificationRepository) {
+    private final NotificationGeneratorFactory notificationGeneratorFactory;
+
+    NotificationService(NotificationRepository notificationRepository, NotificationGeneratorFactory notificationGeneratorFactory) {
         this.notificationRepository = notificationRepository;
-        this.notificationGeneratorFactory = new NotificationGeneratorFactory();
+        this.notificationGeneratorFactory = notificationGeneratorFactory;
     }
 
-    public void sendNotification(NotificationPayload notificationPayload) {
-        Notification notification = notificationGeneratorFactory.generateNotification(notificationPayload);
+    public void sendNotification(Notification notification) {
+        NotificationGenerator notificationGenerator = notificationGeneratorFactory.getGenerator(notification.getNotiType());
+        log.info("제네레이터 입니다. : "+notificationGenerator);
+        List<Integer> list = notificationGenerator.generate(notification);
         notificationRepository.save(notification);
     }
 

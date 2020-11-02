@@ -28,6 +28,8 @@ dependencies {
 	compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.21'
 	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 
+	compile("org.springframework.cloud:spring-cloud-starter-openfeign")
+
 	compileOnly 'org.projectlombok:lombok:1.18.16'
 	annotationProcessor 'org.projectlombok:lombok:1.18.16'
 
@@ -39,6 +41,7 @@ dependencies {
 dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+
 	}
 }
 

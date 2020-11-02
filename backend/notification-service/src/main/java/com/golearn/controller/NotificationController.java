@@ -23,10 +23,11 @@ public class NotificationController {
         this.notificationService = notificationService;
     }
 
-//    @ApiOperation("알림 생성")
+    @ApiOperation("알림 생성")
     @PostMapping
-    public ResponseEntity sendNotification(NotificationPayload notificationPayload) {
-        notificationService.sendNotification(notificationPayload);
+    public ResponseEntity sendNotification(@RequestBody Notification notification,@RequestHeader("X-USERNO") int mbrNo) {
+        notification.setNotiSender(mbrNo);
+        notificationService.sendNotification(notification);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 

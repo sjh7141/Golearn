@@ -1,26 +1,32 @@
 package com.golearn.factory;
 
-import com.golearn.generator.BoardNotificationGenerator;
-import com.golearn.generator.CourseResponseNotificationGenerator;
+import com.golearn.generator.BoardCommentNotificationGenerator;
+import com.golearn.generator.CourseResponseDisagreeNotificationGenerator;
 import com.golearn.generator.CourseRequestNotificationGenerator;
+import com.golearn.generator.NotificationGenerator;
 import com.golearn.model.Notification;
-import com.golearn.model.NotificationPayload;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Component
+@Slf4j
 public class NotificationGeneratorFactory {
-    public Notification generateNotification(NotificationPayload notificationPayload) {
-        Notification notification = null;
-        switch (notificationPayload.getType()) {
-            case 1:
-                notification = BoardNotificationGenerator.getObject().generate(notificationPayload);
-                break;
-            case 2:
-                notification = CourseRequestNotificationGenerator.getObject().generate(notificationPayload);
-                break;
-            default:
-                notification = CourseResponseNotificationGenerator.getObject().generate(notificationPayload);
-                break;
-
+    private final Map<Integer,NotificationGenerator> notificationGenerator = new HashMap<>();
+    NotificationGeneratorFactory(List<NotificationGenerator> notificationGeneratorList){
+        if(CollectionUtils.isEmpty(notificationGeneratorList)) {
+            throw new IllegalArgumentException("존재하는 notificationGeneratorList 없음");
         }
-        return notification;
+        for(NotificationGenerator notificationGenerator : notificationGeneratorList){
+
+            this.notificationGenerator.put(notificationGenerator.getType(),notificationGenerator);
+        }
+    }
+    public NotificationGenerator getGenerator(int type) {
+        return notificationGenerator.get(type);
     }
 }
