@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import kr.co.golearn.R;
+import kr.co.golearn.view.main.MainActivity;
 
 public class LauncherActivity extends AppCompatActivity {
 

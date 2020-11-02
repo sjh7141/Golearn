@@ -9,12 +9,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -25,7 +22,7 @@ import kr.co.golearn.R;
 import kr.co.golearn.util.PreferenceManager;
 import kr.co.golearn.util.ProgressLoadingDialog;
 import kr.co.golearn.view.main.MainActivity;
-import kr.co.golearn.viewmodel.account.AccountViewModel;
+import kr.co.golearn.viewmodel.AccountViewModel;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -52,40 +49,28 @@ public class LoginActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         init();
-//        actionViewModel();
-        clickToJoin();
+        actionViewModel();
     }
 
     private void actionViewModel() {
-        accountViewModel.getSaveID(this);
-        accountViewModel.getAutoLogin(this);
-    }
-
-    private void init() {
-        // 로딩창 객체 생성 및 투명
-        progressLoadingDialog = new ProgressLoadingDialog(this);
-        progressLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        ButterKnife.bind(this);
-        preferenceManager = new PreferenceManager();
-
+        String pw = preferenceManager.getString(this, PreferenceManager.LOGIN_PW);
+        String id = preferenceManager.getString(this, PreferenceManager.LOGIN_ID);
+        Log.d("tttt", "id:"+id + " pw:" +pw);
         accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
         accountViewModel.getIsSaveID().observe(this, savedId -> {
             checkBoxSaveId.setChecked(savedId);
             if (savedId) {
-                editTextId.setText(preferenceManager.getString(this, PreferenceManager.LOGIN_ID));
+                editTextId.setText(id);
             }
         });
         accountViewModel.getIsAutoLogin().observe(this, autoLogin -> {
             checkBoxAutoLogin.setChecked(autoLogin);
             if (autoLogin) {
-                login(preferenceManager.getString(this, PreferenceManager.LOGIN_ID), preferenceManager.getString(this, PreferenceManager.LOGIN_PW));
+                login(id, pw);
             }
-
         });
+
         accountViewModel.getSuccessLogin().observe(this, okLogin -> {
-            String id = preferenceManager.getString(this, PreferenceManager.LOGIN_ID);
-            String pw = preferenceManager.getString(this, PreferenceManager.LOGIN_PW);
             if (checkBoxSaveId.isChecked()) { // 아이디 저장
                 preferenceManager.setBoolean(this, PreferenceManager.IS_SAVED_ID, true);
                 preferenceManager.setString(this, PreferenceManager.LOGIN_ID, editTextId.getText().toString());
@@ -95,10 +80,10 @@ public class LoginActivity extends AppCompatActivity {
             if (checkBoxAutoLogin.isChecked()) { // 자동 로그인
                 preferenceManager.setBoolean(this, PreferenceManager.IS_AUTO_LOGIN, true);
                 preferenceManager.setString(this, PreferenceManager.LOGIN_ID, editTextId.getText().toString());
-                if (pw.equals("NO_DATA")) {
-                    preferenceManager.setString(this, PreferenceManager.LOGIN_PW, editTextPassword.getText().toString());
-                } else {
+                if (editTextPassword.getText().length() == 0) {
                     preferenceManager.setString(this, PreferenceManager.LOGIN_PW, pw);
+                }else{
+                    preferenceManager.setString(this, PreferenceManager.LOGIN_PW, editTextPassword.getText().toString());
                 }
             } else {
                 preferenceManager.setBoolean(this, PreferenceManager.IS_AUTO_LOGIN, false);
@@ -111,11 +96,25 @@ public class LoginActivity extends AppCompatActivity {
             Snackbar.make(bottomLayout, "아이디 또는 비밀번호가 일치하지 않습니다.", Snackbar.LENGTH_SHORT).show();
             progressLoadingDialog.dismiss();
         });
+        accountViewModel.getSaveID(this);
+        accountViewModel.getAutoLogin(this);
+    }
+
+    private void init() {
+        // 로딩창 객체 생성 및 투명
+        progressLoadingDialog = new ProgressLoadingDialog(this);
+        progressLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        ButterKnife.bind(this);
+
+        preferenceManager = new PreferenceManager();
     }
 
     void login(String id, String password) {
         progressLoadingDialog.show();
+        Log.d("ttt1_login(id,password)", "id:" + id + "  pw:" + password);
         accountViewModel.login(this, id, password);
+        Log.d("ttt2_login(id,password)", "id:" + id + "  pw:" + password);
     }
 
     @OnClick(R.id.account_login_btn_login)
@@ -124,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.account_login_txt_join)
-    void clickToJoin(){
+    void clickToJoin() {
         startActivity(new Intent(this, JoinIdActivity.class));
     }
 }
