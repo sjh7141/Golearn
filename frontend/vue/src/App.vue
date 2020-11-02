@@ -1,8 +1,9 @@
 <template>
 	<v-app>
 		<div id="app">
-			<Header v-if="showHeader" />
+			<Header ref="header" v-if="showHeader" />
 			<Navigation v-if="showHeader" />
+			<div :style="{ 'margin-top': space + 'px' }" />
 			<Content />
 			<Footer v-if="showFooter" />
 		</div>
@@ -26,7 +27,9 @@ export default {
 	},
 
 	data() {
-		return {};
+		return {
+			space: 0,
+		};
 	},
 
 	computed: {
@@ -44,6 +47,10 @@ export default {
 			}
 			return render;
 		},
+	},
+
+	mounted() {
+		this.space = this.$refs.header.$el.clientHeight;
 	},
 };
 </script>
