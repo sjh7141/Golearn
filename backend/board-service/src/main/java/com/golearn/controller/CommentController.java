@@ -91,4 +91,11 @@ public class CommentController {
 		}
 		return ResponseEntity.ok("삭제 성공");
 	}
+	
+	@ApiOperation(value = "댓글 하나 상세정보 보기")
+	@GetMapping(value = "/details/{cmt_no}")
+	public ResponseEntity<CommentDto> getCommentDetails(@PathVariable("cmt_no") int cmtNo){
+		CommentDto comment = commentService.findByComment(cmtNo);
+		return ResponseEntity.ok(comment);
+	}
 }

@@ -39,4 +39,9 @@ public class CommentServiceImpl implements CommentService{
 		return commentMapper.deleteComment(cmtNo, mbrNo);
 	}
 
+	@Override
+	public CommentDto findByComment(int cmtNo) {
+		return commentMapper.findByComment(cmtNo);
+	}
+
 }

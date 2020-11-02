@@ -32,4 +32,10 @@
 		where brd_cmt_no = #{cmtNo} and mbr_no = #{mbrNo}
 	</delete>
 	
+	<select id="findByComment" resultType="com.golearn.domain.CommentDto">
+		select brd_cmt_no cmtNo, brd_no brdNo, brd_cmt_pno parentNo, mbr_no mbrNo, brd_comment comment, reg_dt regDate, chg_dt updateDate
+		from gl_board_comment
+		where brd_cmt_no = #{cmtNo}	
+	</select>
+	
 </mapper>
