@@ -21,6 +21,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int save(UserDto dto) {
+		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 		return userMapper.save(dto);
 	}
 
