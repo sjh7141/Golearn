@@ -65,6 +65,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				.withExpiresAt(new Date(System.currentTimeMillis() + jwtProperties.getExpirationTime()))
 				.sign(Algorithm.HMAC256(jwtProperties.getSecret().getBytes()));
 		response.addHeader(jwtProperties.getHeader(), jwtProperties.getTokenPrefix() + token);
+		response.setStatus(HttpServletResponse.SC_OK);
+		response.setContentType("application/json;charset=utf-8");
+		response.getWriter().print("{ 'token' : '" + jwtProperties.getTokenPrefix() + token + "' }");
 	}
 
 	@Override
