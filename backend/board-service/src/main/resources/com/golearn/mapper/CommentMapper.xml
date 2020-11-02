@@ -18,7 +18,7 @@
 	
 	<insert id="registComment" parameterType="com.golearn.domain.CommentDto">
 		insert into gl_board_comment (brd_no, brd_cmt_pno, mbr_no, brd_comment)
-		values (#{brdNo}, #{parentNo}, #{mbrNo}, #{content})
+		values (#{brdNo}, #{parentNo}, #{mbrNo}, #{comment})
 	</insert>
 	
 	<update id="updateComment" parameterType="com.golearn.domain.CommentDto">
