@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,5 +52,17 @@ public class BoardController {
 			return ResponseEntity.ok("등록 실패");
 		}
 		return ResponseEntity.ok("등록 성공");
+	}
+	
+	@ApiOperation(value = "게시글 수정하기")
+	@PutMapping(value = "/")
+	public ResponseEntity<String> removeBoard(@ApiIgnore @RequestHeader("X-USERNO") String userNo, @RequestBody BoardDto dto){
+		dto.setMbrNo(Integer.parseInt(userNo));
+		int res = boardService.updateBoard(dto);
+		
+		if(res == 0) {
+			return ResponseEntity.ok("수정 실패");
+		}
+		return ResponseEntity.ok("수정 성공");
 	}
 }

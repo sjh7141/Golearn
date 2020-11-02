@@ -8,7 +8,7 @@
 	</insert>
 	
 	<update id="updateBoard" parameterType="com.golearn.domain.BoardDto">
-		update gl_board set brd_title = #{brd_title}, brd_content = #{content}, chg_dt = now()
+		update gl_board set brd_title = #{title}, brd_content = #{content}, chg_dt = now()
 		where brd_no = #{brdNo} and mbr_no = #{mbrNo}
 	</update>
 	
