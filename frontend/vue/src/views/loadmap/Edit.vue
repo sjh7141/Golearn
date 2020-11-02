@@ -68,7 +68,7 @@ export default {
 	data() {
 		return {
 			id: this.$route.params.id,
-			iconList: ['로드맵 정보', '이미지', '강의 순서'],
+			iconList: ['로드맵 정보', '이미지', '코스 순서'],
 			select: 0,
 			title: '',
 			title_default: '[로드맵 이름 예시] Web 단기 완성',
