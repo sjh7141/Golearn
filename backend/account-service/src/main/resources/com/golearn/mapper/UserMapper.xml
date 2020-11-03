@@ -48,7 +48,7 @@
 		from (
 			select gms.mbr_is_subscribed as no
 			from gl_member gm inner join gl_member_subscribe gms
-			on gm.mbr_no = 1 and gm.mbr_no = gms.mbr_no
+			on gm.mbr_no = #{no} and gm.mbr_no = gms.mbr_no
 		    ) as sub join gl_member mgm
 		on sub.no = mgm.mbr_no;
 	</select>
