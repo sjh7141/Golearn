@@ -73,17 +73,28 @@ public class LoginActivity extends AppCompatActivity {
         accountViewModel.getSuccessLogin().observe(this, okLogin -> {
             if (checkBoxSaveId.isChecked()) { // 아이디 저장
                 preferenceManager.setBoolean(this, PreferenceManager.IS_SAVED_ID, true);
-                preferenceManager.setString(this, PreferenceManager.LOGIN_ID, editTextId.getText().toString());
+                if(editTextId.getText().length() == 0){
+                    preferenceManager.setString(this, PreferenceManager.LOGIN_ID, id);
+                }else{
+                    preferenceManager.setString(this, PreferenceManager.LOGIN_ID, editTextId.getText().toString());
+                }
             } else {
                 preferenceManager.setBoolean(this, PreferenceManager.IS_SAVED_ID, false);
             }
             if (checkBoxAutoLogin.isChecked()) { // 자동 로그인
+                preferenceManager.setBoolean(this, PreferenceManager.IS_SAVED_ID, true);
                 preferenceManager.setBoolean(this, PreferenceManager.IS_AUTO_LOGIN, true);
                 preferenceManager.setString(this, PreferenceManager.LOGIN_ID, editTextId.getText().toString());
+                preferenceManager.setString(this, PreferenceManager.LOGIN_PW, editTextPassword.getText().toString());
                 if (editTextPassword.getText().length() == 0) {
                     preferenceManager.setString(this, PreferenceManager.LOGIN_PW, pw);
                 }else{
                     preferenceManager.setString(this, PreferenceManager.LOGIN_PW, editTextPassword.getText().toString());
+                }
+                if(editTextId.getText().length() == 0){
+                    preferenceManager.setString(this, PreferenceManager.LOGIN_ID, id);
+                }else{
+                    preferenceManager.setString(this, PreferenceManager.LOGIN_ID, editTextId.getText().toString());
                 }
             } else {
                 preferenceManager.setBoolean(this, PreferenceManager.IS_AUTO_LOGIN, false);

@@ -40,4 +40,14 @@ public class RetrofitClient {
                 .build();
         return retrofit.create(SearchService.class);
     }
+
+    public static VideoService videoService() {
+        Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+        retrofit = new Retrofit.Builder()
+                .baseUrl(CommonUtils.BASE_URL + CommonUtils.VIDEO_URL)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+        return retrofit.create(VideoService.class);
+    }
 }

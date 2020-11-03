@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DoLearn">
-        <activity android:name=".view.account.JoinPwActivity"></activity>
+        <activity android:name=".view.main.channel.ChannelActivity"></activity>
+        <activity android:name=".view.account.JoinPwActivity" />
         <activity android:name=".view.account.JoinIdActivity" />
         <activity android:name=".view.account.LauncherActivity">
             <intent-filter>
