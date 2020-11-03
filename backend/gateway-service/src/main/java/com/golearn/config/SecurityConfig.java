@@ -34,9 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			.addFilterBefore(new JwtAuthorizationFilter(new JwtProperties()), UsernamePasswordAuthenticationFilter.class)
 			.authorizeRequests()
-			.antMatchers(HttpMethod.DELETE).authenticated()
-			.antMatchers(HttpMethod.PUT).authenticated()
-			.antMatchers(HttpMethod.POST).authenticated()
+			.antMatchers(HttpMethod.POST, "/auth/login").permitAll()
+			.antMatchers(HttpMethod.POST, "/account/users").permitAll()
 			.antMatchers(HttpMethod.GET, "/account/users").authenticated()
 			.antMatchers(HttpMethod.GET, "/account/like").authenticated()
 			.antMatchers(HttpMethod.GET, "/course/manager/**/search").authenticated()
@@ -46,8 +45,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(HttpMethod.GET, "/video/record/**").authenticated()
 			.antMatchers(HttpMethod.GET, "/video/save/**").authenticated()
 			.antMatchers(HttpMethod.GET, "/notification/**").authenticated()
-			.antMatchers(HttpMethod.POST, "/auth/login").permitAll()
-			.antMatchers(HttpMethod.POST, "/account/users").permitAll()
+			.antMatchers(HttpMethod.DELETE).authenticated()
+			.antMatchers(HttpMethod.PUT).authenticated()
+			.antMatchers(HttpMethod.POST).authenticated()
 			.anyRequest().permitAll();
 	}
 
