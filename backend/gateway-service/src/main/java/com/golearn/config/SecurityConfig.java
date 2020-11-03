@@ -32,7 +32,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
 			.and()
-			.addFilterBefore(new JwtAuthorizationFilter(new JwtProperties()), UsernamePasswordAuthenticationFilter.class)
 			.authorizeRequests()
 			.antMatchers(HttpMethod.POST, "/auth/login").permitAll()
 			.antMatchers(HttpMethod.POST, "/account/users").permitAll()
