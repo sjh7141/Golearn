@@ -123,4 +123,11 @@ public class UserController {
 		return ResponseEntity.ok("구독 취소 성공");
 	}
 	
+	@ApiOperation(value = "유저 아이디 검색 정보 반환")
+	@GetMapping(value = "/users/{user_id}")
+	public ResponseEntity<UserDto> getUserInfo(@PathVariable("user_id") String userId){
+		UserDto user = userService.findByUserId(userId);
+		return ResponseEntity.ok(user);
+	}
+	
 }

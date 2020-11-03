@@ -11,6 +11,7 @@ public interface UserService {
 	public int updateUser(UserDto dto);
 	public int disableUser(int no);
 	public UserDto findByUsername(int no);
+	public UserDto findByUserId(String userId);
 	public int checkByUsername(String username);
 	public int checkByEmail(String email);
 	public int checkByNickname(String nickname);
@@ -18,4 +19,5 @@ public interface UserService {
 	public int subscribe(int from, int to);
 	public List<SubscribeDto> subscribeList(int no);
 	public int subscribeCancle(int from, int to);
+	
 }

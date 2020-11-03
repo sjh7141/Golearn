@@ -15,6 +15,7 @@ public interface UserMapper {
 	public int updateUser(UserDto dto);
 	public int disableUser(int no);
 	public UserDto findByUsername(int no);
+	public UserDto findByUserId(String userId);
 	public int checkByUsername(String username);
 	public int checkByEmail(String email);
 	public int checkByNickname(String nickname);
