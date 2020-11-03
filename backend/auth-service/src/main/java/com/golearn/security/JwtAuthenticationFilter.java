@@ -67,7 +67,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		response.addHeader(jwtProperties.getHeader(), jwtProperties.getTokenPrefix() + token);
 		response.setStatus(HttpServletResponse.SC_OK);
 		response.setContentType("application/json;charset=utf-8");
-		response.getWriter().print("{ 'token' : '" + jwtProperties.getTokenPrefix() + token + "' }");
+		response.getWriter().print("{ \"token\" : \"" + jwtProperties.getTokenPrefix() + token + "\" }");
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		response.setContentType("application/json;charset=utf-8");
 		Gson gson = new Gson();
-		String json = "{'status' : '401', 'message' : '아이디 및 비밀번호 일치하지 않음'}";
+		String json = "{\"status\" : \"401\", \"message\" : \"아이디 및 비밀번호 일치하지 않음\"}";
 
 		response.getWriter().print(gson.toJson(json));
 	}
