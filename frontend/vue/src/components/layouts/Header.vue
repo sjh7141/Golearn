@@ -44,15 +44,73 @@
 			</v-card>
 			<v-spacer />
 			<div>
-				<v-btn light depressed outlined @click="goToLogin">
+				<v-btn
+					v-if="!isLogin"
+					light
+					depressed
+					outlined
+					@click="goToLogin"
+				>
 					로그인
 				</v-btn>
+				<v-menu v-else bottom min-width="200px" rounded offset-y>
+					<template v-slot:activator="{ on }">
+						<v-btn icon large v-on="on">
+							<v-avatar>
+								<img
+									src="@/assets/default_profile.png"
+									alt="프로필"
+								/>
+								<!-- <span class="white--text headline">{{
+									user.initials
+								}}</span> -->
+							</v-avatar>
+						</v-btn>
+					</template>
+					<v-card>
+						<v-list-item-content class="justify-center">
+							<div class="mx-auto text-center">
+								<v-row class="mx-2">
+									<v-avatar color="brown">
+										<img
+											src="@/assets/default_profile.png"
+											alt="프로필"
+										/>
+									</v-avatar>
+									<v-row>
+										<v-col cols="12">
+											<h3>{{ user.nickname }}</h3>
+										</v-col>
+										<v-col cols="12">
+											<p class="caption mt-1">
+												{{ user.email }}
+											</p>
+										</v-col>
+									</v-row>
+								</v-row>
+								<v-divider class="my-3"></v-divider>
+								<v-btn depressed rounded text>
+									회원정보
+								</v-btn>
+								<v-divider class="my-3"></v-divider>
+								<v-btn depressed rounded text @click="logout">
+									로그아웃
+								</v-btn>
+							</div>
+						</v-list-item-content>
+					</v-card>
+				</v-menu>
+				<!-- <v-btn light depressed outlined @click="logout">
+					로그아웃
+				</v-btn> -->
 			</div>
 		</v-app-bar>
 	</v-layout>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
 	name: 'Header',
 
@@ -79,6 +137,15 @@ export default {
 		goToLogin() {
 			this.$router.push('/login');
 		},
+		logout() {
+			this.$store.commit('setIsLogin', false);
+			this.$store.commit('setUser', null);
+			this.$store.commit('setToken', null);
+			this.$router.push('/');
+		},
+	},
+	computed: {
+		...mapGetters(['isLogin', 'user']),
 	},
 	mounted() {},
 };
