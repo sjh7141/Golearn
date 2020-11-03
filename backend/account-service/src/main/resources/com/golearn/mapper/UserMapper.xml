@@ -21,6 +21,12 @@
 		where mbr_no = #{no}
 	</select>
 	
+	<select id="findByUserId" resultType="com.golearn.domain.UserDto">
+		select mbr_no as no, mbr_id as username, mbr_email as email, mbr_nickname as nickname, mbr_profile as profile, reg_dt as regDate, chg_dt as updateDate
+		from gl_member
+		where mbr_id = #{userId}
+	</select>
+	
 	<select id="checkByUsername" resultType="Integer">
 		select count(*)
 		from gl_member

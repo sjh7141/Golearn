@@ -75,4 +75,9 @@ public class UserServiceImpl implements UserService {
 		return userMapper.subscribeCancle(from, to);
 	}
 
+	@Override
+	public UserDto findByUserId(String userId) {
+		return userMapper.findByUserId(userId);
+	}
+
 }
