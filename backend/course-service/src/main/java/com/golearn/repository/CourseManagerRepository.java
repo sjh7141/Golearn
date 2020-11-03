@@ -45,5 +45,5 @@ public interface CourseManagerRepository extends CrudRepository<CourseManager, L
 	@Query(value="select count(*)\r\n" + 
 			"from gl_course_manager\r\n" + 
 			"where mbr_no = :mbrNo and cos_no = :cosNo")
-	public int checkManager(@Param("cosNo") long cosNo, @Param("mbrNo") int mbrNo);
+	public int checkManager(@Param("cosNo") long cosNo, @Param("mbrNo") long mbrNo);
 }

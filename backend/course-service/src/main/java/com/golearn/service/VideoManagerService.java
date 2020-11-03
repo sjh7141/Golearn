@@ -15,9 +15,6 @@ public class VideoManagerService {
 	@Autowired
 	VideoManagerRepository videoManagerRepository;
 
-	@Autowired
-	private CourseManagerRepository courseManagerRepository;
-	
 	// 영상 요청 하기
 	public VideoManager requestVideo(String mbrNo, VideoManager request) {
 		request.setMbrReqNo(Long.parseLong(mbrNo));
@@ -27,9 +24,6 @@ public class VideoManagerService {
 	// 영상 요청 승인|거부
 	public VideoManager updateVideo(String mbrNo, VideoManager request) {
 		request.setMbrAdminNo(Long.parseLong(mbrNo));
-		if(courseManagerRepository.checkManager(request.getCosNo(), Integer.parseInt(mbrNo)) == 0) {
-			return null;
-		}
 		createVersioning(request);
 		return videoManagerRepository.save(request);
 	}
