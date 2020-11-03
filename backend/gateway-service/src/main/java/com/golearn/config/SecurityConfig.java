@@ -3,6 +3,7 @@ package com.golearn.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -33,6 +34,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			.addFilterBefore(new JwtAuthorizationFilter(new JwtProperties()), UsernamePasswordAuthenticationFilter.class)
 			.authorizeRequests()
+			.antMatchers(HttpMethod.DELETE).authenticated()
+			.antMatchers(HttpMethod.PUT).authenticated()
+			.antMatchers(HttpMethod.POST).authenticated()
+			.antMatchers(HttpMethod.GET, "/account/users").authenticated()
+			.antMatchers(HttpMethod.GET, "/account/like").authenticated()
+			.antMatchers(HttpMethod.GET, "/course/manager/**/search").authenticated()
+			.antMatchers(HttpMethod.GET, "/course/video/**").authenticated()
+			.antMatchers(HttpMethod.GET, "/video").authenticated()
+			.antMatchers(HttpMethod.GET, "/video/like/**").authenticated()
+			.antMatchers(HttpMethod.GET, "/video/record/**").authenticated()
+			.antMatchers(HttpMethod.GET, "/video/save/**").authenticated()
+			.antMatchers(HttpMethod.GET, "/notification/**").authenticated()
+			.antMatchers(HttpMethod.POST, "/auth/login").permitAll()
+			.antMatchers(HttpMethod.POST, "/account/users").permitAll()
 			.anyRequest().permitAll();
 	}
 
