@@ -10,6 +10,7 @@ public class UserDto {
 	private String email;
 	private String nickname;
 	private String profile;
+	private String banner;
 	private Date regDate;
 	private Date updateDate;
 	private boolean checkEmail;
@@ -61,6 +62,14 @@ public class UserDto {
 
 	public void setProfile(String profile) {
 		this.profile = profile;
+	}
+
+	public String getBanner() {
+		return banner;
+	}
+
+	public void setBanner(String banner) {
+		this.banner = banner;
 	}
 
 	public Date getRegDate() {

@@ -3,8 +3,8 @@
 <mapper namespace="com.golearn.mapper.UserMapper">
 
 	<insert id="save" parameterType="com.golearn.domain.UserDto">
-		insert into gl_member (mbr_id, mbr_email, mbr_pwd, mbr_nickname, mbr_profile)
-		values (#{username}, #{email}, #{password}, #{nickname}, #{profile})
+		insert into gl_member (mbr_id, mbr_email, mbr_pwd, mbr_nickname, mbr_profile, mbr_banner)
+		values (#{username}, #{email}, #{password}, #{nickname}, #{profile}, #{banner})
 	</insert>
 	
 	<update id="updateUser">
@@ -16,13 +16,13 @@
 	</update>
 	
 	<select id="findByUsername" resultType="com.golearn.domain.UserDto">
-		select mbr_no as no, mbr_id as username, mbr_pwd as password, mbr_email as email, mbr_nickname as nickname, mbr_profile as profile, reg_dt as regDate, chg_dt as updateDate
+		select mbr_no as no, mbr_id as username, mbr_pwd as password, mbr_email as email, mbr_nickname as nickname, mbr_profile as profile, reg_dt as regDate, chg_dt as updateDate, mbr_banner banner
 		from gl_member
 		where mbr_no = #{no}
 	</select>
 	
 	<select id="findByUserId" resultType="com.golearn.domain.UserDto">
-		select mbr_no as no, mbr_id as username, mbr_email as email, mbr_nickname as nickname, mbr_profile as profile, reg_dt as regDate, chg_dt as updateDate
+		select mbr_no as no, mbr_id as username, mbr_email as email, mbr_nickname as nickname, mbr_profile as profile, reg_dt as regDate, chg_dt as updateDate, mbr_banner banner
 		from gl_member
 		where mbr_id = #{userId}
 	</select>
