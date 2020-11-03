@@ -2,11 +2,13 @@
 .px-5 {
     padding: 0 20px;
 }
+
 .basic {
     color: rgb(60, 65, 223) !important;
 }
 .v-btn {
     letter-spacing: 0 !important;
+    text-transform: none;
 }
 button {
     text-align: left !important;

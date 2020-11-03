@@ -28,10 +28,10 @@
 					depressed
 					style="position:absolute; right:0; margin-top:6px"
 					color="success"
-					@click="$emit('move')"
+					@click="$emit('move', '/request', 2)"
 				>
 					<span style="font-size:14px; font-weight:400">
-						New request
+						New pull request
 					</span>
 				</v-btn>
 			</v-tabs>
@@ -44,7 +44,7 @@
 						style="background-color:#fafafa"
 					>
 						<v-divider />
-						<v-list-item>
+						<v-list-item @click="$emit('move', '/request/1', -1)">
 							<v-list-item-avatar>
 								<v-img
 									:src="

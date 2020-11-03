@@ -13,10 +13,7 @@
 					<v-list-item>
 						<v-list-item-subtitle
 							style="font-size:14px; color:black; font-weight:600;"
-							@click="
-								$router.push('/course/intro');
-								index = 0;
-							"
+							@click="move('/course/intro', 0)"
 						>
 							소개
 						</v-list-item-subtitle>
@@ -24,10 +21,7 @@
 					<v-list-item>
 						<v-list-item-subtitle
 							style="font-size:14px; color:black; font-weight:600;"
-							@click="
-								$router.push('/course/requestlist');
-								index = 1;
-							"
+							@click="move('/course/intro', 1)"
 						>
 							요청 목록
 						</v-list-item-subtitle>
@@ -65,14 +59,7 @@
 				:style="{ height: height + 'px' }"
 			>
 				<Introduce v-if="index == 0" />
-				<RequestList
-					v-else-if="index == 1"
-					@move="
-						index = 2;
-						move();
-					"
-				/>
-				<Request v-else-if="index == 2" />
+				<RequestList v-else-if="index == 1" @move="move" />
 			</v-flex>
 		</v-layout>
 	</div>
@@ -81,13 +68,11 @@
 <script>
 import Introduce from '@/components/course/Introduce.vue';
 import RequestList from '@/components/course/RequestList.vue';
-import Request from '@/components/course/Request.vue';
 export default {
 	name: 'Index',
 	components: {
 		Introduce,
 		RequestList,
-		Request,
 	},
 	data() {
 		return {
@@ -121,8 +106,9 @@ export default {
 		console.log(this.index, this.$route.params);
 	},
 	methods: {
-		move() {
-			this.$router.push('/course/request');
+		move(url, index) {
+			this.$router.push(url);
+			this.index = index;
 		},
 	},
 };

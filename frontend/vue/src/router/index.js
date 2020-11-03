@@ -6,6 +6,7 @@ import PlayChannel from '@/views/channel/play.vue';
 import Login from '@/views/Login.vue';
 import Course from '@/views/course/index.vue';
 import Request from '@/views/course/Request.vue';
+import RequestDetail from '@/views/course/RequestDetail.vue';
 
 Vue.use(VueRouter);
 
@@ -34,6 +35,11 @@ const routes = [
 		path: '/request',
 		name: 'Request',
 		component: Request,
+	},
+	{
+		path: '/request/:id',
+		name: 'RequestDetail',
+		component: RequestDetail,
 	},
 ];
 

@@ -209,7 +209,6 @@
 											<v-text-field
 												:ripple="false"
 												outlined
-												disabled
 												dense
 												filled
 												readonly
@@ -231,7 +230,7 @@
 
 										<div
 											class="mb-1 px-3 py-4"
-											style="background-color:rgb(235,235,235); border-radius:4px; color:rgb(146,146,146)"
+											style="background-color:rgb(235,235,235); border-radius:4px;"
 										>
 											<span>
 												CPU는 계속해서 다음에 무엇을
@@ -462,7 +461,6 @@
 											<v-text-field
 												:ripple="false"
 												outlined
-												disabled
 												dense
 												filled
 												readonly
@@ -484,7 +482,7 @@
 
 										<div
 											class="mb-1 px-3 py-4"
-											style="background-color:rgb(235,235,235); border-radius:4px; color:rgb(146,146,146)"
+											style="background-color:rgb(235,235,235); border-radius:4px;"
 										>
 											<span>
 												CPU는 계속해서 다음에 무엇을
@@ -518,7 +516,7 @@
 				</v-flex>
 			</v-layout>
 			<div style="font-size:18px;" class="my-5">
-				<span> 요청 메세지 </span>
+				<span> 응답 메세지 </span>
 			</div>
 
 			<v-avatar size="48" style="float:left;" class="mr-5">
@@ -542,11 +540,22 @@
 						right
 						bottom
 						depressed
-						:outlined="!message.length"
 						tile
-						:color="message.length ? 'success' : '#e4e4e4'"
+						color="success"
+						style="right:200px;"
 					>
-						Compare branches and continue
+						Merge
+					</v-btn>
+					<v-btn
+						absolute
+						right
+						bottom
+						depressed
+						outlined
+						tile
+						color="warning"
+					>
+						Close Merge Request
 					</v-btn>
 				</template>
 			</v-textarea>
