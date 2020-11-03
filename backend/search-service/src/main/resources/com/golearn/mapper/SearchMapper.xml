@@ -7,7 +7,7 @@
 		from gl_tag
 	</select>
 	
-	<select id="findVideo" resultType="com.golearn.domain.VideoDto">
+	<select id="findVideo" resultMap="videoResultMap">
 		select *
 		from gl_video
 		where vid_title like CONCAT('%', #{search}, '%')
@@ -20,13 +20,15 @@
 		where vid_title like CONCAT('%', #{search}, '%')
 	</select>
 	
-	<select id="findTagByVideo" resultType="com.golearn.domain.TagDto">
+	<select id="findTagByVideo" parameterType="java.util.Map" resultType="com.golearn.domain.TagDto">
 		select gl.tag_no as no, gl.tag_name as name, gvt.vid_no as targetNo
 		from gl_tag gl inner join gl_video_tag gvt
-		on gl.tag_no = gvt.tag_no and gvt.vid_no in 
+		on gl.tag_no = gvt.tag_no and gvt.vid_no in (#{vidNo})
+		<!-- 
 		<foreach collection='list' index='index' item='item' open='(' separator=',' close=')'>
 			#{item.value}
 		</foreach>
+		 -->
 	</select>
 	
 	<select id="findChannel" resultType="com.golearn.domain.ChannelDto">
@@ -56,7 +58,7 @@
 		where ldm_title like CONCAT('%', #{search}, '%')
 	</select>
 	
-	<select id="findCourse" resultType="com.golearn.domain.CourseDto">
+	<select id="findCourse" resultMap="courseResultMap">
 	select sub1.*, sub2.likeCount
 	from (
 			(
@@ -84,9 +86,39 @@
 	<select id="findTagByCourse" resultType="com.golearn.domain.TagDto">
 		select gl.tag_no as no, gl.tag_name as name, gct.cos_no as targetNo
 		from gl_tag gl inner join gl_course_tag gct
-		on gl.tag_no = gct.tag_no and gct.cos_no in 
+		on gl.tag_no = gct.tag_no and gct.cos_no in (#{cosNo})
+		<!-- 
 		<foreach collection='list' index='index' item='item' open='(' separator=',' close=')'>
 			#{item.value}
 		</foreach>
+		 -->
 	</select>
+	
+	<resultMap id="videoResultMap" type="com.golearn.domain.VideoDto">
+		<id property="vidNo" column="vid_no" />
+		<result property="mbrNo" column="mbr_no"/>
+		<result property="vidPno" column="vid_pno"/>
+		<result property="vidTitle" column="vid_title"/>
+		<result property="vidContent" column="vid_content"/>
+		<result property="vidUrl" column="vid_url"/>
+		<result property="vidView" column="vid_view"/>
+		<result property="regDt" column="reg_dt"/>
+		<result property="vidHide" column="vid_hide"/>
+		<result property="vidThumbnail" column="vid_thumbnail"/>
+		<result property="vidLength" column="vid_length"/>
+		<collection property="tags" column="{vidNo=vid_no}" ofType="com.goleaern.domain.TagDto" javaType="java.util.ArrayList" select="findTagByVideo"/>
+	</resultMap>
+	
+	<resultMap id="courseResultMap" type="com.golearn.domain.CourseDto">
+		<id property="cosNo" column="cos_no"/>
+		<result property="mbrNickname" column="mbr_nickname"/>
+		<result property="mbrProfile" column="mbr_profile"/>
+		<result property="cosTitle" column="cos_title"/>
+		<result property="cosContent" column="cos_content"/>
+		<result property="cosThumbnail" column="cos_thumbnail"/>
+		<result property="likeCount" column="likeCount"/>
+		<result property="regDt" column="reg_dt"/>
+		<result property="chgDt" column="chg_dt"/>
+		<collection property="tags" column="{cosNo=cos_no}" ofType="com.goleaern.domain.TagDto" javaType="java.util.ArrayList" select="findTagByCourse"/>
+	</resultMap>
 </mapper>
