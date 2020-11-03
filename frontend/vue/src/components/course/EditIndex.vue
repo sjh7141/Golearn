@@ -35,6 +35,13 @@
 							<span style="font-size:15px;">강의 추가</span>
 						</v-btn>
 					</div>
+					<div
+						v-if="list.length == 0"
+						style="text-align: center; font-weight: 600; font-size: 20px;"
+					>
+						코스를 처음 생성하셨군요.<br />
+						강의를 추가해 보세요! 😊
+					</div>
 					<draggable
 						:list="list"
 						:disabled="!enabled"
@@ -168,8 +175,8 @@ import draggable from 'vuedraggable';
 import IndexVideo from '@/components/course/IndexVideo.vue';
 import { mapGetters } from 'vuex';
 
-let order = 3;
-const nameTemplate = '제목입력과 강의영상을 선택해 주세요.';
+let order = 1;
+// const nameTemplate = '제목입력과 강의영상을 선택해 주세요.';
 export default {
 	components: {
 		draggable,
@@ -178,10 +185,7 @@ export default {
 	data() {
 		return {
 			enabled: true,
-			list: [
-				{ name: nameTemplate, no: 122, order: 1, vid_no: 1 },
-				{ name: nameTemplate, no: 232, order: 2, vid_no: 2 },
-			],
+			list: [],
 			deleteList: [],
 			dragging: false,
 			rules: [v => v.length > 4 || '5자이상 입력이 필요합니다.'],

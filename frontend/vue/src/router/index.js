@@ -27,7 +27,7 @@ const routes = [
 		component: Login,
 	},
 	{
-		path: '/course-management/:id',
+		path: '/course/management/:id',
 		name: 'EditCourse',
 		component: EditCourse,
 	},
@@ -37,7 +37,7 @@ const routes = [
 		component: PlayCource,
 	},
 	{
-		path: '/loadmap-management/:id',
+		path: '/loadmap/management/:id',
 		name: 'EditLoadMap',
 		component: EditLoadMap,
 	},

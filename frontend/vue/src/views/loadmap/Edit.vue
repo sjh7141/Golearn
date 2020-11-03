@@ -16,6 +16,11 @@
 				</v-col>
 			</v-img>
 		</v-row>
+		<v-progress-linear
+			color="#47e0ff"
+			height="6"
+			:value="(select + 1) * 33.33333"
+		></v-progress-linear>
 		<v-container fluid class="loadmap-wrapper py-0 ">
 			<v-row class="height-100">
 				<v-col md="2">
