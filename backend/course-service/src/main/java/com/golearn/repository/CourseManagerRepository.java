@@ -40,4 +40,10 @@ public interface CourseManagerRepository extends CrudRepository<CourseManager, L
 			"						       WHERE cos_no = :cosNo)\r\n" + 
 			"            AND gm.mbr_id LIKE CONCAT(:search,'%')", nativeQuery = true)
 	List<CourseManagerResopnse> findManagersExceptCourse(@Param("cosNo") long cosNo, @Param("search") String search);
+	
+	// 코스 관리자 인지 체크
+	@Query(value="select count(*)\r\n" + 
+			"from gl_course_manager\r\n" + 
+			"where mbr_no = :mbrNo and cos_no = :cosNo")
+	public int checkManager(@Param("cosNo") long cosNo, @Param("mbrNo") int mbrNo);
 }
