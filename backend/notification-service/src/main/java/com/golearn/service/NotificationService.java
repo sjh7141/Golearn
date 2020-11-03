@@ -2,12 +2,10 @@ package com.golearn.service;
 
 import com.golearn.factory.NotificationGeneratorFactory;
 import com.golearn.generator.NotificationGenerator;
+import com.golearn.model.CountPayload;
 import com.golearn.model.Notification;
-import com.golearn.model.NotificationPayload;
 import com.golearn.repository.NotificationRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -26,9 +24,12 @@ public class NotificationService {
 
     public void sendNotification(Notification notification) {
         NotificationGenerator notificationGenerator = notificationGeneratorFactory.getGenerator(notification.getNotiType());
-        log.info("제네레이터 입니다. : "+notificationGenerator);
+        log.info("제네레이터 입니다. : " + notificationGenerator);
         List<Integer> list = notificationGenerator.generate(notification);
-        notificationRepository.save(notification);
+        for (int no : list) {
+            notification.setMbrNo(no);
+            notificationRepository.save(notification);
+        }
     }
 
     @Transactional
@@ -38,15 +39,15 @@ public class NotificationService {
         return notificationList;
     }
 
-    public int getNotificationCount(int mbrNo) {
-        return notificationRepository.countAllByMbrNoAndNotiReadIsFalse(mbrNo);
+    public CountPayload getNotificationCount(int mbrNo) {
+        return notificationRepository.countAllByMbrNo(mbrNo);
     }
 
-    public void removeNotification(int mbrNo, int notiNo){
+    public void removeNotification(int mbrNo, int notiNo) {
         notificationRepository.deleteByMbrNoAndNotiNo(mbrNo, notiNo);
     }
 
-    public void removeNotifications(int mbrNo){
+    public void removeNotifications(int mbrNo) {
         notificationRepository.deleteAllByMbrNo(mbrNo);
     }
 }

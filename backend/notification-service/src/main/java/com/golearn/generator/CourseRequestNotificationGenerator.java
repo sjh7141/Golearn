@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Data
@@ -20,10 +21,11 @@ public class CourseRequestNotificationGenerator implements NotificationGenerator
     }
     @Override
     public List<Integer> generate(Notification notification) {
-        List<CourseManagerResponse> courseManagerList = courseRestClient.getCourse(notification.getDest());
+        List<CourseManagerResponse> courseManagerList = courseRestClient.getCourseManager(notification.getDest());
+        List<Integer> list = new LinkedList<>();
         for(CourseManagerResponse courseManagerResponse : courseManagerList){
-
+            list.add(courseManagerResponse.getMbrNo());
         }
-        return null;
+        return list;
     }
 }

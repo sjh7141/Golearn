@@ -1,6 +1,7 @@
 package com.golearn.controller;
 
 
+import com.golearn.model.CountPayload;
 import com.golearn.model.Notification;
 import com.golearn.model.NotificationPayload;
 import com.golearn.service.NotificationService;
@@ -38,7 +39,7 @@ public class NotificationController {
     }
     @ApiOperation("알림 갯수 조회")
     @GetMapping("/count")
-    public ResponseEntity<Integer> getNotificationsCount(@RequestHeader("X-USERNO") int mbrNo) {
+    public ResponseEntity<CountPayload> getNotificationsCount(@RequestHeader("X-USERNO") int mbrNo) {
         return new ResponseEntity(notificationService.getNotificationCount(mbrNo), HttpStatus.OK);
     }
     @ApiOperation("알림 전체 삭제")
