@@ -8,6 +8,7 @@ import android.os.Handler;
 
 import kr.co.golearn.R;
 import kr.co.golearn.view.main.MainActivity;
+import kr.co.golearn.view.main.channel.ChannelActivity;
 
 public class LauncherActivity extends AppCompatActivity {
 

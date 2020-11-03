@@ -19,7 +19,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import kr.co.golearn.R;
 import kr.co.golearn.domain.Course;
-import kr.co.golearn.util.CommonUtils;
 
 public class HomeCourseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int VIEW_TYPE_ITEM = 0;
@@ -67,7 +66,7 @@ public class HomeCourseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_home_course, parent, false);
             return new HomeCourseViewHolder(view);
         } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_item_loading, parent, false);
             return new LoadingViewHolder(view);
         }
     }

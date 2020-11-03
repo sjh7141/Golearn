@@ -9,6 +9,7 @@ public class Member {
     private String password;
     private String email;
     private String profile;
+    private String banner;
     private Date regDate;
     private Date updateDate;
     private boolean checkActive;
@@ -104,6 +105,14 @@ public class Member {
         this.checkEmail = checkEmail;
     }
 
+    public String getBanner() {
+        return banner;
+    }
+
+    public void setBanner(String banner) {
+        this.banner = banner;
+    }
+
     @Override
     public String toString() {
         return "Member{" +
@@ -113,6 +122,7 @@ public class Member {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", profile='" + profile + '\'' +
+                ", banner='" + banner + '\'' +
                 ", regDate=" + regDate +
                 ", updateDate=" + updateDate +
                 ", checkActive=" + checkActive +

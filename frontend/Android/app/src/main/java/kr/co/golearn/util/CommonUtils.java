@@ -1,5 +1,6 @@
 package kr.co.golearn.util;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 
 public class CommonUtils {
@@ -7,14 +8,15 @@ public class CommonUtils {
     public static final String AUTH_URL = "auth/";
     public static final String ACCOUNT_URL = "account/";
     public static final String SEARCH_URL = "search-service/";
+    public static final String VIDEO_URL = "video/";
+
 
     public static String calcTimeDate(Date date) {
         long curTime = (long) new Date().getTime();
         long time = (long) date.getTime();
         long diff = (curTime - time) / 1000 + 32397;
-        System.out.println(curTime + " " + time + " " + diff);
         if (diff < 60) {
-            return diff +"초 전";
+            return diff + "초 전";
         }
         diff /= 60;
         if (diff < 60) {
@@ -35,5 +37,10 @@ public class CommonUtils {
             return (diff / 30) + "달 전";
         }
         return (diff / 365) + "년 전";
+    }
+
+    public static String convertCount(int count) {
+        DecimalFormat decimalFormat = new DecimalFormat("###,###");
+        return "조회수 " + decimalFormat.format(count) + "회";
     }
 }

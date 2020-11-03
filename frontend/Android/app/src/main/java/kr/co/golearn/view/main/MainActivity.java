@@ -1,5 +1,6 @@
 package kr.co.golearn.view.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 
@@ -15,6 +16,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import kr.co.golearn.R;
 import kr.co.golearn.view.main.article.ArticleFragment;
+import kr.co.golearn.view.main.channel.ChannelActivity;
 import kr.co.golearn.view.main.home.HomeFragment;
 import kr.co.golearn.view.main.subscription.SubscriptionFragment;
 import kr.co.golearn.viewmodel.MainViewModel;
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
         mainViewModel.getMember().observe(this, member -> {
-            Glide.with(this).load("https://lh3.googleusercontent.com/proxy/MgA79k2kSZWoWIIgOmVZ6zjb5Qo31xNiyOEqQ8Ho_lGymVwJcrnIN8lPw_WLYAJQ3YLeLtoMNqO-3Fq6kIs_27ahC6VedhefLNG6toO2vC8A5m8c8FDph-IUv7tAaLo")
+            Glide.with(this).load("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSyTP4OcpyrXA6j1BDWscLhVaZFCjcH5tA6sA&usqp=CAU")
                     .placeholder(R.drawable.account_login_auto_check_24dp)
                     .error(R.drawable.account_login_auto_check_24dp)
                     .circleCrop()
@@ -113,5 +115,10 @@ public class MainActivity extends AppCompatActivity {
         if(articleFragment != null){
             fragmentManager.beginTransaction().show(articleFragment).commit();
         }
+    }
+
+    @OnClick(R.id.main_profile)
+    public void clickToProfile(){
+        startActivity(new Intent(this, ChannelActivity.class));
     }
 }

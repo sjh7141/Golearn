@@ -79,7 +79,7 @@
     <View
         android:id="@+id/view3"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
+        android:layout_height="5dp"
         android:background="@drawable/dropshadow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

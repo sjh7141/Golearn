@@ -62,7 +62,6 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-
         super.onActivityCreated(savedInstanceState);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -104,16 +103,16 @@ public class HomeFragment extends Fragment {
 
     private void loadMore() {
         courses.add(null);
-        homeCourseAdapter.notifyItemInserted(courses.size() - 1);
+        recyclerViewCourse.post(() -> homeCourseAdapter.notifyItemInserted(courses.size() - 1));
 
         Handler handler = new Handler();
         handler.postDelayed(() -> {
             courses.remove(courses.size() - 1);
             scrollPosition = courses.size();
-            homeCourseAdapter.notifyItemRemoved(scrollPosition);
+            recyclerViewCourse.post(() -> homeCourseAdapter.notifyItemRemoved(scrollPosition));
             currentSize = scrollPosition;
             populateData(page++);
-            homeCourseAdapter.notifyDataSetChanged();
+            recyclerViewCourse.post(() -> homeCourseAdapter.notifyDataSetChanged());
             isLoading = false;
         }, 1000);
     }
@@ -124,11 +123,11 @@ public class HomeFragment extends Fragment {
         Call<SearchCourseResponse> courseCall = courseService.searchFromCourse(page, "", "course");
         SearchCourseResponse result = null;
         try {
-             result = courseCall.execute().body();
+            result = courseCall.execute().body();
         } catch (Exception e) {
-            Snackbar.make(homeMainLayout, "모든 코스를 들고왔습니다", Snackbar.LENGTH_SHORT).show();
+
         }
-        if(result != null && result.getCourse().size() != 0){
+        if (result != null && result.getCourse().size() != 0) {
             for (Course course : result.getCourse()) {
                 course.setDate(CommonUtils.calcTimeDate(course.getRegDt()));
                 courses.add(course);
@@ -137,6 +136,8 @@ public class HomeFragment extends Fragment {
                 homeCourseAdapter = new HomeCourseAdapter(courses);
                 recyclerViewCourse.setAdapter(homeCourseAdapter);
             }
+        } else {
+            Snackbar.make(homeMainLayout, "모든 코스를 들고왔습니다", Snackbar.LENGTH_SHORT).show();
         }
     }
 
