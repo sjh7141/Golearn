@@ -12,18 +12,16 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,property = "tagCompositeKey")
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,property = "vidTagNo")
 public class VideoTag {
-    @EmbeddedId
-    private TagCompositeKey tagCompositeKey;
+    @Id
+    private int vidTagNo;
 
-//    @MapsId("vidNo")
-//    @ManyToOne
-//    @JoinColumn(name="vid_no",updatable = false, nullable = false)
-//    private Video video;
-//
-//    @MapsId("tagNo")
-//    @ManyToOne
-//    @JoinColumn(name="tag_no",updatable = false, nullable = false)
-//    private Tag tag;
+    @ManyToOne
+    @JoinColumn(name="vid_no")
+    private Video video;
+    @ManyToOne
+    @JoinColumn(name="tag_no")
+    private Tag tag;
+
 }

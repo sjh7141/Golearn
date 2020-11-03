@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +18,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,property = "vidNo")
 public class Video {
     @Id
@@ -42,7 +44,6 @@ public class Video {
 
     private int vidLength;
 
-//    @JoinColumn(name="gl_video_tag",nullable = false)
-    @OneToMany(mappedBy="tagCompositeKey.video",fetch = FetchType.LAZY)
-    private List<VideoTag> videoTags;
+    @Transient
+    private List<Tag> tags;
 }

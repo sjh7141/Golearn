@@ -4,6 +4,7 @@ import com.golearn.exception.UnAuthorizationException;
 import com.golearn.model.Video;
 import com.golearn.model.VideoCompositeKey;
 import com.golearn.model.VideoLike;
+import com.golearn.repository.TagRepository;
 import com.golearn.repository.VideoLikeRepository;
 import com.golearn.repository.VideoRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -20,21 +21,25 @@ public class VideoService {
 
     private final VideoLikeRepository videoLikeRepository;
 
-    VideoService(VideoRepository videoRepository, VideoLikeRepository videoLikeRepository) {
+    private final TagRepository tagRepository;
+    VideoService(VideoRepository videoRepository, VideoLikeRepository videoLikeRepository, TagRepository tagRepository) {
         this.videoRepository = videoRepository;
         this.videoLikeRepository = videoLikeRepository;
+        this.tagRepository = tagRepository;
     }
 
     public Video getVideo(int vidNo) {
         if (videoRepository.existsById(vidNo)) {
             videoRepository.addViewCount(vidNo);
-            return videoRepository.findById(vidNo).get();
+            Video video = videoRepository.findById(vidNo).get();
+            video.setTags(tagRepository.findAllAndTagByVidNo(video.getVidNo()));
+            return video;
         }
         return null;
     }
 
-    public void hideVideo(int vidNo, int mbrNo) {
-        if (videoRepository.hideVideo(vidNo, mbrNo) == 0) {
+    public void hideVideo(List<Integer> vidNos, int mbrNo) {
+        if (videoRepository.hideVideo(vidNos, mbrNo) == 0) {
             throw new UnAuthorizationException();
         }
     }
@@ -65,11 +70,15 @@ public class VideoService {
     }
 
     public List<Video> getLikeVideo(int mbrNo) {
-        return videoRepository.findAllByMbrNoAndLikeVideo(mbrNo);
+        return videoRepository.findAllByMbrNoAndLikeVideoAndVidHideFalse(mbrNo);
     }
 
     public List<Video> getVideos(int mbrNo) {
-        return videoRepository.findAllByMbrNo(mbrNo);
+        List<Video> videos = videoRepository.findAllByMbrNoAndVidHideFalse(mbrNo);
+        for(Video video: videos){
+            video.setTags(tagRepository.findAllAndTagByVidNo(video.getVidNo()));
+        }
+        return videos;
     }
 }
 //
