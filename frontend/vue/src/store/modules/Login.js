@@ -27,7 +27,11 @@ export default {
 			return state.isLogin;
 		},
 		user(state) {
-			return state.user;
+			if (state.user) {
+				return JSON.parse(state.user);
+			} else {
+				return null;
+			}
 		},
 	},
 	mutations: {
@@ -37,20 +41,19 @@ export default {
 		},
 		setIsLogin(state, payload) {
 			state.isLogin = payload;
+			console.log(payload + '!!!');
 			sessionStorage.setItem('isLogin', payload);
 		},
 		setUser(state, payload) {
-			state.user = payload;
-			sessionStorage.setItem('user', payload);
+			state.user = JSON.stringify(payload);
+			sessionStorage.setItem('user', state.user);
 		},
 	},
 	actions: {
 		login(context, payload) {
-			console.log(URL.loginBuild(), payload);
 			return axios.post(URL.loginBuild(), payload);
 		},
 		getUser(context) {
-			console.log(URL.userBuild(), context.state.token);
 			const config = {
 				headers: {
 					Authorization: context.state.token,

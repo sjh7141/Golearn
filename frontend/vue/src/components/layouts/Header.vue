@@ -45,7 +45,7 @@
 			<v-spacer />
 			<div>
 				<v-btn
-					v-if="!isLogin"
+					v-if="isLogin === 0"
 					light
 					depressed
 					outlined
@@ -100,9 +100,6 @@
 						</v-list-item-content>
 					</v-card>
 				</v-menu>
-				<!-- <v-btn light depressed outlined @click="logout">
-					로그아웃
-				</v-btn> -->
 			</div>
 		</v-app-bar>
 	</v-layout>
@@ -138,7 +135,7 @@ export default {
 			this.$router.push('/login');
 		},
 		logout() {
-			this.$store.commit('setIsLogin', false);
+			this.$store.commit('setIsLogin', 0);
 			this.$store.commit('setUser', null);
 			this.$store.commit('setToken', null);
 			this.$router.push('/');

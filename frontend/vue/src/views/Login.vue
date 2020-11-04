@@ -97,8 +97,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-
 export default {
 	data() {
 		return {
@@ -109,9 +107,6 @@ export default {
 			success: false,
 		};
 	},
-	computed: {
-		...mapGetters(['isLogin', 'getToken']),
-	},
 	mounted() {
 		this.success = this.$route.query.success;
 		history.pushState({ data: '' }, '', '/login');
@@ -119,7 +114,6 @@ export default {
 	methods: {
 		getSession() {
 			this.$store.dispatch('getUser').then(({ data }) => {
-				console.log(data);
 				this.$store.commit('setUser', data);
 			});
 			this.$router.push('/');
@@ -131,8 +125,7 @@ export default {
 					password: this.password,
 				})
 				.then(({ data }) => {
-					console.log(data);
-					this.$store.commit('setIsLogin', true);
+					this.$store.commit('setIsLogin', 1);
 					this.$store.commit('setToken', data.token);
 					this.getSession();
 				})
