@@ -32,6 +32,12 @@ public class UserController {
 	@ApiOperation(value = "유저 회원 가입")
 	@PostMapping(value = "/users")
 	public ResponseEntity<String> singup(@RequestBody UserDto dto) {
+		if(dto.getProfile() == null) {
+			dto.setProfile("profile_default.png");
+		}
+		if(dto.getBanner() == null) {
+			dto.setBanner("profile_banner_default.png");
+		}
 		int res = userService.save(dto);
 		if(res == 0) {
 			return ResponseEntity.ok("등록 실패");
