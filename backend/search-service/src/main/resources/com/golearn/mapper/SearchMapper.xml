@@ -3,7 +3,7 @@
 <mapper namespace="com.golearn.mapper.SearchMapper">
 
 	<select id="findTag" resultType="com.golearn.domain.TagDto">
-		select tag_no as no, tag_name as name
+		select tag_no, tag_name
 		from gl_tag
 	</select>
 	
@@ -21,7 +21,7 @@
 	</select>
 	
 	<select id="findTagByVideo" parameterType="java.util.Map" resultType="com.golearn.domain.TagDto">
-		select gl.tag_no as no, gl.tag_name as name, gvt.vid_no as targetNo
+		select gl.tag_no , gl.tag_name , gvt.vid_no as targetNo
 		from gl_tag gl inner join gl_video_tag gvt
 		on gl.tag_no = gvt.tag_no and gvt.vid_no in (#{vidNo})
 		<!-- 
@@ -84,7 +84,7 @@
 	</select>
 	
 	<select id="findTagByCourse" resultType="com.golearn.domain.TagDto">
-		select gl.tag_no as no, gl.tag_name as name, gct.cos_no as targetNo
+		select gl.tag_no, gl.tag_name, gct.cos_no as targetNo
 		from gl_tag gl inner join gl_course_tag gct
 		on gl.tag_no = gct.tag_no and gct.cos_no in (#{cosNo})
 		<!-- 
