@@ -28,7 +28,7 @@ public interface VideoRepository extends JpaRepository<Video, Integer> {
     @Query(value = "select v.* from gl_video v left join gl_save_video vs on v.vid_no = vs.vid_no where v.mbr_no=:mbrNo", nativeQuery = true)
     List<Video> findAllSpaceVideoByMbrNoAndVidHideFalse(@Param("mbrNo") int mbrNo);
 
-    @Query(value = "select v.* from gl_vidAndVidHideFalseeo as v right join (select * from gl_video_like where mbr_no=:mbrNo) as l on v.vid_no=l.vid_no", nativeQuery = true)
+    @Query(value = "select v.* from gl_video as v right join (select * from gl_video_like where mbr_no=:mbrNo) as l on v.vid_no=l.vid_no", nativeQuery = true)
     List<Video> findAllByMbrNoAndLikeVideoAndVidHideFalse(int mbrNo);
 
     List<Video> findAllByMbrNoAndVidHideFalse(int mbrNo);

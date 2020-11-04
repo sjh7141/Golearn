@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity(name = "gl_video_record")
 @NoArgsConstructor

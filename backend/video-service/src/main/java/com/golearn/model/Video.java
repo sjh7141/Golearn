@@ -1,12 +1,10 @@
 package com.golearn.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -19,13 +17,18 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,property = "vidNo")
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "vidNo")
 public class Video {
     @Id
     private int vidNo;
-
+//    @OneToOne
+//    @JoinColumn(name="mbr_no")
+//    private Member mbrNo;
+//    @OneToOne
+//    @JoinColumn(name = "vid_pno")
+//    private Video vidPno;
     private int mbrNo;
-
     private int vidPno;
 
     private String vidTitle;
@@ -46,4 +49,8 @@ public class Video {
 
     @Transient
     private List<Tag> tags;
+
+    public String toString(){
+        return "";
+    }
 }
