@@ -4,8 +4,10 @@ import VueRouter from 'vue-router';
 import Index from '@/views/Index.vue';
 import PlayChannel from '@/views/channel/play.vue';
 import Login from '@/views/Login.vue';
+import Course from '@/views/course/index.vue';
+import Request from '@/views/course/Request.vue';
+import RequestDetail from '@/views/course/RequestDetail.vue';
 import EditCourse from '@/views/course/Edit.vue';
-import PlayCource from '@/views/course/play.vue';
 import EditLoadMap from '@/views/loadmap/Edit.vue';
 
 Vue.use(VueRouter);
@@ -27,14 +29,24 @@ const routes = [
 		component: Login,
 	},
 	{
+		path: '/course/:id',
+		name: 'Course',
+		component: Course,
+	},
+	{
+		path: '/request',
+		name: 'Request',
+		component: Request,
+	},
+	{
+		path: '/request/:id',
+		name: 'RequestDetail',
+		component: RequestDetail,
+	},
+	{
 		path: '/course/management/:id',
 		name: 'EditCourse',
 		component: EditCourse,
-	},
-	{
-		path: '/course/play',
-		name: 'PlayCourse',
-		component: PlayCource,
 	},
 	{
 		path: '/loadmap/management/:id',
