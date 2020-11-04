@@ -7,6 +7,8 @@ import Login from '@/views/Login.vue';
 import Course from '@/views/course/index.vue';
 import Request from '@/views/course/Request.vue';
 import RequestDetail from '@/views/course/RequestDetail.vue';
+import EditCourse from '@/views/course/Edit.vue';
+import EditLoadMap from '@/views/loadmap/Edit.vue';
 
 Vue.use(VueRouter);
 
@@ -40,6 +42,16 @@ const routes = [
 		path: '/request/:id',
 		name: 'RequestDetail',
 		component: RequestDetail,
+	},
+	{
+		path: '/course/management/:id',
+		name: 'EditCourse',
+		component: EditCourse,
+	},
+	{
+		path: '/loadmap/management/:id',
+		name: 'EditLoadMap',
+		component: EditLoadMap,
 	},
 ];
 

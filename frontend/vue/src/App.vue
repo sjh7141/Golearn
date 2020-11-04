@@ -5,7 +5,7 @@
 			<Navigation v-if="showHeader" />
 			<div :style="{ 'margin-top': space + 'px' }" />
 			<Content />
-			<Footer />
+			<Footer v-if="showFooter" />
 		</div>
 	</v-app>
 </template>
@@ -37,6 +37,16 @@ export default {
 			let render = true;
 			if (this.$route.path.indexOf('/login') > -1) {
 				render = false;
+				this.clearSpace();
+			} else {
+				this.setSpace();
+			}
+			return render;
+		},
+		showFooter() {
+			let render = true;
+			if (this.$route.path.indexOf('/login') > -1) {
+				render = false;
 			}
 			return render;
 		},
@@ -44,6 +54,16 @@ export default {
 
 	mounted() {
 		this.space = this.$refs.header.$el.clientHeight;
+	},
+
+	methods: {
+		clearSpace() {
+			this.space = 0;
+		},
+		setSpace() {
+			if (this.$refs.header)
+				this.space = this.$refs.header.$el.clientHeight;
+		},
 	},
 };
 </script>
