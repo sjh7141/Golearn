@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -43,9 +44,10 @@ public class VideoController {
     }
 
     @ApiOperation(value = "영상 숨기기")
-    @DeleteMapping("{vid_no}")
-    public ResponseEntity hideVideo(@PathVariable("vid_no") int vidNo, @RequestHeader("X-USERNO") int mbrNo) {
-        videoService.hideVideo(vidNo, mbrNo);
+    @DeleteMapping
+    public ResponseEntity hideVideo(@RequestBody Map<String, Object> map, @RequestHeader("X-USERNO") int mbrNo) {
+        videoService.hideVideo((List<Integer>)map.get("hide_list"), mbrNo);
+
         return new ResponseEntity(HttpStatus.OK);
     }
 

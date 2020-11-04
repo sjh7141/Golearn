@@ -1,10 +1,13 @@
 package com.golearn.service;
 
 
+import com.golearn.model.Video;
 import com.golearn.model.VideoCompositeKey;
 import com.golearn.model.VideoRecord;
 import com.golearn.repository.VideoRecordRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class VideoRecordService {
@@ -13,6 +16,10 @@ public class VideoRecordService {
 
     VideoRecordService(VideoRecordRepository videoRecordRepository) {
         this.videoRecordRepository = videoRecordRepository;
+    }
+
+    public List<VideoRecord> getRecords(int mbrNo){
+        return videoRecordRepository.findAllByMbrNo(mbrNo);
     }
 
     public VideoRecord getRecord(int mbrNo, int vidNo) {

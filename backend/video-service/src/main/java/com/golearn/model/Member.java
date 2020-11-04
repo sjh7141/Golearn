@@ -1,10 +1,12 @@
 package com.golearn.model;
 
 import lombok.Data;
+import lombok.ToString;
 
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.PostLoad;
 import java.util.Date;
 
 @Entity(name = "gl_member")
@@ -23,6 +25,17 @@ public class Member {
     private Date chgDt;
     private boolean ckEmail;
     private boolean ckActive;
-
+    @PostLoad
+    public void setPrivate(){
+        this.mbrPwd=null;
+        this.mbrEmail=null;
+        this.regDt=null;
+        this.chgDt=null;
+        this.ckEmail=false;
+        this.ckActive=false;
+    }
+    public String toString(){
+        return "";
+    }
 }
 //
