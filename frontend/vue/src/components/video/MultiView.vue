@@ -9,8 +9,11 @@
 			resizeWidth($event);
 			resizeHeight($event);
 		"
-		style="z-index:500"
-		:style="{ position: editMode ? 'fixed' : 'static', left: 0 }"
+		:style="{
+			position: editMode ? 'fixed' : 'static',
+			left: 0,
+			'z-index': editMode ? 9999 : 1,
+		}"
 	>
 		<div
 			:style="{

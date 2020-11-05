@@ -124,7 +124,7 @@
 					저장
 				</v-btn>
 				<v-btn dark color="#5500ff" @click="changeActive">
-					다음
+					완료
 				</v-btn>
 			</div>
 			<!-- 추가 dialog -->

@@ -1,21 +1,37 @@
 import axios from 'axios';
 
 const URL = {
-	DOMAIN: 'http://localhost:8080',
+	DOMAIN: 'http://k3a402.p.ssafy.io:8801',
 	AUTH: 'auth/login',
+	USER: 'account/users',
 	loginBuild() {
 		return Array(this.DOMAIN, this.AUTH).join('/');
+	},
+	userBuild() {
+		return Array(this.DOMAIN, this.USER).join('/');
 	},
 };
 
 export default {
 	state: {
 		token: sessionStorage.getItem('token'),
+		isLogin: parseInt(sessionStorage.getItem('isLogin')),
+		user: sessionStorage.getItem('user'),
 	},
 	getters: {
 		// token(state, getters, rootState, rootGetters) {
 		token(state) {
 			return state.token;
+		},
+		isLogin(state) {
+			return state.isLogin;
+		},
+		user(state) {
+			if (state.user) {
+				return JSON.parse(state.user);
+			} else {
+				return null;
+			}
 		},
 	},
 	mutations: {
@@ -23,16 +39,27 @@ export default {
 			state.token = payload;
 			sessionStorage.setItem('token', payload);
 		},
+		setIsLogin(state, payload) {
+			state.isLogin = payload;
+			console.log(payload + '!!!');
+			sessionStorage.setItem('isLogin', payload);
+		},
+		setUser(state, payload) {
+			state.user = JSON.stringify(payload);
+			sessionStorage.setItem('user', state.user);
+		},
 	},
 	actions: {
-		login(context) {
-			// console.log(URL.loginBuild());
-			axios.get(URL.loginBuild()).then(({ data }) => {
-				context.commit('setToken', data.token);
-			});
-			// .catch(error => {
-			// 	console.log(error);
-			// });
+		login(context, payload) {
+			return axios.post(URL.loginBuild(), payload);
+		},
+		getUser(context) {
+			const config = {
+				headers: {
+					Authorization: context.state.token,
+				},
+			};
+			return axios.get(URL.userBuild(), config);
 		},
 	},
 };

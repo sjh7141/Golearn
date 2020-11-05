@@ -1,27 +1,29 @@
 <template>
 	<v-row class="ml-3 height-100">
 		<v-col cols="9">
-			<h2>목차</h2>
+			<h2>코스 순서</h2>
 			<h4 class="pb-5 pl-3" style="color:gray;">
-				"코스에 구성될 강의들을 순서에 맞게 작성해 주세요."
+				"로드맵에 구성될 코스들을 순서에 맞게 배치해 주세요."
 			</h4>
 			<div class="mt-5">
 				<div class="pa-6 mb-6 bg-light-gray border-radius-10">
 					<div class="bold">
-						목차 등록
+						코스 등록
 					</div>
 					<ul style="list-style-type: none;">
 						<li>
-							목차는 코스의 커리큘럼을 나타냅니다.
+							로드맵은 다양한 코스를 모아
+							<span class="bold">하나의 커리큘럼</span>으로
+							만듭니다.
 						</li>
 						<li>
-							<span class="bold">제목</span>을 입력하시고
-							<span class="bold">강의영상을</span> 선택해주세요.
+							로드맵의 목표에 맞는
+							<span class="bold">코스</span>를 선택해 주세요.
 						</li>
 						<li>
-							본인이 <span class="bold">등록</span>한 영상과
-							<span class="bold">좋아요</span>한 영상을 등록할 수
-							있습니다.
+							여러개의 코스들을 통해 분야에 대한
+							<span class="bold">학습흐름을 구성</span>하는 방식을
+							권장합니다.
 						</li>
 					</ul>
 				</div>
@@ -32,32 +34,74 @@
 							<v-icon color="darken-3">
 								mdi-plus
 							</v-icon>
-							<span style="font-size:15px;">강의 추가</span>
+							<span style="font-size:15px;">코스 추가</span>
 						</v-btn>
 					</div>
 					<div
 						v-if="list.length == 0"
 						style="text-align: center; font-weight: 600; font-size: 20px;"
 					>
-						코스를 처음 생성하셨군요.<br />
-						강의를 추가해 보세요! 😊
+						로드맵을 처음 생성하셨군요.<br />
+						코스를 추가해 보세요! 😊
 					</div>
 					<draggable
 						:list="list"
 						:disabled="!enabled"
 						class="list-group"
 						ghost-class="ghost"
-						:move="checkMove"
 						@start="dragging = true"
 						@end="dragging = false"
 					>
 						<v-row
 							class="list-group-item ma-1 pa-3 mb-5 index-box"
 							v-for="(element, index) in list"
-							:key="element.index"
+							:key="element.cosNo"
 						>
 							<v-col cols="10">
-								목차{{ index + 1 }}: {{ element.name }}
+								<div class="list-icon mr-3">
+									{{ index + 1 }}
+								</div>
+								<v-img
+									class="ml-2 mr-4 border-radius-10"
+									src="@/assets/thumbnail_1.jpg"
+									height="130"
+									width="210"
+									style="display: inline-block;"
+								/>
+								<v-avatar
+									class="mr-2"
+									style="vertical-align:top;"
+								>
+									<img
+										src="@/assets/default_profile.png"
+										alt="프로필"
+									/>
+								</v-avatar>
+								<div
+									style="display: inline-block; vertical-align:top; word-break:break-all; width:210px;"
+								>
+									<span class="bold" style="font-size: 20px;">
+										{{ element.cosTitle }}
+									</span>
+									<br />
+									<span
+										style="font-weight:500; font-size: 17px;"
+										>{{ element.mbr_nickname }}</span
+									>
+									<br />
+									<v-row>
+										<v-col cols="12" class="py-0">
+											<v-chip
+												class="mr-1 mb-1"
+												v-for="(tag, i) in element.tags"
+												:key="i"
+												small
+											>
+												{{ tag }}
+											</v-chip>
+										</v-col>
+									</v-row>
+								</div>
 							</v-col>
 							<v-col cols="2" align="end">
 								<v-icon
@@ -84,7 +128,7 @@
 					저장
 				</v-btn>
 				<v-btn dark color="#5500ff" @click="changeActive">
-					다음
+					완료
 				</v-btn>
 			</div>
 			<!-- 추가&수정 dialog -->
@@ -92,37 +136,32 @@
 				<v-card>
 					<v-card-title class="headline pb-6">
 						<span class="bold">
-							목차 {{ isEdit ? editIdx + 1 : getOrder() }}
+							순서 {{ isEdit ? editIdx + 1 : getOrder() }}
 						</span>
 					</v-card-title>
-					<div class="bold px-6 pb-2">제목</div>
-					<v-card-text class="pb-0">
-						<v-text-field
-							v-model="editTitle"
-							:rules="rules"
-							ref="title"
-							filled
-							placeholder="제목입력 후 강의 영상을 선택해 주세요."
-							maxlength="30"
-						></v-text-field>
-					</v-card-text>
-					<div class="bold px-6 pb-2">영상목록</div>
+					<div class="bold px-6 pb-2">코스목록</div>
 					<v-card-text>
-						<template v-for="(element, index) in videoList">
+						<template v-for="(element, index) in courseList">
 							<div
 								class="mb-2 border-radius-10"
 								:class="{
-									selectBorder: index == selectVideoNo,
+									selectBorder: index == selectCourseNo,
 								}"
-								:key="element.vidno"
+								:key="element.cosNo"
 							>
-								<index-video
-									:video="element"
+								<index-course
+									:course="element"
 									:idx="index"
-									@selectVideo="selectVideo"
+									@selectCourse="selectCourse"
 								/>
 							</div>
 						</template>
+						<v-pagination
+							v-model="page"
+							:length="30"
+							total-visible="7"
+							@input="next"
+						></v-pagination>
 					</v-card-text>
 					<v-card-actions>
 						<v-spacer></v-spacer>
@@ -146,7 +185,7 @@
 						<span class="bold">정말 삭제하시겠습니까?</span>
 					</v-card-title>
 					<v-card-text>
-						삭제된 목차는 복구되지 않으며 <br />
+						삭제된 코스목록은 복구되지 않으며 <br />
 						그 동안 사용되었던 기록이 제거됩니다.
 					</v-card-text>
 					<v-card-actions>
@@ -166,21 +205,20 @@
 			</v-dialog>
 		</v-col>
 		<v-col cols="3">
-			<div>📑목차 작성 방법</div>
+			<div>📑코스 설정 방법</div>
 		</v-col>
 	</v-row>
 </template>
 <script>
 import draggable from 'vuedraggable';
-import IndexVideo from '@/components/course/IndexVideo.vue';
+import IndexCourse from '@/components/loadmap/IndexCourse.vue';
 import { mapGetters } from 'vuex';
 
 let order = 1;
-// const nameTemplate = '제목입력과 강의영상을 선택해 주세요.';
 export default {
 	components: {
 		draggable,
-		IndexVideo,
+		IndexCourse,
 	},
 	data() {
 		return {
@@ -195,100 +233,96 @@ export default {
 			isEdit: false,
 			editIdx: -1,
 			editTitle: '',
-			videoList: [
+			courseList: [
 				{
-					vidNo: 3,
+					cosNo: 3,
 					mbrNo: 2,
+					mbr_nickname: '하늘을날자',
 					vidPno: 0,
-					vidTitle: '테스트 영상',
-					vidContent: null,
-					vidUrl: null,
-					vidView: 18,
+					cosTitle: '파이썬 기초1',
+					cosContent: null,
 					regDt: '2020-10-27T11:26:14.000+00:00',
-					vidHide: true,
-					vidThumbnail: 'video_default_thumbnail.png',
-					vidLength: 0,
+					courseThumbnail: 'video_default_thumbnail.png',
+					tags: [
+						'C',
+						'Python',
+						'Python',
+						'Python',
+						'Python',
+						'Python',
+						'Python',
+						'Python',
+					],
 				},
 				{
-					vidNo: 3,
+					cosNo: 4,
 					mbrNo: 2,
+					mbr_nickname: '하늘을날자',
 					vidPno: 0,
-					vidTitle: '테스트 영상',
-					vidContent: null,
-					vidUrl: null,
-					vidView: 18,
+					cosTitle: '파이썬 기초2',
+					cosContent: null,
 					regDt: '2020-10-27T11:26:14.000+00:00',
-					vidHide: true,
-					vidThumbnail: 'video_default_thumbnail.png',
-					vidLength: 0,
+					courseThumbnail: 'video_default_thumbnail.png',
+					tags: ['C', 'Python'],
 				},
 				{
-					vidNo: 3,
+					cosNo: 5,
 					mbrNo: 2,
+					mbr_nickname: '하늘을날자',
 					vidPno: 0,
-					vidTitle: '테스트 영상',
-					vidContent: null,
-					vidUrl: null,
-					vidView: 18,
+					cosTitle: '파이썬 기초3',
+					cosContent: null,
 					regDt: '2020-10-27T11:26:14.000+00:00',
-					vidHide: true,
-					vidThumbnail: 'video_default_thumbnail.png',
-					vidLength: 0,
+					courseThumbnail: 'video_default_thumbnail.png',
+					tags: ['C', 'Python'],
 				},
 				{
-					vidNo: 3,
+					cosNo: 6,
 					mbrNo: 2,
+					mbr_nickname: '하늘을날자',
 					vidPno: 0,
-					vidTitle: '테스트 영상 테스트 영상 테스트 영상',
-					vidContent: null,
-					vidUrl: null,
-					vidView: 18,
+					cosTitle: '파이썬 기초 파이썬 기초 파이썬 기초',
+					cosContent: null,
 					regDt: '2020-10-27T11:26:14.000+00:00',
-					vidHide: true,
-					vidThumbnail: 'video_default_thumbnail.png',
-					vidLength: 0,
+					courseThumbnail: 'video_default_thumbnail.png',
+					tags: ['C', 'Python'],
 				},
 				{
-					vidNo: 3,
+					cosNo: 7,
 					mbrNo: 2,
+					mbr_nickname: '하늘을날자',
 					vidPno: 0,
-					vidTitle: '테스트 영상',
-					vidContent: null,
-					vidUrl: null,
-					vidView: 18,
+					cosTitle: '파이썬 기초5',
+					cosContent: null,
 					regDt: '2020-10-27T11:26:14.000+00:00',
-					vidHide: true,
-					vidThumbnail: 'video_default_thumbnail.png',
-					vidLength: 0,
+					courseThumbnail: 'video_default_thumbnail.png',
+					tags: ['C', 'Python'],
 				},
 				{
-					vidNo: 3,
+					cosNo: 8,
 					mbrNo: 2,
+					mbr_nickname: '하늘을날자',
 					vidPno: 0,
-					vidTitle: '테스트 영상',
-					vidContent: null,
-					vidUrl: null,
-					vidView: 18,
+					cosTitle: '파이썬 기초6',
+					cosContent: null,
 					regDt: '2020-10-27T11:26:14.000+00:00',
-					vidHide: true,
-					vidThumbnail: 'video_default_thumbnail.png',
-					vidLength: 0,
+					courseThumbnail: 'video_default_thumbnail.png',
+					tags: ['C', 'Python'],
 				},
 				{
-					vidNo: 3,
+					cosNo: 9,
 					mbrNo: 2,
+					mbr_nickname: '하늘을날자',
 					vidPno: 0,
-					vidTitle: '테스트 영상',
-					vidContent: null,
-					vidUrl: null,
-					vidView: 18,
+					cosTitle: '파이썬 기초7',
+					cosContent: null,
 					regDt: '2020-10-27T11:26:14.000+00:00',
-					vidHide: true,
-					vidThumbnail: 'video_default_thumbnail.png',
-					vidLength: 0,
+					courseThumbnail: 'video_default_thumbnail.png',
+					tags: ['C', 'Python'],
 				},
 			],
-			selectVideoNo: -1,
+			selectCourseNo: -1,
+			page: 1,
 		};
 	},
 	methods: {
@@ -297,26 +331,15 @@ export default {
 			this.editTitle = '';
 		},
 		confirmAdd() {
-			if (this.editTitle.length < 5) {
-				this.$refs.title.focus();
-				return;
-			} else if (this.selectVideoNo == -1) {
-				alert('영상을 선택해 주세요.');
+			if (this.selectCourseNo == -1) {
+				alert('코스를 선택해 주세요.');
 				return;
 			}
-			this.list.push({
-				name: this.editTitle,
-				no: 0,
-				order: order++,
-				vid_no: this.selectVideoNo,
-			});
+			const selected = this.courseList[this.selectCourseNo];
+			this.list.push(selected);
 			this.editTitle = '';
 			this.isAdd = false;
 			this.resetVideo();
-		},
-		checkMove() {
-			//e) {
-			// window.console.log('Future index: ' + e.draggedContext.futureIndex);
 		},
 		setDeleteIndex(idx) {
 			this.isDelete = true;
@@ -339,7 +362,9 @@ export default {
 			this.isDelete = false;
 		},
 		confirmEdit() {
-			this.list[this.editIdx].name = this.editTitle;
+			const selected = this.courseList[this.selectCourseNo];
+			this.list[this.editIdx] = selected;
+
 			this.editIdx = -1;
 			this.editTitle = '';
 			this.isEdit = false;
@@ -349,15 +374,19 @@ export default {
 		getOrder() {
 			return order;
 		},
-		selectVideo(idx) {
-			this.selectVideoNo = idx;
+		selectCourse(idx) {
+			this.selectCourseNo = idx;
 		},
 		resetVideo() {
-			this.selectVideoNo = -1;
+			this.selectCourseNo = -1;
 			this.isAdd = false;
 		},
 		changeActive() {
 			this.$emit('changeActive');
+		},
+		next(page) {
+			//api 나오면 검색결과 페이징해서 list에 반영
+			this.page = page;
 		},
 	},
 	computed: {
@@ -373,7 +402,7 @@ export default {
 }
 
 .index-box {
-	border: 1px solid #8c94ff;
+	border: 3px solid #dedede;
 	font-weight: 600;
 	font-size: 20px;
 	cursor: move;
@@ -390,5 +419,16 @@ export default {
 
 .selectBorder {
 	border: 3px solid #30dcff;
+}
+
+.list-icon {
+	display: inline-block;
+	border: 1px solid gray;
+	width: 25px;
+	height: 25px;
+	text-align: center;
+	font-size: 15px;
+	border-radius: 6px;
+	vertical-align: top;
 }
 </style>

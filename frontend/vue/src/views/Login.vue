@@ -97,8 +97,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-
 export default {
 	data() {
 		return {
@@ -109,40 +107,34 @@ export default {
 			success: false,
 		};
 	},
-	computed: {
-		...mapGetters(['isLogin', 'getToken']),
-	},
 	mounted() {
 		this.success = this.$route.query.success;
 		history.pushState({ data: '' }, '', '/login');
 	},
 	methods: {
-		// getSession() {
-		// 	http.axios.get('/rest-auth/user/profile').then(({ data }) => {
-		// 		this.$router.app.$store.commit('setUser', data);
-		// 	});
-		// 	this.$router.push('/home');
-		// },
+		getSession() {
+			this.$store.dispatch('getUser').then(({ data }) => {
+				this.$store.commit('setUser', data);
+			});
+			this.$router.push('/');
+		},
 		login() {
-			// http.axios
-			// 	.post('/rest-auth/login/', {
-			// 		username: this.id,
-			// 		password: this.password,
-			// 	})
-			// 	.then(({ data }) => {
-			// 		this.$router.app.$store.commit('setIsLogin', true);
-			// 		this.$router.app.$store.commit(
-			// 			'setToken',
-			// 			`Token ${data.key}`,
-			// 		);
-			// 		this.getSession();
-			// 	})
-			// 	.catch(() => {
-			// 		this.error = true;
-			// 		this.error_text =
-			// 			'아이디 또는 비밀번호가 일치하지 않습니다.';
-			// 		this.$refs.id.focus();
-			// 	});
+			this.$store
+				.dispatch('login', {
+					username: this.id,
+					password: this.password,
+				})
+				.then(({ data }) => {
+					this.$store.commit('setIsLogin', 1);
+					this.$store.commit('setToken', data.token);
+					this.getSession();
+				})
+				.catch(() => {
+					this.error = true;
+					this.error_text =
+						'아이디 또는 비밀번호가 일치하지 않습니다.';
+					this.$refs.id.focus();
+				});
 		},
 	},
 };
