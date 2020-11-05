@@ -22,6 +22,12 @@
 		where ldm_no = #{ldmNo}
 	</select>
 	
+	<select id="findByUserNo" resultType="com.golearn.domain.LoadmapDto">
+		select *
+		from gl_loadmap
+		where mbr_no = #{userNo}
+	</select>
+	
 	<select id="findByCourse" resultType="com.golearn.domain.LoadmapCourseDto">
 		select gc.*, glc.ldm_order, glc.no
 		from gl_loadmap_course glc inner join gl_course gc

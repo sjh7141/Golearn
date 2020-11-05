@@ -16,6 +16,7 @@ public interface LoadmapMapper {
 	public int deleteLoadmap(@Param("ldmNo")int ldmNo, @Param("mbrNo") int mbrNo);
 	public LoadmapDto findByLoadmap(int ldmNo);
 	public List<LoadmapCourseDto> findByCourse(int ldmNo);
+	public List<LoadmapCourseDto> findByUserNo(int userNo);
 	public int updateInCourse(List<LoadmapCourseDto> list);
 	public int deleteInCourse(List<LoadmapCourseDto> list);
 	public int registInCourse(List<LoadmapCourseDto> list);

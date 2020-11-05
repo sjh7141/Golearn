@@ -74,4 +74,12 @@ public class LoadmapController {
 		}
 		return ResponseEntity.ok("삭제 성공");
 	}
+	
+	@ApiOperation(value = "유저가 만든 로드맵 가져오기")
+	@GetMapping(value = "/member/{mbr_no}")
+	public ResponseEntity<List<LoadmapCourseDto>> getLoadmapUser(@PathVariable("mbr_no") int userNo){
+		List<LoadmapCourseDto> loadmap = loadmapService.findByUserNo(userNo);
+		
+		return ResponseEntity.ok(loadmap);
+	}
 }
