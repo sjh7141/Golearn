@@ -23,4 +23,5 @@ public interface UserMapper {
 	public int subscribe(@Param("from") int from, @Param("to") int to);
 	public List<SubscribeDto> subscribeList(int no);
 	public int subscribeCancle(@Param("from") int from, @Param("to") int to);
+	public int subscribeCheck(@Param("from") int from, @Param("to") int to);
 }

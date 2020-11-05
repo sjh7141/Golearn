@@ -79,5 +79,10 @@ public class UserServiceImpl implements UserService {
 	public UserDto findByUserId(String userId) {
 		return userMapper.findByUserId(userId);
 	}
+	
+	@Override
+	public int subscribeCheck(int from, int to) {
+		return userMapper.subscribeCheck(from, to);
+	}
 
 }

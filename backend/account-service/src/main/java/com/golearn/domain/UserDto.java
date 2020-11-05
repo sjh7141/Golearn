@@ -15,6 +15,7 @@ public class UserDto {
 	private Date updateDate;
 	private boolean checkEmail;
 	private boolean checkActive;
+	private int subscribeCount;
 
 	public int getNo() {
 		return no;
@@ -102,6 +103,14 @@ public class UserDto {
 
 	public void setCheckActive(boolean checkActive) {
 		this.checkActive = checkActive;
+	}
+
+	public int getSubscribeCount() {
+		return subscribeCount;
+	}
+
+	public void setSubscribeCount(int subscribeCount) {
+		this.subscribeCount = subscribeCount;
 	}
 
 }
