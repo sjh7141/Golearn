@@ -24,7 +24,10 @@ export default {
 	},
 	actions: {
 		getVideos() {
-			return axios.get(URL.searchBuild() + '/3');
+			return axios.get(URL.searchBuild());
+		},
+		getChannelVideos(context, id) {
+			return axios.get(URL.searchBuild() + `/member/${id}`);
 		},
 	},
 };

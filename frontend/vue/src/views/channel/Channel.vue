@@ -22,8 +22,8 @@
 													channel.photoUrl !==
 														'no-photo.jpg'
 												"
-												:src="
-													`${url}/uploads/avatars/${channel.photoUrl}`
+												src="
+													https://avatars1.githubusercontent.com/u/25308679?s=460&u=d3601dc80551df28f6c0c1f2da6d9e64e24fae89&v=4
 												"
 											></v-img>
 
@@ -60,12 +60,9 @@
 								</v-card>
 							</v-skeleton-loader>
 						</v-col>
-						<v-col cols="12" sm="5" md="3" lg="3" v-if="!loading">
+						<v-col cols="12" sm="5" md="2" lg="2" v-if="!loading">
 							<v-btn
-								v-if="
-									currentUser &&
-										channel._id !== currentUser._id
-								"
+								v-if="isLogin && channel.mbr_no !== user.mbr_no"
 								:class="[
 									{ 'red white--text': !subscribed },
 									{
@@ -78,13 +75,14 @@
 								depressed
 								:loading="subscribeLoading"
 								@click="subscribe"
-								>{{
-									!subscribed ? 'subscribe' : 'subscribed'
-								}}</v-btn
+								><v-icon v-if="!subscribed"
+									>mdi-thumb-up-outline</v-icon
+								><v-icon v-else>mdi-thumb-up</v-icon>
+								{{ !subscribed ? '구독' : '구독중' }}</v-btn
 							>
 							<!-- <template v-else-if="!currentUser" -->
 							<v-btn
-								v-else-if="showSubBtn"
+								v-else-if="!isLogin"
 								:class="[
 									{ 'red white--text': !subscribed },
 									{
@@ -97,9 +95,21 @@
 								depressed
 								:loading="subscribeLoading"
 								@click="subscribe"
-								>{{
-									!subscribed ? 'subscribe' : 'subscribed'
-								}}</v-btn
+								><v-icon v-if="!subscribed"
+									>mdi-thumb-up-outline</v-icon
+								><v-icon v-else>mdi-thumb-up</v-icon>
+								{{ !subscribed ? '구독' : '구독중' }}</v-btn
+							>
+							<v-btn
+								v-else-if="
+									isLogin && channel.mbr_no === user.mbr_no
+								"
+								class="blue white--text mt-6"
+								tile
+								large
+								depressed
+								@click="modify"
+								><v-icon>mdi-wrench</v-icon>설정</v-btn
 							>
 							<!-- <v-btn icon class="ml-5 mt-6"><v-icon>mdi-bell</v-icon></v-btn> -->
 						</v-col>
@@ -119,66 +129,13 @@
 					</v-tab>
 				</v-tabs>
 
-				<v-container fluid>
+				<v-container class="mx-auto">
 					<v-tabs-items v-model="tab" class="transparent">
 						<v-tab-item>
-							<v-card class="transparent" flat>
-								<v-card-title>Uploads</v-card-title>
-								<!-- <v-sheet class="mx-auto"> -->
-								<v-slide-group
-									class="pa-4"
-									multiple
-									show-arrows
-								>
-									<v-slide-item
-										v-for="(video, i) in loading ? 5 : 1"
-										:key="i"
-									>
-										<v-skeleton-loader
-											type="card-avatar"
-											:loading="loading"
-											width="250px"
-											class="mr-1"
-										>
-											<video-card
-												:card="{
-													maxWidth: 250,
-													type: 'noAvatar',
-												}"
-												:video="videos.data"
-												:channel="channel"
-											></video-card>
-										</v-skeleton-loader>
-									</v-slide-item>
-								</v-slide-group>
-							</v-card>
+							<video-slider> </video-slider>
 						</v-tab-item>
 						<v-tab-item>
-							<v-card class="transparent" flat>
-								<v-card-title>Uploads</v-card-title>
-								<v-row>
-									<v-col
-										cols="12"
-										sm="6"
-										md="4"
-										lg="3"
-										v-for="(video, i) in loading ? 10 : 1"
-										:key="i"
-										class="mx-xs-auto"
-									>
-										<v-skeleton-loader
-											type="card-avatar"
-											:loading="loading"
-										>
-											<video-card
-												:card="{ maxWidth: 350 }"
-												:video="videos.data"
-												:channel="videos.data.mbr_no"
-											></video-card>
-										</v-skeleton-loader>
-									</v-col>
-								</v-row>
-							</v-card>
+							<video-list> </video-list>
 						</v-tab-item>
 					</v-tabs-items>
 				</v-container>
@@ -188,10 +145,10 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-
-import VideoCard from '@/components/component/VideoCard';
-
+// import { mapGetters } from 'vuex';
+import VideoSlider from '@/components/component/VideoSlider';
+import VideoList from '@/components/component/VideoList';
+// import VideoCard from '@/components/component/VideoCard';
 export default {
 	data: () => ({
 		tab: null,
@@ -200,58 +157,38 @@ export default {
 		subscribed: false,
 		subscribeLoading: false,
 		showSubBtn: true,
-		url: 'k3a402.p.ssafy.io',
-		items: [
-			'Home',
-			'Videos',
-			'Playlists',
-			'Community',
-			'Channels',
-			'about',
-		],
-		videos: {},
+		items: ['홈', '동영상', '코스', '로드맵', '정보'],
 		channel: {
 			mbr_nickname: 'asm9677',
 			_id: 'asdf',
+			mbr_no: 3,
 		},
-		currentUser: {
-			_id: 'asdf',
+		user: {
+			mbr_no: 3,
 		},
+		isLogin: true,
+		// currentUser: {
+		// 	_id: 'asdf',
+		// },
 		signinDialog: false,
 		details: {},
 	}),
 	computed: {
-		...mapGetters(['isAuthenticated']),
+		// ...mapGetters(['isLogin']),
 	},
 	components: {
-		VideoCard,
+		// VideoCard,
+		VideoSlider,
+		VideoList,
 	},
 	methods: {
-		...mapActions(['getVideos']),
-		async getChannel() {
-			// console.log(this.$route.params.id)
-			this.loading = true;
-			this.errored = false;
-
-			this.getVideos().then(res => {
-				this.videos = res;
-				console.log(this.videos);
-			});
-
-			// console.log(channel)
-			this.loading = false;
-		},
 		subscribe() {
+			if (!this.isLogin) {
+				this.$router.push('/login');
+			}
 			console.log('구독');
 		},
-	},
-	mounted() {
-		// this.getChannel(this.$route.params.id);
-		this.getChannel();
-	},
-	beforeRouteUpdate(to, from, next) {
-		this.getChannel();
-		next();
+		modify() {},
 	},
 };
 </script>
@@ -271,5 +208,8 @@ export default {
 
 #channel-home .v-list-item--link:before {
 	background-color: transparent;
+}
+.side-margin {
+	width: 90%;
 }
 </style>
