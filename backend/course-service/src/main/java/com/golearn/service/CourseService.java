@@ -38,4 +38,8 @@ public class CourseService {
 		course.setMbrNo(userNo);
 		return courseRepository.save(course);
 	}
+	
+	public List<Course> findByMbrNo(long id){
+		return courseRepository.findByMbrNo(id);
+	}
 }
