@@ -19,5 +19,6 @@ public interface UserService {
 	public int subscribe(int from, int to);
 	public List<SubscribeDto> subscribeList(int no);
 	public int subscribeCancle(int from, int to);
+	public int subscribeCheck(int from, int to);
 	
 }
