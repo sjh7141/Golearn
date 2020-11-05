@@ -38,6 +38,7 @@ public class VideoService {
             videoRepository.addViewCount(vidNo);
             Video video = videoRepository.findById(vidNo).get();
             video.setTags(tagRepository.findAllAndTagByVidNo(video.getVidNo()));
+            video.setVidLikes(videoLikeRepository.countDistinctByVideoCompositekey_VidNo(vidNo));
             map.put("video", video);
 
             int vidPno = video.getVidPno();

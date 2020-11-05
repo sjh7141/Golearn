@@ -8,13 +8,13 @@ import java.util.Date;
 
 public interface VideoCommentPayload {
 
-    Long getVidCmtNo();
+    int getVidCmtNo();
 
-    Long getVidNo();
+    int getVidNo();
 
-    Long getMbrNo();
+    int getMbrNo();
 
-    Long getVidCmtPno();
+    int getVidCmtPno();
 
     String getVidComment();
 
@@ -22,5 +22,6 @@ public interface VideoCommentPayload {
 
     Date getChgDt();
 
-    Long getNumOfReply();
+    int getNumOfReply();
+
 }

@@ -49,7 +49,8 @@ public class Video {
 
     @Transient
     private List<Tag> tags;
-
+    @Transient
+    private int vidLikes;
     public String toString(){
         return "";
     }

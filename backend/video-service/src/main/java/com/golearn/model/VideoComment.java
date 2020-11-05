@@ -31,5 +31,9 @@ public class VideoComment {
     @UpdateTimestamp
     private Date chgDt;
 
+    @Transient
+    private Member member;
+    @Transient
+    private int numOfReply;
 
 }
