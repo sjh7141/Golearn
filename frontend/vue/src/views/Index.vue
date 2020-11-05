@@ -1,6 +1,7 @@
 <template>
 	<div>
 		<v-app id="inspire">
+			<!-- 배너 -->
 			<swiper class="swiper" :options="swiperOption" ref="swiper">
 				<swiper-slide
 					class="slide pb-5 pt-9"
@@ -56,6 +57,7 @@
 					slot="button-prev"
 				></div>
 			</swiper>
+			<!-- 강의 -->
 			<div class="container">
 				<v-container>
 					<v-slide-group
@@ -81,17 +83,17 @@
 						</v-slide-item>
 					</v-slide-group>
 					<v-divider></v-divider>
-					<h2>이런 강의 어떠세요?</h2>
+					<h2 class="mt-15">이런 강의 어떠세요?</h2>
 					<v-row>
 						<vcards :items="cards"> </vcards>
 					</v-row>
 					<v-divider></v-divider>
-					<h2>🚨 금주의 인기강의</h2>
+					<h2 class="mt-15">🚨 금주의 인기강의</h2>
 					<v-row>
 						<vcards :items="hit"></vcards>
 					</v-row>
 					<v-divider></v-divider>
-					<h2>🔥 수강생 급상승 강의</h2>
+					<h2 class="mt-15">🔥 수강생 급상승 강의</h2>
 					<v-row>
 						<vcards :items="cards"></vcards>
 					</v-row>
@@ -115,11 +117,111 @@
 						</v-img>
 					</v-row>
 					<v-divider></v-divider>
-					<h2>신규 강의</h2>
+					<h2 class="mt-15">신규 강의</h2>
 					<v-row>
 						<vcards :items="hit"></vcards>
 					</v-row>
 				</v-container>
+			</div>
+			<!-- 하단 설명부 -->
+			<div id="description" class="mt-15">
+				<v-row class="py-15">
+					<v-col cols="12">
+						<div class="pb-10 pl-16 bold" style="font-size:45px;">
+							Run & Go
+						</div>
+						<v-row class="pb-15">
+							<v-col cols="7">
+								<v-img
+									src="@/assets/index_1.jpg"
+									height="320"
+									style="cursor: default;"
+								/>
+							</v-col>
+							<v-col cols="5">
+								<div
+									class="py-10"
+									style="font-size:40px; font-weight:200; padding-right:150px;"
+								>
+									누구나 참여할 수 있는<br />
+									<span class="bold">
+										자유로운 플랫폼
+									</span>
+								</div>
+								<div
+									style=" font-weight:200; padding-right:150px;"
+								>
+									Run&Go는 누구에게나 성장의 기회를 균등하게
+									부여하고자 하는 온라인 학습,
+									<span class="bold">
+										지식 공유의 참여형 강의 플랫폼
+									</span>
+									입니다.
+								</div>
+							</v-col>
+						</v-row>
+						<v-row class="pb-15">
+							<v-col cols="5">
+								<div
+									class="py-10"
+									style="font-size:40px; font-weight:200; padding-left:150px;"
+								>
+									<span class="bold">집단지성</span>을 통한
+									<br />
+									체계적인 강의 제작
+								</div>
+								<div
+									style=" font-weight:200; padding-left:150px;"
+								>
+									<span class="bold">
+										이미 생산된 콘텐츠에 대한 참여를 지원
+									</span>
+									하기 때문에 꼭 전문적인 지식을 가진 사람이지
+									않더라도 집단지성을 통해 강의 제작에 참여할
+									수 있습니다.
+								</div>
+							</v-col>
+							<v-col cols="7">
+								<v-img
+									src="@/assets/index_2.jpg"
+									height="320"
+									style="cursor: default;"
+								/>
+							</v-col>
+						</v-row>
+						<v-row class="pb-10">
+							<v-col cols="7">
+								<v-img
+									src="@/assets/index_3.jpg"
+									height="320"
+									style="cursor: default;"
+								/>
+							</v-col>
+							<v-col cols="5">
+								<div
+									class="py-10"
+									style="font-size:40px; font-weight:200; padding-right:150px;"
+								>
+									<span class="bold">무료</span> 온라인
+									강의제공과 <br />
+									<span class="bold">지식의 선순환</span> 기대
+								</div>
+								<div
+									style=" font-weight:200; padding-right:150px;"
+								>
+									사용자들의 금전적 부담을 줄여주며 누구에게나
+									<span class="bold">성장의 기회</span>를
+									부여합니다. 또한, 언제든지 강의의 제작자가
+									되어
+									<span class="bold">
+										다른 사용자들에게 자신의 지식을 전달
+									</span>
+									할 수 있습니다.
+								</div>
+							</v-col>
+						</v-row>
+					</v-col>
+				</v-row>
 			</div>
 		</v-app>
 	</div>
@@ -309,7 +411,7 @@ export default {
 				{
 					thumbnail:
 						'https://www.educative.io/api/page/5393602882568192/image/download/6038586442907648',
-					title: `안성민 교수님의<br />폭풍 C++강의`,
+					title: `트리플 교수님의<br />폭풍 C++강의`,
 					text: `<p>당신이 지금까지 찾을 수 없었던 Javascript강의, <br />
 							15만명의 선택으로 만들어진 최대규모 강의
 							프로젝트, <br />
@@ -321,7 +423,7 @@ export default {
 				{
 					thumbnail:
 						'https://cdn.inflearn.com/public/course-324235-cover/12a6aceb-1c38-4ce1-b50c-ab9d32e43edd',
-					title: `안성민 교수님의<br />열혈 Javascript강의`,
+					title: `트리플 교수님의<br />열혈 Javascript강의`,
 					text: `<p>당신이 지금까지 찾을 수 없었던 Javascript강의, <br />
 							15만명의 선택으로 만들어진 최대규모 강의
 							프로젝트, <br />
@@ -332,20 +434,20 @@ export default {
 				},
 				{
 					thumbnail:
-						'https://cdn.inflearn.com/wp-content/uploads/python-2.jpg',
-					title: `안성민 교수님의<br />열혈 Javascript강의`,
+						'https://cdn.inflearn.com/wp-content/uploads/c002.jpg',
+					title: `트리플 교수님의<br />열혈 Javascript강의`,
 					text: `<p>당신이 지금까지 찾을 수 없었던 Javascript강의, <br />
 							15만명의 선택으로 만들어진 최대규모 강의
 							프로젝트, <br />
 							20년도 Run&Go 최우수 강의 선정, <br />
 							지금 바로 여기서 확인하세요!
 							</p>`,
-					zoom: 10000,
+					zoom: 2000,
 				},
 				{
 					thumbnail:
 						'https://cdn.class101.net/images/d8641423-a054-4622-af7b-b0582742fb28/1440xauto.webp',
-					title: `안성민 교수님의<br />열혈 Javascript강의`,
+					title: `트리플 교수님의<br />열혈 Javascript강의`,
 					text: `<p>당신이 지금까지 찾을 수 없었던 Javascript강의, <br />
 							15만명의 선택으로 만들어진 최대규모 강의
 							프로젝트, <br />
@@ -358,10 +460,11 @@ export default {
 		};
 	},
 	methods: {
-		goToSearch(query) {
-			//검색페이지 이동
-			console.log(query);
-		},
+		// goToSearch(query) {
+		// 	//검색페이지 이동
+		// 	console.log(query);
+		// },
+		goToSearch() {},
 		changeReview(num) {
 			const len = this.review.length;
 			this.reviewIdx = (this.reviewIdx + num + len) % len;
@@ -381,6 +484,8 @@ export default {
 </script>
 
 <style scoped>
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
+
 .container {
 	max-width: 1440px;
 }
@@ -461,5 +566,10 @@ export default {
 	min-height: 200px;
 	line-height: 1.7;
 	color: #ededed;
+}
+
+#description {
+	background-color: #f5f7f8;
+	font-family: 'Lato', 'Spoqa Han Sans';
 }
 </style>
