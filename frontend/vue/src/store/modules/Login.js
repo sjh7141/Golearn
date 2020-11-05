@@ -15,7 +15,7 @@ const URL = {
 export default {
 	state: {
 		token: sessionStorage.getItem('token'),
-		isLogin: parseInt(sessionStorage.getItem('isLogin')),
+		isLogin: Number(sessionStorage.getItem('isLogin')),
 		user: sessionStorage.getItem('user'),
 	},
 	getters: {
@@ -41,7 +41,6 @@ export default {
 		},
 		setIsLogin(state, payload) {
 			state.isLogin = payload;
-			console.log(payload + '!!!');
 			sessionStorage.setItem('isLogin', payload);
 		},
 		setUser(state, payload) {
