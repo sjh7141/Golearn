@@ -41,7 +41,7 @@ public class S3Service {
 			return s3.getUrl(bucket, key).toString();
 		} catch(Exception e) {
 			log.error(e.getMessage());
+			return e.getMessage();
 		}
-		return null;
 	}
 }
