@@ -13,6 +13,7 @@ public interface LoadmapService {
 	public int deleteLoadmap(int ldmNo, int mbrNo);
 	public LoadmapDto findByLoadmap(int ldmNo);
 	public List<LoadmapCourseDto> findByCourse(int ldmNo);
+	public List<LoadmapCourseDto> findByUserNo(int userNo);
 	public int updateInCourse(List<LoadmapCourseDto> list);
 	public int deleteInCourse(List<LoadmapCourseDto> list);
 	public int registInCourse(List<LoadmapCourseDto> list);

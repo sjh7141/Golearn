@@ -82,4 +82,9 @@ public class LoadmapServiceImpl implements LoadmapService{
 		return loadmapMapper.registInCourse(list);
 	}
 
+	@Override
+	public List<LoadmapCourseDto> findByUserNo(int userNo) {
+		return loadmapMapper.findByUserNo(userNo);
+	}
+
 }
