@@ -1,43 +1,121 @@
 <template>
 	<div>
 		<v-app id="inspire">
-			<v-carousel
-				hide-delimiters
-				hide-delimiter-background
-				:show-arrows="false"
-				:cycle="cycle"
-				height="400"
-			>
-				<v-carousel-item
-					v-for="(item, i) in items"
-					:key="i"
-					:src="item.src"
+			<swiper class="swiper" :options="swiperOption" ref="swiper">
+				<swiper-slide
+					class="slide pb-5 pt-9"
+					v-for="(item, index) in banner"
+					:key="index"
+					:style="{
+						'background-image': 'url(' + item.thumbnail + ')',
+						'background-size': item.zoom + '%',
+					}"
 				>
-					<v-jumbotron dark>
-						<v-container fill-height>
-							<v-layout align-top>
-								<v-flex>
-									<h3
-										class="display-2"
-										style="color:rgb(233,233,233);"
-									>
-										{{ item.title }}
-									</h3>
-								</v-flex>
-							</v-layout>
-						</v-container>
-					</v-jumbotron>
-				</v-carousel-item>
-			</v-carousel>
+					<v-row class="info-upper" style="width:85%;">
+						<v-col cols="6">
+							<img
+								class="swiper-img"
+								height="400px"
+								width="100%"
+								:src="item.thumbnail"
+							/>
+						</v-col>
+						<v-col cols="6" class="pl-10">
+							<div class="title py-5" v-html="item.title"></div>
+							<div class="text" v-html="item.text"></div>
+							<div>
+								<v-row>
+									<div class="px-5">
+										<span style="font-size: 15px;">
+											{{ (index + 1) | setNumLength }} |
+											{{ banner.length | setNumLength }}
+										</span>
+									</div>
+									<div style="width:70%">
+										<v-progress-linear
+											:value="
+												((index + 1) / banner.length) *
+													100
+											"
+											rounded
+											color="white"
+											style="display:inline-block"
+										></v-progress-linear>
+									</div>
+								</v-row>
+							</div>
+						</v-col>
+					</v-row>
+				</swiper-slide>
+				<div
+					class="swiper-button-next swiper-button-white"
+					slot="button-next"
+				></div>
+				<div
+					class="swiper-button-prev swiper-button-white"
+					slot="button-prev"
+				></div>
+			</swiper>
 			<div class="container">
 				<v-container>
+					<v-slide-group
+						class="my-10"
+						show-arrows
+						style="height: 50px;"
+					>
+						<v-slide-item v-for="tag in search" :key="tag">
+							<v-btn
+								class="mx-2"
+								active-class="blue white--text"
+								color="white"
+								large
+								rounded
+								@click="goToSearch(tag)"
+								style="text-transform:none;"
+							>
+								<v-icon color="green accent-4" left>
+									mdi-search-web
+								</v-icon>
+								{{ tag }}
+							</v-btn>
+						</v-slide-item>
+					</v-slide-group>
 					<v-divider></v-divider>
 					<h2>이런 강의 어떠세요?</h2>
 					<v-row>
 						<vcards :items="cards"> </vcards>
 					</v-row>
 					<v-divider></v-divider>
-					<h2>금주의 인기강의</h2>
+					<h2>🚨 금주의 인기강의</h2>
+					<v-row>
+						<vcards :items="hit"></vcards>
+					</v-row>
+					<v-divider></v-divider>
+					<h2>🔥 수강생 급상승 강의</h2>
+					<v-row>
+						<vcards :items="cards"></vcards>
+					</v-row>
+					<v-row class="py-15">
+						<v-img
+							src="https://cdn.inflearn.com/public/main_sliders/38744ba0-b12a-491a-9ca2-43375c3905ba/share-you.jpg"
+						>
+							<div class="py-10 px-15">
+								<span
+									class="bold"
+									style="font-size: 30px; color:#2e2e2e;"
+								>
+									# 영상참여
+								</span>
+								<br />
+								<span class="bold" style="color:#808080;">
+									여러분의 작은참여가 교육의 시작을
+									만들어냅니다
+								</span>
+							</div>
+						</v-img>
+					</v-row>
+					<v-divider></v-divider>
+					<h2>신규 강의</h2>
 					<v-row>
 						<vcards :items="hit"></vcards>
 					</v-row>
@@ -49,16 +127,54 @@
 
 <script>
 import vcards from '@/components/component/cards';
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
+import 'swiper/css/swiper.css';
 export default {
 	components: {
 		vcards,
+		Swiper,
+		SwiperSlide,
 	},
 	data() {
 		return {
+			swiperOption: {
+				spaceBetween: 30,
+				centeredSlides: true,
+				loop: true,
+				autoplay: {
+					delay: 2500,
+					disableOnInteraction: false,
+				},
+				keyboard: {
+					enabled: true,
+				},
+				pagination: {
+					el: '.swiper-pagination',
+					clickable: true,
+				},
+				navigation: {
+					nextEl: '.swiper-button-next',
+					prevEl: '.swiper-button-prev',
+				},
+				lazy: true,
+			},
 			cycle: true,
 			items: [
 				{
 					title: 'go learn, go run',
+					src:
+						'https://www.udacity.com/www-proxy/contentful/assets/2y9b3o528xhq/4QTUWa3i4VL7CMc6MjXJe0/556a951cc5ff56725c4f82d0654fe9fc/HomepageBanner_tablet.jpg',
+				},
+				{
+					title: 'go learn, go run222',
+					src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
+				},
+				{
+					title: 'go learn, go run333',
+					src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
+				},
+				{
+					title: 'go learn, go run444',
 					src:
 						'https://www.udacity.com/www-proxy/contentful/assets/2y9b3o528xhq/4QTUWa3i4VL7CMc6MjXJe0/556a951cc5ff56725c4f82d0654fe9fc/HomepageBanner_tablet.jpg',
 				},
@@ -163,8 +279,104 @@ export default {
 						'https://mblogthumb-phinf.pstatic.net/MjAxODEwMTRfMjMw/MDAxNTM5NTI0MDA4NTU1.lqwYXl0waT8to2HT3ZvKZf1MpOZJvtkDj64qC2cfI6sg.xbisRBnM7Q6Kdz-lwNzYiz_lQGPpnPrELpr82NaMIngg.JPEG.rhksdlr134/GuidoAvatar_400x400.jpg?type=w800',
 				},
 			],
+			search: [
+				'C',
+				'C++',
+				'JAVA',
+				'Python',
+				'Javascript',
+				'CSS',
+				'HTML',
+				'Spring',
+				'Django',
+				'Algorithm',
+				'MySQL',
+				'NoSQL',
+				'C1',
+				'C++1',
+				'JAVA1',
+				'Python1',
+				'Javascript1',
+				'CSS1',
+				'HTML1',
+				'Spring1',
+				'Django1',
+				'Algorithm1',
+				'MySQL1',
+				'NoSQL1',
+			],
+			banner: [
+				{
+					thumbnail:
+						'https://www.educative.io/api/page/5393602882568192/image/download/6038586442907648',
+					title: `안성민 교수님의<br />폭풍 C++강의`,
+					text: `<p>당신이 지금까지 찾을 수 없었던 Javascript강의, <br />
+							15만명의 선택으로 만들어진 최대규모 강의
+							프로젝트, <br />
+							20년도 Run&Go 최우수 강의 선정, <br />
+							지금 바로 여기서 확인하세요!
+							</p>`,
+					zoom: 3000,
+				},
+				{
+					thumbnail:
+						'https://cdn.inflearn.com/public/course-324235-cover/12a6aceb-1c38-4ce1-b50c-ab9d32e43edd',
+					title: `안성민 교수님의<br />열혈 Javascript강의`,
+					text: `<p>당신이 지금까지 찾을 수 없었던 Javascript강의, <br />
+							15만명의 선택으로 만들어진 최대규모 강의
+							프로젝트, <br />
+							20년도 Run&Go 최우수 강의 선정, <br />
+							지금 바로 여기서 확인하세요!
+							</p>`,
+					zoom: 2000,
+				},
+				{
+					thumbnail:
+						'https://cdn.inflearn.com/wp-content/uploads/python-2.jpg',
+					title: `안성민 교수님의<br />열혈 Javascript강의`,
+					text: `<p>당신이 지금까지 찾을 수 없었던 Javascript강의, <br />
+							15만명의 선택으로 만들어진 최대규모 강의
+							프로젝트, <br />
+							20년도 Run&Go 최우수 강의 선정, <br />
+							지금 바로 여기서 확인하세요!
+							</p>`,
+					zoom: 10000,
+				},
+				{
+					thumbnail:
+						'https://cdn.class101.net/images/d8641423-a054-4622-af7b-b0582742fb28/1440xauto.webp',
+					title: `안성민 교수님의<br />열혈 Javascript강의`,
+					text: `<p>당신이 지금까지 찾을 수 없었던 Javascript강의, <br />
+							15만명의 선택으로 만들어진 최대규모 강의
+							프로젝트, <br />
+							20년도 Run&Go 최우수 강의 선정, <br />
+							지금 바로 여기서 확인하세요!
+							</p>`,
+					zoom: 3000,
+				},
+			],
 		};
 	},
+	methods: {
+		goToSearch(query) {
+			//검색페이지 이동
+			console.log(query);
+		},
+		changeReview(num) {
+			const len = this.review.length;
+			this.reviewIdx = (this.reviewIdx + num + len) % len;
+		},
+	},
+	filters: {
+		setNumLength(val) {
+			if (val.toString().length == 1) {
+				return '0' + val;
+			} else {
+				return val;
+			}
+		},
+	},
+	mounted() {},
 };
 </script>
 
@@ -184,5 +396,70 @@ export default {
 .link:hover {
 	color: purple;
 	cursor: pointer;
+}
+
+.v-btn--contained {
+	box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.1);
+}
+
+.v-btn--contained:hover {
+	font-weight: 700;
+}
+
+.v-responsive__content:after {
+	transform: scale(3) !important;
+}
+
+.swiper {
+	height: 500px;
+	width: 100%;
+	color: white;
+}
+
+.swiper-img {
+	border-radius: 10px;
+	max-width: 700px;
+}
+
+.slide {
+	background-position: center;
+
+	line-height: 1.32;
+}
+
+.slide:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-color: rgba(1, 1, 1, 0.3);
+	display: block;
+	z-index: 1;
+}
+
+.info-upper {
+	position: absolute;
+	z-index: 2;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.title {
+	font-size: 35px !important;
+	font-weight: bold;
+	line-height: 1.32;
+}
+
+.subtitle {
+	font-size: 20px;
+}
+
+.text {
+	max-width: 430px;
+	min-height: 200px;
+	line-height: 1.7;
+	color: #ededed;
 }
 </style>
