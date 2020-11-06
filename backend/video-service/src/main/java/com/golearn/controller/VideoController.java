@@ -43,7 +43,9 @@ public class VideoController {
     public ResponseEntity saveVideo(@ApiIgnore @RequestHeader("X-USERNO") int mbrNo, @RequestBody Video video) {
     	video.setMbrNo(mbrNo);
     	video = videoService.saveVideo(video);
-    	videoService.saveTag(video.getTags(), video.getVidNo());
+    	if(video.getTags() != null) {
+    		videoService.saveTag(video.getTags(), video.getVidNo());
+    	}
 //        return new ResponseEntity(HttpStatus.CREATED);
     	return ResponseEntity.ok(video.getVidNo());
     }
