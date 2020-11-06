@@ -4,9 +4,7 @@ import lombok.Data;
 import lombok.ToString;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.PostLoad;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity(name = "gl_member")
@@ -14,6 +12,7 @@ import java.util.Date;
 public class Member {
 
     @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int mbrNo;
 
     private String mbrId;

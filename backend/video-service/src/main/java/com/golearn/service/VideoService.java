@@ -79,10 +79,12 @@ public class VideoService {
     }
 
     public Video saveVideo(Video video) {
-    	return videoRepository.save(video);
+        video =videoRepository.saveAndFlush(video);
+    	return video;
     }
     
     public void saveTag(List<Tag> tag, int vidNo) {
+
     	VideoTag video = new VideoTag();
     	video.setVidNo(vidNo);
     	for(Tag cur : tag) {
