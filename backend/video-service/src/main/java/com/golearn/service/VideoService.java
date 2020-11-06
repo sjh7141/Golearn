@@ -70,6 +70,10 @@ public class VideoService {
     public Video saveVideo(Video video) {
     	return videoRepository.save(video);
     }
+    
+    public void saveTag(List<Tag> tag) {
+    	tagRepository.saveAll(tag);
+    }
 
     public Map isLikeVideo(int vidNo, int mbrNo) {
         Map<String, Boolean> result = new HashMap();
