@@ -40,7 +40,7 @@ public class VideoController {
     //TODO
     @ApiOperation(value = "영상 올리기")
     @PostMapping
-    public ResponseEntity saveVideo(@RequestHeader("X-USERNO") int mbrNo, @RequestBody Video video) {
+    public ResponseEntity saveVideo(@ApiIgnore @RequestHeader("X-USERNO") int mbrNo, @RequestBody Video video) {
     	video.setMbrNo(mbrNo);
     	video = videoService.saveVideo(video);
 //        return new ResponseEntity(HttpStatus.CREATED);
