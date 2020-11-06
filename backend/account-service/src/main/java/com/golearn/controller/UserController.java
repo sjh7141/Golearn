@@ -136,6 +136,13 @@ public class UserController {
 		return ResponseEntity.ok(user);
 	}
 	
+	@ApiOperation(value = "유저 번호 검색 정보 반환")
+	@GetMapping(value = "/users/no/{mbr_no}")
+	public ResponseEntity<UserDto> getUserNoInfo(@PathVariable("mbr_no") String no){
+		UserDto dto = userService.findByUserno(Integer.parseInt(no));
+		return ResponseEntity.ok(dto);
+	}
+	
 	@ApiOperation(value = "유저 아이디 검색 정보 반환")
 	@GetMapping(value = "/like/{to}")
 	public ResponseEntity<Boolean> channeldSubscribeCheck(@ApiIgnore @RequestHeader("X-USERNO") String from, @PathVariable("to") int to){

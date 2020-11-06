@@ -12,6 +12,7 @@ public interface UserService {
 	public int disableUser(int no);
 	public UserDto findByUsername(int no);
 	public UserDto findByUserId(String userId);
+	public UserDto findByUserno(int no);
 	public int checkByUsername(String username);
 	public int checkByEmail(String email);
 	public int checkByNickname(String nickname);
