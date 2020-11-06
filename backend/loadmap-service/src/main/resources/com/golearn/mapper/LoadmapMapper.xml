@@ -26,6 +26,7 @@
 		select *
 		from gl_loadmap
 		where mbr_no = #{userNo}
+		order by reg_dt desc
 	</select>
 	
 	<select id="findByCourse" resultType="com.golearn.domain.LoadmapCourseDto">
