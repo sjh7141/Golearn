@@ -17,11 +17,7 @@ public class VideoTag {
     @Id
     private int vidTagNo;
 
-    @ManyToOne
-    @JoinColumn(name="vid_no")
-    private Video video;
-    @ManyToOne
-    @JoinColumn(name="tag_no")
-    private Tag tag;
+    private int vidNo;
+    private int tagNo;
 
 }

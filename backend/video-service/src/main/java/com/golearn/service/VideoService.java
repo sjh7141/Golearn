@@ -1,20 +1,28 @@
 package com.golearn.service;
 
-import com.golearn.exception.UnAuthorizationException;
-import com.golearn.model.*;
-import com.golearn.repository.MemberRepository;
-import com.golearn.repository.TagRepository;
-import com.golearn.repository.VideoLikeRepository;
-import com.golearn.repository.VideoRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import com.golearn.exception.UnAuthorizationException;
+import com.golearn.model.Maker;
+import com.golearn.model.Member;
+import com.golearn.model.Tag;
+import com.golearn.model.Video;
+import com.golearn.model.VideoCompositeKey;
+import com.golearn.model.VideoLike;
+import com.golearn.model.VideoTag;
+import com.golearn.repository.MemberRepository;
+import com.golearn.repository.TagRepository;
+import com.golearn.repository.VideoLikeRepository;
+import com.golearn.repository.VideoRepository;
+import com.golearn.repository.VideoTagRepository;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -24,14 +32,17 @@ public class VideoService {
     private final VideoLikeRepository videoLikeRepository;
 
     private final TagRepository tagRepository;
+    
+    private final VideoTagRepository videoTagRepository;
 
     private final MemberRepository memberRepository;
 
-    VideoService(VideoRepository videoRepository, VideoLikeRepository videoLikeRepository, TagRepository tagRepository, MemberRepository memberRepository) {
+    VideoService(VideoRepository videoRepository, VideoLikeRepository videoLikeRepository, TagRepository tagRepository, MemberRepository memberRepository, VideoTagRepository videoTagRepository) {
         this.videoRepository = videoRepository;
         this.videoLikeRepository = videoLikeRepository;
         this.tagRepository = tagRepository;
         this.memberRepository = memberRepository;
+        this.videoTagRepository = videoTagRepository;
     }
 
     public Map getVideo(int vidNo) {
@@ -71,8 +82,13 @@ public class VideoService {
     	return videoRepository.save(video);
     }
     
-    public void saveTag(List<Tag> tag) {
-    	tagRepository.saveAll(tag);
+    public void saveTag(List<Tag> tag, int vidNo) {
+    	VideoTag video = new VideoTag();
+    	video.setVidNo(vidNo);
+    	for(Tag cur : tag) {
+    		video.setTagNo(cur.getTagNo());
+    		videoTagRepository.save(video);
+    	}
     }
 
     public Map isLikeVideo(int vidNo, int mbrNo) {
