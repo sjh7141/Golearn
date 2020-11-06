@@ -75,8 +75,8 @@ public class VideoCommentController {
 
     @ApiOperation(value = "대댓글 조회")
     @GetMapping("/comment/{vid_no}/{vid_cmt_pno}")
-    public ResponseEntity<List<VideoComment>> getVideoReplies(@PathVariable("vid_no") int vidNo, @PathVariable("vid_cmt_pno") int vidCmtNo, @RequestParam(value = "page_no", required = false, defaultValue = "1") int pageNo) {
-        return new ResponseEntity(videoCommentService.getVideoReplies(vidCmtNo, pageNo < 1 ? 0 : pageNo - 1), HttpStatus.OK);
+    public ResponseEntity<List<VideoComment>> getVideoReplies(@PathVariable("vid_no") int vidNo, @PathVariable("vid_cmt_pno") int vidCmtNo) {
+        return new ResponseEntity(videoCommentService.getVideoReplies(vidCmtNo), HttpStatus.OK);
     }
 
     @ApiOperation(value = "대댓글 수정")

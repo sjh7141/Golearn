@@ -69,9 +69,8 @@ public class VideoCommentService {
         }
     }
 
-    public List<VideoComment> getVideoReplies(int vidCmtNo, int pageNo) {
-        PageRequest pageRequest = PageRequest.of(pageNo, 20, Sort.by("regDt").ascending());
-        List<VideoComment> comments = videoCommentRepository.findAllByVidCmtPno(vidCmtNo, pageRequest);
+    public List<VideoComment> getVideoReplies(int vidCmtNo) {
+        List<VideoComment> comments = videoCommentRepository.findAllByVidCmtPnoOrderByRegDtAsc(vidCmtNo);
         for(VideoComment videoComment: comments){
             videoComment.setMember(memberRepository.findById(videoComment.getMbrNo()).get());
         }
