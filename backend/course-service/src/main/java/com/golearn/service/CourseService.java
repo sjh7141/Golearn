@@ -40,6 +40,6 @@ public class CourseService {
 	}
 	
 	public List<Course> findByMbrNo(long id){
-		return courseRepository.findByMbrNo(id);
+		return courseRepository.findByMbrNoOrderByRegDtDesc(id);
 	}
 }
