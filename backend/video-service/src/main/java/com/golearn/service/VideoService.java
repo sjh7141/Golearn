@@ -89,7 +89,7 @@ public class VideoService {
     	video.setVidNo(vidNo);
     	for(Tag cur : tag) {
     		video.setTagNo(cur.getTagNo());
-    		videoTagRepository.save(video);
+    		videoTagRepository.saveAndFlush(video);
     	}
     }
 
