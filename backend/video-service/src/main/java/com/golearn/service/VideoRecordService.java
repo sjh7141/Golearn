@@ -4,11 +4,13 @@ package com.golearn.service;
 import com.golearn.model.Video;
 import com.golearn.model.VideoCompositeKey;
 import com.golearn.model.VideoRecord;
+import com.golearn.model.VideoRecordPayload;
 import com.golearn.repository.VideoRecordRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Slf4j
 @Service
 public class VideoRecordService {
 
@@ -18,9 +20,12 @@ public class VideoRecordService {
         this.videoRecordRepository = videoRecordRepository;
     }
 
-    public List<VideoRecord> getRecords(int mbrNo){
-        return videoRecordRepository.findAllByMbrNo(mbrNo);
+    public List<VideoRecordPayload> getRecords(int mbrNo, List<Integer> vidNos){
+        log.info(""+mbrNo+vidNos.toString());
+        return videoRecordRepository.findAllByMbrNo(mbrNo, vidNos);
+//        return videoRecordRepository.findAll();
     }
+
 
     public VideoRecord getRecord(int mbrNo, int vidNo) {
         VideoCompositeKey videoCompositekey = new VideoCompositeKey(vidNo, mbrNo);
