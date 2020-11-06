@@ -41,8 +41,9 @@ public class VideoCommentController {
     public ResponseEntity saveVideoComment(@ApiIgnore @RequestHeader("X-USERNO") int mbrNo, @PathVariable("vid_no") int vidNo, @RequestBody VideoComment videoComment) {
         videoComment.setVidNo(vidNo);
         videoComment.setMbrNo(mbrNo);
-        videoCommentService.saveVideoComment(videoComment);
-        return new ResponseEntity(HttpStatus.CREATED);
+        VideoComment comment = videoCommentService.saveVideoComment(videoComment);
+        return ResponseEntity.ok(comment);
+//        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "댓글 수정")
@@ -50,8 +51,9 @@ public class VideoCommentController {
     public ResponseEntity updateVideoComment(@ApiIgnore @RequestHeader("X-USERNO") int mbrNo, @PathVariable("vid_no") int vidNo, @PathVariable("vid_cmt_no") int vidCmtNo, @RequestBody VideoComment videoComment) {
         videoComment.setVidCmtNo(vidCmtNo);
         videoComment.setVidNo(vidNo);
-        videoCommentService.updateVideoComment(videoComment, mbrNo);
-        return new ResponseEntity(HttpStatus.OK);
+        VideoComment comment = videoCommentService.updateVideoComment(videoComment, mbrNo);
+        return ResponseEntity.ok(comment);
+//        return new ResponseEntity(HttpStatus.OK);
     }
 
     @ApiOperation(value = "댓글 삭제")
@@ -67,8 +69,9 @@ public class VideoCommentController {
         videoComment.setMbrNo(mbrNo);
         videoComment.setVidCmtPno(vidCmtNo);
         videoComment.setVidNo(vidNo);
-        videoCommentService.saveVideoComment(videoComment);
-        return new ResponseEntity(HttpStatus.CREATED);
+        VideoComment comment = videoCommentService.saveVideoComment(videoComment);
+        return ResponseEntity.ok(comment);
+//        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "대댓글 조회")
@@ -81,8 +84,9 @@ public class VideoCommentController {
     @PutMapping("/comment/{vid_no}/{vid_cmt_pno}/{vid_cmt_no}")
     public ResponseEntity updateVideoReply(@ApiIgnore @RequestHeader("X-USERNO") int mbrNo, @PathVariable("vid_no") int vidNo, @PathVariable("vid_cmt_pno") int vidCmtPno, @PathVariable("vid_cmt_no") int vidCmtNo, @RequestBody VideoComment videoComment) {
         videoComment.setVidCmtNo(vidCmtNo);
-        videoCommentService.updateVideoComment(videoComment, mbrNo);
-        return new ResponseEntity(HttpStatus.OK);
+        VideoComment comment = videoCommentService.updateVideoComment(videoComment, mbrNo);
+        return ResponseEntity.ok(comment);
+//        return new ResponseEntity(HttpStatus.OK);
     }
 
     @ApiOperation(value = "대댓글 삭제")

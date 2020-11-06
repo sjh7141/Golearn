@@ -48,15 +48,15 @@ public class VideoCommentService {
         return comments;
     }
 
-    public void saveVideoComment(VideoComment videoComment) {
-        videoCommentRepository.save(videoComment);
+    public VideoComment saveVideoComment(VideoComment videoComment) {
+        return videoCommentRepository.save(videoComment);
     }
 
-    public void updateVideoComment(VideoComment videoComment, int mbrNo) {
+    public VideoComment updateVideoComment(VideoComment videoComment, int mbrNo) {
         VideoComment comment = videoCommentRepository.findById(videoComment.getVidCmtNo()).get();
         if (comment.getMbrNo() == mbrNo) {
             comment.setVidComment(videoComment.getVidComment());
-            videoCommentRepository.save(comment);
+            return videoCommentRepository.save(comment);
         } else {
             throw new UnAuthorizationException();
         }
