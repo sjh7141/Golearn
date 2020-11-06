@@ -10,6 +10,8 @@
     "dependencies": {
         "axios": "^0.20.0",
         "core-js": "^3.6.5",
+        "email-validator": "^2.0.4",
+        "password-validator": "^5.1.0",
         "swiper": "^5.3.7",
         "tiptap": "^1.30.0",
         "tiptap-extensions": "^1.33.2",
