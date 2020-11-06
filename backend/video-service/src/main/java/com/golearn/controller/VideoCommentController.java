@@ -47,17 +47,16 @@ public class VideoCommentController {
     }
 
     @ApiOperation(value = "댓글 수정")
-    @PutMapping("/comment/{vid_no}/{vid_cmt_no}")
-    public ResponseEntity updateVideoComment(@ApiIgnore @RequestHeader("X-USERNO") int mbrNo, @PathVariable("vid_no") int vidNo, @PathVariable("vid_cmt_no") int vidCmtNo, @RequestBody VideoComment videoComment) {
+    @PutMapping("/comment/{vid_cmt_no}")
+    public ResponseEntity updateVideoComment(@ApiIgnore @RequestHeader("X-USERNO") int mbrNo, @PathVariable("vid_cmt_no") int vidCmtNo, @RequestBody VideoComment videoComment) {
         videoComment.setVidCmtNo(vidCmtNo);
-        videoComment.setVidNo(vidNo);
         VideoComment comment = videoCommentService.updateVideoComment(videoComment, mbrNo);
         return ResponseEntity.ok(comment);
 //        return new ResponseEntity(HttpStatus.OK);
     }
 
     @ApiOperation(value = "댓글 삭제")
-    @DeleteMapping("/comment/{vid_no}/{vid_cmt_no}")
+    @DeleteMapping("/comment/{vid_cmt_no}")
     public ResponseEntity removeVideoComment(@ApiIgnore @RequestHeader("X-USERNO") int mbrNo, @PathVariable("vid_cmt_no") int vidCmtNo) {
         videoCommentService.removeVideoComment(vidCmtNo, mbrNo);
         return new ResponseEntity(HttpStatus.OK);
