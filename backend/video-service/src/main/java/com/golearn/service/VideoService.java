@@ -67,8 +67,8 @@ public class VideoService {
         }
     }
 
-    public void saveVideo(int mbrNo) {
-
+    public Video saveVideo(Video video) {
+    	return videoRepository.save(video);
     }
 
     public Map isLikeVideo(int vidNo, int mbrNo) {

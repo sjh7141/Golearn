@@ -21,5 +21,5 @@ public interface VideoCommentRepository extends JpaRepository<VideoComment, Inte
     @Transactional
     int deleteByVidCmtNoAndMbrNo(int vidCmtNo, int mbrNo);
 
-    List<VideoComment> findAllByVidCmtPno(int vidCmtPno, Pageable pageable);
+    List<VideoComment> findAllByVidCmtPnoOrderByRegDtAsc(int vidCmtPno);
 }
