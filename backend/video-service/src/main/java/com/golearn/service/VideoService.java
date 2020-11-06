@@ -7,6 +7,8 @@ import com.golearn.repository.TagRepository;
 import com.golearn.repository.VideoLikeRepository;
 import com.golearn.repository.VideoRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -91,11 +93,11 @@ public class VideoService {
     }
 
     public List<Video> getLikeVideo(int mbrNo) {
-        return videoRepository.findAllByMbrNoAndLikeVideoAndVidHideFalse(mbrNo);
+        return videoRepository.findAllLikeVideo(mbrNo);
     }
 
     public List<Video> getVideos(int mbrNo) {
-        List<Video> videos = videoRepository.findAllByMbrNoAndVidHideFalse(mbrNo);
+        List<Video> videos = videoRepository.findAllByMbrNoAndVidHideFalse(mbrNo,Sort.by("regDt").descending());
         for (Video video : videos) {
             video.setTags(tagRepository.findAllAndTagByVidNo(video.getVidNo()));
         }

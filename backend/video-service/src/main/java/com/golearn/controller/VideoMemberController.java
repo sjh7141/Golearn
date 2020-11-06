@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+
 @RestController
 @Api("VideoMember")
 public class VideoMemberController {
@@ -19,9 +20,10 @@ public class VideoMemberController {
     VideoMemberController(VideoService videoService) {
         this.videoService = videoService;
     }
+
     @ApiOperation(value = "유저별 업로드 동영상 조회")
     @GetMapping("/member/{mbr_no}")
-    public ResponseEntity<List<Video>> getMemberVideos(@PathVariable("mbr_no") int mbrNo){
+    public ResponseEntity<List<Video>> getMemberVideos(@PathVariable("mbr_no") int mbrNo) {
         return new ResponseEntity(videoService.getVideos(mbrNo), HttpStatus.OK);
     }
 }
