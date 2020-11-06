@@ -12,6 +12,8 @@
         "core-js": "^3.6.5",
         "moment": "^2.29.1",
         "swiper": "^5.2.0",
+        "email-validator": "^2.0.4",
+        "password-validator": "^5.1.0",
         "tiptap": "^1.30.0",
         "tiptap-extensions": "^1.33.2",
         "vue": "^2.6.11",

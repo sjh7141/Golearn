@@ -37,9 +37,9 @@ export default {
 			let render = true;
 			if (this.$route.path.indexOf('/login') > -1) {
 				render = false;
-				this.clearSpace();
+				this.setSpace(0);
 			} else {
-				this.setSpace();
+				this.setSpace(64);
 			}
 			return render;
 		},
@@ -57,12 +57,9 @@ export default {
 	},
 
 	methods: {
-		clearSpace() {
-			this.space = 0;
-		},
-		setSpace() {
-			if (this.$refs.header)
-				this.space = this.$refs.header.$el.clientHeight;
+		setSpace(value) {
+			// this.space = this.$refs.header.$el.clientHeight;
+			this.space = value;
 		},
 	},
 };
