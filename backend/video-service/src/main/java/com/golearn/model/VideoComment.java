@@ -17,6 +17,7 @@ import java.util.Date;
 @ToString
 public class VideoComment {
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int vidCmtNo;
 
     private int vidNo;

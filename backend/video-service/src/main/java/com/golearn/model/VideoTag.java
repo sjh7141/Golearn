@@ -15,6 +15,7 @@ import javax.persistence.*;
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,property = "vidTagNo")
 public class VideoTag {
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int vidTagNo;
 
     private int vidNo;

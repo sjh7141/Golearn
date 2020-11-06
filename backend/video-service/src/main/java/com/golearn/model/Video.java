@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -17,10 +19,11 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-
+@ToString
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "vidNo")
 public class Video {
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int vidNo;
 //    @OneToOne
 //    @JoinColumn(name="mbr_no")
@@ -38,7 +41,7 @@ public class Video {
     private String vidUrl;
 
     private int vidView;
-
+    @CreationTimestamp
     private Date regDt;
 
     private boolean vidHide;
@@ -51,7 +54,4 @@ public class Video {
     private List<Tag> tags;
     @Transient
     private int vidLikes;
-    public String toString(){
-        return "";
-    }
 }
