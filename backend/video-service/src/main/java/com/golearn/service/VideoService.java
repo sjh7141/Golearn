@@ -84,10 +84,9 @@ public class VideoService {
     }
     
     public void saveTag(List<Tag> tag, int vidNo) {
-
-    	VideoTag video = new VideoTag();
-    	video.setVidNo(vidNo);
     	for(Tag cur : tag) {
+    		VideoTag video = new VideoTag();
+    		video.setVidNo(vidNo);
     		video.setTagNo(cur.getTagNo());
     		videoTagRepository.saveAndFlush(video);
     	}
