@@ -2,10 +2,17 @@
 	<div ref="app">
 		<v-card class="transparent" flat>
 			<v-card-title>최신 동영상</v-card-title>
-			<v-divider></v-divider>
 			<!-- <v-sheet class="mx-auto"> -->
-			<v-slide-group class="pa-4" multiple show-arrows>
-				<v-slide-item
+			<swiper class="swiper-container" :options="swiperOption">
+				<div
+					class="swiper-button-prev  swiper-button"
+					slot="button-prev"
+				></div>
+				<div
+					class="swiper-button-next  swiper-button"
+					slot="button-next"
+				></div>
+				<swiper-slide
 					v-for="(video, i) in loading ? 5 : videos.data"
 					:key="i"
 				>
@@ -23,8 +30,8 @@
 							:video="video"
 						></video-card>
 					</v-skeleton-loader>
-				</v-slide-item>
-			</v-slide-group>
+				</swiper-slide>
+			</swiper>
 		</v-card>
 	</div>
 </template>
@@ -53,6 +60,38 @@ export default {
 		},
 		signinDialog: false,
 		details: {},
+		swiperOption: {
+			navigation: {
+				nextEl: '.swiper-button-next',
+				prevEl: '.swiper-button-prev',
+			},
+			breakpoints: {
+				1690: {
+					slidesPerView: 6,
+					spaceBetween: 10,
+				},
+				1440: {
+					slidesPerView: 5,
+					spaceBetween: 10,
+				},
+				1024: {
+					slidesPerView: 4,
+					spaceBetween: 10,
+				},
+				768: {
+					slidesPerView: 3,
+					spaceBetween: 10,
+				},
+				640: {
+					slidesPerView: 2,
+					spaceBetween: 10,
+				},
+				320: {
+					slidesPerView: 1,
+					spaceBetween: 10,
+				},
+			},
+		},
 	}),
 	computed: {
 		...mapGetters(['isAuthenticated']),
@@ -86,4 +125,13 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.swiper-button {
+	color: gray;
+	margin: 0px;
+	top: 30%;
+}
+.card {
+	background: #f9f9f9 !important;
+}
+</style>

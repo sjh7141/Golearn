@@ -2,17 +2,17 @@
 	<v-hover v-slot="{ hover }">
 		<v-card
 			class="content-bg card mx-auto"
-			width="250"
-			height="220"
+			width="450"
+			height="320"
 			flat
 			tile
 			router
-			:to="`/watch/${video.vid_no}`"
+			:to="`/watch/${course.cos_no}`"
 		>
 			<v-img
-				:src="`${video.vid_thumbnail}`"
-				height="150"
-				width="250"
+				:src="`${course.cos_thumbnail}`"
+				height="250"
+				width="450"
 				:class="hover ? 'over' : 'out'"
 				><v-fade-transition>
 					<div
@@ -20,9 +20,14 @@
 						class="d-flex transition-fast-in-fast-out darken-2 v-card--reveal display-3 white--text"
 						style="height: 100%; background-color:rgba(240,240,240,0.7);"
 					>
-						<v-icon class="mx-auto" color="red" x-large
+						<!-- <v-icon class="mx-auto" color="red" x-large
 							>mdi-play</v-icon
-						>
+						> -->
+						<div class="mx-auto content-wrapper">
+							<span class="mx-auto content">
+								{{ course.cos_content }}
+							</span>
+						</div>
 					</div>
 				</v-fade-transition></v-img
 			>
@@ -32,13 +37,11 @@
 						class="pl-2 pt-3 subtitle-1 font-weight-bold"
 						style="line-height: 1.2rem"
 					>
-						{{ video.vid_title }}
+						{{ course.cos_title }}
 					</v-card-title>
 
 					<v-card-subtitle class="pl-2 pt-0">
-						조회수 {{ video.vid_view | viewFormatter }} 회<v-icon
-							>mdi-circle-small</v-icon
-						>{{ dateFormatter(video.reg_dt) }}
+						{{ dateFormatter(course.reg_dt) }}
 					</v-card-subtitle>
 				</v-col>
 			</v-row>
@@ -49,17 +52,15 @@
 <script>
 import moment from 'moment';
 export default {
-	name: 'VideoCard',
+	name: 'CoruseCard',
 	props: {
-		video: {
+		course: {
 			type: Object,
 			required: true,
 		},
 	},
 	data() {
-		return {
-			url: 'k3a402.p.ssafy.io',
-		};
+		return {};
 	},
 	methods: {
 		dateFormatter(date) {
@@ -67,22 +68,30 @@ export default {
 		},
 	},
 	created() {},
-	filters: {
-		viewFormatter(value) {
-			if (value >= 1000000) {
-				return '' + parseInt(value / 1000000) + '백만';
-			} else if (value >= 10000) {
-				return '' + parseInt(value / 10000) + '만';
-			} else if (value >= 1000) {
-				return '' + parseInt(value / 1000) + '천';
-			} else return value;
-		},
-	},
 };
 </script>
 
 <style scoped>
-.card {
-	background: #f9f9f9 !important;
+.content-wrapper {
+	right: 0;
+	left: 0;
+	margin: auto;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	padding: 0.75rem;
+}
+.content {
+	color: black;
+	font-weight: bold;
+	font-size: 0.85rem;
+	word-break: break-all;
+	display: -webkit-box;
+	margin-bottom: 0.5rem;
+	line-height: 1.2em;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	-webkit-line-clamp: 7;
+	-webkit-box-orient: vertical;
 }
 </style>

@@ -29,5 +29,8 @@ export default {
 		setCourse() {
 			return axios.put(URL.courseBuild() + `/`);
 		},
+		getChannelCourses(context, payload) {
+			return axios.get(URL.courseBuild() + `/member/${payload}`);
+		},
 	},
 };

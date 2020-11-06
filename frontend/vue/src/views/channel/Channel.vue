@@ -1,12 +1,9 @@
 <template>
 	<div ref="app">
-		<v-parallax
-			height="230"
-			src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
-		></v-parallax>
+		<v-parallax height="230" :src="channel.banner"></v-parallax>
 		<div class="nav-bgcolor">
 			<div id="channel-header">
-				<v-container class="py-0">
+				<v-container fluid class="py-0">
 					<v-row class="justify-space-between">
 						<v-col cols="12" sm="5" md="5" lg="5" offset-md="1">
 							<v-skeleton-loader
@@ -19,12 +16,10 @@
 										<v-list-item-avatar size="80">
 											<v-img
 												v-if="
-													channel.photoUrl !==
+													channel.profile !==
 														'no-photo.jpg'
 												"
-												src="
-													https://avatars1.githubusercontent.com/u/25308679?s=460&u=d3601dc80551df28f6c0c1f2da6d9e64e24fae89&v=4
-												"
+												:src="channel.profile"
 											></v-img>
 
 											<v-avatar
@@ -36,7 +31,7 @@
 													class="white--text headline "
 												>
 													{{
-														channel.mbr_nickname
+														channel.nickname
 															.split('')[0]
 															.toUpperCase()
 													}}</span
@@ -49,11 +44,16 @@
 											<v-list-item-title
 												class="headline mb-1"
 												>{{
-													channel.mbr_nickname
+													channel.nickname
 												}}</v-list-item-title
 											>
 											<v-list-item-subtitle
-												>10k subscribers
+												>구독자
+												{{
+													channel.subscribe_count
+														| viewFormatter
+												}}
+												명
 											</v-list-item-subtitle>
 										</v-list-item-content>
 									</v-list-item>
@@ -62,7 +62,7 @@
 						</v-col>
 						<v-col cols="12" sm="5" md="2" lg="2" v-if="!loading">
 							<v-btn
-								v-if="isLogin && channel.mbr_no !== user.mbr_no"
+								v-if="isLogin == 1 && channel.no !== user.no"
 								:class="[
 									{ 'red white--text': !subscribed },
 									{
@@ -82,7 +82,7 @@
 							>
 							<!-- <template v-else-if="!currentUser" -->
 							<v-btn
-								v-else-if="!isLogin"
+								v-else-if="isLogin != 1"
 								:class="[
 									{ 'red white--text': !subscribed },
 									{
@@ -102,7 +102,7 @@
 							>
 							<v-btn
 								v-else-if="
-									isLogin && channel.mbr_no === user.mbr_no
+									isLogin == 1 && channel.no == user.no
 								"
 								class="blue white--text mt-6"
 								tile
@@ -116,13 +116,13 @@
 					</v-row>
 				</v-container>
 			</div>
-			<v-card flat class="transparent">
+			<v-card flat class="transparent mx-auto">
 				<v-tabs
 					v-model="tab"
 					background-color="transparent"
 					show-arrows
-					centered
 					center-active
+					class="container"
 				>
 					<v-tab v-for="(item, i) in items" :key="i">
 						{{ item }}
@@ -133,9 +133,46 @@
 					<v-tabs-items v-model="tab" class="transparent">
 						<v-tab-item>
 							<video-slider> </video-slider>
+							<course-slider></course-slider>
+							<loadmap-slider></loadmap-slider>
 						</v-tab-item>
 						<v-tab-item>
 							<video-list> </video-list>
+						</v-tab-item>
+						<v-tab-item>
+							<course-list></course-list>
+						</v-tab-item>
+						<v-tab-item>
+							<loadmap-list></loadmap-list>
+						</v-tab-item>
+						<v-tab-item>
+							<v-container>
+								<v-row>
+									<v-col cols="8">
+										설명
+										<v-divider></v-divider>
+									</v-col>
+
+									<v-col cols="4">
+										<v-row>
+											통계
+										</v-row>
+										<v-divider></v-divider>
+										<v-row>
+											가입일 :
+											{{
+												channel.reg_date | dateFormatter
+											}}
+										</v-row>
+										<v-divider></v-divider>
+										<v-row>
+											조회수 :
+											{{ 12351235 | viewFormmater }}
+											회
+										</v-row>
+									</v-col>
+								</v-row>
+							</v-container>
 						</v-tab-item>
 					</v-tabs-items>
 				</v-container>
@@ -145,9 +182,14 @@
 </template>
 
 <script>
-// import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import VideoSlider from '@/components/component/VideoSlider';
 import VideoList from '@/components/component/VideoList';
+import CourseSlider from '@/components/component/CourseSlider';
+import CourseList from '@/components/component/CourseList';
+import LoadmapSlider from '@/components/component/LoadmapSlider';
+import LoadmapList from '@/components/component/LoadmapList';
+import moment from 'moment';
 // import VideoCard from '@/components/component/VideoCard';
 export default {
 	data: () => ({
@@ -158,30 +200,24 @@ export default {
 		subscribeLoading: false,
 		showSubBtn: true,
 		items: ['홈', '동영상', '코스', '로드맵', '정보'],
-		channel: {
-			mbr_nickname: 'asm9677',
-			_id: 'asdf',
-			mbr_no: 3,
-		},
-		user: {
-			mbr_no: 3,
-		},
-		isLogin: true,
-		// currentUser: {
-		// 	_id: 'asdf',
-		// },
-		signinDialog: false,
+		channel: {},
 		details: {},
 	}),
 	computed: {
-		// ...mapGetters(['isLogin']),
+		...mapGetters(['isLogin', 'user']),
 	},
 	components: {
 		// VideoCard,
+
 		VideoSlider,
 		VideoList,
+		CourseSlider,
+		CourseList,
+		LoadmapSlider,
+		LoadmapList,
 	},
 	methods: {
+		...mapActions(['getMember', 'isLike']),
 		subscribe() {
 			if (!this.isLogin) {
 				this.$router.push('/login');
@@ -189,11 +225,46 @@ export default {
 			console.log('구독');
 		},
 		modify() {},
+		async getChannel(id) {
+			this.getMember(id).then(res => {
+				this.channel = res.data;
+				console.log(this.channel);
+				console.log(this.user);
+			});
+			this.isLike(id).then(res => {
+				this.subscribed = res.data;
+			});
+			console.log(this.isLogin == 0);
+		},
+	},
+	mounted() {
+		this.getChannel(this.$route.params.id);
+	},
+	beforeRouteUpdate(to, from, next) {
+		this.getChannel(to.params.id);
+		next();
+	},
+	filters: {
+		subscriberFormatter(value) {
+			if (value >= 1000000) {
+				return '' + parseInt(value / 1000000) + '백만';
+			} else if (value >= 10000) {
+				return '' + parseInt(value / 10000) + '만';
+			} else if (value >= 1000) {
+				return '' + parseInt(value / 1000) + '천';
+			} else return value;
+		},
+		dateFormatter(date) {
+			return moment(date).format('YYYY.MM.DD');
+		},
+		viewFormmater(value) {
+			return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		},
 	},
 };
 </script>
 
-<style>
+<style scoped>
 .nav-bgcolor {
 	background: #f9f9f9;
 }
@@ -203,7 +274,7 @@ export default {
 }
 
 .v-tab {
-	margin-right: 4em;
+	margin-right: 1em;
 }
 
 #channel-home .v-list-item--link:before {

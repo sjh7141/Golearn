@@ -29,5 +29,8 @@ export default {
 		setLoadmap() {
 			return axios.put(URL.loadmapBuild() + `/`);
 		},
+		getChannelLoadmaps(context, payload) {
+			return axios.get(URL.loadmapBuild() + `/member/${payload}`);
+		},
 	},
 };

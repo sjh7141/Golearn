@@ -14,7 +14,15 @@ export default {
 	mutations: {},
 	actions: {
 		getMember(context, id) {
-			return axios.get(URL.searchBuild() + `/member/${id}`);
+			return axios.get(URL.searchBuild() + `/users/no/${id}`);
+		},
+		isLike({ rootGetters }, id) {
+			const config = {
+				headers: {
+					Authorization: rootGetters.token,
+				},
+			};
+			return axios.get(URL.searchBuild() + `/like/${id}`, config);
 		},
 	},
 };

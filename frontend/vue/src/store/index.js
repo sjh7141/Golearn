@@ -5,6 +5,7 @@ import Course from './modules/Course';
 import Search from './modules/Search';
 import Loadmap from './modules/Loadmap';
 import Video from './modules/Video';
+import Account from './modules/Acoount';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -17,5 +18,6 @@ export default new Vuex.Store({
 		Search: Search,
 		Loadmap: Loadmap,
 		Video: Video,
+		Account: Account,
 	},
 });

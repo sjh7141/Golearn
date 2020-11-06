@@ -1,18 +1,34 @@
 <template>
 	<div ref="app">
 		<v-card class="transparent" flat>
-			<v-card-title>동영상</v-card-title>
-			<v-divider></v-divider>
+			<v-card-title
+				><div>동영상</div>
+				<v-spacer></v-spacer>
+				<v-btn v-if="hide" class="mx-5" @click="remove"
+					>선택 완료</v-btn
+				>
+				<v-switch
+					color="purple"
+					inset
+					label="영상 삭제"
+					v-model="hide"
+				></v-switch>
+			</v-card-title>
 			<v-row>
 				<v-col
 					cols="12"
 					sm="6"
 					md="3"
-					lg="3"
+					lg="2"
 					v-for="(video, i) in loading ? 10 : videos.data"
 					:key="i"
 					class="mx-xs-auto"
 				>
+					<v-checkbox
+						v-if="hide"
+						v-model="checked"
+						:value="video.vid_no"
+					></v-checkbox>
 					<v-skeleton-loader type="card-avatar" :loading="loading">
 						<video-card
 							:card="{ maxWidth: 250 }"
@@ -47,6 +63,8 @@ export default {
 		},
 		signinDialog: false,
 		details: {},
+		hide: false,
+		checked: [],
 	}),
 	computed: {
 		...mapGetters(['isAuthenticated']),
@@ -55,19 +73,28 @@ export default {
 		VideoCard,
 	},
 	methods: {
-		...mapActions(['getChannelVideos']),
+		...mapActions(['getChannelVideos', 'removeVideos']),
 		async getChannel(id) {
 			this.loading = true;
 			this.errored = false;
 
 			this.getChannelVideos(id).then(res => {
 				this.videos = res;
+				console.log(res);
 			});
 
 			this.loading = false;
 		},
 		subscribe() {
 			console.log('구독');
+		},
+		async remove() {
+			const self = this;
+			this.removeVideos(this.checked).then(function() {
+				self.getChannel(self.$route.params.id);
+				self.checked = [];
+				self.hide = false;
+			});
 		},
 	},
 	mounted() {
@@ -80,4 +107,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.card {
+	background: #f9f9f9 !important;
+}
+</style>
