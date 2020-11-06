@@ -84,5 +84,10 @@ public class UserServiceImpl implements UserService {
 	public int subscribeCheck(int from, int to) {
 		return userMapper.subscribeCheck(from, to);
 	}
+	
+	@Override
+	public UserDto findByUserno(int no) {
+		return userMapper.findByUserno(no);
+	}
 
 }
