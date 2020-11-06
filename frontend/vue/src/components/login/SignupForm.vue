@@ -30,70 +30,76 @@
 					</v-btn>
 				</template>
 				<v-avatar color="#f5f5f5" width="130" height="130">
-					<v-img ref="img" src="@/assets/user.png" />
+					<v-img ref="img" />
 				</v-avatar>
 			</v-badge>
 		</v-row>
 		<div class="form pt-10">
 			<v-text-field
 				v-model="id"
+				ref="id"
 				outlined
 				dark
 				label="아이디"
 				placeholder="아이디를 입력해 주세요."
 				color="#8fbaff"
-				:success-messages="id_text"
-				:error="iderror && id_text !== ''"
-				@blur="validID()"
+				:success-messages="idSuccessMessage"
+				:error-messages="idErrorMessage"
+				:error="idError"
+				@blur="duplicateId()"
 			/>
 			<v-text-field
 				class="pt-4"
-				v-model="password"
+				v-model="pwd"
+				ref="pwd"
 				outlined
 				dark
 				label="비밀번호"
 				placeholder="비밀번호를 입력해 주세요."
 				color="#8fbaff"
 				type="password"
-				:success-messages="pw_text"
-				:error="pwerror && pw_text !== ''"
+				:success-messages="pwdSuccessMessage"
+				:error-messages="pwdErrorMessage"
 				@blur="validPassword()"
 			/>
 			<v-text-field
-				v-model="re_password"
+				v-model="rePwd"
+				ref="rePwd"
 				outlined
 				dark
 				label="비밀번호 확인"
 				placeholder="비밀번호를 다시 한번 입력해 주세요."
 				color="#8fbaff"
 				type="password"
-				:success-messages="repw_text"
-				:error="repwerror && repw_text !== ''"
+				:success-messages="rePwdSuccessMessage"
+				:error-messages="rePwdErrorMessage"
 				@input="validRePassword()"
 			/>
 			<v-text-field
 				class="pt-4"
 				v-model="nickname"
+				ref="nickname"
 				outlined
 				dark
 				label="닉네임"
 				placeholder="닉네임을 입력해 주세요."
 				color="#8fbaff"
-				:success-messages="nick_text"
-				:error="nickerror && nick_text !== ''"
-				@blur="validNickname()"
+				:success-messages="nickSuccessMessage"
+				:error-messages="nickErrorMessage"
+				@blur="duplicateNickname()"
 			/>
 			<v-text-field
 				class="pt-4"
 				v-model="email"
+				ref="email"
 				outlined
 				dark
 				label="이메일"
 				placeholder="이메일을 입력해 주세요."
 				color="#8fbaff"
-				:success-messages="email_text"
-				:error="emailerror && email_text !== ''"
-				@blur="validEmail()"
+				:success-messages="emailSuccessMessage"
+				:error-messages="emailErrorMessage"
+				@blur="duplicateEmail()"
 			/>
 			<v-list-item style="padding:0;">
 				<v-list-item-content style="padding:0;">
@@ -111,8 +117,9 @@
 					color="#2e6afd"
 					x-large
 					dark
+					:loading="loading"
 					style="margin-top:10px; width:95%;"
-					@click="signup"
+					@click="validTotal"
 				>
 					<span style="font-size:20px">가입하기</span>
 				</v-btn>
@@ -219,6 +226,9 @@
 <script>
 import PrivatePolicy from '@/components/component/Policy.vue';
 import Terms from '@/components/component/Terms.vue';
+import PV from 'password-validator';
+import * as EmailValidator from 'email-validator';
+
 export default {
 	components: {
 		PrivatePolicy,
@@ -228,10 +238,33 @@ export default {
 		return {
 			policy: false,
 			terms: false,
+			passwordSchema: new PV(),
+			id: '',
+			pwd: '',
+			rePwd: '',
+			nickname: '',
+			email: '',
+			idError: false,
+			idSuccessMessage: '',
+			idErrorMessage: '',
+			pwdError: false,
+			pwdSuccessMessage: '',
+			pwdErrorMessage: '',
+			rePwdError: false,
+			rePwdErrorMessage: '',
+			rePwdSuccessMessage: '',
+			emailError: false,
+			emailErrorMessage: '',
+			emailSuccessMessage: '',
+			nickError: false,
+			nickSuccessMessage: '',
+			nickErrorMessage: '',
+			loading: false,
 		};
 	},
 	methods: {
 		clickImg() {
+			// this.$refs.file.value = null;
 			this.$refs.file.click();
 		},
 		changeImg() {
@@ -250,6 +283,214 @@ export default {
 		goToSignup() {
 			this.$emit('goToSignup', false);
 		},
+		validCheck() {
+			return (
+				this.idError ||
+				this.pwdError ||
+				this.rePwdError ||
+				this.nickError ||
+				this.emailError
+			);
+		},
+		validParameter(param) {
+			if (param == '') {
+				return false;
+			} else {
+				return true;
+			}
+		},
+		duplicateId() {
+			if (!this.validParameter(this.id)) {
+				this.setIdError();
+			} else {
+				this.$store.dispatch('idCheck', this.id).then(({ data }) => {
+					if (data) {
+						this.idError = false;
+						this.idSuccessMessage = '사용할 수 있는 아이디입니다.';
+						this.idErrorMessage = '';
+					} else {
+						this.setIdError();
+					}
+				});
+			}
+		},
+		validPassword() {
+			if (this.pwd != '' && this.passwordSchema.validate(this.pwd)) {
+				this.pwdError = false;
+				this.pwdSuccessMessage = '올바른 형태의 비밀번호입니다.';
+				this.pwdErrorMessage = '';
+			} else {
+				this.setPwdError();
+			}
+		},
+		validRePassword() {
+			if (this.pwd == this.rePwd) {
+				this.rePwdError = false;
+				this.rePwdSuccessMessage = '비밀번호가 일치합니다.';
+				this.rePwdErrorMessage = '';
+			} else {
+				this.rePwdError = true;
+				this.rePwdSuccessMessage = '';
+				this.rePwdErrorMessage = '비밀번호가 일치하지 않습니다.';
+			}
+		},
+		duplicateNickname() {
+			if (!this.validParameter(this.nickname)) {
+				this.setNicknameError();
+			} else {
+				this.$store
+					.dispatch('nicknameCheck', this.nickname)
+					.then(({ data }) => {
+						if (data) {
+							this.nickError = false;
+							this.nickSuccessMessage =
+								'사용할 수 있는 닉네임입니다.';
+							this.nickErrorMessage = '';
+						} else {
+							this.setNicknameError();
+						}
+					});
+			}
+		},
+		validEmail() {
+			if (this.email != '' && EmailValidator.validate(this.email)) {
+				return true;
+			} else {
+				this.setEmailError();
+				return false;
+			}
+		},
+		duplicateEmail() {
+			if (this.validEmail()) {
+				this.$store
+					.dispatch('emailCheck', this.email)
+					.then(({ data }) => {
+						if (data) {
+							this.emailError = false;
+							this.emailSuccessMessage =
+								'사용할 수 있는 이메일입니다.';
+							this.emailErrorMessage = '';
+						} else {
+							this.emailError = true;
+							this.emailSuccessMessage = '';
+							this.emailErrorMessage =
+								'사용할 수 없는 이메일입니다.';
+						}
+					});
+			}
+		},
+		validTotal() {
+			let terminate = true;
+			if (this.id == '') {
+				this.setIdError();
+			} else if (this.pwd == '') {
+				this.setPwdError();
+			} else if (this.nickname == '') {
+				this.setNicknameError();
+			} else if (this.email == '') {
+				this.setEmailError();
+			} else {
+				terminate = false;
+			}
+
+			if (terminate) return;
+
+			if (this.idError) {
+				this.$refs.id.focus();
+			} else if (this.pwdError) {
+				this.$refs.pwd.focus();
+			} else if (this.rePwdError) {
+				this.$refs.rePwd.focus();
+			} else if (this.nickError) {
+				this.$refs.nickname.focus();
+			} else if (this.emailError) {
+				this.$refs.email.focus();
+			} else {
+				this.loading = true;
+				let formData = new FormData();
+				if (document.getElementById('file').files[0]) {
+					formData.append(
+						'file',
+						document.getElementById('file').files[0],
+					);
+					this.$store
+						.dispatch('upload', {
+							data: formData,
+							target: 'member/profile',
+						})
+						.then(({ data }) => {
+							this.signup(data);
+						})
+						.catch(() => {
+							this.loading - false;
+							alert('업로드 에러');
+						});
+				} else {
+					this.signup(null);
+				}
+			}
+		},
+		setIdError() {
+			this.idError = true;
+			this.idSuccessMessage = '';
+			this.idErrorMessage = '사용할 수 없는 아이디입니다.';
+			this.$refs.id.focus();
+		},
+		setPwdError() {
+			this.pwdError = true;
+			this.pwdSuccessMessage = '';
+			this.pwdErrorMessage = '영문,숫자 포함 5 자리이상이어야 합니다.';
+			this.$refs.pwd.focus();
+		},
+		setEmailError() {
+			this.emailError = true;
+			this.emailSuccessMessage = '';
+			this.emailErrorMessage = '올바르지 않은 이메일 형식입니다.';
+			this.$refs.email.focus();
+		},
+		setNicknameError() {
+			this.nickError = true;
+			this.nickSuccessMessage = '';
+			this.nickErrorMessage = '사용할 수 없는 닉네임입니다.';
+			this.$refs.nickname.focus();
+		},
+		signup(file) {
+			let data = {
+				username: this.id,
+				password: this.pwd,
+				email: this.email,
+				nickname: this.nickname,
+			};
+			if (file != null) {
+				data.profile = file;
+			}
+			this.$store
+				.dispatch('signup', data)
+				.then(() => {
+					this.loading = false;
+					this.$emit('goToSignup', false);
+				})
+				.catch(() => {
+					this.loading = false;
+					alert(
+						'회원가입에 오류가 발생하였습니다. 잠시 후 다시 시도해주세요.',
+					);
+				});
+		},
+	},
+	created() {
+		this.passwordSchema
+			.is()
+			.min(5)
+			.is()
+			.max(50)
+			.has()
+			.digits()
+			.has()
+			.letters();
+	},
+	mounted() {
+		this.$refs.img.src = '/user.png';
 	},
 };
 </script>
@@ -261,7 +502,6 @@ a {
 
 .signup-wrapper {
 	height: 100vh;
-	/* background-color: #ededed; */
 	background-image: url('/src/assets/signup_banner.jpg');
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -274,33 +514,10 @@ a {
 	font-weight: 600;
 }
 
-.signup {
-	display: flex;
-	min-width: 1200px;
-}
-
-.signup-box {
-	display: flex;
-	flex-direction: column;
-	background-color: rgb(255, 255, 255);
-	width: 100%;
-	min-height: 100vh;
-}
-
 .signup-box-wrap {
 	width: 580px;
 	margin: auto;
 	background-color: rgba(0, 0, 0, 0.75);
 	color: #a8a8a8;
-}
-
-.bar {
-	display: inline-block;
-	width: 1px;
-	height: 18px;
-	margin: 2px 5px;
-	text-indent: -999em;
-	background: #e4e4e5;
-	vertical-align: bottom;
 }
 </style>
