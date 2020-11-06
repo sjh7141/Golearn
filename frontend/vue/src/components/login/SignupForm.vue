@@ -148,7 +148,7 @@
 			</v-row>
 			<v-row>
 				<v-col cols="12" class="py-0" style="font-size:16px;">
-					<div @click="goToSignup" style="cursor: pointer;">
+					<div @click="goToSignup(1)" style="cursor: pointer;">
 						<v-icon color="blue-grey">
 							mdi-chevron-left
 						</v-icon>
@@ -280,8 +280,8 @@ export default {
 				reader.readAsDataURL(file);
 			}
 		},
-		goToSignup() {
-			this.$emit('goToSignup', false);
+		goToSignup(state) {
+			this.$emit('goToSignup', state);
 		},
 		validCheck() {
 			return (
@@ -395,17 +395,13 @@ export default {
 
 			if (terminate) return;
 
-			if (this.idError) {
-				this.$refs.id.focus();
-			} else if (this.pwdError) {
-				this.$refs.pwd.focus();
-			} else if (this.rePwdError) {
-				this.$refs.rePwd.focus();
-			} else if (this.nickError) {
-				this.$refs.nickname.focus();
-			} else if (this.emailError) {
-				this.$refs.email.focus();
-			} else {
+			if (
+				!this.idError &&
+				!this.pwdError &&
+				!this.rePwdError &&
+				!this.nickError &&
+				!this.emailError
+			) {
 				this.loading = true;
 				let formData = new FormData();
 				if (document.getElementById('file').files[0]) {
@@ -434,25 +430,21 @@ export default {
 			this.idError = true;
 			this.idSuccessMessage = '';
 			this.idErrorMessage = '사용할 수 없는 아이디입니다.';
-			this.$refs.id.focus();
 		},
 		setPwdError() {
 			this.pwdError = true;
 			this.pwdSuccessMessage = '';
 			this.pwdErrorMessage = '영문,숫자 포함 5 자리이상이어야 합니다.';
-			this.$refs.pwd.focus();
 		},
 		setEmailError() {
 			this.emailError = true;
 			this.emailSuccessMessage = '';
 			this.emailErrorMessage = '올바르지 않은 이메일 형식입니다.';
-			this.$refs.email.focus();
 		},
 		setNicknameError() {
 			this.nickError = true;
 			this.nickSuccessMessage = '';
 			this.nickErrorMessage = '사용할 수 없는 닉네임입니다.';
-			this.$refs.nickname.focus();
 		},
 		signup(file) {
 			let data = {
@@ -468,7 +460,7 @@ export default {
 				.dispatch('signup', data)
 				.then(() => {
 					this.loading = false;
-					this.$emit('goToSignup', false);
+					this.$emit('goToSignup', 2);
 				})
 				.catch(() => {
 					this.loading = false;

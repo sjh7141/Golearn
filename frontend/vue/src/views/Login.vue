@@ -72,8 +72,14 @@ export default {
 	mounted() {},
 	methods: {
 		goToSignup(flag) {
-			this.isSignup = flag;
-			if (!flag) this.success = true;
+			if (flag == 0) {
+				this.isSignup = true;
+			} else {
+				this.isSignup = false;
+			}
+			if (flag == 2) {
+				this.success = true;
+			}
 		},
 		goToHome() {
 			this.$router.push('/');

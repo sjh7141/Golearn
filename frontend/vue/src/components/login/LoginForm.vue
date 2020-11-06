@@ -86,7 +86,7 @@ export default {
 	},
 	methods: {
 		goToSignup() {
-			this.$emit('goToSignup', true);
+			this.$emit('goToSignup', 0);
 		},
 		getSession() {
 			this.$store.dispatch('getUser').then(({ data }) => {
