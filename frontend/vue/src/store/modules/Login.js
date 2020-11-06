@@ -60,5 +60,8 @@ export default {
 			};
 			return axios.get(URL.userBuild(), config);
 		},
+		signup(context, payload) {
+			return axios.post(URL.userBuild(), payload);
+		},
 	},
 };
