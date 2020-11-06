@@ -103,7 +103,6 @@ export default {
 		if (this.$route.params.id == 'intro') this.index = 0;
 		if (this.$route.params.id == 'requestlist') this.index = 1;
 		if (this.$route.params.id == 'request') this.index = 2;
-		console.log(this.index, this.$route.params);
 	},
 	methods: {
 		move(url, index) {

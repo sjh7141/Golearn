@@ -4,11 +4,15 @@ const URL = {
 	DOMAIN: 'http://k3a402.p.ssafy.io:8801',
 	AUTH: 'auth/login',
 	USER: 'account/users',
+	ACCOUNT: 'account-service',
 	loginBuild() {
 		return Array(this.DOMAIN, this.AUTH).join('/');
 	},
 	userBuild() {
 		return Array(this.DOMAIN, this.USER).join('/');
+	},
+	accountBuild() {
+		return Array(this.DOMAIN, this.ACCOUNT).join('/');
 	},
 };
 
@@ -59,6 +63,18 @@ export default {
 				},
 			};
 			return axios.get(URL.userBuild(), config);
+		},
+		signup(context, payload) {
+			return axios.post(URL.userBuild(), payload);
+		},
+		emailCheck(context, payload) {
+			return axios.get(URL.accountBuild() + `/email-check/${payload}`);
+		},
+		idCheck(context, payload) {
+			return axios.get(URL.accountBuild() + `/id-check/${payload}`);
+		},
+		nicknameCheck(context, payload) {
+			return axios.get(URL.accountBuild() + `/nickname-check/${payload}`);
 		},
 	},
 };

@@ -56,7 +56,11 @@
 						<v-btn icon large v-on="on">
 							<v-avatar>
 								<img
-									src="@/assets/default_profile.png"
+									:src="
+										user.profile
+											? user.profile
+											: '@/assets/default_profile.png'
+									"
 									alt="프로필"
 								/>
 								<!-- <span class="white--text headline">{{
@@ -71,7 +75,11 @@
 								<v-row class="mx-2">
 									<v-avatar color="brown">
 										<img
-											src="@/assets/default_profile.png"
+											:src="
+												user.profile
+													? user.profile
+													: '@/assets/default_profile.png'
+											"
 											alt="프로필"
 										/>
 									</v-avatar>
