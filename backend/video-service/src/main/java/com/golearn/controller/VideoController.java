@@ -46,9 +46,8 @@ public class VideoController {
 
     @ApiOperation(value = "영상 숨기기")
     @DeleteMapping
-    public ResponseEntity hideVideo(@RequestBody Map<String, Object> map, @ApiIgnore @RequestHeader("X-USERNO") int mbrNo) {
-        videoService.hideVideo((List<Integer>) map.get("hide_list"), mbrNo);
-
+    public ResponseEntity hideVideo(@RequestParam("hide_list") List<Integer> hideList, @ApiIgnore @RequestHeader("X-USERNO") int mbrNo) {
+        videoService.hideVideo(hideList, mbrNo);
         return new ResponseEntity(HttpStatus.OK);
     }
 
