@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.golearn.dto.VideoDto;
 
@@ -24,7 +25,8 @@ public class Index {
 	private String idxTitle;
 	@Column(name = "idx_order")
 	private int idxOrder;
-
+	
+	@Transient 
 	private VideoDto video;
 
 	public Index() {
