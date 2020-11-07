@@ -14,4 +14,7 @@
     <color name="colorPrimaryVariant">#3842FF</color>
     <color name="bannerColor">#426DDD</color>
     <color name="white_200">#B7FFFFFF</color>
+    <color name="un_played_color">#646464</color>
+    <color name="buffered_color">#55FFFFFF</color>
+    <color name="white_gray">#C8C8C8</color>
 </resources>

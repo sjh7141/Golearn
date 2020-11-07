@@ -15,6 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import kr.co.golearn.R;
+import kr.co.golearn.util.PreferenceManager;
 import kr.co.golearn.view.main.article.ArticleFragment;
 import kr.co.golearn.view.main.channel.ChannelActivity;
 import kr.co.golearn.view.main.home.HomeFragment;
@@ -47,11 +48,14 @@ public class MainActivity extends AppCompatActivity {
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
 
         mainViewModel.getMember().observe(this, member -> {
-            Glide.with(this).load("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSyTP4OcpyrXA6j1BDWscLhVaZFCjcH5tA6sA&usqp=CAU")
+            Glide.with(this).load(member.getProfile())
                     .placeholder(R.drawable.account_login_auto_check_24dp)
                     .error(R.drawable.account_login_auto_check_24dp)
                     .circleCrop()
                     .into(imgProfile);
+            new PreferenceManager().setLong(this, PreferenceManager.USER_NO, member.getNo());
+            new PreferenceManager().setString(this, PreferenceManager.USER_NICKNAME, member.getNickname());
+            new PreferenceManager().setString(this, PreferenceManager.USER_PROFILE, member.getProfile());
         });
 
         mainViewModel.getMember(this);

@@ -12,10 +12,13 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.card.MaterialCardView;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import kr.co.golearn.R;
 import kr.co.golearn.adaptor.HomeVideoPagerAdapter;
 import kr.co.golearn.domain.Video;
@@ -53,14 +56,14 @@ public class PagerHomeFragment extends Fragment {
 
     private void actionViewModel() {
         accountViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        videoViewModel =  ViewModelProviders.of(this).get(VideoViewModel.class);
+        videoViewModel = ViewModelProviders.of(this).get(VideoViewModel.class);
 
-        accountViewModel.getMember().observe(getActivity(), member ->{
+        accountViewModel.getMember().observe(getActivity(), member -> {
             homeVideoPagerAdapter.setMember(member);
             recyclerViewVideo.setAdapter(homeVideoPagerAdapter);
         });
         videoViewModel.getVideos().observe(getActivity(), videos -> {
-            for(Video video : videos){
+            for (Video video : videos) {
                 video.setDate(CommonUtils.calcTimeDate(video.getRegDt()));
                 video.setViewCount(CommonUtils.convertCount(video.getVidView()));
                 originVideos.add(video);
@@ -74,8 +77,6 @@ public class PagerHomeFragment extends Fragment {
     private void populateData(int page) {
 
     }
-
-
 
     private void init() {
         page = 1;
