@@ -32,7 +32,7 @@ public class IndexService {
 	
 	// 목차 조회
 	public List<Index> findByCosNo(long cosNo){
-		return indexRepository.findByCosNo(cosNo);
+		return indexRepository.findByCosNoOrderByIdxOrderAsc(cosNo);
 	}
 	
 	// 목차 상세 정보
