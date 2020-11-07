@@ -1,44 +1,34 @@
 package kr.co.golearn.domain;
 
 public class Tag {
-    private long no;
-    private String name;
-    private long targetNo;
+    private long tagNo;
+    private String tag_name;
 
     public Tag() {
 
     }
 
-    public long getNo() {
-        return no;
+    public long getTagNo() {
+        return tagNo;
     }
 
-    public void setNo(long no) {
-        this.no = no;
+    public void setTagNo(long tagNo) {
+        this.tagNo = tagNo;
     }
 
-    public String getName() {
-        return name;
+    public String getTag_name() {
+        return tag_name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public long getTargetNo() {
-        return targetNo;
-    }
-
-    public void setTargetNo(long targetNo) {
-        this.targetNo = targetNo;
+    public void setTag_name(String tag_name) {
+        this.tag_name = tag_name;
     }
 
     @Override
     public String toString() {
         return "Tag{" +
-                "no=" + no +
-                ", name='" + name + '\'' +
-                ", targetNo=" + targetNo +
+                "tagNo=" + tagNo +
+                ", tag_name='" + tag_name + '\'' +
                 '}';
     }
 }

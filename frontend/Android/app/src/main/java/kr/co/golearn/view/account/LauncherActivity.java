@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import kr.co.golearn.R;
+import kr.co.golearn.domain.Video;
 import kr.co.golearn.view.main.MainActivity;
 import kr.co.golearn.view.main.channel.ChannelActivity;
+import kr.co.golearn.view.video.VideoActivity;
 
 public class LauncherActivity extends AppCompatActivity {
 
@@ -21,7 +23,7 @@ public class LauncherActivity extends AppCompatActivity {
     }
 
     private void loading() {
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, VideoActivity.class);
         new Handler().postDelayed(() -> {
             startActivity(intent);
             finish();

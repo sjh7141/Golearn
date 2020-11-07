@@ -1,6 +1,5 @@
 package kr.co.golearn.adaptor;
 
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,7 +101,6 @@ public class HomeVideoPagerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
 
         public void bind(Video video, int position) {
-            System.out.println(video);
             CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(itemView.getContext());
             circularProgressDrawable.setStrokeWidth(5f);
             circularProgressDrawable.setCenterRadius(30f);
@@ -142,7 +140,7 @@ public class HomeVideoPagerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_pager_home_video_footer, parent, false);
             holder = new FooterViewHolder(view);
         } else {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_pager_video_item, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_pager_home_video_item, parent, false);
             holder = new HomeVideoPagerHolder(view);
         }
         return holder;

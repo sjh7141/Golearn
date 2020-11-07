@@ -55,7 +55,6 @@ public class LoginActivity extends AppCompatActivity {
     private void actionViewModel() {
         String pw = preferenceManager.getString(this, PreferenceManager.LOGIN_PW);
         String id = preferenceManager.getString(this, PreferenceManager.LOGIN_ID);
-        Log.d("tttt", "id:"+id + " pw:" +pw);
         accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
         accountViewModel.getIsSaveID().observe(this, savedId -> {
             checkBoxSaveId.setChecked(savedId);
@@ -123,9 +122,7 @@ public class LoginActivity extends AppCompatActivity {
 
     void login(String id, String password) {
         progressLoadingDialog.show();
-        Log.d("ttt1_login(id,password)", "id:" + id + "  pw:" + password);
         accountViewModel.login(this, id, password);
-        Log.d("ttt2_login(id,password)", "id:" + id + "  pw:" + password);
     }
 
     @OnClick(R.id.account_login_btn_login)

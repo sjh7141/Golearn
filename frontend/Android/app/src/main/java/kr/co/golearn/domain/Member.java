@@ -4,11 +4,16 @@ import java.util.Date;
 
 public class Member {
     private long no;
+    private long mbrNo;
     private String username;
+    private String mbrId;
     private String nickname;
+    private String mbrNickname;
     private String password;
+    private String mbrEmail;
     private String email;
     private String profile;
+    private String mbrProfile;
     private String banner;
     private Date regDate;
     private Date updateDate;
@@ -113,15 +118,59 @@ public class Member {
         this.banner = banner;
     }
 
+    public long getMbrNo() {
+        return mbrNo;
+    }
+
+    public void setMbrNo(long mbrNo) {
+        this.mbrNo = mbrNo;
+    }
+
+    public String getMbrId() {
+        return mbrId;
+    }
+
+    public void setMbrId(String mbrId) {
+        this.mbrId = mbrId;
+    }
+
+    public String getMbrEmail() {
+        return mbrEmail;
+    }
+
+    public void setMbrEmail(String mbrEmail) {
+        this.mbrEmail = mbrEmail;
+    }
+
+    public String getMbrProfile() {
+        return mbrProfile;
+    }
+
+    public void setMbrProfile(String mbrProfile) {
+        this.mbrProfile = mbrProfile;
+    }
+
+    public String getMbrNickname() {
+        return mbrNickname;
+    }
+
+    public void setMbrNickname(String mbrNickname) {
+        this.mbrNickname = mbrNickname;
+    }
+
     @Override
     public String toString() {
         return "Member{" +
                 "no=" + no +
+                ", mbrNo=" + mbrNo +
                 ", username='" + username + '\'' +
+                ", mbrId='" + mbrId + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", password='" + password + '\'' +
+                ", mbrEmail='" + mbrEmail + '\'' +
                 ", email='" + email + '\'' +
                 ", profile='" + profile + '\'' +
+                ", mbrProfile='" + mbrProfile + '\'' +
                 ", banner='" + banner + '\'' +
                 ", regDate=" + regDate +
                 ", updateDate=" + updateDate +

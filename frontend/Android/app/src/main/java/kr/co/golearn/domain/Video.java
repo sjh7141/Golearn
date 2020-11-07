@@ -1,6 +1,9 @@
 package kr.co.golearn.domain;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
+import java.util.List;
 
 public class Video {
     private long vidNo;
@@ -14,9 +17,13 @@ public class Video {
     private boolean vidHide;
     private String vidThumbnail;
     private int vidLength;
+    private int vidLikes;
     private String date;
     private String videoLength;
     private String viewCount;
+
+    @SerializedName("tags")
+    private List<Tag> tags;
 
     public Video() {
 
@@ -134,10 +141,26 @@ public class Video {
         this.viewCount = viewCount;
     }
 
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
+    public int getVidLikes() {
+        return vidLikes;
+    }
+
+    public void setVidLikes(int vidLikes) {
+        this.vidLikes = vidLikes;
+    }
+
     @Override
     public String toString() {
         return "Video{" +
-                "voidNo=" + vidNo +
+                "vidNo=" + vidNo +
                 ", mbrNo=" + mbrNo +
                 ", vidPno=" + vidPno +
                 ", vidTitle='" + vidTitle + '\'' +
@@ -150,6 +173,8 @@ public class Video {
                 ", vidLength=" + vidLength +
                 ", date='" + date + '\'' +
                 ", videoLength='" + videoLength + '\'' +
+                ", viewCount='" + viewCount + '\'' +
+                ", tags=" + tags +
                 '}';
     }
 }

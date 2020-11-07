@@ -60,7 +60,7 @@
             app:layout_constraintStart_toStartOf="@+id/pager_home_header_subscriper">
 
             <TextView
-                android:id="@+id/textView11"
+                android:id="@+id/card_video_detail_comment_header_txt_toggle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#F5F5F5"
