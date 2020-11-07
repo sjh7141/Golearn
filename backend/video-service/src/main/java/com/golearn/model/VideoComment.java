@@ -17,6 +17,7 @@ import java.util.Date;
 @ToString
 public class VideoComment {
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int vidCmtNo;
 
     private int vidNo;
@@ -31,5 +32,9 @@ public class VideoComment {
     @UpdateTimestamp
     private Date chgDt;
 
+    @Transient
+    private Member member;
+    @Transient
+    private int numOfReply;
 
 }

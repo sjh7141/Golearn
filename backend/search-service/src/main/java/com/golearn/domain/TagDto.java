@@ -2,24 +2,24 @@ package com.golearn.domain;
 
 public class TagDto {
 
-	private int no;
-	private String name;
+	private int tagNo;
+	private String tagName;
 	private int targetNo;
 
-	public int getNo() {
-		return no;
+	public int getTagNo() {
+		return tagNo;
 	}
 
-	public void setNo(int no) {
-		this.no = no;
+	public void setTagNo(int tagNo) {
+		this.tagNo = tagNo;
 	}
 
-	public String getName() {
-		return name;
+	public String getTagName() {
+		return tagName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTagName(String tagName) {
+		this.tagName = tagName;
 	}
 
 	public int getTargetNo() {
@@ -29,5 +29,5 @@ public class TagDto {
 	public void setTargetNo(int targetNo) {
 		this.targetNo = targetNo;
 	}
-	
+
 }

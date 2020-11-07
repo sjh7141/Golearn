@@ -36,6 +36,9 @@ public class CourseManagerController {
 	public ResponseEntity insertCourseManager(@ApiIgnore @RequestHeader(value = "X-USERNO") String mbrNo,
 			@RequestBody CourseManager request) {
 		logger.info(">> LOAD insertCourseManager <<");
+		if(courseManagerService.checkManager(request.getCosNo(), Long.parseLong(mbrNo)) == 0) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
 		courseManagerService.save(request);
 		return new ResponseEntity(HttpStatus.CREATED);
 	}
@@ -46,6 +49,9 @@ public class CourseManagerController {
 	public ResponseEntity deleteCourseManager(@ApiIgnore @RequestHeader(value = "X-USERNO") String mbrNo,
 			@RequestBody CourseManager request) {
 		logger.info(">> LOAD deleteCourseManager <<");
+		if(courseManagerService.checkManager(request.getCosNo(), Long.parseLong(mbrNo)) == 0) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
 		courseManagerService.delete(request);
 		return new ResponseEntity(HttpStatus.NO_CONTENT);
 	}

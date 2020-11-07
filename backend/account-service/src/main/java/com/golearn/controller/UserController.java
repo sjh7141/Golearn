@@ -32,6 +32,12 @@ public class UserController {
 	@ApiOperation(value = "유저 회원 가입")
 	@PostMapping(value = "/users")
 	public ResponseEntity<String> singup(@RequestBody UserDto dto) {
+		if(dto.getProfile() == null) {
+			dto.setProfile("profile_default.png");
+		}
+		if(dto.getBanner() == null) {
+			dto.setBanner("profile_banner_default.png");
+		}
 		int res = userService.save(dto);
 		if(res == 0) {
 			return ResponseEntity.ok("등록 실패");
@@ -121,6 +127,30 @@ public class UserController {
 			return ResponseEntity.ok("구독 취소 실패");
 		}
 		return ResponseEntity.ok("구독 취소 성공");
+	}
+	
+	@ApiOperation(value = "유저 아이디 검색 정보 반환")
+	@GetMapping(value = "/users/{user_id}")
+	public ResponseEntity<UserDto> getUserInfo(@PathVariable("user_id") String userId){
+		UserDto user = userService.findByUserId(userId);
+		return ResponseEntity.ok(user);
+	}
+	
+	@ApiOperation(value = "유저 번호 검색 정보 반환")
+	@GetMapping(value = "/users/no/{mbr_no}")
+	public ResponseEntity<UserDto> getUserNoInfo(@PathVariable("mbr_no") String no){
+		UserDto dto = userService.findByUserno(Integer.parseInt(no));
+		return ResponseEntity.ok(dto);
+	}
+	
+	@ApiOperation(value = "유저 아이디 검색 정보 반환")
+	@GetMapping(value = "/like/{to}")
+	public ResponseEntity<Boolean> channeldSubscribeCheck(@ApiIgnore @RequestHeader("X-USERNO") String from, @PathVariable("to") int to){
+		int res = userService.subscribeCheck(Integer.parseInt(from), to);
+		if(res == 0) {
+			return ResponseEntity.ok(false);
+		}
+		return ResponseEntity.ok(true);
 	}
 	
 }

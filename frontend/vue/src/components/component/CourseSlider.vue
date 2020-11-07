@@ -1,6 +1,6 @@
 <template>
 	<div ref="app">
-		<v-card class="transparent" flat>
+		<v-card class="transparent" flat v-if="courses.data.length !== 0">
 			<v-divider></v-divider>
 
 			<v-card-title>코스</v-card-title>

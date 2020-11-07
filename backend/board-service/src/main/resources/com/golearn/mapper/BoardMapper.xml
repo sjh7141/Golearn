@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.golearn.mapper.BoardMapper">
+
+	<insert id="registBoard" parameterType="com.golearn.domain.BoardDto">
+		insert into gl_board (mbr_no, brd_title, brd_content, brd_type)
+		values (#{mbrNo}, #{title}, #{content}, #{type})	
+	</insert>
+	
+	<update id="updateBoard" parameterType="com.golearn.domain.BoardDto">
+		update gl_board set brd_title = #{title}, brd_content = #{content}, chg_dt = now()
+		where brd_no = #{brdNo} and mbr_no = #{mbrNo}
+	</update>
+	
+	<update id="increaseView">
+		update gl_board set brd_view = brd_view + 1
+		where brd_no = #{brdNo}
+	</update>
+	
+	<delete id="deleteBoard">
+		delete
+		from gl_board
+		where brd_no = #{brdNo} and mbr_no = #{mbrNo}
+	</delete>
+	
+	<select id="findBoardList" resultType="com.golearn.domain.BoardDto">
+		select brd_no brdNo, mbr_no mbrNo, brd_title title, brd_content content, reg_dt regDate, chg_dt updateDate, brd_type type, brd_view viewCount
+		from gl_board
+		where brd_type = #{type}
+		limit #{startIndex}, #{perPageNum}
+	</select>
+	
+	<select id="findBoardDetails" resultType="com.golearn.domain.BoardDto">
+	 	select brd_no brdNo, mbr_no mbrNo, brd_title title, brd_content content, reg_dt regDate, chg_dt updateDate, brd_type type, brd_view viewCount
+		from gl_board
+		where brd_no = #{brdNo}
+	</select>
+	
+	<select id="findBoardCount" resultType="Integer">
+		select count(*)
+		from gl_board
+		where brd_type = #{type}
+	</select>
+</mapper>

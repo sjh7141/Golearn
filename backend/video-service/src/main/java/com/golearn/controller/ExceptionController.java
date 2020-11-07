@@ -17,18 +17,20 @@ public class ExceptionController {
 
 
     // 401
-    @ExceptionHandler({ AccessDeniedException.class })
+    @ExceptionHandler({AccessDeniedException.class})
     public ResponseEntity handleAccessDeniedException(final AccessDeniedException ex) {
         log.info(ex.getClass().getName());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
     }
+
     @ExceptionHandler({UnAuthorizationException.class})
-    public ResponseEntity handleUnAuthorizationException(final UnAuthorizationException ex){
+    public ResponseEntity handleUnAuthorizationException(final UnAuthorizationException ex) {
         log.info(ex.getClass().getName());
         return new ResponseEntity(HttpStatus.FORBIDDEN);
     }
+
     // 400
-    @ExceptionHandler({ Exception.class })
+    @ExceptionHandler({Exception.class})
     public ResponseEntity<Object> handleAll(final Exception ex) {
         log.info(ex.getClass().getName());
 

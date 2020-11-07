@@ -13,6 +13,7 @@
 				:src="`${video.vid_thumbnail}`"
 				height="150"
 				width="250"
+				centered
 				:class="hover ? 'over' : 'out'"
 				><v-fade-transition>
 					<div
@@ -84,5 +85,8 @@ export default {
 <style scoped>
 .card {
 	background: #f9f9f9 !important;
+}
+.pause {
+	animation-play-state: paused;
 }
 </style>

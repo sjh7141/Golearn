@@ -8,12 +8,14 @@ public class CourseDto {
 	private int cosNo;
 	private int mbrNo;
 	private String mbrNickname;
+	private String mbrProfile;
 	private String cosTitle;
 	private String cosContent;
 	private String cosThumbnail;
 	private int likeCount;
 	private Date regDt;
 	private Date chgDt;
+	private List<TagDto> tags;
 
 	public int getCosNo() {
 		return cosNo;
@@ -30,13 +32,21 @@ public class CourseDto {
 	public void setMbrNo(int mbrNo) {
 		this.mbrNo = mbrNo;
 	}
-	
+
 	public String getMbrNickname() {
 		return mbrNickname;
 	}
 
 	public void setMbrNickname(String mbrNickname) {
 		this.mbrNickname = mbrNickname;
+	}
+
+	public String getMbrProfile() {
+		return mbrProfile;
+	}
+
+	public void setMbrProfile(String mbrProfile) {
+		this.mbrProfile = mbrProfile;
 	}
 
 	public String getCosTitle() {
@@ -86,7 +96,13 @@ public class CourseDto {
 	public void setLikeCount(int likeCount) {
 		this.likeCount = likeCount;
 	}
-	
-	
+
+	public List<TagDto> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<TagDto> tags) {
+		this.tags = tags;
+	}
 
 }

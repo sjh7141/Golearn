@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.golearn.mapper.LoadmapMapper">
+
+	<insert id="registLoadmap" parameterType="com.golearn.domain.LoadmapDto" useGeneratedKeys="true" keyProperty="ldmNo">
+		insert into gl_loadmap (mbr_no)
+		value(#{mbrNo}) 
+	</insert>
+	
+	<update id="updateLoadmap" parameterType="com.golearn.domain.LoadmapDto">
+		update gl_loadmap set ldm_title = #{ldmTitle}, ldm_content = #{ldmContent}, ldm_thumbnail = #{ldmThumbnail}, chg_dt = now()
+		where ldm_no = #{ldmNo} and mbr_no = #{mbrNo}
+	</update>
+	
+	<delete id="deleteLoadmap">
+		delete from gl_loadmap where ldm_no = #{ldmNo} and mbr_no = #{mbrNo}
+	</delete>
+	
+	<select id="findByLoadmap" resultType="com.golearn.domain.LoadmapDto">
+		select *
+		from gl_loadmap
+		where ldm_no = #{ldmNo}
+	</select>
+	
+	<select id="findByUserNo" resultType="com.golearn.domain.LoadmapDto">
+		select *
+		from gl_loadmap
+		where mbr_no = #{userNo}
+		order by reg_dt desc
+	</select>
+	
+	<select id="findByCourse" resultType="com.golearn.domain.LoadmapCourseDto">
+		select gc.*, glc.ldm_order, glc.no
+		from gl_loadmap_course glc inner join gl_course gc
+		on glc.ldm_no = #{ldmNo} and glc.cos_no = gc.cos_no
+        order by glc.ldm_order asc
+	</select>
+	
+	<update id="updateInCourse" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index">
+			update gl_loadmap_course 
+			set cos_no = #{item.cosNo}, ldm_order = #{item.ldmOrder}
+			where ldm_no = #{item.ldmNo} and no = #{item.no}
+		</foreach>
+	</update>
+	
+	<delete id="deleteInCourse" parameterType="java.util.List"> 
+		<foreach collection="list" item="item" index="index">
+			delete
+			from gl_loadmap_course
+			where no = #{item.no}
+		</foreach>
+	</delete>
+	
+	<insert id="registInCourse" parameterType="java.util.List">
+			insert into gl_loadmap_course (cos_no, ldm_no, ldm_order)
+			values
+		<foreach collection="list" item="item" index="index" separator=", ">
+			(#{item.cosNo}, #{item.ldmNo}, #{item.ldmOrder})
+		</foreach>
+	</insert>
+</mapper>

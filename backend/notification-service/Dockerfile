@@ -4,4 +4,4 @@ VOLUME /a402
 
 COPY backend/notification-service/build/libs/*.jar notification-service.jar
 
-ENTRYPOINT ["java", "-jar", "notification-service.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "notification-service.jar"]

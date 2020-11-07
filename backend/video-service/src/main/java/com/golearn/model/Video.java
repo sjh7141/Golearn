@@ -1,29 +1,45 @@
 package com.golearn.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity(name = "gl_video")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class,property = "vidNo")
+@DynamicInsert
+@Data
+@ToString
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "vidNo")
 public class Video {
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int vidNo;
-
+//    @OneToOne
+//    @JoinColumn(name="mbr_no")
+//    private Member mbrNo;
+//    @OneToOne
+//    @JoinColumn(name = "vid_pno")
+//    private Video vidPno;
     private int mbrNo;
-
     private int vidPno;
 
     private String vidTitle;
@@ -33,7 +49,7 @@ public class Video {
     private String vidUrl;
 
     private int vidView;
-
+    @CreationTimestamp
     private Date regDt;
 
     private boolean vidHide;
@@ -42,7 +58,8 @@ public class Video {
 
     private int vidLength;
 
-//    @JoinColumn(name="gl_video_tag",nullable = false)
-    @OneToMany(mappedBy="tagCompositeKey.video",fetch = FetchType.LAZY)
-    private List<VideoTag> videoTags;
+    @Transient
+    private List<Tag> tags;
+    @Transient
+    private int vidLikes;
 }
