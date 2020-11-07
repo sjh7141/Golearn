@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.golearn.domain.SubscribeDto;
 import com.golearn.domain.UserDto;
+import com.golearn.service.MailService;
 import com.golearn.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -152,5 +153,5 @@ public class UserController {
 		}
 		return ResponseEntity.ok(true);
 	}
-	
+
 }
