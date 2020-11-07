@@ -1,5 +1,7 @@
 package com.golearn.domain;
 
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,9 +27,9 @@ public class Index {
 	private String idxTitle;
 	@Column(name = "idx_order")
 	private int idxOrder;
-	
-	@Transient 
-	private VideoDto video;
+
+	@Transient
+	private Map<String, Object> map;
 
 	public Index() {
 
@@ -81,12 +83,12 @@ public class Index {
 		this.idxOrder = idxOrder;
 	}
 
-	public VideoDto getVideo() {
-		return video;
+	public Map<String, Object> getMap() {
+		return map;
 	}
 
-	public void setVideo(VideoDto video) {
-		this.video = video;
+	public void setMap(Map<String, Object> map) {
+		this.map = map;
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package com.golearn.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.golearn.client.VideoClient;
 import com.golearn.domain.CourseViewer;
 import com.golearn.domain.Index;
-import com.golearn.dto.VideoDto;
 import com.golearn.service.CourseViewerService;
 import com.golearn.service.IndexService;
 
@@ -63,9 +63,8 @@ public class IndexController {
 		logger.info(">> LOAD getAllIndex <<");
 		List<Index> index = indexService.findByCosNo(cosNo);
 		for (Index i : index) {
-			VideoDto video = videoClient.getVideo((int) i.getVidNo()).getBody();
-			logger.info(videoClient.getVideo((int) i.getVidNo()).getStatusCode()+"");
-			logger.info(video.toString());
+			Map<String, Object> cur = videoClient.getVideo((int) i.getVidNo()).getBody();
+			i.setMap(cur);
 		}
 		return new ResponseEntity<List<Index>>(index, HttpStatus.OK);
 	}
