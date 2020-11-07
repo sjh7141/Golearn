@@ -16,10 +16,10 @@ public interface VideoCommentRepository extends JpaRepository<VideoComment, Inte
     @Query(value = "select p.vid_cmt_no vidCmtNo, p.vid_no vidNo, p.mbr_no mbrNo, p.vid_cmt_pno vid_cmt_pno," +
             " p.vid_comment vidComment, p.reg_dt regDt, p.chg_dt chgDt,count(distinct c.vid_cmt_no) numOfReply " +
             "from gl_video_comment as p left join gl_video_comment as c on p.vid_cmt_no = c.vid_cmt_pno " +
-            "where p.vid_no = :vidNo group by p.vid_cmt_no", nativeQuery = true)
+            "where p.vid_no = :vidNo and p.vid_cmt_pno=0 group by p.vid_cmt_no", nativeQuery = true)
     List<VideoCommentPayload> findAllByVidNo(int vidNo, Pageable pageable);
     @Transactional
     int deleteByVidCmtNoAndMbrNo(int vidCmtNo, int mbrNo);
 
-    List<VideoComment> findAllByVidCmtNo(int vidCmtNo, Pageable pageable);
+    List<VideoComment> findAllByVidCmtPnoOrderByRegDtAsc(int vidCmtPno);
 }

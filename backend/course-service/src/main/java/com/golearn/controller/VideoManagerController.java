@@ -2,6 +2,8 @@ package com.golearn.controller;
 
 import java.util.List;
 
+import javax.ws.rs.core.Response;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.golearn.domain.VideoManager;
 import com.golearn.domain.VideoVersioningResopnse;
+import com.golearn.service.CourseManagerService;
 import com.golearn.service.VideoManagerService;
 
 import io.swagger.annotations.ApiOperation;
@@ -28,6 +31,9 @@ public class VideoManagerController {
 
 	@Autowired
 	VideoManagerService videoManagerService;
+	
+	@Autowired
+	private CourseManagerService courseManagerService;
 
 	// 영상 요청 하기
 	@RequestMapping(method = RequestMethod.POST, value = "/video")
@@ -45,6 +51,9 @@ public class VideoManagerController {
 	public ResponseEntity<VideoManager> updateVideo(@ApiIgnore @RequestHeader(value = "X-USERNO") String mbrNo,
 			@RequestBody VideoManager request) {
 		logger.info(">> LOAD updateVideo <<");
+		if(courseManagerService.checkManager(request.getCosNo(), Long.parseLong(mbrNo)) == 0) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
 		VideoManager response = videoManagerService.updateVideo(mbrNo, request);
 		return new ResponseEntity<VideoManager>(response, HttpStatus.CREATED);
 	}
@@ -56,6 +65,10 @@ public class VideoManagerController {
 			@ApiIgnore @RequestHeader(value = "X-USERNO") String mbrNo, @PathVariable("cos_no") long cosNo,
 			@RequestParam("page") int page) {
 		logger.info(">> LOAD getRequestVideos <<");
+		System.out.println(cosNo + " " + mbrNo);
+		if(courseManagerService.checkManager(cosNo, Long.parseLong(mbrNo)) == 0) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
 		List<VideoManager> response = videoManagerService.perPageBy20(cosNo, page);
 		return new ResponseEntity<List<VideoManager>>(response, HttpStatus.CREATED);
 	}

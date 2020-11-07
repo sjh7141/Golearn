@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VideoLikeRepository extends JpaRepository<VideoLike, VideoCompositeKey> {
-
+    int countDistinctByVideoCompositekey_VidNo(int vidNo);
 }

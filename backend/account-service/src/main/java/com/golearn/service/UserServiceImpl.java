@@ -21,6 +21,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int save(UserDto dto) {
+		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 		return userMapper.save(dto);
 	}
 
@@ -72,6 +73,21 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int subscribeCancle(int from, int to) {
 		return userMapper.subscribeCancle(from, to);
+	}
+
+	@Override
+	public UserDto findByUserId(String userId) {
+		return userMapper.findByUserId(userId);
+	}
+	
+	@Override
+	public int subscribeCheck(int from, int to) {
+		return userMapper.subscribeCheck(from, to);
+	}
+	
+	@Override
+	public UserDto findByUserno(int no) {
+		return userMapper.findByUserno(no);
 	}
 
 }

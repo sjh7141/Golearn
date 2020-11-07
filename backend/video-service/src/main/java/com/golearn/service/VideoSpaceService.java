@@ -23,7 +23,7 @@ public class VideoSpaceService {
     }
 
     public List<Video> getVideosInSpace(int mbrNo) {
-        return videoRepository.findAllSpaceVideoByMbrNo(mbrNo);
+        return videoRepository.findAllSpaceVideo(mbrNo);
     }
 
     public void saveVideoInSpace(int vidNo, int mbrNo) {
