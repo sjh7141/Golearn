@@ -1,93 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:layout_height="100dp">
 
-    <ImageView
-        android:id="@+id/card_pager_video_thumbnail"
-        android:layout_width="160dp"
-        android:layout_height="84dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_pager_video_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        app:cardCornerRadius="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/card_pager_video_txt_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
-        android:background="@drawable/video_time_background"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:text="3:00"
-        android:textColor="@color/white"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/card_pager_video_thumbnail"
-        app:layout_constraintEnd_toEndOf="@+id/card_pager_video_thumbnail" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/card_pager_video_item_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="Title"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/card_pager_video_thumbnail"
-        app:layout_constraintTop_toTopOf="@+id/card_pager_video_thumbnail" />
+            <ImageView
+                android:id="@+id/card_pager_video_thumbnail"
+                android:layout_width="160dp"
+                android:layout_height="84dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/card_pager_video_item_nickname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="nickname"
-        android:textColor="@color/gray"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="@+id/card_pager_video_item_title"
-        app:layout_constraintTop_toBottomOf="@+id/card_pager_video_item_title" />
+            <TextView
+                android:id="@+id/card_pager_video_txt_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/video_time_background"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="3:00"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/card_pager_video_thumbnail"
+                app:layout_constraintEnd_toEndOf="@+id/card_pager_video_thumbnail" />
 
-    <TextView
-        android:id="@+id/card_pager_video_item_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="조회수 3회"
-        android:textColor="@color/gray"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="@+id/card_pager_video_item_title"
-        app:layout_constraintTop_toBottomOf="@+id/card_pager_video_item_nickname" />
+            <TextView
+                android:id="@+id/card_pager_video_item_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Title"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/card_pager_video_thumbnail"
+                app:layout_constraintTop_toTopOf="@+id/card_pager_video_thumbnail" />
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="·"
-        android:textColor="@color/gray"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/card_pager_video_item_view"
-        app:layout_constraintStart_toEndOf="@+id/card_pager_video_item_view"
-        app:layout_constraintTop_toBottomOf="@+id/card_pager_video_item_nickname" />
+            <TextView
+                android:id="@+id/card_pager_video_item_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="nickname"
+                android:textColor="@color/gray"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/card_pager_video_item_title"
+                app:layout_constraintTop_toBottomOf="@+id/card_pager_video_item_title" />
 
-    <TextView
-        android:id="@+id/card_pager_video_item_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="3일 전"
-        android:textColor="@color/gray"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView8"
-        app:layout_constraintStart_toEndOf="@+id/textView8"
-        app:layout_constraintTop_toTopOf="@+id/textView8" />
+            <TextView
+                android:id="@+id/card_pager_video_item_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="조회수 3회"
+                android:textColor="@color/gray"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/card_pager_video_item_title"
+                app:layout_constraintTop_toBottomOf="@+id/card_pager_video_item_nickname" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="·"
+                android:textColor="@color/gray"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/card_pager_video_item_view"
+                app:layout_constraintStart_toEndOf="@+id/card_pager_video_item_view"
+                app:layout_constraintTop_toBottomOf="@+id/card_pager_video_item_nickname" />
+
+            <TextView
+                android:id="@+id/card_pager_video_item_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="2일 전"
+                android:textColor="@color/gray"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView8"
+                app:layout_constraintStart_toEndOf="@+id/textView8"
+                app:layout_constraintTop_toTopOf="@+id/textView8" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

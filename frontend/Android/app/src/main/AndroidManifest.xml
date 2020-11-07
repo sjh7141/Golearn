@@ -12,9 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DoLearn">
+        <activity android:name=".view.course.CourseIndexActivity"></activity>
         <activity
             android:name=".view.video.ReplyBottomFragment"
-            android:theme="@android:style/Theme.Material.Light.Dialog"/>
+            android:theme="@android:style/Theme.Material.Light.Dialog" />
         <activity
             android:name=".view.video.CommentReplyBottomFragment"
             android:theme="@android:style/Theme.Material.Light.Dialog" />

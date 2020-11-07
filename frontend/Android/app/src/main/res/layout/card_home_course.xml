@@ -6,7 +6,7 @@
     android:layout_height="300dp">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/account_login_card_view"
+        android:id="@+id/card_home_course_card_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clickable="true"
@@ -22,7 +22,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/card_home_img_thumbnail"
+                android:id="@+id/card_home_course_img_thumbnail"
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -34,10 +34,10 @@
                 android:layout_height="85dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_home_img_thumbnail">
+                app:layout_constraintTop_toBottomOf="@+id/card_home_course_img_thumbnail">
 
                 <ImageView
-                    android:id="@+id/card_home_profile"
+                    android:id="@+id/card_home_course_profile"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="15dp"
@@ -57,11 +57,11 @@
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/card_home_profile"
-                    app:layout_constraintTop_toTopOf="@+id/card_home_profile" />
+                    app:layout_constraintStart_toEndOf="@+id/card_home_course_profile"
+                    app:layout_constraintTop_toTopOf="@+id/card_home_course_profile" />
 
                 <TextView
-                    android:id="@+id/card_home_nickname"
+                    android:id="@+id/card_home_course_nickname"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -69,7 +69,7 @@
                     android:text="nickname"
                     android:textColor="@color/gray"
                     android:textSize="13sp"
-                    app:layout_constraintStart_toEndOf="@+id/card_home_profile"
+                    app:layout_constraintStart_toEndOf="@+id/card_home_course_profile"
                     app:layout_constraintTop_toBottomOf="@+id/card_home_course_title" />
 
                 <TextView
@@ -80,11 +80,11 @@
                     android:text="·"
                     android:textColor="@color/gray"
                     android:textSize="13sp"
-                    app:layout_constraintStart_toEndOf="@+id/card_home_nickname"
+                    app:layout_constraintStart_toEndOf="@+id/card_home_course_nickname"
                     app:layout_constraintTop_toBottomOf="@+id/card_home_course_title" />
 
                 <TextView
-                    android:id="@+id/card_home_date"
+                    android:id="@+id/card_home_course_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"

@@ -23,7 +23,7 @@ public class LauncherActivity extends AppCompatActivity {
     }
 
     private void loading() {
-        Intent intent = new Intent(this, VideoActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         new Handler().postDelayed(() -> {
             startActivity(intent);
             finish();

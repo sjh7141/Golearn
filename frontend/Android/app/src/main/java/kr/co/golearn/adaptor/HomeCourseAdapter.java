@@ -1,5 +1,6 @@
 package kr.co.golearn.adaptor;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import kr.co.golearn.R;
 import kr.co.golearn.domain.Course;
+import kr.co.golearn.view.course.CourseIndexActivity;
 
 public class HomeCourseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int VIEW_TYPE_ITEM = 0;
@@ -30,18 +34,28 @@ public class HomeCourseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         @BindView(R.id.card_home_course_title)
         TextView courseTitle;
-        @BindView(R.id.card_home_date)
+        @BindView(R.id.card_home_course_date)
         TextView courseDate;
-        @BindView(R.id.card_home_nickname)
+        @BindView(R.id.card_home_course_nickname)
         TextView memberNickname;
-        @BindView(R.id.card_home_profile)
+        @BindView(R.id.card_home_course_profile)
         ImageView imgProfile;
-        @BindView(R.id.card_home_img_thumbnail)
+        @BindView(R.id.card_home_course_img_thumbnail)
         ImageView imgThumbnail;
 
         public HomeCourseViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        @OnClick(R.id.card_home_course_card_view)
+        void clickToCourse(){
+            int position = this.getAdapterPosition();
+            Course course = courses.get(position);
+
+            Intent intent = new Intent(itemView.getContext(), CourseIndexActivity.class);
+            intent.putExtra("course_info", course);
+            itemView.getContext().startActivity(intent);
         }
     }
 

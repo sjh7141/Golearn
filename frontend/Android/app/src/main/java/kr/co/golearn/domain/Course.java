@@ -1,8 +1,9 @@
 package kr.co.golearn.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Course {
+public class Course implements Serializable {
     private long cosNo;
     private long mbrNo;
     private String mbrNickname;
@@ -10,6 +11,7 @@ public class Course {
     private String cosTitle;
     private String cosContent;
     private String cosThumbnail;
+    private String cosBanner;
     private int likeCount;
     private Date regDt;
     private Date chgDt;
@@ -107,6 +109,14 @@ public class Course {
         this.date = date;
     }
 
+    public String getCosBanner() {
+        return cosBanner;
+    }
+
+    public void setCosBanner(String cosBanner) {
+        this.cosBanner = cosBanner;
+    }
+
     @Override
     public String toString() {
         return "Course{" +
@@ -117,6 +127,7 @@ public class Course {
                 ", cosTitle='" + cosTitle + '\'' +
                 ", cosContent='" + cosContent + '\'' +
                 ", cosThumbnail='" + cosThumbnail + '\'' +
+                ", cosBanner='" + cosBanner + '\'' +
                 ", likeCount=" + likeCount +
                 ", regDt=" + regDt +
                 ", chgDt=" + chgDt +

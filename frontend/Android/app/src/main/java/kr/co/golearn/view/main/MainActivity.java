@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
         mainViewModel.getMember().observe(this, member -> {
             Glide.with(this).load(member.getProfile())
-                    .placeholder(R.drawable.account_login_auto_check_24dp)
-                    .error(R.drawable.account_login_auto_check_24dp)
+                    .placeholder(R.drawable.account_login_auto_check)
+                    .error(R.drawable.account_login_auto_check)
                     .circleCrop()
                     .into(imgProfile);
             new PreferenceManager().setLong(this, PreferenceManager.USER_NO, member.getNo());

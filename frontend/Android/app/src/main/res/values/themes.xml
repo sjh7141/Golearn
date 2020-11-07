@@ -19,4 +19,8 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
+
+    <style name="CheckBox">
+        <item name="colorAccent">@color/gray</item>
+    </style>
 </resources>
