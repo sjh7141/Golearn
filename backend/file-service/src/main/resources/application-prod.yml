@@ -1,0 +1,39 @@
+server:
+  port: 8808
+  
+spring:
+  application:
+    name: file-service
+  servlet:
+    multipart:
+      max-file-size: 2000MB
+      max-request-size: 2500MB
+
+cloud:
+  aws:
+    stack:
+      auto: false
+    region: 
+      static: ap-northeast-2
+    s3:
+      bucket: go-learn
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://k3a402.p.ssafy.io:8761/eureka
+  instance:
+    instance-id: file-service
+    prefer-ip-address: true
+      
+logging:
+  pattern:
+    console: "%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"
+    file: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  level:
+    org.springframework.web: INFO
+  file:
+    path: /logging
+    name: /logging/file-service.log

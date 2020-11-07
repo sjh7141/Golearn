@@ -3,7 +3,7 @@ import axios from 'axios';
 const URL = {
 	DOMAIN: 'http://k3a402.p.ssafy.io:8801',
 	PREFIX: 'account',
-	searchBuild() {
+	accountBuild() {
 		return Array(this.DOMAIN, this.PREFIX).join('/');
 	},
 };
@@ -14,7 +14,7 @@ export default {
 	mutations: {},
 	actions: {
 		getMember(context, id) {
-			return axios.get(URL.searchBuild() + `/users/no/${id}`);
+			return axios.get(URL.accountBuild() + `/users/no/${id}`);
 		},
 		isLike({ rootGetters }, id) {
 			const config = {
@@ -22,7 +22,19 @@ export default {
 					Authorization: rootGetters.token,
 				},
 			};
-			return axios.get(URL.searchBuild() + `/like/${id}`, config);
+			return axios.get(URL.accountBuild() + `/like/${id}`, config);
+		},
+		setBanner(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.patch(
+				URL.accountBuild() + `/users/banner`,
+				payload,
+				config,
+			);
 		},
 	},
 };

@@ -1,6 +1,6 @@
 <template>
 	<div ref="app">
-		<v-card class="transparent" flat>
+		<v-card class="transparent" flat v-if="courses.data.length !== 0">
 			<v-card-title>코스</v-card-title>
 			<v-row>
 				<v-col
@@ -60,15 +60,12 @@ export default {
 			this.errored = false;
 
 			this.getChannelCourses(id).then(res => {
-				console.log(res);
 				this.courses = res;
 			});
 
 			this.loading = false;
 		},
-		subscribe() {
-			console.log('구독');
-		},
+		subscribe() {},
 	},
 	mounted() {
 		this.getChannel(this.$route.params.id);

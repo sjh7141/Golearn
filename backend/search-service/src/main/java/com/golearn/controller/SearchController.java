@@ -41,17 +41,17 @@ public class SearchController {
 		if (type.equals("video")) {
 			page.setTotalCount(searchService.countByVideo(search));
 			List<VideoDto> video = searchService.findVideo(search, page.getStartIndex(), page.getPerPageNum());
-			List<Integer> list = video.stream().map(el -> el.getVidNo()).collect(Collectors.toList());
+			/*List<Integer> list = video.stream().map(el -> el.getVidNo()).collect(Collectors.toList());
 			List<TagDto> tag = searchService.findTagByVideo(list);
+			map.put("tag", tag);*/
 			map.put("video", video);
-			map.put("tag", tag);
 		} else if (type.equals("course")) {
 			page.setTotalCount(searchService.countByCourse(search));
 			List<CourseDto> course = searchService.findCourse(search, page.getStartIndex(), page.getPerPageNum());
-			List<Integer> list = course.stream().map(el -> el.getCosNo()).collect(Collectors.toList());
+			/*List<Integer> list = course.stream().map(el -> el.getCosNo()).collect(Collectors.toList());
 			List<TagDto> tag = searchService.findTagByCourse(list);
+			map.put("tag", tag);*/
 			map.put("course", course);
-			map.put("tag", tag);
 		} else if (type.equals("channel")) {
 			page.setTotalCount(searchService.countByChannel(search));
 			List<ChannelDto> channel = searchService.findChannel(search, page.getStartIndex(), page.getPerPageNum());

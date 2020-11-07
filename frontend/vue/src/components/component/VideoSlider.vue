@@ -1,6 +1,6 @@
 <template>
 	<div ref="app">
-		<v-card class="transparent" flat>
+		<v-card class="transparent" flat v-if="videos.data.length !== 0">
 			<v-card-title>최신 동영상</v-card-title>
 			<!-- <v-sheet class="mx-auto"> -->
 			<swiper class="swiper-container" :options="swiperOption">
@@ -111,9 +111,7 @@ export default {
 			// console.log(channel)
 			this.loading = false;
 		},
-		subscribe() {
-			console.log('구독');
-		},
+		subscribe() {},
 	},
 	mounted() {
 		this.getChannel(this.$route.params.id);

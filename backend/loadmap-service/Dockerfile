@@ -4,4 +4,4 @@ VOLUME /a402
 
 COPY backend/loadmap-service/build/libs/*.jar loadmap-service.jar
 
-ENTRYPOINT ["java", "-jar", "loadmap-service.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "loadmap-service.jar"]

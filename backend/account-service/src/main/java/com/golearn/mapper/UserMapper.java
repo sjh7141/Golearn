@@ -15,6 +15,8 @@ public interface UserMapper {
 	public int updateUser(UserDto dto);
 	public int disableUser(int no);
 	public UserDto findByUsername(int no);
+	public UserDto findByUserno(int no);
+	public UserDto findByUserId(String userId);
 	public int checkByUsername(String username);
 	public int checkByEmail(String email);
 	public int checkByNickname(String nickname);
@@ -22,4 +24,5 @@ public interface UserMapper {
 	public int subscribe(@Param("from") int from, @Param("to") int to);
 	public List<SubscribeDto> subscribeList(int no);
 	public int subscribeCancle(@Param("from") int from, @Param("to") int to);
+	public int subscribeCheck(@Param("from") int from, @Param("to") int to);
 }

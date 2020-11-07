@@ -33,4 +33,8 @@ public class CourseManagerService {
 	public List<CourseManagerResopnse> searchToAddManagers(long cosNo, String search){
 		return courseManagerRepository.findManagersExceptCourse(cosNo, search);
 	}
+	
+	public int checkManager(long cosNo, long mbrNo) {
+		return courseManagerRepository.checkManager(cosNo, mbrNo);
+	}
 }

@@ -10,10 +10,12 @@ public class UserDto {
 	private String email;
 	private String nickname;
 	private String profile;
+	private String banner;
 	private Date regDate;
 	private Date updateDate;
 	private boolean checkEmail;
 	private boolean checkActive;
+	private int subscribeCount;
 
 	public int getNo() {
 		return no;
@@ -63,6 +65,14 @@ public class UserDto {
 		this.profile = profile;
 	}
 
+	public String getBanner() {
+		return banner;
+	}
+
+	public void setBanner(String banner) {
+		this.banner = banner;
+	}
+
 	public Date getRegDate() {
 		return regDate;
 	}
@@ -93,6 +103,14 @@ public class UserDto {
 
 	public void setCheckActive(boolean checkActive) {
 		this.checkActive = checkActive;
+	}
+
+	public int getSubscribeCount() {
+		return subscribeCount;
+	}
+
+	public void setSubscribeCount(int subscribeCount) {
+		this.subscribeCount = subscribeCount;
 	}
 
 }

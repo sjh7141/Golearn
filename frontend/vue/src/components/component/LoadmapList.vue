@@ -1,13 +1,13 @@
 <template>
 	<div ref="app">
-		<v-card class="transparent" flat>
+		<v-card class="transparent" flat v-if="loadmaps.data.length !== 0">
 			<v-card-title>로드맵</v-card-title>
 			<v-row>
 				<v-col
 					cols="12"
 					sm="6"
 					md="4"
-					lg="4"
+					lg="3"
 					v-for="(loadmap, i) in loading ? 10 : loadmaps.data"
 					:key="i"
 					class="mx-xs-auto"
@@ -60,15 +60,12 @@ export default {
 			this.errored = false;
 
 			this.getChannelLoadmaps(id).then(res => {
-				console.log(res);
 				this.loadmaps = res;
 			});
 
 			this.loading = false;
 		},
-		subscribe() {
-			console.log('구독');
-		},
+		subscribe() {},
 	},
 	mounted() {
 		this.getChannel(this.$route.params.id);

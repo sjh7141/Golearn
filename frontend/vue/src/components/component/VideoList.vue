@@ -1,18 +1,41 @@
 <template>
 	<div ref="app">
-		<v-card class="transparent" flat>
+		<v-card class="transparent" flat v-if="videos.data.length !== 0">
 			<v-card-title
 				><div>동영상</div>
 				<v-spacer></v-spacer>
-				<v-btn v-if="hide" class="mx-5" @click="remove"
-					>선택 완료</v-btn
-				>
-				<v-switch
-					color="purple"
-					inset
-					label="영상 삭제"
-					v-model="hide"
-				></v-switch>
+				<v-slide-x-transition mode="out-in">
+					<v-btn
+						v-if="hide"
+						class="mx-1"
+						@click="remove"
+						outlined
+						color="purple"
+						>삭제</v-btn
+					>
+				</v-slide-x-transition>
+				<v-slide-x-transition mode="out-in">
+					<v-btn
+						v-if="hide"
+						class="mx-1"
+						@click="hide = false"
+						outlined
+						color="purple"
+						>취소</v-btn
+					>
+				</v-slide-x-transition>
+				<v-slide-x-reverse-transition mode="out-in">
+					<v-btn
+						color="gray"
+						icon
+						large
+						v-if="!hide && channel.no == user.no"
+						class="mx-1"
+						@click="hide = true"
+					>
+						<v-icon>mdi-cog</v-icon>
+					</v-btn>
+				</v-slide-x-reverse-transition>
 			</v-card-title>
 			<v-row>
 				<v-col
@@ -45,6 +68,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import VideoCard from './VideoCard';
 export default {
+	props: ['channel'],
 	data: () => ({
 		loading: false,
 		errored: false,
@@ -67,7 +91,7 @@ export default {
 		checked: [],
 	}),
 	computed: {
-		...mapGetters(['isAuthenticated']),
+		...mapGetters(['isAuthenticated', 'user']),
 	},
 	components: {
 		VideoCard,
@@ -80,21 +104,18 @@ export default {
 
 			this.getChannelVideos(id).then(res => {
 				this.videos = res;
-				console.log(res);
 			});
 
 			this.loading = false;
 		},
-		subscribe() {
-			console.log('구독');
-		},
+		subscribe() {},
 		async remove() {
 			const self = this;
 			this.removeVideos(this.checked).then(function() {
 				self.getChannel(self.$route.params.id);
 				self.checked = [];
-				self.hide = false;
 			});
+			self.hide = false;
 		},
 	},
 	mounted() {

@@ -4,17 +4,19 @@ server:
 spring:
   application:
     name: file-service
-  datasource:
-    url: jdbc:mysql://k3a402.p.ssafy.io:3306/ssafy?allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowMultiQueries=true
-    username: 
-    password: 
-    hikari:
-      connection-timeout: 20000
-      minimum-idle: 5
-      maximum-pool-size: 12
-      idle-timeout: 300000
-      max-lifetime: 1200000
-      auto-commit: true
+  servlet:
+    multipart:
+      max-file-size: 2000MB
+      max-request-size: 2500MB
+
+cloud:
+  aws:
+    stack:
+      auto: false
+    region: 
+      static: ap-northeast-2
+    s3:
+      bucket: go-learn
 
 eureka:
   client:
