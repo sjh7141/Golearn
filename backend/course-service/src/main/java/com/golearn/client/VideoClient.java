@@ -10,5 +10,5 @@ import com.golearn.domain.VideoDto;
 public interface VideoClient {
 	
 	@GetMapping("/{vid_no}")
-	VideoDto getVideo(@PathVariable("vid_no") int vidNo);
+	public VideoDto getVideo(@PathVariable("vid_no") int vidNo);
 }
