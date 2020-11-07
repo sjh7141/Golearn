@@ -68,7 +68,7 @@
 				outlined
 				dark
 				label="비밀번호 확인"
-				placeholder="비밀번호를 다시 한번 입력해 주세요."
+				placeholder="비밀번호를 다시 한 번 입력해 주세요."
 				color="#8fbaff"
 				type="password"
 				:success-messages="rePwdSuccessMessage"
