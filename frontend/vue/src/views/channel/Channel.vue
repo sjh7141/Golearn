@@ -251,7 +251,6 @@ export default {
 			this.isLike(id).then(res => {
 				this.subscribed = res.data;
 			});
-			console.log(this.isLogin == 0);
 		},
 		onButtonClick() {
 			this.isSelecting = true;

@@ -83,11 +83,11 @@ export default {
 				this.height = 500;
 			} else {
 				this.width = 418;
-				console.log(this.$refs.app.$el.offsetTop);
+				// console.log(this.$refs.app.$el.offsetTop);
 				this.height =
 					window.innerHeight - this.$refs.app.$el.offsetTop - 10;
 			}
-			console.log(this.height);
+			// console.log(this.height);
 		},
 	},
 };

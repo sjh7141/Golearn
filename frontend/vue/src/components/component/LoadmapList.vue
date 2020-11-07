@@ -60,15 +60,12 @@ export default {
 			this.errored = false;
 
 			this.getChannelLoadmaps(id).then(res => {
-				console.log(res);
 				this.loadmaps = res;
 			});
 
 			this.loading = false;
 		},
-		subscribe() {
-			console.log('구독');
-		},
+		subscribe() {},
 	},
 	mounted() {
 		this.getChannel(this.$route.params.id);

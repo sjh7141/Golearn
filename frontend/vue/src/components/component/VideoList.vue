@@ -108,9 +108,7 @@ export default {
 
 			this.loading = false;
 		},
-		subscribe() {
-			console.log('구독');
-		},
+		subscribe() {},
 		async remove() {
 			const self = this;
 			this.removeVideos(this.checked).then(function() {
