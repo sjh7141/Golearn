@@ -241,7 +241,6 @@ export default {
 			if (!this.isLogin) {
 				this.$router.push('/login');
 			}
-			console.log('구독');
 		},
 		modify() {},
 		async getChannel(id) {
