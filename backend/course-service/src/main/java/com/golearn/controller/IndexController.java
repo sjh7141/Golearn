@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.golearn.client.VideoClient;
 import com.golearn.domain.CourseViewer;
 import com.golearn.domain.Index;
+import com.golearn.dto.VideoDto;
 import com.golearn.service.CourseViewerService;
 import com.golearn.service.IndexService;
 
@@ -62,7 +63,11 @@ public class IndexController {
 		logger.info(">> LOAD getAllIndex <<");
 		List<Index> index = indexService.findByCosNo(cosNo);
 		for (Index i : index) {
-			i.setVideo(videoClient.getVideo((int) i.getVidNo()));
+			logger.info("vidNo : " + i.getVidNo());
+			VideoDto video = videoClient.getVideo((int) i.getVidNo());
+			logger.info(video.getVidTitle());
+			logger.info(video.getVidContent());
+//			i.setVideo(videoClient.getVideo((int) i.getVidNo()));
 		}
 		return new ResponseEntity<List<Index>>(index, HttpStatus.OK);
 	}
