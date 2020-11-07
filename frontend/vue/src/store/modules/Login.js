@@ -5,6 +5,7 @@ const URL = {
 	AUTH: 'auth/login',
 	USER: 'account/users',
 	ACCOUNT: 'account-service',
+	PASSWORD: 'account/password',
 	loginBuild() {
 		return Array(this.DOMAIN, this.AUTH).join('/');
 	},
@@ -13,6 +14,9 @@ const URL = {
 	},
 	accountBuild() {
 		return Array(this.DOMAIN, this.ACCOUNT).join('/');
+	},
+	passwordBuild() {
+		return Array(this.DOMAIN, this.PASSWORD).join('/');
 	},
 };
 
@@ -75,6 +79,42 @@ export default {
 		},
 		nicknameCheck(context, payload) {
 			return axios.get(URL.accountBuild() + `/nickname-check/${payload}`);
+		},
+		pwdCheck(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.state.token,
+				},
+			};
+			return axios.post(
+				URL.accountBuild() + '/password-check',
+				payload,
+				config,
+			);
+		},
+		modifyUser(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.state.token,
+				},
+			};
+			return axios.patch(URL.userBuild(), payload, config);
+		},
+		modifyPassword(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.state.token,
+				},
+			};
+			return axios.patch(URL.passwordBuild(), payload, config);
+		},
+		deleteUser(context) {
+			const config = {
+				headers: {
+					Authorization: context.state.token,
+				},
+			};
+			return axios.delete(URL.userBuild(), config);
 		},
 	},
 };

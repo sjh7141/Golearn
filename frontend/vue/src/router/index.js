@@ -10,6 +10,7 @@ import RequestDetail from '@/views/course/RequestDetail.vue';
 import EditCourse from '@/views/course/Edit.vue';
 import EditLoadMap from '@/views/loadmap/Edit.vue';
 import Channel from '@/views/channel/Channel.vue';
+import Mypage from '@/views/Mypage.vue';
 Vue.use(VueRouter);
 
 const routes = [
@@ -57,6 +58,11 @@ const routes = [
 		path: '/channel/:id',
 		name: 'Channel',
 		component: Channel,
+	},
+	{
+		path: '/mypage',
+		name: 'Mypage',
+		component: Mypage,
 	},
 ];
 

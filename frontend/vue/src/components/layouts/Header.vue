@@ -95,7 +95,12 @@
 									</v-row>
 								</v-row>
 								<v-divider class="my-3"></v-divider>
-								<v-btn depressed rounded text>
+								<v-btn
+									depressed
+									rounded
+									text
+									@click="goToMypage"
+								>
 									회원정보
 								</v-btn>
 								<v-divider class="my-3"></v-divider>
@@ -139,6 +144,9 @@ export default {
 		keywordSearch() {},
 		goToLogin() {
 			this.$router.push('/login');
+		},
+		goToMypage() {
+			this.$router.push('/mypage');
 		},
 		logout() {
 			this.$store.commit('setIsLogin', 0);
