@@ -29,6 +29,17 @@ public class UserServiceImpl implements UserService {
 	public int updateUser(UserDto dto) {
 		return userMapper.updateUser(dto);
 	}
+	
+	@Override
+	public int updateBanner(UserDto dto) {
+		return userMapper.updateBanner(dto);
+	}
+	
+	@Override
+	public boolean checkPassword(String password, int no) {
+		String data = userMapper.checkPassword(no);
+		return passwordEncoder.matches(password, data); 
+	}
 
 	@Override
 	public int disableUser(int no) {

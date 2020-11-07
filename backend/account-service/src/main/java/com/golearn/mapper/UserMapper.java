@@ -13,6 +13,8 @@ public interface UserMapper {
 
 	public int save(UserDto dto);
 	public int updateUser(UserDto dto);
+	public int updateBanner(UserDto dto);
+	public String checkPassword(@Param("no") int no);
 	public int disableUser(int no);
 	public UserDto findByUsername(int no);
 	public UserDto findByUserno(int no);

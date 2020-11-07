@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.golearn.domain.SubscribeDto;
 import com.golearn.domain.UserDto;
+import com.golearn.service.MailService;
 import com.golearn.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -55,11 +56,41 @@ public class UserController {
 		return ResponseEntity.ok("탈퇴 성공");
 	}
 	
+	@ApiOperation(value = "유저 수정 닉네임, 프로필")
+	@PatchMapping(value = "/users")
+	public ResponseEntity<String> updateUser(@ApiIgnore @RequestHeader("X-USERNO") String no, @RequestBody UserDto dto){
+		dto.setNo(Integer.parseInt(no));
+		int res = userService.updateUser(dto);
+		if(res == 0 ) {
+			return ResponseEntity.ok("수정 실패");
+		}
+		return ResponseEntity.ok("수정 성공");
+	}
+	
+	@ApiOperation(value = "유저 수정 배너")
+	@PatchMapping(value = "/users/banner")
+	public ResponseEntity<String> updateBanner(@ApiIgnore @RequestHeader("X-USERNO") String no, @RequestBody UserDto dto){
+		dto.setNo(Integer.parseInt(no));
+		int res = userService.updateBanner(dto);
+		if(res == 0 ) {
+			return ResponseEntity.ok("수정 실패");
+		}
+		return ResponseEntity.ok("수정 성공");
+	}
+	
 	@ApiOperation(value = "유저 정보 조회하기")
 	@GetMapping(value = "/users")
 	public ResponseEntity<UserDto> findUser(@ApiIgnore @RequestHeader("X-USERNO") String no){
 		UserDto dto = userService.findByUsername(Integer.parseInt(no));
 		return ResponseEntity.ok(dto);
+	}
+	
+	@ApiOperation(value = "비밀번호 맞는지 확인")
+	@PostMapping(value = "/password-check")
+	public ResponseEntity<Boolean> findUser(@ApiIgnore @RequestHeader("X-USERNO") String no, @RequestBody Map<String, Object> map){
+		String password = (String)map.get("password");
+		boolean res = userService.checkPassword(password, Integer.parseInt(no));
+		return ResponseEntity.ok(res);
 	}
 	
 	@ApiOperation(value = "ID 중복 체크하기(true : 사용가능, false : 사용불가능)")
@@ -152,5 +183,5 @@ public class UserController {
 		}
 		return ResponseEntity.ok(true);
 	}
-	
+
 }

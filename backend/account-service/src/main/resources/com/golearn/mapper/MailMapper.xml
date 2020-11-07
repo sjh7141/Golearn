@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.golearn.mapper.MailMapper">
+
+	<insert id="saveMessage">
+		insert into gl_member_email
+		values (#{userNo}, #{message})
+		on duplicate key update message = #{message}
+	</insert>
+	
+	<select id="checkMessage" resultType="Integer">
+		select count(*)
+		from gl_member_email
+		where message = #{message}
+	</select>
+	
+	<update id="updateCheckMail">
+		update gl_member set ck_email = true where mbr_no = #{userNo}
+	</update>
+	
+</mapper>

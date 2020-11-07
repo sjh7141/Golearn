@@ -25,7 +25,7 @@ public class JwtPreFilter extends ZuulFilter {
 			RequestContext context = RequestContext.getCurrentContext();
 			context.addZuulRequestHeader("X-USERNAME", data[0]);
 			context.addZuulRequestHeader("X-USERNO", data[1]);
-			
+			logger.info(data[0] + " " + data[1]);
 		}
 		return null;
 	}

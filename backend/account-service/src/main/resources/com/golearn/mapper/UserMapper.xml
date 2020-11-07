@@ -7,8 +7,20 @@
 		values (#{username}, #{email}, #{password}, #{nickname}, #{profile}, #{banner})
 	</insert>
 	
+	<select id="checkPassword" resultType="String">
+		select mbr_pwd password
+		from gl_member
+		where mbr_no = #{no}
+	</select>
+	
 	<update id="updateUser">
-		
+		update gl_member set mbr_nickname = #{nickname}, mbr_profile = #{profile}
+		where mbr_no = #{no}
+	</update>
+	
+	<update id="updateBanner">
+		update gl_member set mbr_banner = #{banner}
+		where mbr_no = #{no}
 	</update>
 	
 	<update id="disableUser">
