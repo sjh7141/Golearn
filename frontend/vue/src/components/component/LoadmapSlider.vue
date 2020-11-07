@@ -1,6 +1,6 @@
 <template>
 	<div ref="app">
-		<v-card class="transparent" flat>
+		<v-card class="transparent" flat v-if="loadmaps.data.length !== 0">
 			<v-divider></v-divider>
 
 			<v-card-title>로드맵</v-card-title>
