@@ -4,7 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.golearn.domain.VideoDto;
+import com.golearn.dto.VideoDto;
 
 @FeignClient(name = "video-service")
 public interface VideoClient {

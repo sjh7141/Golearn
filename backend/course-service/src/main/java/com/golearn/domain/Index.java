@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.golearn.dto.VideoDto;
+
 @Entity(name = "gl_index")
 @Table(name = "gl_index")
 public class Index {

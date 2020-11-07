@@ -1,4 +1,4 @@
-package com.golearn.domain;
+package com.golearn.dto;
 
 import java.util.Date;
 import java.util.List;

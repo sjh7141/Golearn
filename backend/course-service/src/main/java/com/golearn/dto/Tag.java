@@ -1,4 +1,4 @@
-package com.golearn.domain;
+package com.golearn.dto;
 
 public class Tag {
 	private int tagNo;
