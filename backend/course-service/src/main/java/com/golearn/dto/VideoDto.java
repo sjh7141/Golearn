@@ -122,4 +122,12 @@ public class VideoDto {
 		this.vidLikes = vidLikes;
 	}
 
+	@Override
+	public String toString() {
+		return "VideoDto [vidNo=" + vidNo + ", mbrNo=" + mbrNo + ", vidPno=" + vidPno + ", vidTitle=" + vidTitle
+				+ ", vidContent=" + vidContent + ", vidUrl=" + vidUrl + ", vidView=" + vidView + ", regDt=" + regDt
+				+ ", vidHide=" + vidHide + ", vidThumbnail=" + vidThumbnail + ", vidLength=" + vidLength + ", tags="
+				+ tags + ", vidLikes=" + vidLikes + "]";
+	}
+
 }
