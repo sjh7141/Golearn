@@ -1,6 +1,7 @@
 package com.golearn.domain;
 
 import java.util.Date;
+import java.util.List;
 
 public class VideoDto {
 	private int vidNo;
@@ -14,6 +15,8 @@ public class VideoDto {
 	private boolean vidHide;
 	private String vidThumbnail;
 	private int vidLength;
+	private List<Tag> tags;
+	private int vidLikes;
 
 	public int getVidNo() {
 		return vidNo;
@@ -101,6 +104,22 @@ public class VideoDto {
 
 	public void setVidLength(int vidLength) {
 		this.vidLength = vidLength;
+	}
+
+	public List<Tag> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
+	}
+
+	public int getVidLikes() {
+		return vidLikes;
+	}
+
+	public void setVidLikes(int vidLikes) {
+		this.vidLikes = vidLikes;
 	}
 
 }
