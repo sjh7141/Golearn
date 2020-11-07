@@ -9,6 +9,8 @@ public interface UserService {
 
 	public int save(UserDto dto);
 	public int updateUser(UserDto dto);
+	public int updateBanner(UserDto dto);
+	public boolean checkPassword(String password, int no);
 	public int disableUser(int no);
 	public UserDto findByUsername(int no);
 	public UserDto findByUserId(String userId);
