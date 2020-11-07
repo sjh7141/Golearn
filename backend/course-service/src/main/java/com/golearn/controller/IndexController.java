@@ -63,8 +63,9 @@ public class IndexController {
 		logger.info(">> LOAD getAllIndex <<");
 		List<Index> index = indexService.findByCosNo(cosNo);
 		for (Index i : index) {
-			ResponseEntity<VideoDto> video = videoClient.getVideo((int) i.getVidNo());
-			i.setVideo(video.getBody());
+			VideoDto video = videoClient.getVideo((int) i.getVidNo()).getBody();
+			logger.info(videoClient.getVideo((int) i.getVidNo()).getStatusCode()+"");
+			logger.info(video.toString());
 		}
 		return new ResponseEntity<List<Index>>(index, HttpStatus.OK);
 	}
