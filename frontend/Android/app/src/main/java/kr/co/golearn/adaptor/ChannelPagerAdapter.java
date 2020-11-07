@@ -27,6 +27,6 @@ public class ChannelPagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 2;
+        return 1;
     }
 }

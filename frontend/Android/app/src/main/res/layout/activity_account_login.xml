@@ -139,7 +139,7 @@
             android:id="@+id/account_login_checkbox_save_id"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:button="@drawable/account_login_auto_check_24dp" />
+            android:button="@drawable/account_login_auto_check" />
 
         <TextView
             android:id="@+id/account_login_txt_save_id"
@@ -165,7 +165,7 @@
             android:id="@+id/account_login_checkbox_auto_login"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:button="@drawable/account_login_auto_check_24dp" />
+            android:button="@drawable/account_login_auto_check" />
 
         <TextView
             android:id="@+id/account_login_txt_auto_login"

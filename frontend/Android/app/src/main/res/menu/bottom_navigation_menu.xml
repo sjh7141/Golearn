@@ -9,10 +9,12 @@
         android:id="@+id/page_subscription"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_subscriptions_24"
-        android:title="구독"/>
+        android:title="구독"
+        android:visible="false" />
     <item
         android:id="@+id/page_article"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_article_24"
-        android:title="게시판"/>
+        android:title="게시판"
+        android:visible="false" />
 </menu>

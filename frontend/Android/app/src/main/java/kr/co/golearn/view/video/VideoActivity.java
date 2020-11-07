@@ -39,6 +39,7 @@ import butterknife.OnClick;
 import kr.co.golearn.R;
 import kr.co.golearn.adaptor.VideoCommentAdapter;
 import kr.co.golearn.domain.Comment;
+import kr.co.golearn.domain.Course;
 import kr.co.golearn.domain.Member;
 import kr.co.golearn.domain.Video;
 import kr.co.golearn.domain.response.VideoResponse;
@@ -70,6 +71,7 @@ public class VideoActivity extends AppCompatActivity {
     private VideoCommentAdapter videoCommentAdapter;
     private GridLayoutManager gridLayoutManager;
     private ArrayList<Comment> originComments;
+    private long vidNo;
     private int page = 1;
 
     @Override
@@ -78,6 +80,8 @@ public class VideoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_video);
 
         ButterKnife.bind(this);
+
+        vidNo = getIntent().getLongExtra("vidNo", 0L);
         playbackStateListener = new PlaybackStateListener();
         btnScreenChange.setBackgroundResource(R.drawable.exo_controls_fullscreen_enter);
 
@@ -90,7 +94,7 @@ public class VideoActivity extends AppCompatActivity {
         videoViewModel = ViewModelProviders.of(this).get(VideoViewModel.class);
         textViewModel = ViewModelProviders.of(this).get(TextViewModel.class);
         originComments = new ArrayList<>();
-        videoCommentAdapter = new VideoCommentAdapter(originComments, textViewModel, this, 3);
+        videoCommentAdapter = new VideoCommentAdapter(originComments, textViewModel, this, vidNo);
         gridLayoutManager = new GridLayoutManager(this, 1);
         videoRecyclerView.setLayoutManager(gridLayoutManager);
     }
@@ -129,10 +133,10 @@ public class VideoActivity extends AppCompatActivity {
         });
 
         // intent 로 받기 no
-        videoViewModel.getVideoFromServer(3);
-        videoViewModel.getCommentsFromServer(3, page++);
+        videoViewModel.getVideoFromServer(vidNo);
+        videoViewModel.getCommentsFromServer(vidNo, page++);
         textViewModel.getReplyText().observe(this, txt->{
-            videoViewModel.postCommentToServer(this, 3, txt);
+            videoViewModel.postCommentToServer(this, vidNo, txt);
         });
     }
 
@@ -164,7 +168,7 @@ public class VideoActivity extends AppCompatActivity {
 
     @OnClick(R.id.video_card_view)
     void clickToMore(){
-        videoViewModel.getCommentsFromServer(3, page++);
+        videoViewModel.getCommentsFromServer(vidNo, page++);
     }
 
     private void initializePlayer(String videoUrl) {

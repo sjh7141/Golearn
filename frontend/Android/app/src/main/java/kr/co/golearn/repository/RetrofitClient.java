@@ -4,6 +4,7 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import kr.co.golearn.domain.Course;
 import kr.co.golearn.util.CommonUtils;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -49,5 +50,15 @@ public class RetrofitClient {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         return retrofit.create(VideoService.class);
+    }
+
+    public static CourseService CourseService() {
+        Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+        retrofit = new Retrofit.Builder()
+                .baseUrl(CommonUtils.BASE_URL + CommonUtils.COURSE_URL)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+        return retrofit.create(CourseService.class);
     }
 }
