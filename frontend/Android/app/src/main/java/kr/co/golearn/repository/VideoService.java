@@ -11,6 +11,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -49,4 +50,7 @@ public interface VideoService {
 
     @PUT("comment/{vid_cmt_no}")
     Call<Comment> putPnoComment(@Header("Authorization") String token, @Path("vid_cmt_no") long vidCmtNo, @Body Comment comment);
+
+    @GET("member/{mbr_no}")
+    Call<List<Video>> getVideosByMemberNo(@Path("mbr_no") long mbrNo);
 }

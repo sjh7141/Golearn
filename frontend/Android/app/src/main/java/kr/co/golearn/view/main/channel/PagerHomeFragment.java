@@ -12,8 +12,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.card.MaterialCardView;
-
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -23,7 +21,7 @@ import kr.co.golearn.R;
 import kr.co.golearn.adaptor.HomeVideoPagerAdapter;
 import kr.co.golearn.domain.Video;
 import kr.co.golearn.util.CommonUtils;
-import kr.co.golearn.viewmodel.MainViewModel;
+import kr.co.golearn.viewmodel.AccountViewModel;
 import kr.co.golearn.viewmodel.VideoViewModel;
 
 public class PagerHomeFragment extends Fragment {
@@ -31,12 +29,17 @@ public class PagerHomeFragment extends Fragment {
     @BindView(R.id.pager_home_video_recyclerview)
     RecyclerView recyclerViewVideo;
 
-    private MainViewModel accountViewModel;
+    private long mbrNo;
+
+    private AccountViewModel accountViewModel;
     private VideoViewModel videoViewModel;
     private HomeVideoPagerAdapter homeVideoPagerAdapter;
     private GridLayoutManager gridLayoutManager;
     private ArrayList<Video> originVideos;
-    private int page;
+
+    public PagerHomeFragment(long mbrNo){
+        this.mbrNo = mbrNo;
+    }
 
     @Nullable
     @Override
@@ -50,14 +53,12 @@ public class PagerHomeFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         init();
-        populateData(page++);
         actionViewModel();
     }
 
     private void actionViewModel() {
-        accountViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
         videoViewModel = ViewModelProviders.of(this).get(VideoViewModel.class);
-
         accountViewModel.getMember().observe(getActivity(), member -> {
             homeVideoPagerAdapter.setMember(member);
             recyclerViewVideo.setAdapter(homeVideoPagerAdapter);
@@ -66,23 +67,20 @@ public class PagerHomeFragment extends Fragment {
             for (Video video : videos) {
                 video.setDate(CommonUtils.calcTimeDate(video.getRegDt()));
                 video.setViewCount(CommonUtils.convertCount(video.getVidView()));
+                video.setVideoLength(CommonUtils.convertVideoTime(video.getVidLength()));
                 originVideos.add(video);
             }
             homeVideoPagerAdapter.notifyDataSetChanged();
         });
-        accountViewModel.getMember(getContext());
-        videoViewModel.getVideosFromServer(getContext());
-    }
-
-    private void populateData(int page) {
-
+        accountViewModel.getMemberByNo(mbrNo);
+        videoViewModel.getVideoByMemberNo(mbrNo);
     }
 
     private void init() {
-        page = 1;
         originVideos = new ArrayList<>();
         homeVideoPagerAdapter = new HomeVideoPagerAdapter(originVideos);
         gridLayoutManager = new GridLayoutManager(getContext(), 1);
         recyclerViewVideo.setLayoutManager(gridLayoutManager);
     }
+
 }

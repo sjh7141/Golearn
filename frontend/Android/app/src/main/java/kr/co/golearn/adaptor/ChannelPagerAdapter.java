@@ -10,19 +10,22 @@ import kr.co.golearn.view.main.channel.PagerHomeFragment;
 
 public class ChannelPagerAdapter extends FragmentStateAdapter {
 
-    public ChannelPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+    private long mbrNo;
+
+    public ChannelPagerAdapter(@NonNull FragmentActivity fragmentActivity, long mbrNo) {
         super(fragmentActivity);
+        this.mbrNo = mbrNo;
     }
     @NonNull
     @Override
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                return new PagerHomeFragment();
+                return new PagerHomeFragment(mbrNo);
             case 1:
                 return new PagerCourseFragment();
         }
-        return new PagerHomeFragment();
+        return new PagerHomeFragment(mbrNo);
     }
 
     @Override

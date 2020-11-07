@@ -68,6 +68,7 @@ public class HomeVideoPagerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     .placeholder(circularProgressDrawable)
                     .into(imgProfile);
             memberNickname.setText(member.getNickname());
+            subscriper.setText("구독자 " + member.getSubscribeCount() + "명");
         }
     }
 
@@ -100,7 +101,7 @@ public class HomeVideoPagerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(Video video, int position) {
+        public void bind(Video video) {
             CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(itemView.getContext());
             circularProgressDrawable.setStrokeWidth(5f);
             circularProgressDrawable.setCenterRadius(30f);
@@ -112,7 +113,7 @@ public class HomeVideoPagerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     .into(videoThumbnail);
             videoTime.setText(video.getVideoLength());
             videoTitle.setText(video.getVidTitle());
-            nickname.setText("닉네임");
+            nickname.setText(member.getNickname());
             viewCount.setText(video.getViewCount());
             videoRegTime.setText(video.getDate());
         }
@@ -155,7 +156,7 @@ public class HomeVideoPagerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
         } else {
             HomeVideoPagerHolder homeVideoPagerHolder = (HomeVideoPagerHolder) holder;
-            homeVideoPagerHolder.bind(videos.get(position - 1), position);
+            homeVideoPagerHolder.bind(videos.get(position - 1));
         }
     }
 

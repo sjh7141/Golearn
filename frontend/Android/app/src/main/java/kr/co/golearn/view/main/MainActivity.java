@@ -20,7 +20,7 @@ import kr.co.golearn.view.main.article.ArticleFragment;
 import kr.co.golearn.view.main.channel.ChannelActivity;
 import kr.co.golearn.view.main.home.HomeFragment;
 import kr.co.golearn.view.main.subscription.SubscriptionFragment;
-import kr.co.golearn.viewmodel.MainViewModel;
+import kr.co.golearn.viewmodel.AccountViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,8 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private HomeFragment homeFragment;
     private SubscriptionFragment subscriptionFragment;
     private ArticleFragment articleFragment;
-
-    private MainViewModel mainViewModel;
+    private AccountViewModel mainViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void actionViewModel() {
-        mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mainViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
 
         mainViewModel.getMember().observe(this, member -> {
             Glide.with(this).load(member.getProfile())
@@ -123,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.main_profile)
     public void clickToProfile(){
-        startActivity(new Intent(this, ChannelActivity.class));
+        Intent intent = new Intent(this, ChannelActivity.class);
+        intent.putExtra("mbrNo",new PreferenceManager().getLong(this, PreferenceManager.USER_NO));
+        startActivity(intent);
     }
 }
