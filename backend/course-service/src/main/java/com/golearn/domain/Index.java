@@ -23,6 +23,8 @@ public class Index {
 	@Column(name = "idx_order")
 	private int idxOrder;
 
+	private VideoDto video;
+
 	public Index() {
 
 	}
@@ -73,6 +75,14 @@ public class Index {
 
 	public void setIdxOrder(int idxOrder) {
 		this.idxOrder = idxOrder;
+	}
+
+	public VideoDto getVideo() {
+		return video;
+	}
+
+	public void setVideo(VideoDto video) {
+		this.video = video;
 	}
 
 	@Override
