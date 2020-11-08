@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.golearn.mapper.CourseMapper">
+
+	<select id="findByLike" resultType="com.golearn.domain.Course">
+		select c.*
+		from gl_course_like cl inner join gl_course c
+		on cl.mbr_no = #{userNo} and cl.cos_no = c.cos_no
+	</select>
+	
+	<select id="findByViewer" resultType="com.golearn.domain.Course">
+		select distinct c.*
+		from gl_course c inner join gl_course_viewer cv
+		on cv.mbr_no = #{userNo} and c.cos_no = cv.cos_no;
+	</select>
+	
+</mapper>

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.golearn.domain.Course;
+import com.golearn.mapper.CourseMapper;
 import com.golearn.repository.CourseRepository;
 
 @Service
@@ -42,4 +43,5 @@ public class CourseService {
 	public List<Course> findByMbrNo(long id){
 		return courseRepository.findByMbrNoOrderByRegDtDesc(id);
 	}
+	
 }

@@ -1,16 +1,20 @@
 package com.golearn.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.golearn.domain.Course;
 import com.golearn.service.LikeService;
 
 import io.swagger.annotations.ApiOperation;
@@ -40,4 +44,19 @@ public class LikeController {
 		likeService.delete(mbrNo, cosNo);
 		return new ResponseEntity(HttpStatus.NO_CONTENT);
 	}
+	
+	@ApiOperation(value = "유저가 좋아요한 코스 목록 가져오기")
+	@GetMapping(value = "/like")
+	public ResponseEntity<List<Course>> getLikeCourse(@ApiIgnore @RequestHeader("X-USERNO") String no){
+		List<Course> course = likeService.findByLike(Integer.parseInt(no));
+		return ResponseEntity.ok(course);
+	}
+	
+	@ApiOperation(value = "유저가 수강중인 코스 목록 가져오기")
+	@GetMapping(value = "/view")
+	public ResponseEntity<List<Course>> getViewCourse(@ApiIgnore @RequestHeader("X-USERNO") String no){
+		List<Course> course = likeService.findByViewer(Integer.parseInt(no));
+		return ResponseEntity.ok(course);
+	}
+	
 }

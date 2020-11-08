@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.golearn.domain.Course;
 import com.golearn.domain.Index;
+import com.golearn.mapper.CourseMapper;
 import com.golearn.repository.IndexRepository;
 
 @Service
@@ -39,4 +41,5 @@ public class IndexService {
 	public Index findById(long idxNo) {
 		return indexRepository.findById(idxNo);
 	}
+
 }
