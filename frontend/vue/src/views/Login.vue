@@ -3,7 +3,7 @@
 		<v-row>
 			<v-img
 				src="@/assets/logo2.png"
-				max-width="120"
+				max-width="260"
 				contain
 				class="ml-15 mt-10"
 				style="cursor: pointer;"
@@ -40,11 +40,7 @@
 					</v-card-text>
 					<v-card-actions style="text-align:center">
 						<v-spacer></v-spacer>
-						<v-btn
-							color="primary darken-1"
-							text
-							@click="success = false"
-						>
+						<v-btn color="#633cb6" text @click="success = false">
 							확인
 						</v-btn>
 					</v-card-actions>
