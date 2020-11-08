@@ -8,7 +8,8 @@ public class UserDto {
 	private String username;
 	private String password;
 	private List<String> authority;
-	
+	private boolean active;
+
 	public int getNo() {
 		return no;
 	}
@@ -39,6 +40,14 @@ public class UserDto {
 
 	public void setAuthority(List<String> authority) {
 		this.authority = authority;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 }

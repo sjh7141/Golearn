@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 
+import javax.activation.FileDataSource;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -76,7 +77,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		response.setContentType("application/json;charset=utf-8");
 		Gson gson = new Gson();
-		String json = "{\"status\" : \"401\", \"message\" : \"아이디 및 비밀번호 일치하지 않음\"}";
+		String json = "{\"status\" : \"401\", \"message\" : " + failed.getMessage() + "}";
 
 		response.getWriter().print(gson.toJson(json));
 	}
