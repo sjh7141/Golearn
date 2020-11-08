@@ -1,8 +1,10 @@
 package kr.co.golearn.adaptor;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +42,7 @@ import kr.co.golearn.domain.Tag;
 import kr.co.golearn.domain.Video;
 import kr.co.golearn.domain.response.VideoResponse;
 import kr.co.golearn.util.PreferenceManager;
+import kr.co.golearn.view.main.channel.ChannelActivity;
 import kr.co.golearn.view.video.CommentReplyBottomFragment;
 import kr.co.golearn.view.video.ReplyBottomFragment;
 import kr.co.golearn.viewmodel.TextViewModel;
@@ -163,6 +166,15 @@ public class VideoCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 videoViewModel.noLikeVideoFromServer(context, vidNo);
             }
         }
+
+        @OnClick(R.id.card_video_detail_comment_header_img_profile)
+        void clickToProfile() {
+            Author author = videoResponse.getAuthor();
+            Intent intent = new Intent(itemView.getContext(), ChannelActivity.class);
+            intent.putExtra("mbrNo", author.getMbrNo());
+            itemView.getContext().startActivity(intent);
+            ((Activity) itemView.getContext()).finish();
+        }
     }
 
     public class VideoCommentHolder extends RecyclerView.ViewHolder {
@@ -258,6 +270,16 @@ public class VideoCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             }
                         }).show();
             }
+        }
+
+        @OnClick(R.id.card_video_detail_comment_item_profile)
+        void clickToProfile() {
+            int position = this.getAdapterPosition() - 1;
+            Comment comment = comments.get(position);
+            Intent intent = new Intent(itemView.getContext(), ChannelActivity.class);
+            intent.putExtra("mbrNo", comment.getMbrNo());
+            itemView.getContext().startActivity(intent);
+            ((Activity) itemView.getContext()).finish();
         }
     }
 

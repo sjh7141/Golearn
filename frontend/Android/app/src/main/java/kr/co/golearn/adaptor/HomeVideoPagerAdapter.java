@@ -1,5 +1,7 @@
 package kr.co.golearn.adaptor;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +19,15 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import kr.co.golearn.R;
+import kr.co.golearn.domain.Course;
 import kr.co.golearn.domain.Member;
+import kr.co.golearn.domain.UseIndexDto;
 import kr.co.golearn.domain.Video;
+import kr.co.golearn.util.PreferenceManager;
+import kr.co.golearn.view.main.channel.ChannelActivity;
+import kr.co.golearn.view.video.VideoActivity;
 
 public class HomeVideoPagerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int TYPE_HEADER = 0;
@@ -28,10 +36,11 @@ public class HomeVideoPagerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private ArrayList<Video> videos = null;
     private Member member = null;
 
-    public HomeVideoPagerAdapter(ArrayList<Video> list){
+    public HomeVideoPagerAdapter(ArrayList<Video> list) {
         videos = list;
     }
-    public void setMember(Member member){
+
+    public void setMember(Member member) {
         this.member = member;
     }
 
@@ -83,17 +92,17 @@ public class HomeVideoPagerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public class HomeVideoPagerHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.card_pager_video_thumbnail)
+        @BindView(R.id.card_pager_home_video_thumbnail)
         ImageView videoThumbnail;
-        @BindView(R.id.card_pager_video_txt_time)
+        @BindView(R.id.card_pager_home_video_txt_time)
         TextView videoTime;
-        @BindView(R.id.card_pager_video_item_title)
+        @BindView(R.id.card_pager_home_video_item_title)
         TextView videoTitle;
-        @BindView(R.id.card_pager_video_item_nickname)
+        @BindView(R.id.card_pager_home_video_item_nickname)
         TextView nickname;
-        @BindView(R.id.card_pager_video_item_view)
+        @BindView(R.id.card_pager_home_video_item_view)
         TextView viewCount;
-        @BindView(R.id.card_pager_video_item_time)
+        @BindView(R.id.card_pager_home_video_item_time)
         TextView videoRegTime;
 
         public HomeVideoPagerHolder(@NonNull View itemView) {
@@ -116,6 +125,14 @@ public class HomeVideoPagerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             nickname.setText(member.getNickname());
             viewCount.setText(video.getViewCount());
             videoRegTime.setText(video.getDate());
+        }
+
+        @OnClick(R.id.card_pager_home_video_card_view)
+        void clickToVideo() {
+            Video video = videos.get(this.getAdapterPosition() - 1);
+            Intent intent = new Intent(itemView.getContext(), VideoActivity.class);
+            intent.putExtra("vidNo", video.getVidNo());
+            itemView.getContext().startActivity(intent);
         }
     }
 
