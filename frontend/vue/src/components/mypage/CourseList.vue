@@ -1,6 +1,6 @@
 <template>
 	<div ref="app">
-		<v-card class="transparent" flat v-if="courses.length !== 0">
+		<v-card class="transparent" flat>
 			<v-card-title class="px-0">
 				<v-row align="center" class="pb-5">
 					<div class="modify-text">
@@ -21,7 +21,7 @@
 					</div>
 				</v-row>
 			</v-card-title>
-			<v-row>
+			<v-row v-if="courses.length !== 0">
 				<v-col
 					cols="12"
 					sm="6"
@@ -37,6 +37,13 @@
 							:course="course"
 						></course-card>
 					</v-skeleton-loader>
+				</v-col>
+			</v-row>
+			<v-row v-else justify="center" align="center">
+				<v-col cols="12" class="empty-box">
+					<div style="margin-top:70px">
+						등록된 코스가 없습니다. 새롭게 추가해보세요!🙆‍♂️
+					</div>
 				</v-col>
 			</v-row>
 		</v-card>
@@ -72,5 +79,12 @@ export default {
 .modify-text {
 	font-size: 30px;
 	font-weight: 600;
+}
+.empty-box {
+	font-size: 30px;
+	font-weight: 600;
+	color: #b5b5b5;
+	text-align: center;
+	min-height: 200px;
 }
 </style>

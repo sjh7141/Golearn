@@ -32,5 +32,21 @@ export default {
 		getChannelCourses(context, payload) {
 			return axios.get(URL.courseBuild() + `/member/${payload}`);
 		},
+		getLikeCourse(context) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(URL.courseBuild() + '/like', config);
+		},
+		getLearnCourse(context) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(URL.courseBuild() + '/view', config);
+		},
 	},
 };
