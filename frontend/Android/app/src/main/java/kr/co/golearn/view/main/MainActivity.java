@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -20,7 +21,7 @@ import kr.co.golearn.view.main.article.ArticleFragment;
 import kr.co.golearn.view.main.channel.ChannelActivity;
 import kr.co.golearn.view.main.home.HomeFragment;
 import kr.co.golearn.view.main.subscription.SubscriptionFragment;
-import kr.co.golearn.viewmodel.MainViewModel;
+import kr.co.golearn.viewmodel.AccountViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,8 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private HomeFragment homeFragment;
     private SubscriptionFragment subscriptionFragment;
     private ArticleFragment articleFragment;
-
-    private MainViewModel mainViewModel;
+    private AccountViewModel mainViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +45,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void actionViewModel() {
-        mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-
+        mainViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
+        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(this);
+        circularProgressDrawable.setStrokeWidth(5f);
+        circularProgressDrawable.setCenterRadius(30f);
+        circularProgressDrawable.start();
         mainViewModel.getMember().observe(this, member -> {
             Glide.with(this).load(member.getProfile())
-                    .placeholder(R.drawable.account_login_auto_check)
-                    .error(R.drawable.account_login_auto_check)
+                    .placeholder(circularProgressDrawable)
                     .circleCrop()
                     .into(imgProfile);
             new PreferenceManager().setLong(this, PreferenceManager.USER_NO, member.getNo());
@@ -70,59 +72,63 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.page_home)
-    public void clickToHome(){
-        if(homeFragment == null){
+    public void clickToHome() {
+        if (homeFragment == null) {
             homeFragment = new HomeFragment();
             fragmentManager.beginTransaction().add(R.id.main_frame, homeFragment).commit();
         }
 
-        if(homeFragment != null){
+        if (homeFragment != null) {
             fragmentManager.beginTransaction().show(homeFragment).commit();
         }
-        if(subscriptionFragment !=null){
+        if (subscriptionFragment != null) {
             fragmentManager.beginTransaction().hide(subscriptionFragment).commit();
         }
-        if(articleFragment != null){
+        if (articleFragment != null) {
             fragmentManager.beginTransaction().hide(articleFragment).commit();
         }
     }
+
     @OnClick(R.id.page_subscription)
-    public void clickToSubscription(){
-        if(subscriptionFragment == null){
+    public void clickToSubscription() {
+        if (subscriptionFragment == null) {
             subscriptionFragment = new SubscriptionFragment();
             fragmentManager.beginTransaction().add(R.id.main_frame, subscriptionFragment).commit();
         }
 
-        if(homeFragment != null){
+        if (homeFragment != null) {
             fragmentManager.beginTransaction().hide(homeFragment).commit();
         }
-        if(subscriptionFragment !=null){
+        if (subscriptionFragment != null) {
             fragmentManager.beginTransaction().show(subscriptionFragment).commit();
         }
-        if(articleFragment != null){
+        if (articleFragment != null) {
             fragmentManager.beginTransaction().hide(articleFragment).commit();
         }
     }
+
     @OnClick(R.id.page_article)
-    public void clickToArticle(){
-        if(articleFragment == null){
+    public void clickToArticle() {
+        if (articleFragment == null) {
             articleFragment = new ArticleFragment();
             fragmentManager.beginTransaction().add(R.id.main_frame, articleFragment).commit();
         }
 
-        if(homeFragment != null){
+        if (homeFragment != null) {
             fragmentManager.beginTransaction().hide(homeFragment).commit();
         }
-        if(subscriptionFragment !=null){
+        if (subscriptionFragment != null) {
             fragmentManager.beginTransaction().hide(subscriptionFragment).commit();
         }
-        if(articleFragment != null){
+        if (articleFragment != null) {
             fragmentManager.beginTransaction().show(articleFragment).commit();
         }
     }
 
     @OnClick(R.id.main_profile)
-    public void clickToProfile(){
-        startActivity(new Intent(this, ChannelActivity.class));
+    public void clickToProfile() {
+        Intent intent = new Intent(this, ChannelActivity.class);
+        intent.putExtra("mbrNo", new PreferenceManager().getLong(this, PreferenceManager.USER_NO));
+        startActivity(intent);
     }
 }

@@ -26,4 +26,7 @@ public interface AccountService {
 
     @GET("users")
     Call<Member> getMemberDetail(@Header("Authorization") String token);
+
+    @GET("users/no/{mbr_no}")
+    Call<Member> getMemberByNo(@Path("mbr_no") long mbrNo);
 }

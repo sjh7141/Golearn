@@ -6,14 +6,13 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_pager_video_card_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:clickable="true"
         android:focusable="true"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
+        app:cardElevation="0dp"
         app:cardCornerRadius="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,7 +21,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp">
 
             <ImageView
                 android:id="@+id/card_pager_video_thumbnail"

@@ -132,7 +132,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="5dp"
-        android:text="동영상 3개"
+        android:text="동영상 0개"
         android:textColor="@color/gray"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/course_index_recycler_view_video"

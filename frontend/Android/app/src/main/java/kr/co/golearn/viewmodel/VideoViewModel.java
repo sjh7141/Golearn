@@ -312,4 +312,22 @@ public class VideoViewModel extends ViewModel {
         });
     }
 
+    // 유저별 업로드 동영상 조회
+    public void getVideoByMemberNo(long mbrNo){
+        VideoService videoService = RetrofitClient.videoService();
+        Call<List<Video>> videoCall = videoService.getVideosByMemberNo(mbrNo);
+        videoCall.enqueue(new Callback<List<Video>>() {
+            @Override
+            public void onResponse(Call<List<Video>> call, Response<List<Video>> response) {
+                if(response.isSuccessful()) {
+                    videos.setValue(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Video>> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
+    }
 }

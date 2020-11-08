@@ -17,6 +17,7 @@ public class Member {
     private String banner;
     private Date regDate;
     private Date updateDate;
+    private int subscribeCount;
     private boolean checkActive;
     private boolean checkEmail;
 
@@ -156,6 +157,14 @@ public class Member {
 
     public void setMbrNickname(String mbrNickname) {
         this.mbrNickname = mbrNickname;
+    }
+
+    public int getSubscribeCount() {
+        return subscribeCount;
+    }
+
+    public void setSubscribeCount(int subscribeCount) {
+        this.subscribeCount = subscribeCount;
     }
 
     @Override

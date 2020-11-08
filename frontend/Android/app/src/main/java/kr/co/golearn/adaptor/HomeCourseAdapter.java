@@ -23,6 +23,7 @@ import butterknife.OnClick;
 import kr.co.golearn.R;
 import kr.co.golearn.domain.Course;
 import kr.co.golearn.view.course.CourseIndexActivity;
+import kr.co.golearn.view.main.channel.ChannelActivity;
 
 public class HomeCourseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int VIEW_TYPE_ITEM = 0;
@@ -49,12 +50,22 @@ public class HomeCourseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         @OnClick(R.id.card_home_course_card_view)
-        void clickToCourse(){
+        void clickToCourse() {
             int position = this.getAdapterPosition();
             Course course = courses.get(position);
 
             Intent intent = new Intent(itemView.getContext(), CourseIndexActivity.class);
             intent.putExtra("course_info", course);
+            itemView.getContext().startActivity(intent);
+        }
+
+        @OnClick(R.id.card_home_course_profile)
+        void clickToProfile() {
+            int position = this.getAdapterPosition();
+            Course course = courses.get(position);
+
+            Intent intent = new Intent(itemView.getContext(), ChannelActivity.class);
+            intent.putExtra("mbrNo", course.getMbrNo());
             itemView.getContext().startActivity(intent);
         }
     }

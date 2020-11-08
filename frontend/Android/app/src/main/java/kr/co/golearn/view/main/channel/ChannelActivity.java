@@ -10,6 +10,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import kr.co.golearn.R;
 import kr.co.golearn.adaptor.ChannelPagerAdapter;
 
@@ -19,18 +20,20 @@ public class ChannelActivity extends AppCompatActivity {
     @BindView(R.id.channel_viewpager)
     ViewPager2 viewPager;
 
+    private long mbrNo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_channel);
+        mbrNo = getIntent().getLongExtra("mbrNo", 0L);
 
         init();
         setAdapter();
     }
 
     private void setAdapter() {
-
-        ChannelPagerAdapter adapter = new ChannelPagerAdapter(this);
+        ChannelPagerAdapter adapter = new ChannelPagerAdapter(this, mbrNo);
         viewPager.setAdapter(adapter);
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             switch (position) {
@@ -46,5 +49,11 @@ public class ChannelActivity extends AppCompatActivity {
 
     private void init() {
         ButterKnife.bind(this);
+    }
+
+
+    @OnClick(R.id.channel_btn_back)
+    void clickToBack(){
+        finish();
     }
 }

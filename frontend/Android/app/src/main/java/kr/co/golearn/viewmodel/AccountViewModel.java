@@ -28,6 +28,7 @@ public class AccountViewModel extends ViewModel {
     private MutableLiveData<Boolean> successCheckId;
     private MutableLiveData<Boolean> failCheckId;
     private MutableLiveData<String> responseJoin;
+    private MutableLiveData<Member> member;
 
     public LiveData<Boolean> getIsSaveID() {
         if (isSaveID == null) {
@@ -76,6 +77,13 @@ public class AccountViewModel extends ViewModel {
             responseJoin = new MutableLiveData<>();
         }
         return responseJoin;
+    }
+
+    public LiveData<Member> getMember(){
+        if(member == null){
+            member = new MutableLiveData<>();
+        }
+        return member;
     }
 
     // 아이디 저장 했는지
@@ -148,6 +156,45 @@ public class AccountViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
+    }
+
+    // 사용자 정보 조회
+    public void getMember(Context context){
+        String token =  new PreferenceManager().getString(context, PreferenceManager.TOKEN_KEY);
+        AccountService memberService = RetrofitClient.accountService();
+        Call<Member> memberCall = memberService.getMemberDetail(token);
+        memberCall.enqueue(new Callback<Member>() {
+            @Override
+            public void onResponse(Call<Member> call, Response<Member> response) {
+                if(response.isSuccessful()){
+                    member.setValue(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Member> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
+    }
+
+    // 사용자 정보 조회
+    public void getMemberByNo(long mbrNo){
+        AccountService memberService = RetrofitClient.accountService();
+        Call<Member> memberCall = memberService.getMemberByNo(mbrNo);
+        memberCall.enqueue(new Callback<Member>() {
+            @Override
+            public void onResponse(Call<Member> call, Response<Member> response) {
+                if(response.isSuccessful()){
+                    member.setValue(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Member> call, Throwable t) {
                 Log.e(TAG, t.getMessage());
             }
         });
