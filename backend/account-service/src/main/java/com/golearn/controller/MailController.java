@@ -37,12 +37,12 @@ public class MailController {
 	
 	@ApiOperation(value = "이메일 인증 확인하기")
 	@GetMapping(value = "/email-authentication/{message}")
-	public ResponseEntity<String> checkMail(@ApiIgnore @RequestHeader("X-USERNO") String userNo, @PathVariable("message") String message){
+	public ResponseEntity<Boolean> checkMail(@ApiIgnore @RequestHeader("X-USERNO") String userNo, @PathVariable("message") String message){
 		int res = mailService.checkMessage(Integer.parseInt(userNo), message);
 		if(res == 0) {
-			return ResponseEntity.ok("인증 실패");
+			return ResponseEntity.ok(false);
 		}
 		mailService.updateCheckMail(Integer.parseInt(userNo));
-		return ResponseEntity.ok("인증 성공");
+		return ResponseEntity.ok(true);
 	}
 }
