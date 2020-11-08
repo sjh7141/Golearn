@@ -83,16 +83,18 @@
 											alt="프로필"
 										/>
 									</v-avatar>
-									<v-row>
-										<v-col cols="12">
-											<h3>{{ user.nickname }}</h3>
-										</v-col>
-										<v-col cols="12">
-											<p class="caption mt-1">
-												{{ user.email }}
-											</p>
-										</v-col>
-									</v-row>
+									<div>
+										<v-row justify="start">
+											<v-col cols="12" class="pa-0">
+												<h3>{{ user.nickname }}</h3>
+											</v-col>
+											<v-col cols="12" class="pa-0">
+												<p class="caption mt-1">
+													{{ user.email }}
+												</p>
+											</v-col>
+										</v-row>
+									</div>
 								</v-row>
 								<v-divider class="my-3"></v-divider>
 								<v-btn
@@ -100,11 +102,28 @@
 									rounded
 									text
 									@click="goToMypage"
+									class="bold"
 								>
 									회원정보
 								</v-btn>
 								<v-divider class="my-3"></v-divider>
-								<v-btn depressed rounded text @click="logout">
+								<v-btn
+									depressed
+									rounded
+									text
+									@click="goToChannel"
+									class="bold"
+								>
+									내 채널
+								</v-btn>
+								<v-divider class="my-3"></v-divider>
+								<v-btn
+									depressed
+									rounded
+									text
+									@click="logout"
+									class="bold"
+								>
 									로그아웃
 								</v-btn>
 							</div>
@@ -147,6 +166,9 @@ export default {
 		},
 		goToMypage() {
 			this.$router.push('/mypage');
+		},
+		goToChannel() {
+			this.$router.push(`/channel/${this.user.no}`);
 		},
 		logout() {
 			this.$store.commit('setIsLogin', 0);
