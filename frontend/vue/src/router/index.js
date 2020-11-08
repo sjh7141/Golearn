@@ -10,6 +10,8 @@ import RequestDetail from '@/views/course/RequestDetail.vue';
 import EditCourse from '@/views/course/Edit.vue';
 import EditLoadMap from '@/views/loadmap/Edit.vue';
 
+import EditVideo from '@/views/channel/EditVideo.vue';
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -22,6 +24,11 @@ const routes = [
 		path: '/channel/play',
 		name: 'PlayChannel',
 		component: PlayChannel,
+	},
+	{
+		path: '/channel/edit',
+		name: 'EditVideo',
+		component: EditVideo,
 	},
 	{
 		path: '/login',

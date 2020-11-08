@@ -4,8 +4,10 @@ import router from './router';
 import store from './store';
 import vuetify from './plugins/vuetify';
 import './assets/sass/main.scss';
+import VueMoment from 'vue-moment';
 
 Vue.config.productionTip = false;
+Vue.use(VueMoment);
 
 new Vue({
 	router,
