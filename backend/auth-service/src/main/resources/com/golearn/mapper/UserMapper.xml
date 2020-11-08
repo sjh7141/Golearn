@@ -3,7 +3,7 @@
 <mapper namespace="com.golearn.mapper.UserMapper">
 
 	<select id="findByUsername" resultType="com.golearn.domain.UserDto">
-		select mbr_no as no, mbr_id as username, mbr_pwd as password
+		select mbr_no as no, mbr_id as username, mbr_pwd as password, ck_active active
 		from gl_member
 		where mbr_id = #{username}
 	</select>
