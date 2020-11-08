@@ -28,21 +28,21 @@
 	</update>
 	
 	<select id="findByUsername" resultType="com.golearn.domain.UserDto">
-		select mbr_no as no, mbr_id as username, mbr_email as email, mbr_nickname as nickname, mbr_profile as profile, reg_dt as regDate, chg_dt as updateDate, mbr_banner banner,
+		select mbr_no as no, mbr_id as username, mbr_email as email, mbr_nickname as nickname, mbr_profile as profile, reg_dt as regDate, chg_dt as updateDate, mbr_banner banner, ck_email checkEmail, ch_active checkActive
 		(select count(*) from gl_member_subscribe where mbr_no = #{no}) as subscribeCount
 		from gl_member
 		where mbr_no = #{no}
 	</select>
 	
 	<select id="findByUserno" resultType="com.golearn.domain.UserDto">
-		select mbr_no as no, mbr_id as username, mbr_email as email, mbr_nickname as nickname, mbr_profile as profile, reg_dt as regDate, chg_dt as updateDate, mbr_banner banner,
+		select mbr_no as no, mbr_id as username, mbr_email as email, mbr_nickname as nickname, mbr_profile as profile, reg_dt as regDate, chg_dt as updateDate, mbr_banner banner,ck_email checkEmail, ch_active checkActive
 		(select count(*) from gl_member_subscribe where mbr_no = #{no}) as subscribeCount
 		from gl_member
 		where mbr_no = #{no}
 	</select>
 	
 	<select id="findByUserId" resultType="com.golearn.domain.UserDto">
-		select mbr_no as no, mbr_id as username, mbr_email as email, mbr_nickname as nickname, mbr_profile as profile, reg_dt as regDate, chg_dt as updateDate, mbr_banner banner,
+		select mbr_no as no, mbr_id as username, mbr_email as email, mbr_nickname as nickname, mbr_profile as profile, reg_dt as regDate, chg_dt as updateDate, mbr_banner banner,ck_email checkEmail, ch_active checkActive
 		(select count(*) from gl_member_subscribe where mbr_id = #{userId}) as subscribeCount
 		from gl_member
 		where mbr_id = #{userId}
