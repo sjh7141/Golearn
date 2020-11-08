@@ -1,9 +1,11 @@
 <template>
-	<div class="modify-box-wrap">
-		<span class="modify-text">
-			프로필 수정
-		</span>
-		<div class="form pt-10">
+	<div style="">
+		<v-card-title class="px-0">
+			<span class="modify-text">
+				프로필 수정
+			</span>
+		</v-card-title>
+		<div class="form pt-10 ml-15 modify-box-wrap">
 			<div class="py-8 px-10 wrapper">
 				<!-- 프로필 사진 변경 -->
 				<v-row justify="center" style="margin-top:20px;">
@@ -78,7 +80,7 @@
 				<v-row align="center" justify="center">
 					<v-btn
 						class="mr-3"
-						color="#2e6afd"
+						color="#8059d4"
 						depressed
 						large
 						:loading="loading"
@@ -135,7 +137,7 @@
 				<v-row align="center" justify="center">
 					<v-btn
 						class="mr-3"
-						color="#2e6afd"
+						color="#8059d4"
 						depressed
 						large
 						:loading="loading"
@@ -220,14 +222,39 @@
 						class="py-0 px-10"
 						v-model="email"
 						outlined
+						hide-details
 						color="#8fbaff"
 						disabled
+					/>
+					<div style="width:130px; margin: 10px auto;">
+						<v-btn
+							color="#8059d4"
+							depressed
+							large
+							:loading="loading"
+							@click="sendEmail"
+						>
+							<span style="font-size:15px; color:white">
+								인증번호 전송
+							</span>
+						</v-btn>
+					</div>
+					<v-card-text class="bold py-0 px-10">
+						이메일 인증번호
+					</v-card-text>
+					<v-text-field
+						class="py-0 px-10"
+						v-model="emailCode"
+						outlined
+						placeholder="전송된 인증번호를 입력해주세요."
+						color="#8fbaff"
+						:error-messages="emailCodeErrorMessage"
 					/>
 					<v-card-actions class="pa-0 pt-8">
 						<v-btn
 							text
-							@click="certi = false"
-							style="background-color:#73deff; width:50%;border-radius:0px; height:70px; font-size:20px; color:white;"
+							@click="checkCode"
+							style="background-color:#8059d4; width:50%;border-radius:0px; height:70px; font-size:20px; color:white;"
 						>
 							인증하기
 						</v-btn>
@@ -339,6 +366,7 @@ export default {
 			deletePwd: '',
 			nickname: '',
 			email: '',
+			emailCode: '',
 			pwdError: false,
 			pwdSuccessMessage: '',
 			pwdErrorMessage: '',
@@ -354,6 +382,7 @@ export default {
 			deleteError: false,
 			deleteSuccessMessage: '',
 			deleteErrorMessage: '',
+			emailCodeErrorMessage: '',
 			loading: false,
 		};
 	},
@@ -576,6 +605,35 @@ export default {
 		unFold() {
 			this.fold = !this.fold;
 		},
+		sendEmail() {
+			this.$store
+				.dispatch('sendEmail', { email: this.email })
+				.then(() => {
+					this.loading = false;
+					alert('정상적으로 전송되었습니다.');
+				})
+				.catch(() => {
+					this.loading = false;
+				});
+		},
+		checkCode() {
+			this.$store
+				.dispatch('checkCode', this.emailCode)
+				.then(({ data }) => {
+					if (data) {
+						this.loading = false;
+						this.certi = false;
+						this.emailCodeErrorMessage = '';
+						this.$store.dispatch('getUser').then(({ data }) => {
+							this.$store.commit('setUser', data);
+							this.$router.go();
+						});
+					} else {
+						this.loading = false;
+						this.emailCodeErrorMessage = '잘못된 인증번호입니다.';
+					}
+				});
+		},
 	},
 	created() {
 		this.passwordSchema
@@ -622,6 +680,7 @@ a {
 
 .modify-box-wrap {
 	width: 786px;
+	/* margin: 0 auto; */
 	/* background-color: rgba(0, 0, 0, 0.75); */
 }
 

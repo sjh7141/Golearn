@@ -45,7 +45,7 @@
 			</v-list-item>
 			<v-row align="center" justify="center">
 				<v-btn
-					color="#2e6afd"
+					color="#633cb6"
 					x-large
 					dark
 					style="margin-top:10px; width:95%;"

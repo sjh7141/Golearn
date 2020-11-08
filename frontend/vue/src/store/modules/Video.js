@@ -40,5 +40,13 @@ export default {
 			};
 			return axios.delete(URL.videoBuild(), config);
 		},
+		getLikeVideo(context) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(URL.videoBuild() + '/like', config);
+		},
 	},
 };

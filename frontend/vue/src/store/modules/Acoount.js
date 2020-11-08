@@ -36,5 +36,28 @@ export default {
 				config,
 			);
 		},
+		sendEmail(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.post(
+				URL.accountBuild() + '/email-authentication',
+				payload,
+				config,
+			);
+		},
+		checkCode(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(
+				URL.accountBuild() + `/email-authentication/${payload}`,
+				config,
+			);
+		},
 	},
 };
