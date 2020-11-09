@@ -351,6 +351,11 @@ export default {
 				this.captionDuration += item.duration;
 			}
 			// if (this.totalTime == 0) this.fitScreen();
+			EventBus.$emit('changePlayer', [
+				...this.videoList,
+				...this.audioList,
+				...this.captionList,
+			]);
 		});
 
 		window.addEventListener('resize', this.handleTimeLine);
