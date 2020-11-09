@@ -6,7 +6,9 @@
 			style="background-color:white; padding:0; height:100%"
 		>
 			<v-card flat tile style="background-color:transparent">
-				<v-img src="@/assets/logo.png" max-width="60" contain />
+				<router-link to="/">
+					<v-img src="@/assets/logo.png" max-width="60" contain />
+				</router-link>
 			</v-card>
 			<template v-for="(menu, idx) in menus">
 				<div :key="`menu_${idx}`" class="nav px-5">

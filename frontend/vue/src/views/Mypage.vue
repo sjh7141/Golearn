@@ -3,10 +3,17 @@
 		<v-row>
 			<v-img
 				src="@/assets/golearn_banner.jpg"
-				height="300"
+				height="200"
 				style="filter: grayscale(50%);"
 				ref="img"
 			>
+				<v-col style="height:100%;">
+					<div class="banner-wrapper">
+						<div id="banner-text">
+							회원 정보
+						</div>
+					</div>
+				</v-col>
 			</v-img>
 		</v-row>
 		<v-row class="height-100 pt-15 mb-15 media-margin">
@@ -79,9 +86,9 @@ export default {
 			tap: [
 				{ name: '프로필', child: false },
 				{ name: '내 학습', child: false },
-				{ name: '좋아요한 영상', child: true },
-				{ name: '좋아요한 코스', child: true },
-				{ name: '수강중인 코스', child: true },
+				{ name: '좋아요한 영상', child: false },
+				{ name: '좋아요한 코스', child: false },
+				{ name: '수강중인 코스', child: false },
 			],
 			selectNo: 0,
 			likeVideos: [
