@@ -4,7 +4,7 @@
 			<Header ref="header" v-if="showHeader" />
 			<Navigation v-if="showHeader" />
 			<div :style="{ 'margin-top': space + 'px' }" />
-			<Content />
+			<Content class="content-component" />
 			<Footer v-if="showFooter" />
 		</div>
 	</v-app>

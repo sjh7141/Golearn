@@ -2,7 +2,9 @@
 .px-5 {
     padding: 0 20px;
 }
-
+.content-component{
+    background-color: #f9f9f9;
+}
 .basic {
     color: rgb(60, 65, 223) !important;
 }

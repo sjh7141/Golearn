@@ -1,7 +1,10 @@
 <template>
 	<div ref="app">
 		<v-card class="transparent" flat v-if="courses.length !== 0">
-			<v-card-title>코스</v-card-title>
+			<v-card-title
+				>코스 <v-spacer></v-spacer
+				><v-text-field name="asdf">asdf</v-text-field></v-card-title
+			>
 			<v-row>
 				<v-col
 					cols="12"
@@ -25,24 +28,14 @@
 </template>
 
 <script>
-import CourseCard from './CourseCard';
+import CourseCard from './CourseCard2';
 export default {
 	props: ['courses'],
 	data: () => ({
 		loading: false,
 		errored: false,
 		showSubBtn: true,
-		items: [
-			{ name: '홈', link: '/home' },
-			{ name: '동영상', link: '/videos' },
-		],
-		channel: {
-			mbr_nickname: 'asm9677',
-			_id: 'asdf',
-		},
-		currentUser: {
-			_id: 'asdf',
-		},
+
 		signinDialog: false,
 		details: {},
 	}),
