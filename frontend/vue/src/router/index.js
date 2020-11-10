@@ -70,6 +70,11 @@ const routes = [
 		name: 'VideoUpload',
 		component: VideoUpload,
 	},
+	{
+		path: '/video/edit',
+		name: 'VideoUpload',
+		component: VideoUpload,
+	},
 ];
 
 const router = new VueRouter({

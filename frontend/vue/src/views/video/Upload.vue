@@ -1,5 +1,21 @@
 <template>
 	<div>
+		<v-row align="center">
+			<v-img
+				src="@/assets/golearn_banner.jpg"
+				height="200"
+				style="filter: grayscale(50%);"
+				ref="img"
+			>
+				<v-col style="height:100%;">
+					<div class="banner-wrapper">
+						<div id="banner-text">
+							동영상 업로드
+						</div>
+					</div>
+				</v-col>
+			</v-img>
+		</v-row>
 		<v-progress-linear
 			color="#47e0ff"
 			height="6"
@@ -23,22 +39,18 @@
 					</v-row>
 				</v-col>
 				<v-col md="10" style="border-left: 1px solid #f2f2f2">
-					<edit-info
-						@setTitle="setTitle"
+					<edit-cover
+						@setBanner="setBanner"
 						v-show="select == 0"
 						@changeActive="changeActive"
 					/>
-					<edit-cover
-						@setBanner="setBanner"
+					<edit-info
+						@setTitle="setTitle"
 						v-show="select == 1"
 						@changeActive="changeActive"
 					/>
-					<edit-index
+					<edit-code
 						v-show="select == 2"
-						@changeActive="changeActive"
-					/>
-					<edit-manager
-						v-show="select == 3"
 						@changeActive="changeActive"
 					/>
 				</v-col>
@@ -48,18 +60,16 @@
 </template>
 
 <script>
-import EditInfo from '@/components/course/EditInfo.vue';
-import EditCover from '@/components/course/EditCover.vue';
-import EditIndex from '@/components/course/EditIndex.vue';
-import EditManager from '@/components/course/EditManager.vue';
+import EditInfo from '@/components/video/EditInfo.vue';
+import EditCover from '@/components/video/EditCover.vue';
+import EditCode from '@/components/video/EditCode.vue';
 import { mapGetters } from 'vuex';
 
 export default {
 	components: {
 		EditInfo,
 		EditCover,
-		EditIndex,
-		EditManager,
+		EditCode,
 	},
 	data() {
 		return {
