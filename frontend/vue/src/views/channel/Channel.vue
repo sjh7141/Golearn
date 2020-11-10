@@ -136,18 +136,21 @@
 				<v-container class="mx-auto px-0">
 					<v-tabs-items v-model="tab" class="transparent ">
 						<v-tab-item>
-							<video-slider> </video-slider>
-							<course-slider></course-slider>
-							<loadmap-slider></loadmap-slider>
+							<video-slider :videos="videos"> </video-slider>
+							<course-slider :courses="courses"></course-slider>
+							<loadmap-slider
+								:loadmaps="loadmaps"
+							></loadmap-slider>
 						</v-tab-item>
 						<v-tab-item>
-							<video-list :channel="channel"> </video-list>
+							<video-list :channel="channel" :videos="videos">
+							</video-list>
 						</v-tab-item>
 						<v-tab-item>
-							<course-list></course-list>
+							<course-list :courses="courses"></course-list>
 						</v-tab-item>
 						<v-tab-item>
-							<loadmap-list></loadmap-list>
+							<loadmap-list :loadmaps="loadmaps"></loadmap-list>
 						</v-tab-item>
 						<v-tab-item>
 							<v-container class="information ma-1">
@@ -221,6 +224,9 @@ export default {
 		items: ['홈', '동영상', '코스', '로드맵', '정보'],
 		channel: {},
 		details: {},
+		videos: [],
+		courses: [],
+		loadmaps: [],
 	}),
 	computed: {
 		...mapGetters(['isLogin', 'user']),
@@ -236,7 +242,15 @@ export default {
 		LoadmapList,
 	},
 	methods: {
-		...mapActions(['getMember', 'isLike', 'upload', 'setBanner']),
+		...mapActions([
+			'getMember',
+			'isLike',
+			'upload',
+			'setBanner',
+			'getChannelVideos',
+			'getChannelLoadmaps',
+			'getChannelCourses',
+		]),
 		subscribe() {
 			if (!this.isLogin) {
 				this.$router.push('/login');
@@ -244,6 +258,15 @@ export default {
 		},
 		modify() {},
 		async getChannel(id) {
+			this.getChannelVideos(id).then(res => {
+				this.videos = res;
+			});
+			this.getChannelLoadmaps(id).then(res => {
+				this.loadmaps = res;
+			});
+			this.getChannelCourses(id).then(res => {
+				this.courses = res;
+			});
 			this.getMember(id).then(res => {
 				this.channel = res.data;
 			});

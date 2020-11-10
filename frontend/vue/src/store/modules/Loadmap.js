@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const URL = {
-	DOMAIN: 'http://k3a402.p.ssafy.io:8801',
+	DOMAIN: 'https://golearn.co.kr/api',
 	LOADMAP: 'loadmap',
 	loadmapBuild() {
 		return Array(this.DOMAIN, this.LOADMAP).join('/');

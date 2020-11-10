@@ -43,6 +43,7 @@ export default {
 	components: {
 		VideoCard,
 	},
+	props: ['videos'],
 	data: () => ({
 		tab: null,
 		loading: false,
@@ -50,7 +51,6 @@ export default {
 		subscribed: false,
 		subscribeLoading: false,
 		showSubBtn: true,
-		videos: {},
 		channel: {
 			mbr_nickname: 'asm9677',
 			_id: 'asdf',
@@ -99,26 +99,6 @@ export default {
 
 	methods: {
 		...mapActions(['getChannelVideos']),
-		async getChannel(id) {
-			// console.log(this.$route.params.id)
-			this.loading = true;
-			this.errored = false;
-
-			this.getChannelVideos(id).then(res => {
-				this.videos = res;
-			});
-
-			// console.log(channel)
-			this.loading = false;
-		},
-		subscribe() {},
-	},
-	mounted() {
-		this.getChannel(this.$route.params.id);
-	},
-	beforeRouteUpdate(to, from, next) {
-		this.getChannel(to.params.id);
-		next();
 	},
 };
 </script>
