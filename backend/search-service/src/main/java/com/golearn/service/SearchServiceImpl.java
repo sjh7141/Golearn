@@ -24,13 +24,13 @@ public class SearchServiceImpl implements SearchService {
 	}
 
 	@Override
-	public List<VideoDto> findVideo(String search, int startIndex, int perPageNum) {
-		return searchMapper.findVideo(search, startIndex, perPageNum);
+	public List<VideoDto> findVideo(String search, int startIndex, int perPageNum, List<Integer> tag) {
+		return searchMapper.findVideo(search, startIndex, perPageNum, tag);
 	}
 
 	@Override
-	public int countByVideo(String search) {
-		return searchMapper.countByVideo(search);
+	public int countByVideo(String search, List<Integer> tag) {
+		return searchMapper.countByVideo(search, tag);
 	}
 
 	@Override

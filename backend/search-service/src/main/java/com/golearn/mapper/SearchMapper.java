@@ -15,8 +15,8 @@ import com.golearn.domain.VideoDto;
 public interface SearchMapper {
 
 	public List<TagDto> findTag();
-	public List<VideoDto> findVideo(@Param("search") String search, @Param("startIndex") int startIndex, @Param("perPageNum")int perPageNum);
-	public int countByVideo(String search);
+	public List<VideoDto> findVideo(@Param("search") String search, @Param("startIndex") int startIndex, @Param("perPageNum")int perPageNum, @Param("tag") List<Integer> tag);
+	public int countByVideo(@Param("search") String search, @Param("tag") List<Integer> tag);
 	public List<TagDto>findTagByVideo(List<Integer> list);
 	public List<ChannelDto> findChannel(@Param("search") String search, @Param("startIndex") int startIndex, @Param("perPageNum")int perPageNum);
 	public int countByChannel(String search);
