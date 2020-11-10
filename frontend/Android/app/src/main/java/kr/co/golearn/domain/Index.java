@@ -1,11 +1,18 @@
 package kr.co.golearn.domain;
 
+import com.google.gson.annotations.SerializedName;
+
+import kr.co.golearn.domain.response.VideoResponse;
+
 public class Index {
     private long idxNo;
     private long cosNo;
     private long vidNo;
     private String idxTitle;
     private int idxOrder;
+
+    @SerializedName("map")
+    private VideoResponse videoResponse;
 
     public long getIdxNo() {
         return idxNo;
@@ -47,6 +54,14 @@ public class Index {
         this.idxOrder = idxOrder;
     }
 
+    public VideoResponse getVideoResponse() {
+        return videoResponse;
+    }
+
+    public void setVideoResponse(VideoResponse videoResponse) {
+        this.videoResponse = videoResponse;
+    }
+
     @Override
     public String toString() {
         return "Index{" +
@@ -55,6 +70,7 @@ public class Index {
                 ", vidNo=" + vidNo +
                 ", idxTitle='" + idxTitle + '\'' +
                 ", idxOrder=" + idxOrder +
+                ", videoResponse=" + videoResponse +
                 '}';
     }
 }

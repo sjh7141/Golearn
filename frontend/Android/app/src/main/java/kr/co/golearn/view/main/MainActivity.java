@@ -1,16 +1,24 @@
 package kr.co.golearn.view.main;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +37,14 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     @BindView(R.id.main_profile)
     ImageView imgProfile;
+    @BindView(R.id.main_app_name)
+    TextView mainAppName;
+    @BindView(R.id.main_layout)
+    ConstraintLayout mainLayout;
+    @BindView(R.id.main_btn_search)
+    ImageView mainBtnSearch;
+    @BindView(R.id.main_edt_search)
+    EditText mainEdtSearch;
 
     private FragmentManager fragmentManager;
     private HomeFragment homeFragment;
@@ -36,12 +52,27 @@ public class MainActivity extends AppCompatActivity {
     private ArticleFragment articleFragment;
     private AccountViewModel mainViewModel;
 
+    private long pressedBackButtonTime;
+    private boolean isSearchMode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
         actionViewModel();
+        addEventListener();
+    }
+
+    private void addEventListener() {
+        mainEdtSearch.setOnKeyListener((view, keyCode, keyEvent) -> {
+            if (keyCode == keyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mainEdtSearch.getWindowToken(), 0);
+                searchToCourse(mainEdtSearch.getText().toString());
+            }
+            return false;
+        });
     }
 
     private void actionViewModel() {
@@ -130,5 +161,52 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ChannelActivity.class);
         intent.putExtra("mbrNo", new PreferenceManager().getLong(this, PreferenceManager.USER_NO));
         startActivity(intent);
+    }
+
+    @OnClick(R.id.main_btn_search)
+    public void clickToSearch() {
+        if (!isSearchMode) {
+            isSearchMode = true;
+            mainAppName.setVisibility(View.INVISIBLE);
+            mainEdtSearch.setVisibility(View.VISIBLE);
+            bottomNavigationView.setVisibility(View.GONE);
+            mainEdtSearch.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(mainEdtSearch, InputMethodManager.SHOW_IMPLICIT);
+        } else {
+            searchToCourse(mainEdtSearch.getText().toString());
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        System.out.println("????");
+        // Search 모드가 아닐 경우
+        if (!isSearchMode) {
+            if (pressedBackButtonTime == 0) {
+                Snackbar.make(mainLayout, "한 번 더 누르면 종료됩니다.", Snackbar.LENGTH_SHORT).show();
+                pressedBackButtonTime = System.currentTimeMillis();
+            } else {
+                int seconds = (int) (System.currentTimeMillis() - pressedBackButtonTime);
+                if (seconds > 2000) {
+                    Snackbar.make(mainLayout, "한 번 더 누르면 종료됩니다.", Snackbar.LENGTH_SHORT).show();
+                    pressedBackButtonTime = 0;
+                } else {
+                    super.onBackPressed();
+                    finish();
+                }
+            }
+        } else {
+            isSearchMode = false;
+            mainAppName.setVisibility(View.VISIBLE);
+            mainEdtSearch.setVisibility(View.GONE);
+            bottomNavigationView.setVisibility(View.VISIBLE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(mainEdtSearch.getWindowToken(), 0);
+        }
+    }
+
+    private void searchToCourse(String text) {
+        homeFragment.searchToCourse(text);
     }
 }

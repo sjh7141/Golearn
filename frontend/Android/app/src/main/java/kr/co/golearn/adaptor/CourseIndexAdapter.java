@@ -19,13 +19,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import kr.co.golearn.R;
+import kr.co.golearn.domain.Index;
 import kr.co.golearn.domain.UseIndexDto;
 import kr.co.golearn.view.video.VideoActivity;
 
 public class CourseIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private ArrayList<UseIndexDto> indexes = null;
+    private ArrayList<Index> indexes = null;
 
-    public CourseIndexAdapter(ArrayList<UseIndexDto> list){
+    public CourseIndexAdapter(ArrayList<Index> list){
         this.indexes = list;
     }
 
@@ -48,29 +49,29 @@ public class CourseIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(UseIndexDto useIndexDto){
+        public void bind(Index index){
             CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(itemView.getContext());
             circularProgressDrawable.setStrokeWidth(5f);
             circularProgressDrawable.setCenterRadius(30f);
             circularProgressDrawable.start();
 
             Glide.with(itemView.getContext())
-                    .load(useIndexDto.getVideoResponse().getVideo().getVidThumbnail())
+                    .load(index.getVideoResponse().getVideo().getVidThumbnail())
                     .centerCrop()
                     .placeholder(circularProgressDrawable)
                     .into(videoThumbnail);
-            videoTime.setText(useIndexDto.getVideoResponse().getVideo().getVideoLength());
-            videoTitle.setText(useIndexDto.getIndex().getIdxTitle());
-            videoNickname.setText(useIndexDto.getVideoResponse().getAuthor().getMbrNickName());
-            videoViewCount.setText(useIndexDto.getVideoResponse().getVideo().getViewCount());
-            videoRegTime.setText(useIndexDto.getVideoResponse().getVideo().getDate());
+            videoTime.setText(index.getVideoResponse().getVideo().getVideoLength());
+            videoTitle.setText(index.getIdxTitle());
+            videoNickname.setText(index.getVideoResponse().getAuthor().getMbrNickName());
+            videoViewCount.setText(index.getVideoResponse().getVideo().getViewCount());
+            videoRegTime.setText(index.getVideoResponse().getVideo().getDate());
         }
 
         @OnClick(R.id.card_pager_video_card_view)
         void clickToVideo(){
-            UseIndexDto useIndexDto = indexes.get(this.getAdapterPosition());
+            Index index = indexes.get(this.getAdapterPosition());
             Intent intent = new Intent(itemView.getContext(), VideoActivity.class);
-            intent.putExtra("vidNo", useIndexDto.getIndex().getVidNo());
+            intent.putExtra("vidNo", index.getVidNo());
             itemView.getContext().startActivity(intent);
         }
     }

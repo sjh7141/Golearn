@@ -9,11 +9,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 
@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import kr.co.golearn.R;
 import kr.co.golearn.domain.Course;
+import kr.co.golearn.util.AnimationUtils;
 import kr.co.golearn.view.course.CourseIndexActivity;
 import kr.co.golearn.view.main.channel.ChannelActivity;
 
@@ -30,9 +31,11 @@ public class HomeCourseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private final int VIEW_TYPE_LOADING = 1;
     private CircularProgressDrawable circularProgressDrawable;
     private ArrayList<Course> courses = null;
+    private int previousPosition;
 
     public class HomeCourseViewHolder extends RecyclerView.ViewHolder {
-
+        @BindView(R.id.card_home_main_top_layout)
+        ConstraintLayout mainTopLayout;
         @BindView(R.id.card_home_course_title)
         TextView courseTitle;
         @BindView(R.id.card_home_course_date)
@@ -108,13 +111,15 @@ public class HomeCourseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
-
         if (viewHolder instanceof HomeCourseViewHolder) {
             populateItemRows((HomeCourseViewHolder) viewHolder, position);
         } else if (viewHolder instanceof LoadingViewHolder) {
             showLoadingView((LoadingViewHolder) viewHolder, position);
         }
-
+        if(position > previousPosition){
+            AnimationUtils.fadeInAddBottomUp(viewHolder.itemView);
+        }
+        previousPosition = position;
     }
 
     private void populateItemRows(HomeCourseViewHolder viewHolder, int position) {

@@ -33,6 +33,7 @@ import butterknife.OnClick;
 import kr.co.golearn.R;
 import kr.co.golearn.adaptor.CourseIndexAdapter;
 import kr.co.golearn.domain.Course;
+import kr.co.golearn.domain.Index;
 import kr.co.golearn.domain.UseIndexDto;
 import kr.co.golearn.util.CommonUtils;
 import kr.co.golearn.viewmodel.CourseViewModel;
@@ -65,7 +66,7 @@ public class CourseIndexActivity extends AppCompatActivity {
     private CourseViewModel courseViewModel;
     private GridLayoutManager gridLayoutManager;
     private CourseIndexAdapter courseIndexAdapter;
-    private ArrayList<UseIndexDto> indexDtoList;
+    private ArrayList<Index> indexDtoList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,13 +91,10 @@ public class CourseIndexActivity extends AppCompatActivity {
 
     private void actionViewModel() {
         courseViewModel = ViewModelProviders.of(this).get(CourseViewModel.class);
-        courseViewModel.useIndexDtoList().observe(this, useIndexDtoList -> {
-            courseVideoCount.setText("동영상 " + useIndexDtoList.size() + "개");
-            for(UseIndexDto useIndexDto : useIndexDtoList){
-                useIndexDto.getVideoResponse().getVideo().setDate(CommonUtils.calcTimeDate(useIndexDto.getVideoResponse().getVideo().getRegDt()));
-                useIndexDto.getVideoResponse().getVideo().setViewCount(CommonUtils.convertCount(useIndexDto.getVideoResponse().getVideo().getVidView()));
-                useIndexDto.getVideoResponse().getVideo().setVideoLength(CommonUtils.convertVideoTime(useIndexDto.getVideoResponse().getVideo().getVidLength()));
-                indexDtoList.add(useIndexDto);
+        courseViewModel.indexes().observe(this, indexes -> {
+            courseVideoCount.setText("동영상 " + indexes.size() + "개");
+            for(Index index : indexes){
+                indexDtoList.add(index);
             }
             videoRecyclerView.post(() -> courseIndexAdapter.notifyDataSetChanged());
         });

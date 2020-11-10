@@ -11,10 +11,12 @@ import java.util.List;
 
 import kr.co.golearn.domain.Index;
 import kr.co.golearn.domain.UseIndexDto;
+import kr.co.golearn.domain.Video;
 import kr.co.golearn.domain.response.VideoResponse;
 import kr.co.golearn.repository.CourseService;
 import kr.co.golearn.repository.RetrofitClient;
 import kr.co.golearn.repository.VideoService;
+import kr.co.golearn.util.CommonUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,12 +24,20 @@ import retrofit2.Response;
 public class CourseViewModel extends ViewModel {
     private String TAG = this.getClass().toString();
     private MutableLiveData<List<UseIndexDto>> useIndexDtoList;
+    private MutableLiveData<List<Index>> indexes;
 
     public LiveData<List<UseIndexDto>> useIndexDtoList(){
         if(useIndexDtoList == null){
             useIndexDtoList = new MutableLiveData<>();
         }
         return useIndexDtoList;
+    }
+
+    public LiveData<List<Index>> indexes(){
+        if(indexes == null){
+            indexes = new MutableLiveData<>();
+        }
+        return indexes;
     }
 
     // 목차 목록 조회
@@ -41,10 +51,13 @@ public class CourseViewModel extends ViewModel {
                 if(response.isSuccessful()){
                     List<Index> indexList = response.body();
                     for(Index index : indexList){
-                        VideoResponse video = getVideoForIndex(index.getVidNo());
-                        result.add(new UseIndexDto(index, video));
+                        VideoResponse videoResponse = index.getVideoResponse();
+                        Video video = videoResponse.getVideo();
+                        video.setDate(CommonUtils.calcTimeDate(video.getRegDt()));
+                        video.setVideoLength(CommonUtils.convertVideoTime(video.getVidLength()));
+                        video.setViewCount(CommonUtils.convertCount(video.getVidView()));
                     }
-                    useIndexDtoList.setValue(result);
+                    indexes.setValue(indexList);
                 }
             }
 
@@ -53,19 +66,5 @@ public class CourseViewModel extends ViewModel {
                 Log.e(TAG, t.getMessage());
             }
         });
-    }
-
-
-    // 목차에 대한 영상 상세정보 가져오기
-    private VideoResponse getVideoForIndex(long vidNo){
-        VideoService videoService = RetrofitClient.videoService();
-        Call<VideoResponse> videoCall = videoService.getVideo(vidNo);
-        VideoResponse result = null;
-        try {
-            result = videoCall.execute().body();
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
-        return result;
     }
 }
