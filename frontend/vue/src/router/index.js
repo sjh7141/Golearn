@@ -11,6 +11,7 @@ import EditCourse from '@/views/course/Edit.vue';
 import EditLoadMap from '@/views/loadmap/Edit.vue';
 import Channel from '@/views/channel/Channel.vue';
 import Mypage from '@/views/Mypage.vue';
+import CourseList from '@/views/course/CourseList.vue';
 Vue.use(VueRouter);
 
 const routes = [
@@ -33,6 +34,11 @@ const routes = [
 		path: '/course/:id',
 		name: 'Course',
 		component: Course,
+	},
+	{
+		path: '/course',
+		name: 'CourseList',
+		component: CourseList,
 	},
 	{
 		path: '/request',
