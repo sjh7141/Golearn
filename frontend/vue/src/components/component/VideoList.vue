@@ -68,7 +68,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import VideoCard from './VideoCard';
 export default {
-	props: ['channel'],
+	props: ['channel', 'videos'],
 	data: () => ({
 		loading: false,
 		errored: false,
@@ -77,7 +77,6 @@ export default {
 			{ name: '홈', link: '/home' },
 			{ name: '동영상', link: '/videos' },
 		],
-		videos: {},
 		channel: {
 			mbr_nickname: 'asm9677',
 			_id: 'asdf',

@@ -40,9 +40,9 @@
 
 <script>
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
-import { mapGetters, mapActions } from 'vuex';
 import CourseCard from './CourseCard';
 export default {
+	props: ['courses'],
 	components: {
 		CourseCard,
 		Swiper,
@@ -55,7 +55,6 @@ export default {
 		subscribed: false,
 		subscribeLoading: false,
 		showSubBtn: true,
-		courses: {},
 		channel: {
 			mbr_nickname: 'asm9677',
 			_id: 'asdf',
@@ -88,33 +87,7 @@ export default {
 			},
 		},
 	}),
-	computed: {
-		...mapGetters(['isAuthenticated']),
-	},
-
-	methods: {
-		...mapActions(['getChannelCourses']),
-		async getChannel(id) {
-			// console.log(this.$route.params.id)
-			this.loading = true;
-			this.errored = false;
-
-			this.getChannelCourses(id).then(res => {
-				this.courses = res;
-			});
-
-			// console.log(channel)
-			this.loading = false;
-		},
-		subscribe() {},
-	},
-	mounted() {
-		this.getChannel(this.$route.params.id);
-	},
-	beforeRouteUpdate(to, from, next) {
-		this.getChannel(to.params.id);
-		next();
-	},
+	computed: {},
 };
 </script>
 
