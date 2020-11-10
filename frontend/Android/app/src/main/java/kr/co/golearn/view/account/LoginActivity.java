@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
             }
             progressLoadingDialog.dismiss();
             startActivity(new Intent(this, MainActivity.class));
-//            finish();
+            finish();
         });
         accountViewModel.getFailLogin().observe(this, noLogin -> {
             Snackbar.make(bottomLayout, "아이디 또는 비밀번호가 일치하지 않습니다.", Snackbar.LENGTH_SHORT).show();

@@ -3,11 +3,11 @@ package kr.co.golearn.view.main.home;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,19 +43,20 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.home_main_layout)
     ConstraintLayout homeMainLayout;
 
-    private View view;
     private HomeCourseAdapter homeCourseAdapter;
     private GridLayoutManager gridLayoutManager;
     private ArrayList<Course> courses;
+    private String searchText = "";
     private boolean isLoading;
     private int scrollPosition;
     private int currentSize;
     private int page;
 
+    // Fragment View 생성시 ButterKnife 바인딩
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -65,7 +66,9 @@ public class HomeFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
         init();
+
         populateData(page++);
         initScrollListener();
         initRefreshListener();
@@ -73,8 +76,7 @@ public class HomeFragment extends Fragment {
 
     private void initRefreshListener() {
         refreshLayout.setOnRefreshListener(() -> {
-            init();
-            populateData(page++);
+            afterInit();
             refreshLayout.setRefreshing(false);
         });
     }
@@ -92,6 +94,11 @@ public class HomeFragment extends Fragment {
 
                 gridLayoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
                 if (!isLoading) {
+                    if (courses.size() < (page - 1) * 12) {
+                        Snackbar.make(homeMainLayout, "모든 코스를 들고왔습니다", Snackbar.LENGTH_SHORT).show();
+                        isLoading = true;
+                        return;
+                    }
                     if (gridLayoutManager != null && gridLayoutManager.findLastCompletelyVisibleItemPosition() == courses.size() - 1) {
                         loadMore();
                         isLoading = true;
@@ -120,7 +127,7 @@ public class HomeFragment extends Fragment {
 
     private void populateData(int page) {
         SearchService courseService = RetrofitClient.searchService();
-        Call<SearchCourseResponse> courseCall = courseService.searchFromCourse(page, "", "course");
+        Call<SearchCourseResponse> courseCall = courseService.searchFromCourse(page, searchText, "course");
         SearchCourseResponse result = null;
         try {
             result = courseCall.execute().body();
@@ -133,19 +140,38 @@ public class HomeFragment extends Fragment {
                 courses.add(course);
             }
             if (page == 1) {
-                homeCourseAdapter = new HomeCourseAdapter(courses);
-                recyclerViewCourse.setAdapter(homeCourseAdapter);
+                homeCourseAdapter.notifyDataSetChanged();
             }
         } else {
             Snackbar.make(homeMainLayout, "모든 코스를 들고왔습니다", Snackbar.LENGTH_SHORT).show();
         }
     }
 
+    // 검색 및 리스트 목록 초기화
     private void init() {
         page = 1;
         isLoading = false;
         courses = new ArrayList<>();
+        homeCourseAdapter = new HomeCourseAdapter(courses);
         gridLayoutManager = new GridLayoutManager(getContext(), 1);
         recyclerViewCourse.setLayoutManager(gridLayoutManager);
+        recyclerViewCourse.setAdapter(homeCourseAdapter);
+    }
+
+    public void searchToCourse(String searchText) {
+        this.searchText = searchText;
+        afterInit();
+    }
+
+    private void afterInit() {
+        if (!courses.isEmpty()) {
+            courses.clear();
+        }
+        page = 1;
+        isLoading = false;
+        homeCourseAdapter.notifyDataSetChanged();
+        initScrollListener();
+        populateData(page++);
+
     }
 }

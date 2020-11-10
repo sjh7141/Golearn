@@ -4,12 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -69,6 +71,8 @@ public class ReplyBottomFragment extends BottomSheetDialogFragment {
                 .circleCrop()
                 .into(profile);
         edtComment.requestFocus();
+        InputMethodManager imm = (InputMethodManager) this.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(edtComment, InputMethodManager.SHOW_IMPLICIT);
         btnOk.setVisibility(View.INVISIBLE);
 
         edtComment.addTextChangedListener(new TextWatcher() {
