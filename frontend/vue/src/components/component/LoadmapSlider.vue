@@ -61,7 +61,6 @@
 
 <script>
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
-import { mapGetters, mapActions } from 'vuex';
 import LoadmapCard from './LoadmapCard';
 export default {
 	components: {
@@ -69,6 +68,7 @@ export default {
 		Swiper,
 		SwiperSlide,
 	},
+	props: ['loadmaps'],
 	data: () => ({
 		tab: null,
 		loading: false,
@@ -76,7 +76,6 @@ export default {
 		subscribed: false,
 		subscribeLoading: false,
 		showSubBtn: true,
-		loadmaps: {},
 		channel: {
 			mbr_nickname: 'asm9677',
 			_id: 'asdf',
@@ -109,33 +108,9 @@ export default {
 			},
 		},
 	}),
-	computed: {
-		...mapGetters(['isAuthenticated']),
-	},
+	computed: {},
 
-	methods: {
-		...mapActions(['getChannelLoadmaps']),
-		async getChannel(id) {
-			// console.log(this.$route.params.id)
-			this.loading = true;
-			this.errored = false;
-
-			this.getChannelLoadmaps(id).then(res => {
-				this.loadmaps = res;
-			});
-
-			// console.log(channel)
-			this.loading = false;
-		},
-		subscribe() {},
-	},
-	mounted() {
-		this.getChannel(this.$route.params.id);
-	},
-	beforeRouteUpdate(to, from, next) {
-		this.getChannel(to.params.id);
-		next();
-	},
+	methods: {},
 };
 </script>
 

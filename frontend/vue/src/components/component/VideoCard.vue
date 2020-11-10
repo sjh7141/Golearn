@@ -7,7 +7,7 @@
 			flat
 			tile
 			router
-			:to="`/watch/${video.vid_no}`"
+			:to="`/channel/play/${video.vid_no}`"
 		>
 			<v-img
 				:src="`${video.vid_thumbnail}`"

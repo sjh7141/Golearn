@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const URL = {
-	DOMAIN: 'http://k3a402.p.ssafy.io:8801',
+	DOMAIN: 'https://golearn.co.kr/api',
 	PREFIX: 'search-service/v1',
 	searchBuild() {
 		return Array(this.DOMAIN, this.PREFIX).join('/');

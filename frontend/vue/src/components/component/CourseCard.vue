@@ -7,7 +7,7 @@
 			flat
 			tile
 			router
-			:to="`/watch/${course.cos_no}`"
+			:to="`/course/${course.cos_no}`"
 		>
 			<v-img
 				:src="`${course.cos_thumbnail}`"

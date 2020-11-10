@@ -25,9 +25,9 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
 import CourseCard from './CourseCard';
 export default {
+	props: ['courses'],
 	data: () => ({
 		loading: false,
 		errored: false,
@@ -36,7 +36,6 @@ export default {
 			{ name: '홈', link: '/home' },
 			{ name: '동영상', link: '/videos' },
 		],
-		courses: {},
 		channel: {
 			mbr_nickname: 'asm9677',
 			_id: 'asdf',
@@ -47,32 +46,9 @@ export default {
 		signinDialog: false,
 		details: {},
 	}),
-	computed: {
-		...mapGetters(['isAuthenticated']),
-	},
+	computed: {},
 	components: {
 		CourseCard,
-	},
-	methods: {
-		...mapActions(['getChannelCourses']),
-		async getChannel(id) {
-			this.loading = true;
-			this.errored = false;
-
-			this.getChannelCourses(id).then(res => {
-				this.courses = res;
-			});
-
-			this.loading = false;
-		},
-		subscribe() {},
-	},
-	mounted() {
-		this.getChannel(this.$route.params.id);
-	},
-	beforeRouteUpdate(to, from, next) {
-		this.getChannel(to.params.id);
-		next();
 	},
 };
 </script>
