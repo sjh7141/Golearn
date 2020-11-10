@@ -120,6 +120,7 @@
 					<h2 class="mt-15">신규 강의</h2>
 					<v-row>
 						<vcards :items="hit"></vcards>
+						<vcards :items="cards"></vcards>
 					</v-row>
 				</v-container>
 			</div>

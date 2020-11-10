@@ -1,5 +1,5 @@
 <template>
-	<v-container id="footer" class="justify-center wrap mt-9" fluid fill-height>
+	<v-container id="footer" class="justify-center wrap pt-9" fluid fill-height>
 		<v-row fill-height>
 			<v-col cols="1" />
 			<v-col cols="1" align="center">

@@ -53,87 +53,187 @@
 				>
 					로그인
 				</v-btn>
-				<v-menu v-else bottom min-width="200px" rounded offset-y>
-					<template v-slot:activator="{ on }">
-						<v-btn icon large v-on="on">
-							<v-avatar>
-								<img
-									:src="
-										user.profile
-											? user.profile
-											: '@/assets/default_profile.png'
-									"
-									alt="프로필"
-								/>
-								<!-- <span class="white--text headline">{{
+				<template v-else>
+					<v-btn icon large class="mr-5" @click="video = true">
+						<v-avatar>
+							<v-icon large>
+								mdi-video-plus
+							</v-icon>
+						</v-avatar>
+					</v-btn>
+
+					<v-menu bottom min-width="200px" rounded offset-y>
+						<template v-slot:activator="{ on }">
+							<v-btn icon large v-on="on" class="mr-5">
+								<v-avatar>
+									<v-icon>
+										mdi-bell
+									</v-icon>
+								</v-avatar>
+							</v-btn>
+						</template>
+						<v-card>
+							<v-list-item-content class="justify-center">
+								<div class="mx-auto"></div>
+							</v-list-item-content>
+						</v-card>
+					</v-menu>
+					<v-menu bottom min-width="200px" rounded offset-y>
+						<template v-slot:activator="{ on }">
+							<v-btn icon large v-on="on">
+								<v-avatar>
+									<img
+										:src="
+											user.profile
+												? user.profile
+												: '@/assets/default_profile.png'
+										"
+										alt="프로필"
+									/>
+									<!-- <span class="white--text headline">{{
 									user.initials
 								}}</span> -->
-							</v-avatar>
-						</v-btn>
-					</template>
-					<v-card>
-						<v-list-item-content class="justify-center">
-							<div class="mx-auto text-center">
-								<v-row class="mx-2">
-									<v-avatar color="brown">
-										<img
-											:src="
-												user.profile
-													? user.profile
-													: '@/assets/default_profile.png'
-											"
-											alt="프로필"
-										/>
-									</v-avatar>
-									<div>
-										<v-row justify="start">
-											<v-col cols="12" class="pa-0">
+								</v-avatar>
+							</v-btn>
+						</template>
+						<v-card>
+							<v-list-item-content class="justify-center pb-0">
+								<div class="mx-auto">
+									<v-row class="mx-4">
+										<v-avatar color="brown">
+											<img
+												:src="
+													user.profile
+														? user.profile
+														: '@/assets/default_profile.png'
+												"
+												alt="프로필"
+											/>
+										</v-avatar>
+										<div>
+											<v-col cols="12" class="py-0">
 												<h3>{{ user.nickname }}</h3>
 											</v-col>
-											<v-col cols="12" class="pa-0">
+											<v-col cols="12" class="py-0">
 												<p class="caption mt-1">
 													{{ user.email }}
 												</p>
 											</v-col>
-										</v-row>
-									</div>
-								</v-row>
-								<v-divider class="my-3"></v-divider>
-								<v-btn
-									depressed
-									rounded
-									text
-									@click="goToMypage"
-									class="bold"
-								>
-									회원정보
-								</v-btn>
-								<v-divider class="my-3"></v-divider>
-								<v-btn
-									depressed
-									rounded
-									text
-									@click="goToChannel"
-									class="bold"
-								>
-									내 채널
-								</v-btn>
-								<v-divider class="my-3"></v-divider>
-								<v-btn
-									depressed
-									rounded
-									text
-									@click="logout"
-									class="bold"
-								>
-									로그아웃
-								</v-btn>
-							</div>
-						</v-list-item-content>
-					</v-card>
-				</v-menu>
+										</div>
+									</v-row>
+									<v-divider class="mt-3"></v-divider>
+									<v-btn
+										depressed
+										text
+										@click="goToMypage"
+										class="bold menu-start"
+									>
+										<v-icon class="pr-3" color="#737373">
+											mdi-badge-account-horizontal
+										</v-icon>
+										회원정보
+									</v-btn>
+									<v-divider></v-divider>
+									<v-btn
+										depressed
+										text
+										@click="goToChannel"
+										class="bold menu-start"
+									>
+										<v-icon class="pr-3" color="#737373">
+											mdi-account-box
+										</v-icon>
+										내 채널
+									</v-btn>
+									<v-divider></v-divider>
+									<v-btn
+										depressed
+										text
+										@click="logout"
+										class="bold menu-start"
+									>
+										<v-icon class="pr-3" color="#737373">
+											mdi-logout
+										</v-icon>
+										로그아웃
+									</v-btn>
+								</div>
+							</v-list-item-content>
+						</v-card>
+					</v-menu>
+				</template>
 			</div>
 		</v-app-bar>
+		<v-dialog v-model="video" max-width="700">
+			<v-card>
+				<v-card-text class="pt-5">
+					<v-row justify="center">
+						<v-img
+							src="@/assets/logo3.png"
+							max-width="100"
+							contain
+						/>
+					</v-row>
+					<v-row justify="center">
+						<h1 style="font-size:40px;">
+							<span style="color:#633cb6;font-weight:800;">
+								동영상
+							</span>
+							관리
+						</h1>
+					</v-row>
+					<v-row>
+						<v-col
+							v-for="(tap, idx) in videoModal"
+							:key="idx"
+							:cols="6"
+						>
+							<v-row>
+								<v-card
+									class="select-card"
+									tile
+									hover
+									style="box-shadow:none;"
+									:ripple="false"
+									@click="goToTap(tap.path)"
+								>
+									<v-row justify="center">
+										<div class="card-img">
+											<v-icon x-large>
+												{{ tap.icon }}
+											</v-icon>
+										</div>
+									</v-row>
+									<v-row justify="center">
+										<h3 v-text="tap.title" />
+									</v-row>
+									<v-row justify="start">
+										<div
+											style="font-size:14px; margin-top:10px;"
+											v-html="tap.contents"
+										/>
+									</v-row>
+									<v-row justify="center">
+										<v-btn
+											color="#633cb6"
+											rounded
+											large
+											depressed
+											dark
+											style="margin-top:30px; width:60%;"
+										>
+											<span style="font-size:16px"
+												><b>선택하기</b>
+											</span>
+										</v-btn>
+									</v-row>
+								</v-card>
+							</v-row>
+						</v-col>
+					</v-row>
+				</v-card-text>
+			</v-card>
+		</v-dialog>
 	</v-layout>
 </template>
 
@@ -158,6 +258,23 @@ export default {
 					title: '커뮤니티',
 				},
 			],
+			video: false,
+			videoModal: [
+				{
+					path: 'upload',
+					icon: 'mdi-file-upload',
+					title: '동영상 업로드',
+					contents:
+						'새로운 영상을 업로드 하고 고런고런의 컨텐츠에 사용할 수 있습니다.',
+				},
+				{
+					path: 'edit',
+					icon: 'mdi-content-cut',
+					title: '동영상 편집',
+					contents:
+						'고런고런의 편집기를 사용하여 영상을 직접 편집할 수 있습니다.',
+				},
+			],
 		};
 	},
 
@@ -177,6 +294,10 @@ export default {
 			this.$store.commit('setUser', null);
 			this.$store.commit('setToken', null);
 			this.$router.push('/');
+		},
+		goToTap(path) {
+			this.video = false;
+			this.$router.push(`/video/${path}`);
 		},
 	},
 	computed: {
@@ -200,5 +321,32 @@ export default {
 
 .append-icon:focus {
 	color: rgb(60, 65, 223) !important;
+}
+.menu-start {
+	justify-content: start !important;
+	width: 100%;
+	height: 60px !important;
+}
+.select-card:hover {
+	box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2) !important;
+}
+.select-signup {
+	background-color: #f9f9f9;
+	height: 100vh;
+	width: 100%;
+	margin: 0;
+}
+
+.select-card {
+	margin: 0px 20px;
+	width: 282px;
+	padding: 36px;
+}
+
+.card-img {
+	margin: 24px 0 42px 0;
+	vertical-align: top;
+	text-align: center;
+	font-size: 30px;
 }
 </style>
