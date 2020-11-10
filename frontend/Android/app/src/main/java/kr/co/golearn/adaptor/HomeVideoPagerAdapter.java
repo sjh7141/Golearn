@@ -1,6 +1,5 @@
 package kr.co.golearn.adaptor;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,12 +20,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import kr.co.golearn.R;
-import kr.co.golearn.domain.Course;
 import kr.co.golearn.domain.Member;
-import kr.co.golearn.domain.UseIndexDto;
 import kr.co.golearn.domain.Video;
-import kr.co.golearn.util.PreferenceManager;
-import kr.co.golearn.view.main.channel.ChannelActivity;
 import kr.co.golearn.view.video.VideoActivity;
 
 public class HomeVideoPagerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

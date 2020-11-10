@@ -278,7 +278,7 @@ public class VideoViewModel extends ViewModel {
         deleteCommentCall.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                if(response.isSuccessful() && response.code() == 200){
+                if (response.isSuccessful() && response.code() == 200) {
                     Toast.makeText(context, "댓글이 삭제되었습니다", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -291,7 +291,7 @@ public class VideoViewModel extends ViewModel {
     }
 
     // 댓글 업데이트
-    public void updateComment(Context context, long vidCmtNo, String text){
+    public void updateComment(Context context, long vidCmtNo, String text) {
         Comment comment = new Comment();
         comment.setVidComment(text);
         String token = new PreferenceManager().getString(context, PreferenceManager.TOKEN_KEY);
@@ -313,13 +313,13 @@ public class VideoViewModel extends ViewModel {
     }
 
     // 유저별 업로드 동영상 조회
-    public void getVideoByMemberNo(long mbrNo){
+    public void getVideoByMemberNo(long mbrNo) {
         VideoService videoService = RetrofitClient.videoService();
         Call<List<Video>> videoCall = videoService.getVideosByMemberNo(mbrNo);
         videoCall.enqueue(new Callback<List<Video>>() {
             @Override
             public void onResponse(Call<List<Video>> call, Response<List<Video>> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     videos.setValue(response.body());
                 }
             }

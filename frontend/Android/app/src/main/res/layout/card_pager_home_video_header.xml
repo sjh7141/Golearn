@@ -54,6 +54,7 @@
             android:layout_marginBottom="5dp"
             android:clickable="true"
             android:focusable="true"
+            android:visibility="invisible"
             app:cardCornerRadius="0dp"
             app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="@+id/pager_home_header_profile"
