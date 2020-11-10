@@ -37,9 +37,9 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.account_login_layout_bottom)
     ConstraintLayout bottomLayout;
 
-    private AccountViewModel accountViewModel;
-    private PreferenceManager preferenceManager;
     private ProgressLoadingDialog progressLoadingDialog;
+    private PreferenceManager preferenceManager;
+    private AccountViewModel accountViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

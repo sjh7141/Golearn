@@ -1,5 +1,7 @@
 package kr.co.golearn.view.main.channel;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,7 @@ import kr.co.golearn.R;
 import kr.co.golearn.adaptor.HomeVideoPagerAdapter;
 import kr.co.golearn.domain.Video;
 import kr.co.golearn.util.CommonUtils;
+import kr.co.golearn.util.ProgressLoadingDialog;
 import kr.co.golearn.viewmodel.AccountViewModel;
 import kr.co.golearn.viewmodel.VideoViewModel;
 
@@ -31,11 +34,12 @@ public class PagerHomeFragment extends Fragment {
 
     private long mbrNo;
 
-    private AccountViewModel accountViewModel;
-    private VideoViewModel videoViewModel;
+    private ProgressLoadingDialog progressLoadingDialog;
     private HomeVideoPagerAdapter homeVideoPagerAdapter;
     private GridLayoutManager gridLayoutManager;
+    private AccountViewModel accountViewModel;
     private ArrayList<Video> originVideos;
+    private VideoViewModel videoViewModel;
 
     public PagerHomeFragment(long mbrNo){
         this.mbrNo = mbrNo;
@@ -57,6 +61,7 @@ public class PagerHomeFragment extends Fragment {
     }
 
     private void actionViewModel() {
+        progressLoadingDialog.show();
         accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
         videoViewModel = ViewModelProviders.of(this).get(VideoViewModel.class);
         accountViewModel.getMember().observe(getActivity(), member -> {
@@ -71,12 +76,15 @@ public class PagerHomeFragment extends Fragment {
                 originVideos.add(video);
             }
             homeVideoPagerAdapter.notifyDataSetChanged();
+            progressLoadingDialog.dismiss();
         });
         accountViewModel.getMemberByNo(mbrNo);
         videoViewModel.getVideoByMemberNo(mbrNo);
     }
 
     private void init() {
+        progressLoadingDialog = new ProgressLoadingDialog(this.getContext());
+        progressLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         originVideos = new ArrayList<>();
         homeVideoPagerAdapter = new HomeVideoPagerAdapter(originVideos);
         gridLayoutManager = new GridLayoutManager(getContext(), 1);

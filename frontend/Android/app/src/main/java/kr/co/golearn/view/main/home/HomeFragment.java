@@ -6,8 +6,6 @@ import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -132,7 +130,8 @@ public class HomeFragment extends Fragment {
         try {
             result = courseCall.execute().body();
         } catch (Exception e) {
-
+            Snackbar.make(homeMainLayout, "모든 코스를 들고왔습니다", Snackbar.LENGTH_SHORT).show();
+            return;
         }
         if (result != null && result.getCourse().size() != 0) {
             for (Course course : result.getCourse()) {
