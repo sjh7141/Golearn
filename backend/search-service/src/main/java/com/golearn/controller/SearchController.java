@@ -32,15 +32,15 @@ public class SearchController {
 	@ApiOperation(value = "검색 목록 가져오기")
 	@GetMapping(value = "/search")
 	public ResponseEntity<Map<String, Object>> search(@RequestParam("type") String type,
-			@RequestParam("search") String search, @RequestParam("page_no") int pageNo) {
+			@RequestParam("search") String search, @RequestParam("page_no") int pageNo, @RequestParam(required=false, value="tag_no") List<Integer> tag) {
 		Map<String, Object> map = new HashMap<>();
 		PageDto page = new PageDto(pageNo);
 		if (search.equals(" ")) {
 			search = "";
 		}
 		if (type.equals("video")) {
-			page.setTotalCount(searchService.countByVideo(search));
-			List<VideoDto> video = searchService.findVideo(search, page.getStartIndex(), page.getPerPageNum());
+			page.setTotalCount(searchService.countByVideo(search, tag));
+			List<VideoDto> video = searchService.findVideo(search, page.getStartIndex(), page.getPerPageNum(), tag);
 			/*List<Integer> list = video.stream().map(el -> el.getVidNo()).collect(Collectors.toList());
 			List<TagDto> tag = searchService.findTagByVideo(list);
 			map.put("tag", tag);*/
@@ -60,7 +60,7 @@ public class SearchController {
 			page.setTotalCount(searchService.countByLoadmap(search));
 			List<LoadmapDto> loadmap = searchService.findLoadmap(search, page.getStartIndex(), page.getPerPageNum());
 			map.put("loadmap", loadmap);
-		}
+		} 
 
 		map.put("page", page);
 
