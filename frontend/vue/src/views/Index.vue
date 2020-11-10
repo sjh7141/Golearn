@@ -32,7 +32,9 @@
 			<div class="container">
 				<v-container>
 					<v-divider></v-divider>
-					<h2>이런 강의 어떠세요?</h2>
+					<h2 @click="$router.push('/channel/edit')">
+						이런 강의 어떠세요?
+					</h2>
 					<v-row>
 						<vcards :items="cards"> </vcards>
 					</v-row>

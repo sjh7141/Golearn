@@ -277,7 +277,7 @@
 			</v-card>
 		</v-tooltip>
 		<v-spacer />
-		<v-btn rounded color="#665DC3">
+		<v-btn rounded color="#665DC3" @click="exportVideo">
 			<v-icon left>
 				mdi-export
 			</v-icon>
@@ -316,6 +316,9 @@ export default {
 	methods: {
 		test(e) {
 			console.log(e);
+		},
+		exportVideo() {
+			EventBus.$emit('exportVideo');
 		},
 	},
 };

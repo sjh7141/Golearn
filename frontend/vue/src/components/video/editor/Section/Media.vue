@@ -66,6 +66,7 @@ export default {
 					video.src = file.target.result;
 					video.onloadeddata = () => {
 						newFile.duration = video.duration;
+						newFile.startTime = 0;
 					};
 				} else {
 					newFile.duration = 10;

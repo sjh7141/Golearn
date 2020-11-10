@@ -18,7 +18,9 @@ export default {
 				state.currentTime = state.duration;
 		},
 		setDuration(state, payload) {
+			if (payload < 0.01) payload = 0;
 			state.duration = payload;
+
 			if (state.currentTime > state.duration)
 				state.currentTime = state.duration;
 		},

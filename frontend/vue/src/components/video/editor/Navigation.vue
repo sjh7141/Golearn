@@ -10,6 +10,7 @@
 		:ripple="false"
 	>
 		<span
+			@click="$router.push('/')"
 			style="width: 36px; height: 36px; margin:0 auto;"
 			class="mt-4 mb-3"
 			><svg viewBox="0 0 36 36" fill="none">

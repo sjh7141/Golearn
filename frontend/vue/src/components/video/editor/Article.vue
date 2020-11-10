@@ -8,11 +8,13 @@
 		<v-layout class="px-8 py-1">
 			<v-btn
 				depressed
-				color="#1C1C26"
+				color="#2C2C38"
 				dark
 				v-for="btn in cmdBtns"
 				:key="`cmdBtn_${btn.title}`"
 				class="mr-1"
+				:disabled="btn.disabled"
+				@click="btn.action"
 			>
 				<v-icon left color="#80818B"> {{ btn.icon }} </v-icon>
 				<span style="color:#80818B; font-size:14px;">{{
@@ -34,9 +36,9 @@
 				<span style="color:#666673"> / </span>
 				<span>
 					<span class="time-hm">
-						{{ totalTime | convertM }}:{{ totalTime | convertS
+						{{ duration | convertM }}:{{ duration | convertS
 						}}<span class="time-s"
-							>.{{ totalTime | convertMS }}
+							>.{{ duration | convertMS }}
 						</span>
 					</span>
 				</span>
@@ -44,7 +46,7 @@
 			<v-spacer />
 			<v-btn
 				depressed
-				color="#1C1C26"
+				color="#2C2C38"
 				dark
 				v-for="btn in sizeBtns"
 				:key="`cmdBtn_${btn.title}`"
@@ -219,6 +221,24 @@
 import EventBus from '@/util/EventBus.js';
 export default {
 	name: 'EditArticle',
+	computed: {
+		currentTime: {
+			get() {
+				return this.$store.getters.currentTime;
+			},
+			set(val) {
+				this.$store.commit('setCurrentTime', val);
+			},
+		},
+		duration: {
+			get() {
+				return this.$store.getters.duration;
+			},
+			set(val) {
+				this.$store.commit('setDuration', val);
+			},
+		},
+	},
 	filters: {
 		convertM(t) {
 			let ret = parseInt(t / 60);
@@ -238,55 +258,72 @@ export default {
 	},
 	watch: {
 		videoDuration() {
-			this.calcTotalTime();
+			this.calcDuration();
 		},
 		audioDuration() {
-			this.calcTotalTime();
+			this.calcDuration();
 		},
 		captionDuration() {
-			this.calcTotalTime();
+			this.calcDuration();
 		},
 		interval() {
 			this.setTimeline();
 		},
-		totalTime() {
-			if (this.totalTime > this.saveTime) {
+		duration() {
+			if (this.duration > this.saveTime) {
 				this.setTimeline();
 			}
-			if (this.currentTime > this.totalTime) {
-				this.currentTime = this.totalTime;
+			if (this.currentTime > this.duration) {
+				this.currentTime = this.duration;
 				this.caretPosition = this.durationToWidth(this.currentTime);
 			}
 		},
 		currentTime() {
 			this.caretPosition = this.durationToWidth(this.currentTime);
-			if (this.currentTime > this.totalTime) {
-				this.currentTime = this.totalTime;
+			if (this.currentTime > this.duration) {
+				this.currentTime = this.duration;
 			}
+		},
+		selectedItem() {
+			this.cmdBtns[0].disabled = this.selectedItem == null;
+			this.cmdBtns[2].disabled = this.selectedItem == null;
+			this.cmdBtns[3].disabled =
+				this.selectedItem &&
+				this.selectedItem.type != 'video' &&
+				this.selectedItem.type != 'audio';
+		},
+		copiedItem() {
+			this.cmdBtns[1].disabled = this.copiedItem == null;
 		},
 	},
 	data() {
 		return {
 			intervalList: [1, 2, 5, 10, 30, 60, 120, 300, 600, 1800, 3600],
 			interval: 1,
-			currentTime: 0,
-			totalTime: 0,
 			cmdBtns: [
 				{
 					title: 'Copy',
 					icon: 'mdi-content-copy',
+					disabled: true,
+					action: this.copyItem,
 				},
 				{
 					title: 'Paste',
 					icon: 'mdi-content-duplicate',
+					disabled: true,
+					action: this.pasteItem,
 				},
 				{
 					title: 'Delete',
 					icon: 'mdi-trash-can-outline',
+					disabled: true,
+					action: this.deleteItem,
 				},
 				{
 					title: 'Cut',
 					icon: 'mdi-content-cut',
+					disabled: true,
+					action: this.cutItem,
 				},
 			],
 			sizeBtns: [
@@ -324,6 +361,8 @@ export default {
 			saveTime: 0,
 
 			selectedItem: null,
+			copiedItem: null,
+
 			caretPosition: 0,
 
 			setTimerDrag: false,
@@ -350,7 +389,7 @@ export default {
 				this.captionList.push(item);
 				this.captionDuration += item.duration;
 			}
-			// if (this.totalTime == 0) this.fitScreen();
+			// if (this.duration == 0) this.fitScreen();
 			EventBus.$emit('changePlayer', [
 				...this.videoList,
 				...this.audioList,
@@ -393,13 +432,13 @@ export default {
 					break;
 				}
 			}
-			if (this.interval * 20 > this.totalTime) {
+			if (this.interval * 20 > this.duration) {
 				this.fitScreen();
 			}
 			this.handleTimeLine();
 		},
 		fitScreen() {
-			this.interval = this.totalTime / 19;
+			this.interval = this.duration / 19;
 			if (this.interval < 1) this.interval = 1;
 			this.handleTimeLine();
 		},
@@ -463,8 +502,8 @@ export default {
 			this.resizeElement = null;
 		},
 
-		calcTotalTime() {
-			this.totalTime = Math.max(
+		calcDuration() {
+			this.duration = Math.max(
 				this.videoDuration,
 				this.audioDuration,
 				this.captionDuration,
@@ -473,7 +512,7 @@ export default {
 
 		setTimeline() {
 			let data = [];
-			let tmpTime = this.totalTime;
+			let tmpTime = this.duration;
 			if (tmpTime < 19) {
 				tmpTime = 19;
 			}
@@ -486,7 +525,7 @@ export default {
 			}
 
 			this.timeline = data;
-			this.saveTime = this.totalTime;
+			this.saveTime = this.duration;
 			this.caretPosition = this.durationToWidth(this.currentTime);
 		},
 
@@ -499,9 +538,89 @@ export default {
 						((this.$refs.timeline.clientWidth - 50) / 20));
 
 				if (this.currentTime < 0) this.currentTime = 0;
-				if (this.currentTime > this.totalTime)
-					this.currentTime = this.totalTime;
+				if (this.currentTime > this.duration)
+					this.currentTime = this.duration;
+				EventBus.$emit('pause');
 			}
+		},
+
+		copyItem() {
+			let tmpItem = {};
+			for (let i in this.selectedItem) tmpItem[i] = this.selectedItem[i];
+			this.copiedItem = tmpItem;
+		},
+
+		pasteItem() {
+			EventBus.$emit('addPlayer', this.copiedItem);
+		},
+
+		deleteItem() {
+			console.log(
+				this.videoDuration,
+				this.audioDuration,
+				this.captionDuration,
+				this.duration,
+			);
+			let idx = this.videoList.indexOf(this.selectedItem);
+			if (idx > -1) {
+				this.videoList.splice(idx, 1);
+				this.videoDuration -= this.selectedItem.duration;
+			}
+
+			idx = this.audioList.indexOf(this.selectedItem);
+			if (idx > -1) {
+				this.audioList.splice(idx, 1);
+				this.audioDuration -= this.selectedItem.duration;
+			}
+
+			idx = this.captionList.indexOf(this.selectedItem);
+			if (idx > -1) {
+				this.captionList.splice(idx, 1);
+				this.captionDuration -= this.selectedItem.duration;
+			}
+			this.selectedItem = null;
+		},
+
+		cutItem() {
+			let startTime = 0;
+			let idx = -1;
+			if (this.selectedItem.type == 'video') {
+				idx = this.videoList.indexOf(this.selectedItem);
+				for (let i = 0; i < idx; i++)
+					startTime += this.videoList[i].duration;
+			} else if (this.selectedItem.type == 'audio') {
+				idx = this.audioList.indexOf(this.selectedItem);
+				for (let i = 0; i < idx; i++)
+					startTime += this.audioList[i].duration;
+			}
+			if (
+				this.currentTime <= startTime ||
+				this.currentTime >= startTime + this.selectedItem.duration
+			) {
+				return;
+			}
+
+			console.log(this.currentTime, startTime);
+
+			let leftItem = {};
+			let rightItem = {};
+
+			for (let i in this.selectedItem) {
+				leftItem[i] = this.selectedItem[i];
+				rightItem[i] = this.selectedItem[i];
+			}
+
+			leftItem.duration = this.currentTime - startTime;
+			rightItem.duration -= leftItem.duration;
+			rightItem.startTime += leftItem.duration;
+
+			if (this.selectedItem.type == 'video') {
+				this.videoList.splice(idx, 1, leftItem, rightItem);
+			} else if (this.selectedItem.type == 'audio') {
+				this.audioList.splice(idx, 1, leftItem, rightItem);
+			}
+
+			this.selectedItem = null;
 		},
 	},
 };
@@ -512,6 +631,18 @@ export default {
 	opacity: 0.7;
 }
 
+#edit-article
+	.v-btn.v-btn--disabled:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) {
+	background-color: #2c2c3880 !important;
+}
+
+#edit-article .v-btn--disabled {
+	cursor: pointer !important;
+}
+
+#edit-article .v-btn {
+	justify-content: start;
+}
 #edit-article .time-hm {
 	color: #ffffff;
 }

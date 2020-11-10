@@ -6,6 +6,8 @@
 			:height="height"
 			style="background-color:black; margin-left: auto; margin-right: auto; display:block;"
 		/>
+		<!-- <v-overlay>
+			</ -->
 		<v-row justify="center" class="mt-4">
 			<v-icon
 				color="#B3B3B6"
@@ -24,7 +26,12 @@
 			>
 				mdi-fast-forward mdi-rotate-180
 			</v-icon>
-			<v-icon color="#B3B3B6" size="38" @click="togglePlay" class="px-3">
+			<v-icon
+				color="#B3B3B6"
+				size="38"
+				@click="isPlay ? pause() : play()"
+				class="px-3"
+			>
 				{{ isPlay ? 'mdi-pause' : 'mdi-play' }}
 			</v-icon>
 			<v-icon
@@ -58,6 +65,10 @@ export default {
 			height: 0,
 			isPlay: false,
 			movie: null,
+			video: null,
+			mediaList: [],
+			isChange: false,
+			count: 0,
 		};
 	},
 	computed: {
@@ -78,44 +89,37 @@ export default {
 			},
 		},
 	},
+	watch: {
+		currentTime() {
+			// this.movie.setCurrentTime(this.currentTime);
+		},
+		count() {
+			if (!this.count) {
+				this.movie.setCurrentTime(this.currentTime);
+				this.movie.play();
+			}
+		},
+	},
 	mounted() {
 		this.canvasResize();
 		window.addEventListener('resize', this.canvasResize);
 
-		this.movie = new vd.Movie(document.getElementById('preview'));
-		vd.event.subscribe(this.movie, 'movie.timeupdate', () => {
-			// console.log(this.movie.currentTime);
+		EventBus.$on('exportVideo', this.export);
+		EventBus.$on('pause', () => {
+			this.pause();
 		});
 
 		EventBus.$on('changePlayer', mediaList => {
-			mediaList.forEach(media => {
-				if (media.type == 'video') {
-					let video = document.createElement('video');
-					video.src = media.blob;
-					video.onloadeddata = () => {
-						console.dir(video);
-						const canvasWidth = document.getElementById('preview')
-							.clientWidth;
-						const canvasHeight = document.getElementById('preview')
-							.clientHeight;
-						const videoHeight = canvasHeight;
-						const videoWidth =
-							(canvasHeight * video.videoWidth) /
-							video.videoHeight;
-						this.movie.addLayer(
-							new vd.layer.Video(0, video, {
-								width: videoWidth,
-								height: videoHeight,
-								mediaY: (canvasHeight - videoHeight) / 2,
-							}),
-						);
-					};
-				}
-			});
+			console.dir('changePlayer');
+			this.mediaList = mediaList;
+			this.isChange = true;
 		});
 	},
 	beforeDestroy() {
 		window.removeEventListener('resize', this.canvasResize);
+		this.movie.stop();
+		this.currentTime = 0;
+		this.duration = 0;
 	},
 	methods: {
 		canvasResize() {
@@ -137,13 +141,56 @@ export default {
 			this.currentTime += val;
 		},
 
-		togglePlay() {
-			this.isPlay = !this.isPlay;
-			if (this.isPlay) {
-				this.movie.play();
-			} else {
-				this.movie.pause();
+		play() {
+			this.isPlay = true;
+			if (this.isChange) {
+				delete this.movie;
+
+				this.movie = new vd.Movie(document.getElementById('preview'));
+
+				vd.event.subscribe(this.movie, 'movie.timeupdate', () => {
+					this.currentTime = this.movie.currentTime;
+				});
+				let sumVideo = 0;
+				let sumAudio = 0;
+				let sumCaption = 0;
+				this.count = this.mediaList.length;
+				this.mediaList.forEach(media => {
+					if (media.type == 'video') {
+						let video = document.createElement('video');
+						video.src = media.blob;
+
+						video.onloadeddata = () => {
+							const {
+								clientWidth,
+								clientHeight,
+							} = document.getElementById('preview');
+
+							this.movie.addLayer(
+								new vd.layer.Video(sumVideo, video, {
+									duration: media.duration,
+									mediaStartTime: media.startTime,
+									width: clientWidth,
+									height: clientHeight,
+								}),
+							);
+							this.count -= 1;
+							sumVideo += media.duration;
+						};
+					}
+				});
+				this.isChange = false;
 			}
+		},
+		pause() {
+			this.isPlay = false;
+			this.movie.pause();
+		},
+
+		export() {
+			this.movie.record(25).then(res => {
+				console.dir(URL.createObjectURL(res));
+			});
 		},
 	},
 };
