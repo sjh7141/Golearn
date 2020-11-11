@@ -185,7 +185,7 @@
 								small
 								class="px-0"
 								depressed
-								style="background-color:#766af6;
+								style="background-color:#E94964;
 								color:white; font-weight:300;
 								font-size:14px; display:flex; min-width: 0px;
 								overflow: hidden;"
@@ -238,6 +238,31 @@ export default {
 				this.$store.commit('setDuration', val);
 			},
 		},
+		selectedItem: {
+			get() {
+				return this.$store.getters.selectedItem;
+			},
+			set(val) {
+				this.$store.commit('setSelectedItem', val);
+			},
+		},
+		mediaList: {
+			get() {
+				return this.$store.getters.mediaList;
+			},
+			set(val) {
+				this.$store.commit('setMediaList', val);
+				this.isChange = true;
+			},
+		},
+		isChange: {
+			get() {
+				return this.$store.getters.isChange;
+			},
+			set(val) {
+				this.$store.commit('setIsChange', val);
+			},
+		},
 	},
 	filters: {
 		convertM(t) {
@@ -288,9 +313,9 @@ export default {
 			this.cmdBtns[0].disabled = this.selectedItem == null;
 			this.cmdBtns[2].disabled = this.selectedItem == null;
 			this.cmdBtns[3].disabled =
-				this.selectedItem &&
-				this.selectedItem.type != 'video' &&
-				this.selectedItem.type != 'audio';
+				this.selectedItem == null ||
+				(this.selectedItem.type != 'video' &&
+					this.selectedItem.type != 'audio');
 		},
 		copiedItem() {
 			this.cmdBtns[1].disabled = this.copiedItem == null;
@@ -302,25 +327,25 @@ export default {
 			interval: 1,
 			cmdBtns: [
 				{
-					title: 'Copy',
+					title: '복사',
 					icon: 'mdi-content-copy',
 					disabled: true,
 					action: this.copyItem,
 				},
 				{
-					title: 'Paste',
+					title: '붙여넣기',
 					icon: 'mdi-content-duplicate',
 					disabled: true,
 					action: this.pasteItem,
 				},
 				{
-					title: 'Delete',
+					title: '삭제',
 					icon: 'mdi-trash-can-outline',
 					disabled: true,
 					action: this.deleteItem,
 				},
 				{
-					title: 'Cut',
+					title: '자르기',
 					icon: 'mdi-content-cut',
 					disabled: true,
 					action: this.cutItem,
@@ -328,17 +353,17 @@ export default {
 			],
 			sizeBtns: [
 				{
-					title: 'Zoom In',
+					title: '확대',
 					icon: 'mdi-plus',
 					action: this.zoomIn,
 				},
 				{
-					title: 'Zoom Out',
+					title: '축소',
 					icon: 'mdi-minus',
 					action: this.zoomOut,
 				},
 				{
-					title: 'Fit To Screen',
+					title: '맞추기',
 					icon: 'mdi-arrow-collapse mdi-rotate-45',
 					action: this.fitScreen,
 				},
@@ -360,7 +385,6 @@ export default {
 			timeline: [],
 			saveTime: 0,
 
-			selectedItem: null,
 			copiedItem: null,
 
 			caretPosition: 0,
@@ -389,12 +413,11 @@ export default {
 				this.captionList.push(item);
 				this.captionDuration += item.duration;
 			}
-			// if (this.duration == 0) this.fitScreen();
-			EventBus.$emit('changePlayer', [
+			this.mediaList = [
 				...this.videoList,
 				...this.audioList,
 				...this.captionList,
-			]);
+			];
 		});
 
 		window.addEventListener('resize', this.handleTimeLine);
@@ -545,22 +568,19 @@ export default {
 		},
 
 		copyItem() {
+			if (this.cmdBtns[0].disabled) return;
 			let tmpItem = {};
 			for (let i in this.selectedItem) tmpItem[i] = this.selectedItem[i];
 			this.copiedItem = tmpItem;
 		},
 
 		pasteItem() {
+			if (this.cmdBtns[1].disabled) return;
 			EventBus.$emit('addPlayer', this.copiedItem);
 		},
 
 		deleteItem() {
-			console.log(
-				this.videoDuration,
-				this.audioDuration,
-				this.captionDuration,
-				this.duration,
-			);
+			if (this.cmdBtns[2].disabled) return;
 			let idx = this.videoList.indexOf(this.selectedItem);
 			if (idx > -1) {
 				this.videoList.splice(idx, 1);
@@ -579,9 +599,15 @@ export default {
 				this.captionDuration -= this.selectedItem.duration;
 			}
 			this.selectedItem = null;
+			this.mediaList = [
+				...this.videoList,
+				...this.audioList,
+				...this.captionList,
+			];
 		},
 
 		cutItem() {
+			if (this.cmdBtns[3].disabled) return;
 			let startTime = 0;
 			let idx = -1;
 			if (this.selectedItem.type == 'video') {

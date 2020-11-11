@@ -5,16 +5,24 @@
 			@drop.prevent="dragFiles"
 			@dragover.prevent
 		>
-			<v-row align="end" justify="center" style="height:60%; width:100%;">
-				<v-img
+			<v-row align="end" justify="center" style="height:65%; width:100%;">
+				<!-- <i class="fas fa-photo-video"></i> -->
+				<v-icon size="148" color="#D5D5DE">
+					fas fa-photo-video
+				</v-icon>
+				<!-- <v-img
 					src="@/assets/test.png"
 					max-width="25%"
 					style=""
 					contain
-				/>
+				/> -->
 			</v-row>
-			<v-row justify="center" style="color:#D5D5DE" class="mt-5">
-				Drag and drop here from your computer
+			<v-row
+				justify="center"
+				style="color:#D5D5DE;font-size:17px;"
+				class="mt-10"
+			>
+				영상, 오디오 또는 이미지 파일을 드래그해보세요!
 			</v-row>
 		</div>
 		<div style="width:90%; height:calc(20% - 16px);" class="mt-4">
@@ -40,9 +48,9 @@
 					dark
 					@click="$refs.file.click()"
 				>
-					<v-icon left size="24"> mdi-plus </v-icon>
-					<span style="font-size:14px; ">
-						Browse files
+					<v-icon left size="20"> mdi-file-upload-outline </v-icon>
+					<span style="font-size:14px; font-weight:400; ">
+						내 PC
 					</span>
 				</v-btn>
 			</v-hover>
@@ -59,11 +67,11 @@
 					style="height:70%;margin-left:2%;opacity: 1 !important;"
 					dark
 				>
-					<v-icon left size="24" class="mr-3">
+					<v-icon left size="20" class="mr-3">
 						mdi-play-box-multiple-outline
 					</v-icon>
-					<span style="font-size:14px; ">
-						Storage box
+					<span style="font-size:14px; font-weight:400;">
+						보관함
 					</span>
 				</v-btn>
 			</v-hover>
@@ -77,7 +85,7 @@ export default {
 	name: 'EditAddMedia',
 	data() {
 		return {
-			whiteList: ['image/png', 'audio/mpeg', 'video/mp4'],
+			whiteList: ['image/png', 'audio/mpeg', 'video/mp4', 'video/gif'],
 		};
 	},
 	methods: {

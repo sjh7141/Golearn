@@ -5,9 +5,9 @@
 			:width="width"
 			:height="height"
 			style="background-color:black; margin-left: auto; margin-right: auto; display:block;"
-		/>
-		<!-- <v-overlay>
-			</ -->
+		>
+		</canvas>
+
 		<v-row justify="center" class="mt-4">
 			<v-icon
 				color="#B3B3B6"
@@ -31,9 +31,11 @@
 				size="38"
 				@click="isPlay ? pause() : play()"
 				class="px-3"
+				v-if="!loading"
 			>
 				{{ isPlay ? 'mdi-pause' : 'mdi-play' }}
 			</v-icon>
+			<v-btn loading icon color="#B3B3B6" v-show="loading" />
 			<v-icon
 				color="#B3B3B6"
 				size="20"
@@ -51,6 +53,49 @@
 				mdi-skip-next
 			</v-icon>
 		</v-row>
+		<v-dialog v-model="dialog" max-width="700" persistent>
+			<v-card color="#1C1C26" dark>
+				<v-card-title>
+					{{ fileName ? fileName : 'Untitled' }}
+				</v-card-title>
+
+				<v-card-text>
+					<v-layout class="mt-2 mb-1">
+						업로드 중...
+						<v-spacer />
+						{{ remainingTime }}분 남음
+					</v-layout>
+					<v-row>
+						<v-col :cols="11" class="py-0">
+							<div style="height:100%;">
+								<v-progress-linear
+									:value="progressRate"
+									height="12"
+									color="#9382d7"
+									width="80%"
+									rounded
+									style="margin: 6px 0px;"
+								></v-progress-linear>
+							</div>
+						</v-col>
+						<v-col
+							:cols="1"
+							class="py-0 pl-0"
+							style="font-size:14px;"
+						>
+							{{ progressRate }}%
+						</v-col>
+					</v-row>
+				</v-card-text>
+				<canvas
+					id="exportPreview"
+					width="652"
+					height="366.75"
+					style="background-color:black; margin-left: auto; margin-right: auto; display:block;"
+				/>
+				<div style="height:16px;" />
+			</v-card>
+		</v-dialog>
 	</div>
 </template>
 
@@ -66,9 +111,18 @@ export default {
 			isPlay: false,
 			movie: null,
 			video: null,
-			mediaList: [],
-			isChange: false,
-			count: 0,
+			loading: false,
+
+			sumVideo: 0,
+			sumAudio: 0,
+			sumCaption: 0,
+
+			dialog: false,
+
+			fileName: '',
+
+			remainingTime: 0,
+			progressRate: 0,
 		};
 	},
 	computed: {
@@ -88,16 +142,29 @@ export default {
 				this.$store.commit('setDuration', val);
 			},
 		},
+		mediaList: {
+			get() {
+				return this.$store.getters.mediaList;
+			},
+			set(val) {
+				this.$store.commit('setMediaList', val);
+			},
+		},
+		isChange: {
+			get() {
+				return this.$store.getters.isChange;
+			},
+			set(val) {
+				this.$store.commit('setIsChange', val);
+			},
+		},
 	},
 	watch: {
-		currentTime() {
-			// this.movie.setCurrentTime(this.currentTime);
+		mediaList() {
+			this.isChange = true;
 		},
-		count() {
-			if (!this.count) {
-				this.movie.setCurrentTime(this.currentTime);
-				this.movie.play();
-			}
+		isChange() {
+			if (this.isChange) this.pause();
 		},
 	},
 	mounted() {
@@ -107,12 +174,6 @@ export default {
 		EventBus.$on('exportVideo', this.export);
 		EventBus.$on('pause', () => {
 			this.pause();
-		});
-
-		EventBus.$on('changePlayer', mediaList => {
-			console.dir('changePlayer');
-			this.mediaList = mediaList;
-			this.isChange = true;
 		});
 	},
 	beforeDestroy() {
@@ -134,62 +195,262 @@ export default {
 		},
 
 		setCurrentTime(val) {
+			this.pause();
 			this.currentTime = val;
 		},
 
 		moveCurrentTime(val) {
+			this.pause();
 			this.currentTime += val;
 		},
 
-		play() {
+		async play() {
+			if (this.loading || !this.mediaList.length) return;
 			this.isPlay = true;
+
 			if (this.isChange) {
 				delete this.movie;
-
 				this.movie = new vd.Movie(document.getElementById('preview'));
 
 				vd.event.subscribe(this.movie, 'movie.timeupdate', () => {
 					this.currentTime = this.movie.currentTime;
 				});
-				let sumVideo = 0;
-				let sumAudio = 0;
-				let sumCaption = 0;
-				this.count = this.mediaList.length;
-				this.mediaList.forEach(media => {
-					if (media.type == 'video') {
-						let video = document.createElement('video');
-						video.src = media.blob;
 
-						video.onloadeddata = () => {
-							const {
-								clientWidth,
-								clientHeight,
-							} = document.getElementById('preview');
+				this.sumVideo = 0;
+				this.sumAudio = 0;
+				this.sumCaption = 0;
+				this.loading = true;
 
-							this.movie.addLayer(
-								new vd.layer.Video(sumVideo, video, {
-									duration: media.duration,
-									mediaStartTime: media.startTime,
-									width: clientWidth,
-									height: clientHeight,
-								}),
-							);
-							this.count -= 1;
-							sumVideo += media.duration;
-						};
-					}
+				const { clientWidth, clientHeight } = document.getElementById(
+					'preview',
+				);
+				this.addMedias(
+					this.movie,
+					this.mediaList,
+					0,
+					clientWidth,
+					clientHeight,
+					false,
+				).finally(() => {
+					this.isChange = false;
+					this.loading = false;
+					this.movie.setCurrentTime(this.currentTime);
+					this.movie.play();
 				});
-				this.isChange = false;
+			} else {
+				this.movie.setCurrentTime(this.currentTime);
+				this.movie.play();
 			}
 		},
 		pause() {
-			this.isPlay = false;
-			this.movie.pause();
+			if (this.isPlay) {
+				this.isPlay = false;
+				this.movie.pause();
+			}
 		},
 
 		export() {
-			this.movie.record(25).then(res => {
+			this.pause();
+			this.dialog = true;
+
+			this.fileName = '';
+			const canvas = document.createElement('canvas');
+
+			canvas.width = 1920;
+			canvas.height = 1080;
+			const movie = new vd.Movie(canvas);
+
+			this.sumVideo = 0;
+			this.sumAudio = 0;
+			this.sumCaption = 0;
+			vd.event.subscribe(movie, 'movie.timeupdate', () => {
+				if (movie.currentTime == 0) {
+					this.progressRate = 100;
+					return;
+				}
+				this.remainingTime = parseInt(
+					(this.duration - movie.currentTime) / 60,
+				);
+				if (this.remainingTime < 1) this.remainingTime = 1;
+
+				this.progressRate = (
+					(movie.currentTime / this.duration) *
+					100
+				).toFixed(1);
+			});
+
+			this.addMedias(movie, this.mediaList, 0, 1920, 1080, false).finally(
+				() => {
+					const canvas = document.getElementById('exportPreview');
+					const tmpMovie = new vd.Movie(canvas);
+
+					this.sumVideo = 0;
+					this.sumAudio = 0;
+					this.sumCaption = 0;
+					this.addMedias(
+						tmpMovie,
+						this.mediaList,
+						0,
+						canvas.width,
+						canvas.height,
+						true,
+					).finally(() => {
+						tmpMovie.play();
+					});
+
+					this.movieToBlob(movie);
+				},
+			);
+		},
+
+		movieToBlob(movie) {
+			movie.record(25).then(res => {
 				console.dir(URL.createObjectURL(res));
+			});
+		},
+
+		async addMedias(movie, mediaList, i, width, height, muted) {
+			return new Promise((resolve, reject) => {
+				if (i >= mediaList.length) resolve();
+				else {
+					this.addMedia(
+						movie,
+						mediaList[i],
+						width,
+						height,
+						muted,
+					).then(() => {
+						resolve(
+							this.addMedias(
+								movie,
+								mediaList,
+								i + 1,
+								width,
+								height,
+								muted,
+							),
+						);
+					});
+				}
+			});
+		},
+
+		async addMedia(movie, media, width, height, muted) {
+			return new Promise(resolve => {
+				if (media.type == 'video') {
+					if (this.fileName == '') this.fileName = media.name;
+					let video = document.createElement('video');
+					video.src = media.blob;
+
+					let opacity = {};
+
+					opacity[0] = 0;
+					opacity[media.fadeIn / 10] = 1;
+					opacity[media.duration] = 0;
+					opacity[media.duration - media.fadeOut / 10] = 1;
+
+					video.onloadeddata = () => {
+						movie.addLayer(
+							new vd.layer.Video(this.sumVideo, video, {
+								duration: media.duration,
+								mediaStartTime: media.startTime,
+								width: width,
+								height: height,
+								volume: media.volume / 100,
+								opacity,
+								muted,
+							}),
+						);
+						this.sumVideo += media.duration;
+						resolve();
+					};
+				} else if (media.type == 'image') {
+					let opacity = {};
+
+					opacity[0] = 0;
+					opacity[media.fadeIn / 10] = 1;
+					opacity[media.duration] = 0;
+					opacity[media.duration - media.fadeOut / 10] = 1;
+
+					let image = document.createElement('img');
+					image.src = media.blob;
+					image.onload = () => {
+						movie.addLayer(
+							new vd.layer.Image(
+								this.sumVideo,
+								media.duration,
+								image,
+								{
+									width: width,
+									height: height,
+									opacity,
+								},
+							),
+						);
+						this.sumVideo += media.duration;
+						resolve();
+					};
+				} else if (media.type == 'background') {
+					let opacity = {};
+
+					opacity[0] = 0;
+					opacity[media.fadeIn / 10] = 1;
+					opacity[media.duration] = 0;
+					opacity[media.duration - media.fadeOut / 10] = 1;
+
+					movie.addLayer(
+						new vd.layer.Visual(this.sumVideo, media.duration, {
+							background: media.color,
+							width: width,
+							height: height,
+							opacity,
+						}),
+					);
+					this.sumVideo += media.duration;
+					resolve();
+				} else if (media.type == 'audio') {
+					let audio = document.createElement('audio');
+					audio.src = media.blob;
+
+					audio.onloadeddata = () => {
+						movie.addLayer(
+							new vd.layer.Audio(this.sumAudio, audio, {
+								duration: media.duration,
+								mediaStartTime: media.startTime,
+								volume: media.volume / 100,
+								muted,
+							}),
+						);
+						this.sumAudio += media.duration;
+						resolve();
+					};
+				} else if (media.type == 'caption') {
+					let opacity = {};
+
+					opacity[0] = 0;
+					opacity[media.fadeIn / 10] = 1;
+					opacity[media.duration] = 0;
+					opacity[media.duration - media.fadeOut / 10] = 1;
+
+					movie.addLayer(
+						new vd.layer.Text(
+							this.sumCaption,
+							media.duration,
+							media.name,
+							{
+								font: `${media.size}px sans-serif`,
+								x: (width / 3) * ((media.position - 1) % 3),
+								y:
+									(height / 3) *
+									parseInt((media.position - 1) / 3),
+								color: media.color,
+								opacity,
+							},
+						),
+					);
+					this.sumCaption += media.duration;
+					resolve();
+				}
 			});
 		},
 	},

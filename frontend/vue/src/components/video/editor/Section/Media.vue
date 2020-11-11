@@ -9,8 +9,33 @@
 			>
 				<v-hover v-slot="{ hover }">
 					<div
-						style="max-width:133.3px; max-height:75px; background-color:black; width:133.3px; height:75px;display:flex; border-radius:3px; position:relative;"
+						style="max-width:133.3px; max-height:75px; width:133.3px; background-color:black; height:75px;display:flex; border-radius:3px; position:relative;"
 					>
+						<img
+							:src="item.blob"
+							v-if="item.type == 'image'"
+							width="133"
+							height="75"
+							style="object-fit: contain;"
+						/>
+						<img
+							:src="item.thumbnail"
+							v-else-if="item.type == 'video'"
+							width="133"
+							height="75"
+						/>
+						<div
+							style="width:133px; height:75px;"
+							v-else-if="item.type == 'audio'"
+						>
+							<div
+								style="display:block; margin:auto; width:60px;height:75px; padding-top:7.5px;"
+							>
+								<v-icon color="#D5D5DE" size="60">
+									mdi-music-box-outline
+								</v-icon>
+							</div>
+						</div>
 						<v-btn
 							dark
 							icon
@@ -54,6 +79,10 @@ export default {
 			var reader = new FileReader();
 			let newFile = {
 				name: f.name,
+				fadeIn: 0,
+				fadeOut: 0,
+				thumbnail: '',
+				blob: '',
 			};
 			this.typeList.forEach(type => {
 				if (f.type.indexOf(type) != -1) newFile.type = type;
@@ -67,6 +96,25 @@ export default {
 					video.onloadeddata = () => {
 						newFile.duration = video.duration;
 						newFile.startTime = 0;
+						newFile.volume = 100;
+						if (newFile.type == 'video') {
+							const canvas = document.createElement('canvas');
+							video.currentTime = 1;
+
+							video.addEventListener('timeupdate', function() {
+								canvas.width = video.videoWidth;
+								canvas.height = video.videoHeight;
+								const ctx = canvas.getContext('2d');
+								ctx.drawImage(
+									video,
+									0,
+									0,
+									canvas.width,
+									canvas.height,
+								);
+								newFile.thumbnail = canvas.toDataURL();
+							});
+						}
 					};
 				} else {
 					newFile.duration = 10;

@@ -55,6 +55,8 @@ export default {
 					color: '#FFFFFFFF',
 					text: 'white',
 					src: '',
+					fadeIn: 0,
+					fadeOut: 0,
 				},
 				{
 					name: 'background',
@@ -63,6 +65,8 @@ export default {
 					color: '#000000FF',
 					text: 'black',
 					src: '',
+					fadeIn: 0,
+					fadeOut: 0,
 				},
 				{
 					name: 'background',
@@ -71,6 +75,8 @@ export default {
 					color: '#FF0000FF',
 					text: 'red',
 					src: '',
+					fadeIn: 0,
+					fadeOut: 0,
 				},
 			],
 		};

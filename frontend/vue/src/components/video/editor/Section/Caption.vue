@@ -6,6 +6,9 @@
 					<div
 						style="max-width:133.3px; max-height:75px; background-color:black; width:133.3px; height:75px;display:flex; border-radius:3px; position:relative;"
 					>
+						<span style="color:#FFFFFF; margin:auto;">
+							Sample
+						</span>
 						<v-btn
 							dark
 							icon
@@ -26,7 +29,7 @@
 					dark
 					style="color:#80818B; font-size:12px;"
 				>
-					Sample caption
+					Caption
 				</v-list-item-subtitle>
 			</div>
 		</v-layout>
@@ -44,6 +47,11 @@ export default {
 				duration: 10,
 				type: 'caption',
 				src: '',
+				size: 10,
+				position: 1,
+				color: '#FFFFFF',
+				fadeIn: 0,
+				fadeOut: 0,
 			});
 		},
 	},

@@ -18,30 +18,34 @@
 			fixed
 		>
 			<template v-slot:activator="{}">
-				<v-btn
-					class="ml-2"
-					depressed
-					:ripple="false"
-					@click.stop="properties = properties != 1 ? 1 : 0"
-					outlined
-					:color="properties == 1 ? '#9382D7' : '#2C2C38'"
-					:style="{
-						'background-color':
-							properties == 1 ? '#2B2947' : '#2C2C38',
-					}"
-				>
-					<v-icon left color="#C0C0CD">
-						mdi-format-text
-					</v-icon>
-					<span style="color:#C0C0CD;font-size:14px;">
-						Text
-					</span>
-				</v-btn>
+				<v-slide-y-reverse-transition hide-on-leave>
+					<v-btn
+						class="ml-2"
+						depressed
+						:ripple="false"
+						@click.stop="properties = properties != 1 ? 1 : 0"
+						outlined
+						:color="properties == 1 ? '#9382D7' : '#2C2C38'"
+						:style="{
+							'background-color':
+								properties == 1 ? '#2B2947' : '#2C2C38',
+						}"
+						v-show="showText"
+					>
+						<v-icon left color="#C0C0CD">
+							mdi-format-text
+						</v-icon>
+						<span style="color:#C0C0CD;font-size:14px;">
+							자막
+						</span>
+					</v-btn>
+				</v-slide-y-reverse-transition>
 			</template>
-			<v-card color="#2C2C38" float class="pa-5">
-				Text
+
+			<v-card color="#2C2C38" float class="pa-5" v-if="showText">
+				자막
 				<v-textarea
-					v-model="media.text"
+					v-model="selectedItem.name"
 					class="mt-2"
 					outlined
 					hide-details
@@ -49,6 +53,7 @@
 					autofocus
 					auto-grow
 					:rows="3"
+					@change="isChange = true"
 				>
 				</v-textarea>
 			</v-card>
@@ -63,28 +68,31 @@
 			fixed
 		>
 			<template v-slot:activator="{}">
-				<v-btn
-					class="ml-2"
-					depressed
-					:ripple="false"
-					@click.stop="properties = properties != 2 ? 2 : 0"
-					outlined
-					:color="properties == 2 ? '#9382D7' : '#2C2C38'"
-					:style="{
-						'background-color':
-							properties == 2 ? '#2B2947' : '#2C2C38',
-					}"
-				>
-					<v-icon left color="#C0C0CD">
-						mdi-picture-in-picture-bottom-right mdi-flip-h
-					</v-icon>
-					<span style="color:#C0C0CD;font-size:14px;">
-						Transform
-					</span>
-				</v-btn>
+				<v-slide-y-reverse-transition hide-on-leave>
+					<v-btn
+						class="ml-2"
+						depressed
+						:ripple="false"
+						@click.stop="properties = properties != 2 ? 2 : 0"
+						outlined
+						:color="properties == 2 ? '#9382D7' : '#2C2C38'"
+						:style="{
+							'background-color':
+								properties == 2 ? '#2B2947' : '#2C2C38',
+						}"
+						v-show="showTransform"
+					>
+						<v-icon left color="#C0C0CD">
+							mdi-picture-in-picture-bottom-right mdi-flip-h
+						</v-icon>
+						<span style="color:#C0C0CD;font-size:14px;">
+							위치
+						</span>
+					</v-btn>
+				</v-slide-y-reverse-transition>
 			</template>
-			<v-card color="#2C2C38" float class="pa-5">
-				Position
+			<v-card color="#2C2C38" float class="pa-5" v-if="showTransform">
+				위치
 				<div class="mt-2 mb-4">
 					<template v-for="i in 9">
 						<v-btn
@@ -95,27 +103,37 @@
 							outlined
 							depressed
 							tile
-							:color="media.position == i ? '#9382D7' : '#666673'"
+							:color="
+								selectedItem.position == i
+									? '#9382D7'
+									: '#666673'
+							"
 							style="margin:1px;"
 							:key="`position_${i}`"
-							@click.stop="media.position = i"
+							@click.stop="
+								selectedItem.position = i;
+								isChange = true;
+							"
 							:style="{
 								'background-color':
-									media.position == i ? '#665DC3' : '#1C1C26',
+									selectedItem.position == i
+										? '#665DC3'
+										: '#1C1C26',
 							}"
 						/>
 						<br v-show="i % 3 == 0" :key="`br_${i}`" />
 					</template>
 				</div>
 
-				Size
+				크기
 				<div>
 					<v-slider
-						v-model="media.size"
+						v-model="selectedItem.size"
 						loader-height="2"
 						color="#9382D7"
 						:ripple="false"
 						hide-details
+						@change="isChange = true"
 					>
 					</v-slider>
 				</div>
@@ -131,35 +149,39 @@
 			fixed
 		>
 			<template v-slot:activator="{}">
-				<v-btn
-					class="ml-2"
-					depressed
-					:ripple="false"
-					@click.stop="properties = properties != 3 ? 3 : 0"
-					outlined
-					:color="properties == 3 ? '#9382D7' : '#2C2C38'"
-					:style="{
-						'background-color':
-							properties == 3 ? '#2B2947' : '#2C2C38',
-					}"
-				>
-					<v-icon left color="#C0C0CD">
-						mdi-palette-outline
-					</v-icon>
-					<span style="color:#C0C0CD;font-size:14px;">
-						Color
-					</span>
-				</v-btn>
+				<v-slide-y-reverse-transition hide-on-leave>
+					<v-btn
+						class="ml-2"
+						depressed
+						:ripple="false"
+						@click.stop="properties = properties != 3 ? 3 : 0"
+						outlined
+						:color="properties == 3 ? '#9382D7' : '#2C2C38'"
+						:style="{
+							'background-color':
+								properties == 3 ? '#2B2947' : '#2C2C38',
+						}"
+						v-show="showColor"
+					>
+						<v-icon left color="#C0C0CD">
+							mdi-palette-outline
+						</v-icon>
+						<span style="color:#C0C0CD;font-size:14px;">
+							색상
+						</span>
+					</v-btn>
+				</v-slide-y-reverse-transition>
 			</template>
-			<v-card color="#2C2C38" float class="pa-5">
-				Color
+			<v-card color="#2C2C38" float class="pa-5" v-if="showColor">
+				색상
 				<v-color-picker
-					v-model="media.color"
+					v-model="selectedItem.color"
 					class="ma-2"
 					hide-mode-switch
 					mode="hexa"
 					flat
 					style="background-color:transparent"
+					@update:color="isChange = true"
 				></v-color-picker>
 			</v-card>
 		</v-tooltip>
@@ -173,36 +195,42 @@
 			fixed
 		>
 			<template v-slot:activator="{}">
-				<v-btn
-					class="ml-2"
-					depressed
-					:ripple="false"
-					@click.stop="properties = properties != 4 ? 4 : 0"
-					outlined
-					:color="properties == 4 ? '#9382D7' : '#2C2C38'"
-					:style="{
-						'background-color':
-							properties == 4 ? '#2B2947' : '#2C2C38',
-					}"
-				>
-					<v-icon left color="#C0C0CD">
-						mdi-volume-high
-					</v-icon>
-					<span style="color:#C0C0CD;font-size:14px;">
-						Audio
-					</span>
-				</v-btn>
+				<v-slide-y-reverse-transition hide-on-leave>
+					<v-btn
+						class="ml-2"
+						depressed
+						:ripple="false"
+						@click.stop="properties = properties != 4 ? 4 : 0"
+						outlined
+						:color="properties == 4 ? '#9382D7' : '#2C2C38'"
+						:style="{
+							'background-color':
+								properties == 4 ? '#2B2947' : '#2C2C38',
+						}"
+						v-show="showAudio"
+					>
+						<v-icon left color="#C0C0CD">
+							mdi-volume-high
+						</v-icon>
+						<span style="color:#C0C0CD;font-size:14px;">
+							볼륨
+						</span>
+					</v-btn>
+				</v-slide-y-reverse-transition>
 			</template>
-			<v-card color="#2C2C38" float class="pa-5">
-				<v-layout> Volume <v-spacer /> {{ media.volume }}% </v-layout>
+			<v-card color="#2C2C38" float class="pa-5" v-if="showAudio">
+				<v-layout>
+					볼륨 <v-spacer /> {{ selectedItem.volume }}%
+				</v-layout>
 				<div>
 					<v-slider
 						class="ma-0"
-						v-model="media.volume"
+						v-model="selectedItem.volume"
 						loader-height="2"
 						color="#9382D7"
 						:ripple="false"
 						hide-details
+						@change="isChange = true"
 					>
 					</v-slider>
 				</div>
@@ -217,71 +245,82 @@
 			fixed
 		>
 			<template v-slot:activator="{}">
-				<v-btn
-					class="ml-2"
-					depressed
-					:ripple="false"
-					@click.stop="properties = properties != 5 ? 5 : 0"
-					outlined
-					:color="properties == 5 ? '#9382D7' : '#2C2C38'"
-					:style="{
-						'background-color':
-							properties == 5 ? '#2B2947' : '#2C2C38',
-					}"
-				>
-					<v-icon left color="#C0C0CD">
-						mdi-box-shadow
-					</v-icon>
-					<span style="color:#C0C0CD;font-size:14px;">
-						Fade
-					</span>
-				</v-btn>
+				<v-slide-y-reverse-transition hide-on-leave>
+					<v-btn
+						class="ml-2"
+						depressed
+						:ripple="false"
+						@click.stop="properties = properties != 5 ? 5 : 0"
+						outlined
+						:color="properties == 5 ? '#9382D7' : '#2C2C38'"
+						:style="{
+							'background-color':
+								properties == 5 ? '#2B2947' : '#2C2C38',
+						}"
+						v-show="showFade"
+					>
+						<v-icon left color="#C0C0CD">
+							mdi-box-shadow
+						</v-icon>
+						<span style="color:#C0C0CD;font-size:14px;">
+							효과
+						</span>
+					</v-btn>
+				</v-slide-y-reverse-transition>
 			</template>
-			<v-card color="#2C2C38" float class="pa-5">
+			<v-card
+				color="#2C2C38"
+				float
+				class="pa-5"
+				v-if="showFade"
+				style="text-transform: none"
+			>
 				<v-layout>
 					Fade In <v-spacer />
-					{{ parseFloat(media.fadeIn / 10).toFixed(1) }}
-					<span style="text-transform: none">s</span>
+					{{ parseFloat(selectedItem.fadeIn / 10).toFixed(1) }}
+					<span>s</span>
 				</v-layout>
 				<div>
 					<v-slider
 						class="ma-0"
-						v-model="media.fadeIn"
+						v-model="selectedItem.fadeIn"
 						loader-height="2"
 						color="#9382D7"
 						:ripple="false"
 						hide-details
 						:min="0"
 						:max="20"
+						@change="isChange = true"
 					>
 					</v-slider>
 				</div>
 				<v-layout>
 					Fade Out <v-spacer />
-					{{ parseFloat(media.fadeOut / 10).toFixed(1) }}
-					<span style="text-transform: none">s</span>
+					{{ parseFloat(selectedItem.fadeOut / 10).toFixed(1) }}
+					<span>s</span>
 				</v-layout>
 				<div>
 					<v-slider
 						class="ma-0"
-						v-model="media.fadeOut"
+						v-model="selectedItem.fadeOut"
 						loader-height="2"
 						color="#9382D7"
 						:ripple="false"
 						hide-details
 						:min="0"
 						:max="20"
+						@change="isChange = true"
 					>
 					</v-slider>
 				</div>
 			</v-card>
 		</v-tooltip>
 		<v-spacer />
-		<v-btn rounded color="#665DC3" @click="exportVideo">
-			<v-icon left>
-				mdi-export
+		<v-btn color="#665DC3" @click="exportVideo">
+			<v-icon left size="24" class="mr-3">
+				mdi-cloud-upload-outline
 			</v-icon>
-			Export
+			업로드
 		</v-btn>
 	</v-app-bar>
 </template>
@@ -290,23 +329,54 @@
 import EventBus from '@/util/EventBus.js';
 export default {
 	name: 'EditHeader',
-	// props: ['media'],
 
 	data() {
 		return {
-			media: {
-				type: 'video',
-				text: 'Sample Text',
-				color: '#FFFFFFFF',
-				position: 5,
-				size: 50,
-				volume: 100,
-				fadeIn: 0,
-				fadeOut: 0,
-			},
-
 			properties: 0,
+
+			showText: false,
+			showTransform: false,
+			showColor: false,
+			showAudio: false,
+			showFade: false,
 		};
+	},
+	computed: {
+		selectedItem: {
+			get() {
+				return this.$store.getters.selectedItem;
+			},
+			set(val) {
+				this.$store.commit('setSelectedItem', val);
+			},
+		},
+		isChange: {
+			get() {
+				return this.$store.getters.isChange;
+			},
+			set(val) {
+				this.$store.commit('setIsChange', val);
+			},
+		},
+	},
+	watch: {
+		selectedItem() {
+			this.properties = 0;
+			this.showText =
+				this.selectedItem && this.selectedItem.type == 'caption';
+			this.showTransform =
+				this.selectedItem && this.selectedItem.type == 'caption';
+			this.showColor =
+				this.selectedItem &&
+				(this.selectedItem.type == 'caption' ||
+					this.selectedItem.type == 'background');
+			this.showAudio =
+				this.selectedItem &&
+				(this.selectedItem.type == 'video' ||
+					this.selectedItem.type == 'audio');
+			this.showFade =
+				this.selectedItem && this.selectedItem.type != 'audio';
+		},
 	},
 	mounted() {
 		EventBus.$on('focusout', () => {
@@ -314,9 +384,6 @@ export default {
 		});
 	},
 	methods: {
-		test(e) {
-			console.log(e);
-		},
 		exportVideo() {
 			EventBus.$emit('exportVideo');
 		},
