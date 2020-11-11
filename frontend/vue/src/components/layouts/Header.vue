@@ -4,8 +4,9 @@
 			flat
 			tile
 			style="background-color:white; padding:0; height:100%"
+			class="px-10"
 		>
-			<v-card flat tile style="background-color:transparent">
+			<v-card flat tile style="background-color:transparent" class="mr-6">
 				<router-link to="/">
 					<v-img src="@/assets/logo.png" max-width="60" contain />
 				</router-link>
@@ -193,7 +194,7 @@
 									class="select-card"
 									tile
 									hover
-									style="box-shadow:none;"
+									style="box-shadow:none; width:100%;"
 									:ripple="false"
 									@click="goToTap(tap.path)"
 								>
@@ -313,6 +314,7 @@ export default {
 	font-family: 'Noto Sans KR', sans-serif !important;
 	font-size: 18px;
 	font-weight: 600;
+	color: #4a4a4a;
 }
 .nav:hover {
 	color: rgb(60, 65, 223);

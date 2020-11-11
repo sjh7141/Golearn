@@ -73,9 +73,9 @@
 								large
 								rounded
 								@click="goToSearch(tag)"
-								style="text-transform:none;"
+								style="text-transform:none; color:#4287f5;"
 							>
-								<v-icon color="green accent-4" left>
+								<v-icon color="#4287f5" left>
 									mdi-search-web
 								</v-icon>
 								{{ tag }}

@@ -33,42 +33,14 @@
 						height: totalHeight + 'px',
 						width: '100%',
 					}"
-					v-show="editMode"
 				>
 					<div
 						id="editor"
 						:style="{
-							height: editorHeight + 'px',
+							height: totalHeight + 'px',
 							width: '100%',
 						}"
 					></div>
-					<div
-						style="cursor:n-resize; background-color:grey"
-						:style="{
-							height: BORDER_SIZE + 'px',
-							width: '100%',
-						}"
-						@mousedown="isVerticalDrag = true"
-					></div>
-					<div
-						id="result"
-						style="background-color:rgb(28, 28, 28)"
-						:style="{
-							height: resultHeight + 'px',
-							width: '100%',
-						}"
-					>
-						<div
-							style="width:100%; height:100%; padding:3px 0px 0px 10px;"
-						>
-							<div>
-								출력
-							</div>
-							<div style="margin-top:10px;">
-								Value: 2.2250738585072014E-308
-							</div>
-						</div>
-					</div>
 				</div>
 			</div>
 			<div class="mt-6" style="text-align:end;">
@@ -106,16 +78,13 @@ export default {
 			isEdit: false,
 			editIdx: -1,
 			editTitle: '',
-			BORDER_SIZE: 4,
-			height: 800,
-			width: 800,
 			totalHeight: 0,
 			videoWidth: 0,
 			editorWidth: 0,
 
 			editorHeight: 0,
 			resultHeight: 0,
-
+			editor: null,
 			source_code: `import java.util.ArrayList;
 import java.util.Vector;
 
@@ -136,8 +105,6 @@ public class InfiniteLoop {
 }`,
 			isHorizontalDrag: false,
 			isVerticalDrag: false,
-
-			editMode: true,
 		};
 	},
 	methods: {
@@ -162,10 +129,6 @@ public class InfiniteLoop {
 			this.editTitle = '';
 			this.isAdd = false;
 			this.resetVideo();
-		},
-		checkMove() {
-			//e) {
-			// window.console.log('Future index: ' + e.draggedContext.futureIndex);
 		},
 		setDeleteIndex(idx) {
 			this.isDelete = true;
@@ -208,71 +171,18 @@ public class InfiniteLoop {
 		changeActive() {
 			this.$emit('changeActive');
 		},
-		dragStart(e) {},
-		dragEnd(e) {},
-		resizeWidth(e) {
-			if (this.isHorizontalDrag) {
-				this.videoWidth = e.clientX - this.BORDER_SIZE;
-				this.editorWidth =
-					window.innerWidth - this.videoWidth - this.BORDER_SIZE;
-			}
-		},
-		resizeHeight(e) {
-			if (this.isVerticalDrag && e.clientY < window.innerHeight) {
-				this.editorHeight =
-					e.clientY - this.$refs.app.offsetTop - this.BORDER_SIZE;
-				this.resultHeight =
-					this.totalHeight - this.editorHeight - this.BORDER_SIZE;
-			}
-		},
-		resizeVideo() {
-			this.totalHeight = window.innerHeight - 64;
-
-			if (this.videoWidth > window.innerWidth)
-				this.videoWidth = window.innerWidth - this.BORDER_SIZE;
-			if (this.editorHeight > this.totalHeight)
-				this.editorHeight = this.totalHeight - this.BORDER_SIZE;
-
-			this.editorWidth =
-				window.innerWidth - this.videoWidth - this.BORDER_SIZE;
-			this.resultHeight =
-				this.totalHeight - this.editorHeight - this.BORDER_SIZE;
-		},
-		createChapterButton() {
-			const self = this;
-
-			var Button = videojs.getComponent('Button');
-			var MyButton = videojs.extend(Button, {
-				constructor: function() {
-					Button.apply(this, arguments);
-					this.addClass('vjs-chapters-button');
-				},
-				handleClick: function() {
-					self.editMode = !self.editMode;
-				},
-			});
-			videojs.registerComponent('MyButton', MyButton);
-			var player = videojs('video-player');
-			player.getChild('controlBar').addChild('myButton', {});
-		},
 		initCodeEditer() {
-			var editor = ace.edit('editor');
-			editor.session.setMode('ace/mode/java');
-			editor.setValue(this.source_code);
-			editor.setTheme('ace/theme/merbivore_soft');
+			this.editor = ace.edit('editor');
+			this.editor.session.setMode('ace/mode/java');
+			this.editor.setValue(this.source_code);
+			this.editor.setTheme('ace/theme/chrome');
 			document.getElementById('editor').style.fontSize = '16px';
 		},
 	},
 	mounted() {
-		// this.createChapterButton();
 		this.initCodeEditer();
-
-		window.addEventListener('resize', this.resizeVideo);
-		this.videoWidth = window.innerWidth * 0.6;
-		this.totalHeight = window.innerHeight - 64;
-		this.editorHeight = this.totalHeight * 0.66 - this.BORDER_SIZE;
-
-		this.resizeVideo();
+		this.totalHeight = 500;
+		// console.log(this.editor.getValue());
 	},
 	computed: {
 		...mapGetters(['course']),
@@ -313,5 +223,9 @@ public class InfiniteLoop {
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
 		Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 	overflow-y: auto;
+}
+
+#editor {
+	overflow-x: auto;
 }
 </style>
