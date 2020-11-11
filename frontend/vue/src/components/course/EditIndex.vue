@@ -103,6 +103,7 @@
 							ref="title"
 							filled
 							placeholder="제목입력 후 강의 영상을 선택해 주세요."
+							error-messages=""
 							maxlength="30"
 						></v-text-field>
 					</v-card-text>
@@ -111,14 +112,12 @@
 						<template v-for="(element, index) in videoList">
 							<div
 								class="mb-2 border-radius-10"
-								:class="{
-									selectBorder: index == selectVideoNo,
-								}"
 								:key="element.vidno"
 							>
 								<index-video
 									:video="element"
 									:idx="index"
+									:selectVideoNo="selectVideoNo"
 									@selectVideo="selectVideo"
 								/>
 							</div>
@@ -127,7 +126,7 @@
 					<v-card-actions>
 						<v-spacer></v-spacer>
 						<v-btn color="error darken-1" text @click="resetVideo">
-							취소
+							<span class="bold">취소</span>
 						</v-btn>
 						<v-btn
 							color="darken-1"
@@ -155,10 +154,16 @@
 							color="error darken-1"
 							text
 							@click="isDelete = false"
+							class="bold"
 						>
 							취소
 						</v-btn>
-						<v-btn color="darken-1" text @click="confirmDelete">
+						<v-btn
+							color="darken-1"
+							text
+							@click="confirmDelete"
+							class="bold"
+						>
 							확인
 						</v-btn>
 					</v-card-actions>
@@ -189,6 +194,7 @@ export default {
 			deleteList: [],
 			dragging: false,
 			rules: [v => v.length > 4 || '5자이상 입력이 필요합니다.'],
+			errorMessage: '',
 			isDelete: false,
 			deleteIdx: -1,
 			isAdd: false,
@@ -298,11 +304,14 @@ export default {
 		},
 		confirmAdd() {
 			if (this.editTitle.length < 5) {
+				this.errorMessage = '5자이상 입력이 필요합니다.';
 				this.$refs.title.focus();
 				return;
 			} else if (this.selectVideoNo == -1) {
 				alert('영상을 선택해 주세요.');
 				return;
+			} else {
+				this.errorMessage = '';
 			}
 			this.list.push({
 				name: this.editTitle,

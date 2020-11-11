@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const URL = {
 	DOMAIN: 'http://k3a402.p.ssafy.io:8801',
-	COURSE: 'course',
+	COURSE: 'course-service',
 	courseBuild() {
 		return Array(this.DOMAIN, this.COURSE).join('/');
 	},
@@ -11,6 +11,7 @@ const URL = {
 export default {
 	state: {
 		course: null,
+		tags: [],
 	},
 	getters: {
 		course(state) {
@@ -21,13 +22,32 @@ export default {
 		setCourse(state, payload) {
 			state.course = payload;
 		},
+		setTitle(state, payload) {
+			state.course.title = payload;
+		},
+		setContent(state, payload) {
+			state.course.content = payload;
+		},
+		setTags(state, payload) {
+			state.tags = payload;
+		},
 	},
 	actions: {
 		getCourse(context, payload) {
 			return axios.get(URL.courseBuild() + `/${payload}`);
 		},
-		setCourse() {
-			return axios.put(URL.courseBuild() + `/`);
+		setCourse(context) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			console.log(context.state.course);
+			return axios.put(
+				URL.courseBuild() + `/`,
+				{ course: context.state.course },
+				config,
+			);
 		},
 		getChannelCourses(context, payload) {
 			return axios.get(URL.courseBuild() + `/member/${payload}`);

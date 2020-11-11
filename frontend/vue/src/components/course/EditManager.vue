@@ -128,7 +128,7 @@
 				</v-btn>
 			</div>
 			<!-- 추가 dialog -->
-			<v-dialog v-model="isAdd" max-width="600">
+			<v-dialog dark v-model="isAdd" max-width="600">
 				<v-card>
 					<v-card-title class="headline pb-6">
 						<span class="bold">
@@ -193,10 +193,10 @@
 							text
 							@click="isAdd = false"
 						>
-							취소
+							<span class="bold">취소</span>
 						</v-btn>
 						<v-btn color="darken-1" text @click="addManager()">
-							확인
+							<span class="bold">확인</span>
 						</v-btn>
 					</v-card-actions>
 				</v-card>

@@ -1,30 +1,53 @@
 <template>
 	<v-row height="200">
 		<v-col
-			class="mx-3"
+			class="mx-3 pb-0"
 			@click="select"
-			style="color:black; cursor: pointer;"
+			style="color:black; cursor: pointer; text-align:center;"
 		>
 			<v-img
-				class="ml-2 mr-4 border-radius-10"
-				src="@/assets/thumbnail_1.jpg"
-				height="130"
-				width="210"
+				class="border-radius-10"
+				src="@/assets/thumbnail_2.jpg"
+				width="100%"
+				height="300px;"
 				style="display: inline-block;"
-			/>
-			<v-avatar class="mr-2" style="vertical-align:top;">
-				<img src="@/assets/default_profile.png" alt="프로필" />
-			</v-avatar>
-			<div
-				style="display: inline-block; vertical-align:top; word-break:break-all; width:210px;"
 			>
-				<span class="bold" style="font-size: 20px;">
-					{{ video.vidTitle }}
-				</span>
-				<br />
-				{{ this.mbr.mbr_nickname }}
-				<br />
-				조회수 {{ video.vidView }}회 • {{ video.regDt | diffDate }}
+			</v-img>
+			<v-fab-transition>
+				<v-icon
+					v-if="selectVideoNo == idx"
+					x-large
+					icon
+					color="pink"
+					style="position:absolute; right:40px;"
+				>
+					mdi-check-circle
+				</v-icon>
+			</v-fab-transition>
+		</v-col>
+		<v-col
+			class="mx-3 pt-0"
+			cols="12"
+			@click="select"
+			style="cursor: pointer;"
+		>
+			<div style="margin: 0 auto;">
+				<v-avatar class="mr-2" style="vertical-align:top;">
+					<img src="@/assets/default_profile.png" alt="프로필" />
+				</v-avatar>
+				<div
+					style="display: inline-block; vertical-align:top; word-break:break-all;"
+				>
+					<span class="bold" style="font-size: 20px; color:#303030;">
+						{{ video.vidTitle }}
+					</span>
+					<br />
+					<span style="color:#5e5e5e;">
+						{{ this.mbr.mbr_nickname }} • 조회수
+						{{ video.vidView }}회 •
+						{{ video.regDt | diffDate }}
+					</span>
+				</div>
 			</div>
 		</v-col>
 	</v-row>
@@ -32,7 +55,7 @@
 
 <script>
 export default {
-	props: ['video', 'idx'],
+	props: ['video', 'idx', 'selectVideoNo'],
 	filters: {
 		diffDate(val) {
 			let diff = (new Date() - new Date(val)) / 1000;
@@ -78,6 +101,7 @@ export default {
 	},
 	mounted() {
 		this.mbrNo = this.video.mbrNo;
+		console.log(this.selectVideoNo, this.idx);
 	},
 };
 </script>

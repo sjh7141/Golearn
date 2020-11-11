@@ -74,21 +74,7 @@ export default {
 			title: '',
 			rules: [v => v.length > 4 || '5자이상 입력이 필요합니다.'],
 			selectTags: ['C++'],
-			tags: [
-				// 'C',
-				// 'C++',
-				// 'Java',
-				// 'Python',
-				// 'CSS',
-				// 'Vue',
-				// 'React',
-				// 'Angular',
-				// 'Video',
-				// 'Clean Code',
-				// 'Spring',
-				// 'TypeScript',
-				// 'JavaScript',
-			],
+			tags: [],
 			preContent: `
 						<h3>[강의 예시]</h3>
 						<h2>
@@ -134,6 +120,17 @@ export default {
 				return;
 			}
 			this.content = this.$refs.editor.getHTML();
+			this.$store.commit('setTitle', this.title);
+			this.$store.commit('setContent', this.content);
+			// this.$store.commit('setTags', this.selectTags);
+			this.$store
+				.dispatch('setCourse')
+				.then(() => {
+					console.log('성공');
+				})
+				.catch(() => {
+					console.log('실패');
+				});
 		},
 	},
 	watch: {
@@ -148,19 +145,20 @@ export default {
 		this.$store
 			.dispatch('getCourse', this.$route.params.id)
 			.then(({ data }) => {
+				console.log(data);
 				this.$store.commit('setCourse', data);
 				this.title =
-					this.course.cosTitle == null
+					this.course.cos_title == null
 						? '[코스 이름 예시] CSS의 시작'
-						: this.course.cosTitle;
+						: this.course.cos_title;
 				this.content =
-					this.course.cosContent == null
+					this.course.cos_content == null
 						? this.preContent
-						: this.course.cosContent;
+						: this.course.cos_content;
 			});
 		this.$store.dispatch('getTags').then(({ data }) => {
 			for (var tag of data) {
-				this.tags.push(tag.name);
+				this.tags.push(tag.tag_name);
 			}
 		});
 	},

@@ -1,5 +1,5 @@
 <template>
-	<v-row class="ml-3 height-100">
+	<v-row id="edit-cover" class="ml-3 height-100">
 		<v-col cols="9">
 			<h2>이미지</h2>
 			<h4 class="pb-5 pl-3" style="color:gray;">
@@ -47,6 +47,7 @@
 								<v-icon class="upload-icon">
 									mdi-image-plus
 								</v-icon>
+								<div class="pb-4">파일을 선택해주세요</div>
 							</v-btn>
 						</v-col>
 					</v-row>
@@ -67,6 +68,7 @@
 								<v-icon class="upload-icon">
 									mdi-image-plus
 								</v-icon>
+								<div class="pb-4">파일을 선택해주세요</div>
 							</v-btn>
 							<v-hover v-slot="{ hover }">
 								<v-card
@@ -263,6 +265,7 @@ export default {
 	height: 300px;
 	border: 1px solid #c9c9c9;
 	border-radius: 10px;
+	font-weight: 600;
 }
 
 #banner-btn {
@@ -270,6 +273,7 @@ export default {
 	height: 100px;
 	border: 1px solid #c9c9c9;
 	border-radius: 10px;
+	font-weight: 600;
 }
 
 .upload-icon {
@@ -278,5 +282,13 @@ export default {
 
 a {
 	text-decoration: none;
+}
+</style>
+
+<style>
+#edit-cover .v-btn__content {
+	display: inline-block !important;
+	text-align: center;
+	margin: 0 auto;
 }
 </style>

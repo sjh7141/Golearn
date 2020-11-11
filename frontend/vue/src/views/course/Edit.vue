@@ -2,7 +2,11 @@
 	<div>
 		<v-row align="center">
 			<v-img
-				src="@/assets/golearn_banner.jpg"
+				:src="
+					course
+						? course.cos_banner
+						: require('@/assets/golearn_banner.jpg')
+				"
 				height="200"
 				style="filter: grayscale(50%);"
 				ref="img"
