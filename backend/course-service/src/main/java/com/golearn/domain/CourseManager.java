@@ -64,4 +64,12 @@ public class CourseManager {
 	void prePersist() {
 		this.regDt = new Date();
 	}
+
+	@Override
+	public String toString() {
+		return "CourseManager [mbrNo=" + mbrNo + ", cosNo=" + cosNo + ", regDt=" + regDt + ", authority=" + authority
+				+ "]";
+	}
+	
+	
 }
