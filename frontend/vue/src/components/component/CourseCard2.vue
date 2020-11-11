@@ -1,37 +1,59 @@
 <template>
 	<div ref="app">
-		<v-card elevation="0" class="mx-auto my-12" width="350" height="400">
-			<v-img width="350" height="200" :src="course.cos_thumbnail"></v-img>
+		<v-card
+			tile
+			elevation="0"
+			class="mx-auto  clickable"
+			width="300"
+			height="350"
+		>
+			<v-img width="300" height="200" :src="course.cos_thumbnail">
+				<v-progress-linear
+					style="position:absolute;bottom:0px;width:100%"
+					value="30"
+					buffer-value="100"
+					color="red"
+				></v-progress-linear>
+			</v-img>
 
-			<v-card-title style="font-size:0.9rem; font-weight:bold">{{
-				course.cos_title
-			}}</v-card-title>
+			<v-card-title
+				style="font-size:0.9rem; font-weight:bold; padding-bottom:10px; padding-top:10px"
+				>{{ course.cos_title }}</v-card-title
+			>
 
 			<v-card-text>
 				<v-container>
-					<v-row style="height: 18px;" class="my-2 content">
-						{{ course.cos_content }}
-					</v-row>
-
-					<v-row class="content">
+					<v-row
+						class="content name"
+						@click="$router.push(`/channel/${course.mbr_no}`)"
+					>
 						{{ course.mbr_nickname }}
 					</v-row>
 					<v-row>
 						<span
-							style="font-size:0.8rem"
-							class="mx-1"
+							style="font-size:0.8rem;"
+							class="mr-1"
 							v-for="(i, index) in course.tags"
-							:key="index"
+							:key="`${course.cos_no}_tag_${index}`"
 							>#{{ i.tag_name }}</span
 						>
 					</v-row>
-					<v-row>
-						<v-icon color="#d4d4d4" small>mdi-account</v-icon>
-						123
-						<v-icon color="#d4d4d4" small>mdi-heart</v-icon>
-						123
+					<v-row class="others">
+						<span class="mr-2">
+							<v-icon color="#d4d4d4" small>mdi-account</v-icon>
+							<span>123</span>
+						</span>
+						<span class="mr-2">
+							<v-icon class="mr-1" color="#d4d4d4" small
+								>mdi-heart</v-icon
+							>
+							<span>123</span>
+						</span>
 						<v-spacer></v-spacer>
-						<v-icon x-small :color="difficult(course.tags)"
+						<span class="mr-1">
+							{{ difficultContent(course.tags) }}
+						</span>
+						<v-icon x-small :color="difficultColor(course.tags)"
 							>mdi-circle</v-icon
 						>
 					</v-row>
@@ -45,13 +67,24 @@
 export default {
 	props: ['course'],
 
-	mounted() {
-		console.log(this.course);
-	},
+	mounted() {},
 	methods: {
-		difficult(dif) {
+		difficultContent(dif) {
+			if (dif.length >= 3) {
+				return '심화';
+			} else if (dif.length >= 2) {
+				return '일반';
+			} else {
+				return '기초';
+			}
+		},
+		difficultColor(dif) {
 			if (dif.length >= 3) {
 				return 'red';
+			} else if (dif.length >= 2) {
+				return 'yellow';
+			} else {
+				return 'green';
 			}
 		},
 	},
@@ -70,5 +103,15 @@ export default {
 	overflow: hidden;
 	-webkit-line-clamp: 1;
 	-webkit-box-orient: vertical;
+}
+.name:hover {
+	color: purple;
+	cursor: pointer;
+}
+.others {
+	font-size: 0.8rem;
+}
+.clickable {
+	cursor: pointer;
 }
 </style>

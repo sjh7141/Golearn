@@ -30,7 +30,6 @@ export default {
 			const config = {
 				params: payload,
 			};
-			console.dir(config);
 			return axios.get(URL.searchBuild() + '/search', config);
 		},
 	},
