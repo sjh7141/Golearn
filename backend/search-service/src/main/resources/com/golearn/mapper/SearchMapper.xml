@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.golearn.mapper.SearchMapper">
+
+	<select id="findTag" resultType="com.golearn.domain.TagDto">
+		select tag_no, tag_name
+		from gl_tag
+	</select>
+	
+	<select id="findVideo" resultMap="videoResultMap">
+		select *
+		from gl_video
+		where vid_title like CONCAT('%', #{search}, '%')
+		limit #{startIndex}, #{perPageNum}
+	</select>
+	
+	<select id="countByVideo" resultType="Integer">
+		select count(*)
+		from gl_video
+		where vid_title like CONCAT('%', #{search}, '%')
+	</select>
+	
+	<select id="findTagByVideo" parameterType="java.util.Map" resultType="com.golearn.domain.TagDto">
+		select gl.tag_no , gl.tag_name , gvt.vid_no as targetNo
+		from gl_tag gl inner join gl_video_tag gvt
+		on gl.tag_no = gvt.tag_no and gvt.vid_no in (#{vidNo})
+		<!-- 
+		<foreach collection='list' index='index' item='item' open='(' separator=',' close=')'>
+			#{item.value}
+		</foreach>
+		 -->
+	</select>
+	
+	<select id="findChannel" resultType="com.golearn.domain.ChannelDto">
+        select gl.mbr_no as no, gl.mbr_id as username, gl.mbr_nickname as nickname, gl.mbr_profile as profile, count(gms.mbr_no) as likeCount
+		from gl_member gl left join gl_member_subscribe gms
+		on gl.mbr_id like CONCAT('%', #{search}, '%') and gl.mbr_no = gms.mbr_no
+        group by gms.mbr_no
+		limit #{startIndex}, #{perPageNum}
+	</select>
+	
+	<select id="countByChannel" resultType="Integer">
+		select count(*)
+		from gl_member
+		where mbr_id like CONCAT('%', #{search}, '%')
+	</select>
+	
+	<select id="findLoadmap" resultType="com.golearn.domain.LoadmapDto">
+		select gl.*, gm.mbr_nickname
+		from gl_loadmap gl inner join gl_member gm
+		on ldm_title like CONCAT('%', #{search}, '%') and gl.mbr_no = gm.mbr_no
+		limit #{startIndex}, #{perPageNum}
+	</select>
+	
+	<select id="countByLoadmap" resultType="Integer">
+		select count(*)
+		from gl_loadmap
+		where ldm_title like CONCAT('%', #{search}, '%')
+	</select>
+	
+	<select id="findCourse" resultMap="courseResultMap">
+	select sub1.*, sub2.likeCount
+	from (
+			(
+				select gc.*, gm.mbr_nickname, gm.mbr_profile
+				from gl_course gc inner join gl_member gm
+				on gc.cos_title like CONCAT('%', #{search}, '%') and gc.mbr_no = gm.mbr_no
+			) sub1
+		left join
+			(
+				select cos_no, count(cos_no) as likeCount
+				from gl_course_like
+				group by cos_no
+			) sub2
+	        on sub1.cos_no = sub2.cos_no
+		)
+	limit #{startIndex}, #{perPageNum}
+	</select>
+	
+	<select id="countByCourse" resultType="Integer">
+		select count(*)
+		from gl_course
+		where cos_title like CONCAT('%', #{search}, '%')
+	</select>
+	
+	<select id="findTagByCourse" resultType="com.golearn.domain.TagDto">
+		select gl.tag_no, gl.tag_name, gct.cos_no as targetNo
+		from gl_tag gl inner join gl_course_tag gct
+		on gl.tag_no = gct.tag_no and gct.cos_no in (#{cosNo})
+		<!-- 
+		<foreach collection='list' index='index' item='item' open='(' separator=',' close=')'>
+			#{item.value}
+		</foreach>
+		 -->
+	</select>
+	
+	<resultMap id="videoResultMap" type="com.golearn.domain.VideoDto">
+		<id property="vidNo" column="vid_no" />
+		<result property="mbrNo" column="mbr_no"/>
+		<result property="vidPno" column="vid_pno"/>
+		<result property="vidTitle" column="vid_title"/>
+		<result property="vidContent" column="vid_content"/>
+		<result property="vidUrl" column="vid_url"/>
+		<result property="vidView" column="vid_view"/>
+		<result property="regDt" column="reg_dt"/>
+		<result property="vidHide" column="vid_hide"/>
+		<result property="vidThumbnail" column="vid_thumbnail"/>
+		<result property="vidLength" column="vid_length"/>
+		<collection property="tags" column="{vidNo=vid_no}" ofType="com.goleaern.domain.TagDto" javaType="java.util.ArrayList" select="findTagByVideo"/>
+	</resultMap>
+	
+	<resultMap id="courseResultMap" type="com.golearn.domain.CourseDto">
+		<id property="cosNo" column="cos_no"/>
+		<result property="mbrNickname" column="mbr_nickname"/>
+		<result property="mbrProfile" column="mbr_profile"/>
+		<result property="cosTitle" column="cos_title"/>
+		<result property="cosContent" column="cos_content"/>
+		<result property="cosThumbnail" column="cos_thumbnail"/>
+		<result property="likeCount" column="likeCount"/>
+		<result property="regDt" column="reg_dt"/>
+		<result property="chgDt" column="chg_dt"/>
+		<collection property="tags" column="{cosNo=cos_no}" ofType="com.goleaern.domain.TagDto" javaType="java.util.ArrayList" select="findTagByCourse"/>
+	</resultMap>
+</mapper>

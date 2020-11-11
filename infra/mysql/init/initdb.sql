@@ -18,12 +18,13 @@ CREATE TABLE `gl_member` (
   `mbr_profile` varchar(200) DEFAULT 'profile_default.png' COMMENT '프로필 사진 url',
   `reg_dt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성 일',
   `chg_dt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '변경 일',
-  `ck_email` tinyint(1) NOT NULL DEFAULT '0' COMMENT '이메일 인증 여부\n0: 미 인증, 1: 인증',
+  `ck_email` tinyint(1) NOT NULL DEFAULT '0' COMMENT '이메일 인증 여부\\n0: 미 인증, 1: 인증',
   `ck_active` tinyint(1) NOT NULL DEFAULT '1' COMMENT '회원 활성화 여부\n0: 비 활성화, 1: 활성화',
+  `mbr_banner` varchar(200) NOT NULL DEFAULT 'profile_banner_default.png',
   PRIMARY KEY (`mbr_no`),
   UNIQUE KEY `mbr_id_UNIQUE` (`mbr_id`),
   UNIQUE KEY `mbr_email_UNIQUE` (`mbr_email`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 # 회원 테이블 데이터 삽입
 INSERT INTO `gl_member` VALUES (1,'test','test@test.com','$2a$10$eQ2TB.Q7pV/l3X9cKrPr6O5H34J59knlQK6KtmGeDVjTPS0k8ZR6.','test','default_profile.png','2020-10-26 11:16:22','2020-10-26 11:16:22',0,1);
@@ -162,15 +163,16 @@ CREATE TABLE `gl_board_comment` (
 CREATE TABLE `gl_course` (
   `cos_no` int(11) NOT NULL AUTO_INCREMENT COMMENT '코스 일련번호',
   `mbr_no` int(11) NOT NULL COMMENT '코스 생성자',
-  `cos_title` varchar(100) NOT NULL COMMENT '제목',
-  `cos_content` text NOT NULL COMMENT '내용, 설명',
+  `cos_title` varchar(100) DEFAULT NULL COMMENT '제목',
+  `cos_content` text COMMENT '내용, 설명',
   `cos_thumbnail` varchar(200) NOT NULL DEFAULT 'course_default_thumbnail.png' COMMENT '썸네일',
+  `cos_banner` varchar(200) NOT NULL DEFAULT 'course_banner_default.png',
   `reg_dt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일',
   `chg_dt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '변경일',
   PRIMARY KEY (`cos_no`),
   KEY `gl_fk_cm_no_idx` (`mbr_no`),
   CONSTRAINT `gl_fk_cm_no` FOREIGN KEY (`mbr_no`) REFERENCES `gl_member` (`mbr_no`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 
 
@@ -178,6 +180,7 @@ CREATE TABLE `gl_course` (
 CREATE TABLE `gl_course_like` (
   `mbr_no` int(11) NOT NULL COMMENT '회원 일련번호',
   `cos_no` int(11) NOT NULL COMMENT '코스 일련번호',
+  PRIMARY KEY (`mbr_no`,`cos_no`),
   KEY `gl_fk_clm_no_idx` (`mbr_no`),
   KEY `gl_fk_clc_no_idx` (`cos_no`),
   CONSTRAINT `gl_fk_clc_no` FOREIGN KEY (`cos_no`) REFERENCES `gl_course` (`cos_no`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -190,6 +193,9 @@ CREATE TABLE `gl_course_like` (
 CREATE TABLE `gl_course_manager` (
   `mbr_no` int(11) NOT NULL COMMENT '회원 일련번호',
   `cos_no` int(11) NOT NULL COMMENT '코스 일련번호',
+  `reg_dt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `authority` varchar(45) NOT NULL,
+  PRIMARY KEY (`mbr_no`,`cos_no`),
   KEY `gl_fk_cmm_no_idx` (`mbr_no`),
   KEY `gl_fk_cmc_no_idx` (`cos_no`),
   CONSTRAINT `gl_fk_cmc_no` FOREIGN KEY (`cos_no`) REFERENCES `gl_course` (`cos_no`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -199,7 +205,7 @@ CREATE TABLE `gl_course_manager` (
 
 
 # 로드맵 코스 gl_loadmap_course 테이블 생성
-CREATE TABLE `cl_loadmap_course` (
+CREATE TABLE `gl_loadmap_course` (
   `cos_no` int(11) NOT NULL,
   `ldm_no` int(11) NOT NULL,
   `ldm_order` int(11) DEFAULT NULL,
@@ -281,6 +287,7 @@ CREATE TABLE `gl_course_viewer` (
   `mbr_no` int(11) NOT NULL COMMENT '회원 일련번호',
   `cos_no` int(11) NOT NULL COMMENT '코스 일련번호',
   `idx_no` int(11) NOT NULL COMMENT '목차 일련번호',
+  PRIMARY KEY (`mbr_no`,`cos_no`,`idx_no`),
   KEY `gl_cvm_no_idx` (`mbr_no`),
   KEY `gl_fk_cvc_no_idx` (`cos_no`),
   KEY `gl_fk_cvi_no_idx` (`idx_no`),
@@ -355,10 +362,10 @@ CREATE TABLE `gl_video_request` (
   `idx_no` int(11) NOT NULL COMMENT '목차 일련번호',
   `vid_req_comment` text COMMENT '커밋 메시지',
   `vid_req_accept_yn` tinyint(4) NOT NULL DEFAULT '0' COMMENT '영상 요청 승인 여부\n0: 처리중, 1: 승인, 2: 반려',
-  `mbr_admin_no` int(11) NOT NULL COMMENT '관리자',
+  `mbr_admin_no` int(11) DEFAULT NULL COMMENT '관리자',
   `vid_res_comment` text,
-  `reg_dt` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '생성일',
-  `chg_dt` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '변경일',
+  `reg_dt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일',
+  `chg_dt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '변경일',
   PRIMARY KEY (`vid_req_no`),
   KEY `gl_fk_vrv_no_idx` (`vid_no`),
   KEY `gl_fk_vrm_req_no_idx` (`mbr_req_no`),

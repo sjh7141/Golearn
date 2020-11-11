@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const URL = {
-	DOMAIN: 'http://k3a402.p.ssafy.io:8801',
+	DOMAIN: 'https://golearn.co.kr/api',
 	COURSE: 'course',
 	courseBuild() {
 		return Array(this.DOMAIN, this.COURSE).join('/');
@@ -28,6 +28,25 @@ export default {
 		},
 		setCourse() {
 			return axios.put(URL.courseBuild() + `/`);
+		},
+		getChannelCourses(context, payload) {
+			return axios.get(URL.courseBuild() + `/member/${payload}`);
+		},
+		getLikeCourse(context) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(URL.courseBuild() + '/like', config);
+		},
+		getLearnCourse(context) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(URL.courseBuild() + '/view', config);
 		},
 	},
 };

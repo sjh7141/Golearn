@@ -12,6 +12,8 @@ import EditLoadMap from '@/views/loadmap/Edit.vue';
 
 import EditVideo from '@/views/channel/EditVideo.vue';
 
+import Channel from '@/views/channel/Channel.vue';
+import Mypage from '@/views/Mypage.vue';
 Vue.use(VueRouter);
 
 const routes = [
@@ -59,6 +61,16 @@ const routes = [
 		path: '/loadmap/management/:id',
 		name: 'EditLoadMap',
 		component: EditLoadMap,
+	},
+	{
+		path: '/channel/:id',
+		name: 'Channel',
+		component: Channel,
+	},
+	{
+		path: '/mypage',
+		name: 'Mypage',
+		component: Mypage,
 	},
 ];
 
