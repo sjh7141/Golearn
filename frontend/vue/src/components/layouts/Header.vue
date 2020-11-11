@@ -11,7 +11,11 @@
 				</router-link>
 			</v-card>
 			<template v-for="(menu, idx) in menus">
-				<div :key="`menu_${idx}`" class="nav px-5">
+				<div
+					:key="`menu_${idx}`"
+					class="nav px-5"
+					@click="$router.push(menu.link)"
+				>
 					{{ menu.title }}
 				</div>
 			</template>
@@ -150,12 +154,15 @@ export default {
 			menus: [
 				{
 					title: '로드맵',
+					link: '/course',
 				},
 				{
 					title: '코스',
+					link: '/course',
 				},
 				{
 					title: '커뮤니티',
+					link: '/course',
 				},
 			],
 		};

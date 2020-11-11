@@ -1,6 +1,9 @@
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 .px-5 {
-    padding: 0 20px;
+	padding: 0 20px;
+}
+.content-component {
+	background-color: #d5d5d5;
 }
 
 .v-tabs-slider-wrapper {
@@ -8,26 +11,26 @@
 }
 
 .basic {
-    color: rgb(60, 65, 223) !important;
+	color: rgb(60, 65, 223) !important;
 }
 .v-btn {
-    letter-spacing: 0 !important;
-    text-transform: none;
+	letter-spacing: 0 !important;
+	text-transform: none;
 }
 button {
-    text-align: left !important;
+	text-align: left !important;
 }
 .height-100 {
-    height: 100%;
+	height: 100%;
 }
 .bg-light-gray {
-    background-color: #ededed
+	background-color: #ededed;
 }
 .border-radius-10 {
-    border-radius: 10px;
+	border-radius: 10px;
 }
 .bold {
-    font-weight: 600;
+	font-weight: 600;
 }
 
 .ace_scrollbar-h,
@@ -37,6 +40,17 @@ button {
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 0) and (min-device-width: 1025px) {
+	::-webkit-scrollbar {
+		width: 8px;
+	}
+
+	::-webkit-scrollbar-thumb:vertical {
+		height: 50px;
+		background-color: rgb(187, 187, 187);
+		border-radius: 5px;
+
+		/* background-image: linear-gradient(-45deg, rgba(0, 160, 255, 0.86), rgb(0, 72, 162)); */
+	}
     ::-webkit-scrollbar {
        width: 0px;
    }

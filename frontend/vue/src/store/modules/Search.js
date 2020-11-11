@@ -26,5 +26,11 @@ export default {
 		getTags() {
 			return axios.get(URL.searchBuild() + '/tag');
 		},
+		getSearchResult(context, payload) {
+			const config = {
+				params: payload,
+			};
+			return axios.get(URL.searchBuild() + '/search', config);
+		},
 	},
 };

@@ -1,6 +1,6 @@
 <template>
 	<div ref="app">
-		<v-card class="transparent" flat v-if="courses.data.length !== 0">
+		<v-card class="transparent" flat v-if="courses.length !== 0">
 			<v-card-title>코스</v-card-title>
 			<v-row>
 				<v-col
@@ -8,7 +8,7 @@
 					sm="6"
 					md="4"
 					lg="3"
-					v-for="(course, i) in loading ? 10 : courses.data"
+					v-for="(course, i) in loading ? 10 : courses"
 					:key="i"
 					class="mx-xs-auto"
 				>
