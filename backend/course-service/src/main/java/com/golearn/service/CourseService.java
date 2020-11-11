@@ -7,12 +7,16 @@ import org.springframework.stereotype.Service;
 
 import com.golearn.domain.Course;
 import com.golearn.mapper.CourseMapper;
+import com.golearn.repository.CourseManagerRepository;
 import com.golearn.repository.CourseRepository;
 
 @Service
 public class CourseService {
 	@Autowired
 	private CourseRepository courseRepository;
+
+	@Autowired
+	private CourseManagerRepository courseManagerRepository;
 	
 	// 코스 20개씩 목록 조회
 	public List<Course> perPageBy20(int page) {
@@ -30,7 +34,9 @@ public class CourseService {
 	public Course save(String mbrNo) {
 		Course course = new Course();
 		course.setMbrNo(Long.parseLong(mbrNo));
-		return courseRepository.save(course);
+		course = courseRepository.save(course);
+		courseManagerRepository.save(course.getMbrNo(), course.getCosNo(), "Master");
+		return course;
 	}
 	
 	// 코스 수정

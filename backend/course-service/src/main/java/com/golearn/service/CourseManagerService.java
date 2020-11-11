@@ -16,6 +16,7 @@ public class CourseManagerService {
 	
 	// 코스 관리자 생성
 	public void save(CourseManager request) {
+		System.out.println(request);
 		courseManagerRepository.save(request.getMbrNo(), request.getCosNo(), request.getAuthority());
 	}
 	

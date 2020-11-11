@@ -112,4 +112,13 @@ public class Course {
 	void preUpdate() {
 		this.chgDt = new Date();
 	}
+
+	@Override
+	public String toString() {
+		return "Course [cosNo=" + cosNo + ", mbrNo=" + mbrNo + ", cosTitle=" + cosTitle + ", cosContent=" + cosContent
+				+ ", cosThumbnail=" + cosThumbnail + ", cosBanner=" + cosBanner + ", regDt=" + regDt + ", chgDt="
+				+ chgDt + "]";
+	}
+	
+	
 }
