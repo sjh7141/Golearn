@@ -401,9 +401,9 @@ export default {
 			) {
 				this.videoList.push(item);
 				if (this.videoList.length == 2) {
-					console.dir(this.videoList[0]);
-					console.dir(this.videoList[1]);
-					console.log(this.videoList[0] === this.videoList[1]);
+					// console.dir(this.videoList[0]);
+					// console.dir(this.videoList[1]);
+					// console.log(this.videoList[0] === this.videoList[1]);
 				}
 				this.videoDuration += item.duration;
 			} else if (item.type == 'audio') {
@@ -513,7 +513,7 @@ export default {
 		},
 
 		resizeStart(e, item, type) {
-			console.log(e);
+			// console.log(e);
 			this.resizeType = type;
 			this.resizeItem = item;
 			this.resizeElement = e.target.parentElement;
@@ -626,7 +626,7 @@ export default {
 				return;
 			}
 
-			console.log(this.currentTime, startTime);
+			// console.log(this.currentTime, startTime);
 
 			let leftItem = {};
 			let rightItem = {};
