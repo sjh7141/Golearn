@@ -75,8 +75,8 @@
 								@click="goToSearch(tag)"
 								style="text-transform:none;"
 							>
-								<v-icon color="green accent-4" left>
-									mdi-search-web
+								<v-icon color="#c3aed6" left>
+									mdi-magnify
 								</v-icon>
 								{{ tag }}
 							</v-btn>

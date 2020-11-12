@@ -24,6 +24,29 @@ export default {
 			};
 			return axios.get(URL.accountBuild() + `/like/${id}`, config);
 		},
+		like({ rootGetters }, id) {
+			const config = {
+				headers: {
+					Authorization: rootGetters.token,
+				},
+			};
+			return axios.post(
+				URL.accountBuild() + `/like`,
+				{ mbr_no: id },
+				config,
+			);
+		},
+		unlike({ rootGetters }, id) {
+			const config = {
+				headers: {
+					Authorization: rootGetters.token,
+					'Content-Type': 'application/json',
+				},
+				params: { mbr_no: id },
+			};
+			console.log(config);
+			return axios.delete(URL.accountBuild() + `/like`, config);
+		},
 		setBanner(context, payload) {
 			const config = {
 				headers: {

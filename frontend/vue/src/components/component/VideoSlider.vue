@@ -1,6 +1,6 @@
 <template>
 	<div ref="app">
-		<v-card class="transparent" flat v-if="videos.data.length !== 0">
+		<v-card class="transparent" flat v-if="videos.length !== 0">
 			<v-card-title>최신 동영상</v-card-title>
 			<!-- <v-sheet class="mx-auto"> -->
 			<swiper class="swiper-container" :options="swiperOption">
@@ -13,7 +13,7 @@
 					slot="button-next"
 				></div>
 				<swiper-slide
-					v-for="(video, i) in loading ? 5 : videos.data"
+					v-for="(video, i) in loading ? 5 : videos"
 					:key="i"
 				>
 					<v-skeleton-loader

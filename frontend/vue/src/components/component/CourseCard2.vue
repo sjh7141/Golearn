@@ -2,17 +2,17 @@
 	<div ref="app">
 		<v-card
 			tile
-			elevation="0"
-			class="mx-auto  clickable"
+			class="mx-auto  clickable asdf"
 			width="300"
-			height="350"
+			height="330"
+			style="border: 1px solid #e5e5e5;"
 		>
-			<v-img width="300" height="200" :src="course.cos_thumbnail">
+			<v-img width="300" height="168.75" :src="course.cos_thumbnail">
 				<v-progress-linear
 					style="position:absolute;bottom:0px;width:100%"
 					value="30"
 					buffer-value="100"
-					color="red"
+					color="#c3aed6"
 				></v-progress-linear>
 			</v-img>
 
@@ -113,5 +113,11 @@ export default {
 }
 .clickable {
 	cursor: pointer;
+}
+.asdf {
+	box-shadow: none !important;
+}
+.asdf:hover {
+	box-shadow: 0 0 0 0.2rem #c3aed644 !important;
 }
 </style>

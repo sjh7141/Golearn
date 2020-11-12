@@ -1,6 +1,6 @@
 <template>
 	<div ref="app">
-		<v-card class="transparent" flat v-if="courses.data.length !== 0">
+		<v-card class="transparent" flat v-if="courses.length !== 0">
 			<v-divider></v-divider>
 
 			<v-card-title>코스</v-card-title>
@@ -15,7 +15,7 @@
 					slot="button-next"
 				></div>
 				<swiper-slide
-					v-for="(course, i) in loading ? 5 : courses.data"
+					v-for="(course, i) in loading ? 5 : courses"
 					:key="i"
 				>
 					<v-skeleton-loader

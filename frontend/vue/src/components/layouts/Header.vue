@@ -3,7 +3,7 @@
 		<v-app-bar
 			flat
 			tile
-			style="background-color:white; padding:0; height:100%"
+			style="background-color:#fff; padding:0; height:100%"
 		>
 			<v-card flat tile style="background-color:transparent">
 				<router-link to="/">
@@ -195,10 +195,10 @@ export default {
 
 <style scoped>
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+@import url(//db.onlinewebfonts.com/c/b0a3d74c91dbd95db951a7c8c8ad6089?family=BM+JUA);
 .nav {
-	font-family: 'Noto Sans KR', sans-serif !important;
+	font-family: 'BM JUA', sans-serif !important;
 	font-size: 18px;
-	font-weight: 600;
 }
 .nav:hover {
 	color: rgb(60, 65, 223);
