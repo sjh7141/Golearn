@@ -5,7 +5,12 @@
 			class="px-6"
 			:style="{ width: width + 'px', height: totalHeight + 'px' }"
 		>
-			<multi-view :width="width" :height="height" />
+			<multi-view
+				:width="width"
+				:height="height"
+				:source="source"
+				:type="type"
+			/>
 
 			<v-list-item class="pa-0 ma-0 mb-1">
 				<v-list-item-avatar size="48">
@@ -78,11 +83,17 @@ export default {
 			totalHeight: 0,
 			width: 0,
 			height: 0,
+
+			source: '',
+			type: -1,
 		};
 	},
 	mounted() {
 		window.addEventListener('resize', this.resizePlay);
 		this.resizePlay();
+
+		this.source = '#include <stdio.h>';
+		this.type = 0;
 	},
 	beforeDestroy() {
 		window.removeEventListener('resize', this.resizePlay);
