@@ -1,29 +1,46 @@
 <template>
 	<v-row height="200">
 		<v-col
-			class="mx-3"
+			class="mx-3 pb-0"
 			@click="select"
 			style="color:black; cursor: pointer;"
 		>
 			<v-img
-				class="ml-2 mr-4 border-radius-10"
-				src="@/assets/thumbnail_1.jpg"
-				height="130"
-				width="210"
+				class="border-radius-10"
+				src="@/assets/thumbnail_2.jpg"
+				width="100%"
+				height="300px;"
 				style="display: inline-block;"
 			/>
+			<v-fab-transition>
+				<v-icon
+					v-if="selectCourseNo == idx"
+					x-large
+					icon
+					color="pink"
+					style="position:absolute; right:40px;"
+				>
+					mdi-check-circle
+				</v-icon>
+			</v-fab-transition>
+		</v-col>
+		<v-col
+			class="mx-3 pt-0"
+			cols="12"
+			@click="select"
+			style="cursor: pointer;"
+		>
 			<v-avatar class="mr-2" style="vertical-align:top;">
 				<img src="@/assets/default_profile.png" alt="프로필" />
 			</v-avatar>
 			<div
-				style="display: inline-block; vertical-align:top; word-break:break-all; width:210px;"
+				style="display: inline-block; vertical-align:top; word-break:break-all;"
 			>
-				<span class="bold" style="font-size: 20px;">
+				<span class="bold" style="font-size: 20px; color:#303030;">
 					{{ course.cosTitle }}
 				</span>
 				<br />
 				{{ this.mbr.mbr_nickname }}
-				<br />
 				<v-row>
 					<v-col cols="12" class="py-0">
 						<v-chip
@@ -43,7 +60,7 @@
 
 <script>
 export default {
-	props: ['course', 'idx'],
+	props: ['course', 'idx', 'selectCourseNo'],
 	filters: {
 		diffDate(val) {
 			let diff = (new Date() - new Date(val)) / 1000;

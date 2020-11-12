@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const URL = {
 	DOMAIN: 'http://k3a402.p.ssafy.io:8801',
-	COURSE: 'course-service',
+	COURSE: 'course',
 	courseBuild() {
 		return Array(this.DOMAIN, this.COURSE).join('/');
 	},
@@ -23,13 +23,19 @@ export default {
 			state.course = payload;
 		},
 		setTitle(state, payload) {
-			state.course.title = payload;
+			state.course.cos_title = payload;
 		},
 		setContent(state, payload) {
-			state.course.content = payload;
+			state.course.cos_content = payload;
 		},
 		setTags(state, payload) {
 			state.tags = payload;
+		},
+		setThumbnail(state, payload) {
+			state.course.cos_thumbnail = payload;
+		},
+		setBanner(state, payload) {
+			state.course.cos_banner = payload;
 		},
 	},
 	actions: {
@@ -42,10 +48,9 @@ export default {
 					Authorization: context.rootGetters.token,
 				},
 			};
-			console.log(context.state.course);
 			return axios.put(
 				URL.courseBuild() + `/`,
-				{ course: context.state.course },
+				context.state.course,
 				config,
 			);
 		},
@@ -67,6 +72,32 @@ export default {
 				},
 			};
 			return axios.get(URL.courseBuild() + '/view', config);
+		},
+		getIndex(context, payload) {
+			return axios.get(URL.courseBuild() + `/index/${payload}`);
+		},
+		getCourseTag(context, payload) {
+			return axios.get(URL.courseBuild() + `/tag/${payload}`);
+		},
+		setCourseTag(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			console.log(payload);
+			return axios.post(
+				URL.courseBuild() + '-service/tag/',
+				payload,
+				config,
+			);
+		},
+		deleteCourseTag(context, payload) {
+			console.log(payload);
+			return axios.delete(URL.courseBuild() + '-service/tag/', {
+				data: payload,
+				headers: { Authorization: context.rootGetters.token },
+			});
 		},
 	},
 };

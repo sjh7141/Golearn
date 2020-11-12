@@ -73,8 +73,10 @@ export default {
 		return {
 			title: '',
 			rules: [v => v.length > 4 || '5자이상 입력이 필요합니다.'],
-			selectTags: ['C++'],
+			selectTags: [],
+			originalTags: [],
 			tags: [],
+			allTags: [],
 			preContent: `
 						<h3>[강의 예시]</h3>
 						<h2>
@@ -122,15 +124,63 @@ export default {
 			this.content = this.$refs.editor.getHTML();
 			this.$store.commit('setTitle', this.title);
 			this.$store.commit('setContent', this.content);
-			// this.$store.commit('setTags', this.selectTags);
+			this.$store.commit('setTags', this.selectTags);
 			this.$store
 				.dispatch('setCourse')
-				.then(() => {
-					console.log('성공');
-				})
+				.then(() => {})
 				.catch(() => {
-					console.log('실패');
+					console.log('코스등록시 오류가 발생하였습니다.');
 				});
+
+			this.makeTags();
+		},
+		makeTags() {
+			var deleteList = [];
+			var addList = [];
+			var checkList = [];
+			for (let tag of this.selectTags) {
+				checkList.push({
+					tag_name: tag,
+					check: false,
+				});
+			}
+			for (let original of this.originalTags) {
+				let flag = false;
+				for (let tag of checkList) {
+					if (tag.tag_name == original.tag_name) {
+						tag.check = true;
+						flag = true;
+						break;
+					}
+				}
+				if (!flag) {
+					deleteList.push(original.tag_no);
+				}
+			}
+			for (let tag of checkList) {
+				if (!tag.check) {
+					for (let item of this.allTags) {
+						console.log(item.tag_name, tag.tag_name);
+						if (item.tag_name == tag.tag_name) {
+							addList.push(item.tag_no);
+							break;
+						}
+					}
+				}
+			}
+			console.log(addList, deleteList);
+			this.$store
+				.dispatch('setCourseTag', {
+					cos_no: Number(this.$route.params.id),
+					list: addList,
+				})
+				.then(({ data }) => {
+					console.log(data);
+				});
+			this.$store.dispatch('deleteCourseTag', {
+				cos_no: Number(this.$route.params.id),
+				list: deleteList,
+			});
 		},
 	},
 	watch: {
@@ -145,7 +195,6 @@ export default {
 		this.$store
 			.dispatch('getCourse', this.$route.params.id)
 			.then(({ data }) => {
-				console.log(data);
 				this.$store.commit('setCourse', data);
 				this.title =
 					this.course.cos_title == null
@@ -156,11 +205,20 @@ export default {
 						? this.preContent
 						: this.course.cos_content;
 			});
-		this.$store.dispatch('getTags').then(({ data }) => {
+		this.$store.dispatch('getTagList').then(({ data }) => {
+			this.allTags = data;
 			for (var tag of data) {
 				this.tags.push(tag.tag_name);
 			}
 		});
+		this.$store
+			.dispatch('getCourseTag', this.$route.params.id)
+			.then(({ data }) => {
+				for (var tag of data) {
+					this.selectTags.push(tag.tag_name);
+				}
+				this.originalTags = data;
+			});
 	},
 };
 </script>

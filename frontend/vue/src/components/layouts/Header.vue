@@ -51,6 +51,7 @@
 					depressed
 					outlined
 					@click="goToLogin"
+					class="bold"
 				>
 					로그인
 				</v-btn>

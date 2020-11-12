@@ -23,8 +23,13 @@ export default {
 		},
 	},
 	actions: {
-		getVideos() {
-			return axios.get(URL.videoBuild());
+		getVideos(context) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(URL.videoBuild(), config);
 		},
 		getChannelVideos(context, id) {
 			return axios.get(URL.videoBuild() + `/member/${id}`);

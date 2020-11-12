@@ -418,7 +418,7 @@ export default {
 							this.signup(data);
 						})
 						.catch(() => {
-							this.loading - false;
+							this.loading = false;
 							alert('업로드 에러');
 						});
 				} else {

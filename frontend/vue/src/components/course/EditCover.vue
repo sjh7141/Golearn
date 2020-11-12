@@ -33,7 +33,11 @@
 					</ol>
 				</div>
 				<div>
-					<div class="bold">배너 이미지</div>
+					<div class="bold">
+						배너 이미지<span style="font-size:15px; color:#707070">
+							(상단에 미리보기로 적용됩니다)</span
+						>
+					</div>
 					<v-row>
 						<v-col>
 							<v-btn
@@ -192,6 +196,8 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
 	components: {},
 	data() {
@@ -241,7 +247,50 @@ export default {
 		changeActive() {
 			this.$emit('changeActive');
 		},
-		saveCover() {},
+		async saveCover() {
+			var thumbnailURL = await this.saveThumbnail();
+			var BannerURL = await this.saveBanner();
+			if (thumbnailURL) {
+				this.$store.commit('setThumbnail', thumbnailURL.data);
+			}
+			if (BannerURL) {
+				this.$store.commit('setBanner', BannerURL.data);
+			}
+			this.$store.dispatch('setCourse').then(() => {});
+		},
+		saveThumbnail() {
+			let formData = new FormData();
+			if (document.getElementById('file').files[0]) {
+				formData.append(
+					'file',
+					document.getElementById('file').files[0],
+				);
+				return this.$store.dispatch('upload', {
+					data: formData,
+					target: 'course/thumbnail',
+				});
+			}
+		},
+		saveBanner() {
+			let formData = new FormData();
+			if (document.getElementById('banner').files[0]) {
+				formData.append(
+					'file',
+					document.getElementById('banner').files[0],
+				);
+				return this.$store.dispatch('upload', {
+					data: formData,
+					target: 'course/banner',
+				});
+			}
+		},
+	},
+	computed: {
+		...mapGetters(['course']),
+	},
+	mounted() {
+		this.$refs.img.src = this.course.cos_thumbnail;
+		this.isImg = true;
 	},
 };
 </script>
@@ -266,6 +315,7 @@ export default {
 	border: 1px solid #c9c9c9;
 	border-radius: 10px;
 	font-weight: 600;
+	color: #8a8a8a;
 }
 
 #banner-btn {
@@ -274,6 +324,7 @@ export default {
 	border: 1px solid #c9c9c9;
 	border-radius: 10px;
 	font-weight: 600;
+	color: #8a8a8a;
 }
 
 .upload-icon {

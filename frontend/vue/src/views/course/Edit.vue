@@ -45,20 +45,20 @@
 				<v-col md="10" style="border-left: 1px solid #f2f2f2">
 					<edit-info
 						@setTitle="setTitle"
-						v-show="select == 0"
+						v-if="select == 0"
 						@changeActive="changeActive"
 					/>
 					<edit-cover
 						@setBanner="setBanner"
-						v-show="select == 1"
+						v-if="select == 1"
 						@changeActive="changeActive"
 					/>
 					<edit-index
-						v-show="select == 2"
+						v-if="select == 2"
 						@changeActive="changeActive"
 					/>
 					<edit-manager
-						v-show="select == 3"
+						v-if="select == 3"
 						@changeActive="changeActive"
 					/>
 				</v-col>

@@ -7,12 +7,11 @@
 		>
 			<v-img
 				class="border-radius-10"
-				src="@/assets/thumbnail_2.jpg"
+				:src="video.vid_thumbnail"
 				width="100%"
 				height="300px;"
 				style="display: inline-block;"
-			>
-			</v-img>
+			/>
 			<v-fab-transition>
 				<v-icon
 					v-if="selectVideoNo == idx"
@@ -33,19 +32,19 @@
 		>
 			<div style="margin: 0 auto;">
 				<v-avatar class="mr-2" style="vertical-align:top;">
-					<img src="@/assets/default_profile.png" alt="프로필" />
+					<img :src="video.mbr_profile" alt="프로필" />
 				</v-avatar>
 				<div
 					style="display: inline-block; vertical-align:top; word-break:break-all;"
 				>
-					<span class="bold" style="font-size: 20px; color:#303030;">
-						{{ video.vidTitle }}
+					<span class="bold" style="color:#303030;">
+						{{ video.vid_title }}
 					</span>
 					<br />
 					<span style="color:#5e5e5e;">
-						{{ this.mbr.mbr_nickname }} • 조회수
-						{{ video.vidView }}회 •
-						{{ video.regDt | diffDate }}
+						{{ video.mbr_nick_name }} • 조회수
+						{{ video.vid_view }}회 •
+						{{ video.reg_dt | diffDate }}
 					</span>
 				</div>
 			</div>
@@ -86,23 +85,14 @@ export default {
 		},
 	},
 	data() {
-		return {
-			mbrNo: 0,
-			mbr: {
-				mbr_nickname: '우리동네대장',
-				mbr_profile: 'default_profile.png',
-			},
-		};
+		return {};
 	},
 	methods: {
 		select() {
 			this.$emit('selectVideo', this.idx);
 		},
 	},
-	mounted() {
-		this.mbrNo = this.video.mbrNo;
-		console.log(this.selectVideoNo, this.idx);
-	},
+	mounted() {},
 };
 </script>
 

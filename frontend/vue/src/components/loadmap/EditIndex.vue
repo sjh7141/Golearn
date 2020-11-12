@@ -144,14 +144,12 @@
 						<template v-for="(element, index) in courseList">
 							<div
 								class="mb-2 border-radius-10"
-								:class="{
-									selectBorder: index == selectCourseNo,
-								}"
 								:key="element.cosNo"
 							>
 								<index-course
 									:course="element"
 									:idx="index"
+									:selectCourseNo="selectCourseNo"
 									@selectCourse="selectCourse"
 								/>
 							</div>
@@ -245,7 +243,6 @@ export default {
 					courseThumbnail: 'video_default_thumbnail.png',
 					tags: [
 						'C',
-						'Python',
 						'Python',
 						'Python',
 						'Python',
