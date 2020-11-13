@@ -143,7 +143,11 @@
 							></loadmap-slider>
 						</v-tab-item>
 						<v-tab-item>
-							<video-list :channel="channel" :videos="videos">
+							<video-list
+								@getChannel="getChannel"
+								:channel="channel"
+								:videos="videos"
+							>
 							</video-list>
 						</v-tab-item>
 						<v-tab-item>
@@ -250,22 +254,36 @@ export default {
 			'getChannelVideos',
 			'getChannelLoadmaps',
 			'getChannelCourses',
+			'like',
+			'unlike',
 		]),
 		subscribe() {
+			const self = this;
 			if (!this.isLogin) {
 				this.$router.push('/login');
+			} else if (this.subscribed) {
+				this.unlike(this.channel.no).then(function() {
+					self.isLike(self.channel.no).then(res => {
+						self.subscribed = res.data;
+					});
+				});
+			} else {
+				this.like(this.channel.no).then(function() {
+					self.isLike(self.channel.no).then(res => {
+						self.subscribed = res.data;
+					});
+				});
 			}
 		},
-		modify() {},
 		async getChannel(id) {
 			this.getChannelVideos(id).then(res => {
-				this.videos = res;
+				this.videos = res.data;
 			});
 			this.getChannelLoadmaps(id).then(res => {
-				this.loadmaps = res;
+				this.loadmaps = res.data;
 			});
 			this.getChannelCourses(id).then(res => {
-				this.courses = res;
+				this.courses = res.data;
 			});
 			this.getMember(id).then(res => {
 				this.channel = res.data;

@@ -3,7 +3,7 @@
 		<v-app-bar
 			flat
 			tile
-			style="background-color:white; padding:0; height:100%"
+			style="background-color:#fff; padding:0; height:100%"
 		>
 			<v-card flat tile style="background-color:transparent">
 				<router-link to="/">
@@ -36,6 +36,7 @@
 					outlined
 					@focus="isFocus = true"
 					@blur="isFocus = false"
+					@keydown.enter="keywordSearch()"
 				>
 					<v-icon
 						:class="{ basic: isFocus }"
@@ -154,7 +155,7 @@ export default {
 			menus: [
 				{
 					title: '로드맵',
-					link: '/course',
+					link: '/roadmap',
 				},
 				{
 					title: '코스',
@@ -169,7 +170,9 @@ export default {
 	},
 
 	methods: {
-		keywordSearch() {},
+		keywordSearch() {
+			this.$router.push(`/video?search=${this.keyword}`);
+		},
 		goToLogin() {
 			this.$router.push('/login');
 		},
@@ -195,10 +198,10 @@ export default {
 
 <style scoped>
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+@import url(//db.onlinewebfonts.com/c/b0a3d74c91dbd95db951a7c8c8ad6089?family=BM+JUA);
 .nav {
-	font-family: 'Noto Sans KR', sans-serif !important;
+	font-family: 'BM JUA', sans-serif !important;
 	font-size: 18px;
-	font-weight: 600;
 }
 .nav:hover {
 	color: rgb(60, 65, 223);

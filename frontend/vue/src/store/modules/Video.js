@@ -11,15 +11,29 @@ const URL = {
 export default {
 	state: {
 		video: null,
+		checked: [],
 	},
 	getters: {
 		tags(state) {
 			return state.video;
 		},
+		checked(state) {
+			return state.checked;
+		},
 	},
 	mutations: {
 		setVideos(state, payload) {
 			state.video = payload;
+		},
+		setChecked(state, payload) {
+			state.checked.push(payload);
+		},
+		removeChecked(state, payload) {
+			const index = state.checked.indexOf(payload);
+			state.checked.splice(index, 1);
+		},
+		clearChecked(state) {
+			state.checked = [];
 		},
 	},
 	actions: {
