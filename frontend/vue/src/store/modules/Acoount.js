@@ -44,7 +44,6 @@ export default {
 				},
 				params: { mbr_no: id },
 			};
-			console.log(config);
 			return axios.delete(URL.accountBuild() + `/like`, config);
 		},
 		setBanner(context, payload) {
