@@ -7,6 +7,8 @@ public class VideoDto {
 
 	private int vidNo;
 	private int mbrNo;
+	private String mbrNickname; 
+	private String mbrProfile; 
 	private int vidPno;
 	private String vidTitle;
 	private String vidContent;
@@ -32,6 +34,22 @@ public class VideoDto {
 
 	public void setMbrNo(int mbrNo) {
 		this.mbrNo = mbrNo;
+	}
+	
+	public String getMbrNickname() {
+		return mbrNickname;
+	}
+
+	public void setMbrNickname(String mbrNickname) {
+		this.mbrNickname = mbrNickname;
+	}
+
+	public String getMbrProfile() {
+		return mbrProfile;
+	}
+
+	public void setMbrProfile(String mbrProfile) {
+		this.mbrProfile = mbrProfile;
 	}
 
 	public int getVidPno() {

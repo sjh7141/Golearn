@@ -8,17 +8,21 @@
 	</select>
 	
 	<select id="findVideo" resultMap="videoResultMap">
-		select distinct v.*
-		from gl_video_tag vt inner join gl_video v
-		on vt.vid_no = v.vid_no and v.vid_title like CONCAT('%', #{search}, '%')
-		<if test="tag != null and tag.size != 0">
-		 	and vt.tag_no in
-			<foreach collection='tag' index='index' item='item' open='(' separator=',' close=')'>
-				#{item}
-			</foreach>
-		</if>
-		order by reg_dt desc
-		limit #{startIndex}, #{perPageNum}
+		select sub.*, gm.mbr_nickname, gm.mbr_profile
+		from (
+			select distinct v.*
+			from gl_video_tag vt inner join gl_video v
+			on vt.vid_no = v.vid_no and v.vid_title like CONCAT('%', #{search}, '%')
+			<if test="tag != null and tag.size != 0">
+			 	and vt.tag_no in
+				<foreach collection='tag' index='index' item='item' open='(' separator=',' close=')'>
+					#{item}
+				</foreach>
+			</if>
+			order by reg_dt desc
+			limit #{startIndex}, #{perPageNum}
+		) sub inner join gl_member gm
+		on sub.mbr_no = gm.mbr_no
 	</select>
 	
 	<select id="countByVideo" resultType="Integer">
@@ -50,7 +54,7 @@
 		(
 			select *
 			from gl_member 
-			where mbr_id like CONCAT('%', #{search}, '%')
+			where mbr_nickname like CONCAT('%', #{search}, '%')
 		) gl left join gl_member_subscribe gms
 	    on gl.mbr_no = gms.mbr_no
 	    group by username
@@ -60,11 +64,11 @@
 	<select id="countByChannel" resultType="Integer">
 		select count(*)
 		from gl_member
-		where mbr_id like CONCAT('%', #{search}, '%')
+		where mbr_nickname like CONCAT('%', #{search}, '%')
 	</select>
 	
 	<select id="findLoadmap" resultType="com.golearn.domain.LoadmapDto">
-		select gl.*, gm.mbr_nickname
+		select gl.*, gm.mbr_nickname, gm_mbr_profile
 		from gl_loadmap gl inner join gl_member gm
 		on ldm_title like CONCAT('%', #{search}, '%') and gl.mbr_no = gm.mbr_no
 		order by reg_dt desc
@@ -117,6 +121,8 @@
 	<resultMap id="videoResultMap" type="com.golearn.domain.VideoDto">
 		<id property="vidNo" column="vid_no" />
 		<result property="mbrNo" column="mbr_no"/>
+		<result property="mbrNickname" column="mbr_nickname"/>
+		<result property="mbrProfile" column="mbr_profile"/>
 		<result property="vidPno" column="vid_pno"/>
 		<result property="vidTitle" column="vid_title"/>
 		<result property="vidContent" column="vid_content"/>
