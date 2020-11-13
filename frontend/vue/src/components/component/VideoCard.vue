@@ -100,7 +100,6 @@ export default {
 			return moment(date).fromNow();
 		},
 		updateSelectedTenants(value) {
-			console.log(value);
 			if (value !== null) {
 				this.setChecked(this.video.vid_no);
 				this.check = this.video.vid_no;
