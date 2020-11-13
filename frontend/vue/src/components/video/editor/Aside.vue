@@ -305,7 +305,8 @@ export default {
 
 		movieToBlob(movie) {
 			movie.record(25).then(res => {
-				console.dir(URL.createObjectURL(res));
+				// todo: upload to server
+				// console.dir(URL.createObjectURL(res));
 			});
 		},
 

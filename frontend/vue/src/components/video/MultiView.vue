@@ -125,8 +125,11 @@
 				controls
 				data-setup="{}"
 				poster="https://cdn.inflearn.com/wp-content/uploads/ktw_algorithm3.jpg"
-				style="height:100%; width:100%;background-color:white; padding-left:10px;"
-				:style="{ 'background-color': dark ? '#1c1c1c' : '#fff' }"
+				style="height:100%; width:100%;background-color:white; "
+				:style="{
+					'background-color': dark ? '#1c1c1c' : '#fff',
+					'padding-left': editMode ? '10px' : '0px',
+				}"
 			>
 				<source src="@/assets/sample.mp4" />
 				<div
@@ -194,7 +197,7 @@
 						:style="{
 							color: dark ? '#f4f4f7' : '#262647',
 						}"
-						v-html="result.replace('\n', '<br />')"
+						v-html="result.replace(/\n/gi, '<br />')"
 					/>
 				</div>
 			</div>
@@ -275,7 +278,7 @@ export default {
 			isHorizontalDrag: false,
 			isVerticalDrag: false,
 
-			editMode: true,
+			editMode: false,
 			languages: [
 				{
 					title: 'C++',
