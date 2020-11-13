@@ -12,7 +12,7 @@
 		from (
 			select distinct v.*
 			from gl_video_tag vt inner join gl_video v
-			on vt.vid_no = v.vid_no and v.vid_title like CONCAT('%', #{search}, '%')
+			on vt.vid_no = v.vid_no and v.vid_title like CONCAT('%', #{search}, '%') and v.vid_hide = false
 			<if test="tag != null and tag.size != 0">
 			 	and vt.tag_no in
 				<foreach collection='tag' index='index' item='item' open='(' separator=',' close=')'>
@@ -28,7 +28,7 @@
 	<select id="countByVideo" resultType="Integer">
 		select count(distinct v.vid_no)
 		from gl_video_tag vt inner join gl_video v
-		on vt.vid_no = v.vid_no and v.vid_title like CONCAT('%', #{search}, '%')
+		on vt.vid_no = v.vid_no and v.vid_title like CONCAT('%', #{search}, '%') and v.vid_hide = false
 		<if test="tag != null and tag.size != 0">
 		 	and vt.tag_no in
 			<foreach collection='tag' index='index' item='item' open='(' separator=',' close=')'>
