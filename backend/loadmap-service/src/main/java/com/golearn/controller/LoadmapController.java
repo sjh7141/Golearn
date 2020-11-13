@@ -44,6 +44,9 @@ public class LoadmapController {
 	@ApiOperation(value = "로드맵 수정하기 (찐생성)")
 	@PutMapping(value = "/")
 	public ResponseEntity<String> modifyLoadmap(@ApiIgnore @RequestHeader("X-USERNO") String userNo, @RequestBody Map<String, Object> map){
+		if(map.get("ldm_thumbnail") == null) {
+			map.put("ldm_thumbnail", "https://go-learn.s3.ap-northeast-2.amazonaws.com/member/banner/profile_banner_default.png");
+		}
 		int res = loadmapService.updateLoadmap(map, Integer.parseInt(userNo));
 		if(res == 0) {
 			return ResponseEntity.ok("등록 실패");
