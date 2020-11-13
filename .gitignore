@@ -303,7 +303,7 @@ obj/
 .idea/dynamic.xml
 .idea/uiDesigner.xml
 .idea/jarRepositories.xml
-*/.idea/*
+
 # OS-specific files
 .DS_Store
 .DS_Store?

@@ -1,8 +1,8 @@
 <template>
 	<v-row>
-		<template v-for="(i, idx) in items">
+		<template v-for="i in items">
 			<v-col
-				:key="idx"
+				:key="i"
 				cols="12"
 				sm="6"
 				md="4"
@@ -22,7 +22,7 @@
 							gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
 							width="100%"
 							height="210px"
-							@click="$router.push('/channel/play')"
+							@click="$router.push('/video/play')"
 						>
 						</v-img>
 						<v-card-actions
@@ -46,8 +46,8 @@
 									<v-row style="width:100%;">
 										<v-chip
 											class="mr-1"
-											v-for="(tag, idx) in i.tags"
-											:key="idx"
+											v-for="(tag, i) in i.tags"
+											:key="i"
 											small
 											>{{ tag }}</v-chip
 										>
