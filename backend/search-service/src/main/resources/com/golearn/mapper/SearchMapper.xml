@@ -68,7 +68,7 @@
 	</select>
 	
 	<select id="findLoadmap" resultType="com.golearn.domain.LoadmapDto">
-		select gl.*, gm.mbr_nickname, gm_mbr_profile
+		select gl.*, gm.mbr_nickname
 		from gl_loadmap gl inner join gl_member gm
 		on ldm_title like CONCAT('%', #{search}, '%') and gl.mbr_no = gm.mbr_no
 		order by reg_dt desc
