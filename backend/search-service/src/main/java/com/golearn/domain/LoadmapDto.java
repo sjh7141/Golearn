@@ -7,7 +7,6 @@ public class LoadmapDto {
 	private int ldmNo;
 	private int mbrNo;
 	private String mbrNickname;
-	private String mbrProfile;
 	private String ldmTitle;
 	private String ldmContent;
 	private String ldmThumbnail;
@@ -36,14 +35,6 @@ public class LoadmapDto {
 
 	public void setMbrNickname(String mbrNickname) {
 		this.mbrNickname = mbrNickname;
-	}
-
-	public String getMbrProfile() {
-		return mbrProfile;
-	}
-
-	public void setMbrProfile(String mbrProfile) {
-		this.mbrProfile = mbrProfile;
 	}
 
 	public String getLdmContent() {
