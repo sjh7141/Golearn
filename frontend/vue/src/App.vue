@@ -1,10 +1,11 @@
 <template>
 	<v-app>
 		<div id="app">
-			<Header v-if="showHeader" />
+			<Header ref="header" v-if="showHeader" />
 			<Navigation v-if="showHeader" />
-			<Content />
-			<Footer />
+			<div :style="{ 'margin-top': space + 'px' }" />
+			<Content class="content-component" />
+			<Footer v-if="showFooter" />
 		</div>
 	</v-app>
 </template>
@@ -26,7 +27,9 @@ export default {
 	},
 
 	data() {
-		return {};
+		return {
+			space: 0,
+		};
 	},
 
 	computed: {
@@ -34,8 +37,29 @@ export default {
 			let render = true;
 			if (this.$route.path.indexOf('/login') > -1) {
 				render = false;
+				this.setSpace(0);
+			} else {
+				this.setSpace(64);
 			}
 			return render;
+		},
+		showFooter() {
+			let render = true;
+			if (this.$route.path.indexOf('/login') > -1) {
+				render = false;
+			}
+			return render;
+		},
+	},
+
+	mounted() {
+		this.space = this.$refs.header.$el.clientHeight;
+	},
+
+	methods: {
+		setSpace(value) {
+			// this.space = this.$refs.header.$el.clientHeight;
+			this.space = value;
 		},
 	},
 };
