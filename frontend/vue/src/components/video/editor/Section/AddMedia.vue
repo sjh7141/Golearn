@@ -1,5 +1,5 @@
 <template>
-	<div style="width:100%; height:100%;">
+	<div id="edit-add-media" style="width:100%; height:100%;">
 		<div
 			style="width:90%; height:80%; border:1px dashed rgba(229,230,241,0.25); border-radius:5px;"
 			@drop.prevent="dragFiles"
@@ -66,6 +66,7 @@
 					}"
 					style="height:70%;margin-left:2%;opacity: 1 !important;"
 					dark
+					@click="storage = true"
 				>
 					<v-icon left size="20" class="mr-3">
 						mdi-play-box-multiple-outline
@@ -76,19 +77,138 @@
 				</v-btn>
 			</v-hover>
 		</div>
+		<v-dialog
+			v-model="storage"
+			hide-overlay
+			max-width="1052"
+			overlay-opacity="1"
+			overlay-color="white"
+		>
+			<v-card tile outlined>
+				<v-list class="pa-0 ma-0">
+					<v-list-item>
+						<v-list-item-title>
+							보관함
+						</v-list-item-title>
+						<v-list-item-action>
+							<v-btn icon @click="storage = false">
+								<v-icon>
+									mdi-close
+								</v-icon>
+							</v-btn>
+						</v-list-item-action>
+					</v-list-item>
+					<v-divider />
+					<v-layout wrap style="height:462px; overflow-y: scroll;">
+						<v-flex
+							md3
+							lg3
+							xl3
+							class="pa-5"
+							v-for="(item, i) in storageList"
+							:key="`storage_${i}`"
+						>
+							<v-card
+								height="190"
+								tile
+								flat
+								outlined
+								link
+								class="edit-card"
+								@click.stop="selected = i"
+								:style="{
+									border:
+										selected == i
+											? '3px solid #9382d7'
+											: '1px solid rgba(0,0,0,0.12)',
+								}"
+							>
+								<v-img :src="item.vid_thumbnail" />
+								<v-list-item-title
+									style="font-size:14px;"
+									class="pa-3"
+								>
+									{{
+										item.vid_title
+											? item.vid_title
+											: 'Untitled'
+									}}
+								</v-list-item-title>
+							</v-card>
+						</v-flex>
+						<v-flex
+							v-if="storageList.length == 0"
+							class="pa-3"
+							style="font-size:16px;"
+						>
+							No data
+						</v-flex>
+					</v-layout>
+					<v-divider />
+					<v-list-item>
+						<v-spacer />
+						<v-btn
+							depressed
+							:color="selected >= 0 ? '#9382d7' : '#d4d4d4'"
+							dark
+							class="my-3"
+							tile
+							@click="1"
+							:loading="loading"
+						>
+							<span
+								style="font-size:14px;font-weight:400"
+								@click="
+									selected >= 0
+										? loadVideo(storageList[selected])
+										: 1
+								"
+							>
+								불러오기
+							</span>
+						</v-btn>
+					</v-list-item>
+				</v-list>
+			</v-card>
+		</v-dialog>
 	</div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import EventBus from '@/util/EventBus.js';
+import axios from 'axios';
 export default {
 	name: 'EditAddMedia',
+	watch: {
+		storage() {
+			if (this.storage) {
+				this.loadStorage();
+			} else {
+				this.selected = -1;
+			}
+		},
+	},
 	data() {
 		return {
-			whiteList: ['image/png', 'audio/mpeg', 'video/mp4', 'video/gif'],
+			whiteList: [
+				'image/jpg',
+				'image/jpeg',
+				'image/png',
+				'image/bmp',
+				'audio/mpeg',
+				'video/mp4',
+				'video/webm',
+			],
+			storageList: [],
+			storage: false,
+			selected: -1,
+			loading: false,
 		};
 	},
+	mounted() {},
 	methods: {
+		...mapActions(['getStorageList']),
 		dragFiles(e) {
 			let flag = false;
 			let droppedFiles = e.dataTransfer.files;
@@ -119,8 +239,52 @@ export default {
 			EventBus.$emit('addMedia', f);
 			return true;
 		},
+		loadStorage() {
+			this.getStorageList().then(({ data }) => {
+				this.storageList = data;
+			});
+		},
+		blobToString(b) {
+			var u, x;
+			u = URL.createObjectURL(b);
+			x = new XMLHttpRequest();
+			x.open('GET', u, false); // although sync, you're not fetching over internet
+			x.send();
+			URL.revokeObjectURL(u);
+			return x.responseText;
+		},
+
+		loadVideo(video) {
+			const self = this;
+			this.loading = true;
+			axios
+				.get(video.vid_url, { responseType: 'blob' })
+				.then(({ data }) => {
+					var reader = new FileReader();
+					reader.onload = function(file) {
+						video.blob = file.target.result;
+						video.type = data.type;
+						EventBus.$emit('loadVideo', video);
+						self.$emit('uploadFile', 1);
+						self.storage = false;
+					};
+					reader.readAsDataURL(data);
+				})
+				.finally(() => {
+					this.loading = false;
+				});
+		},
 	},
 };
 </script>
 
-<style></style>
+<style>
+.v-dialog {
+	border-radius: 0px !important;
+	box-shadow: none !important;
+}
+
+.edit-card:focus::before {
+	opacity: 0 !important;
+}
+</style>

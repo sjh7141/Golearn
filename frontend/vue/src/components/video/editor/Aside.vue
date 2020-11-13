@@ -61,7 +61,8 @@
 
 				<v-card-text>
 					<v-layout class="mt-2 mb-1">
-						업로드 중...
+						{{ isSuccess ? '업로드 중...' : '변환 중...' }}
+
 						<v-spacer />
 						{{ remainingTime }}분 남음
 					</v-layout>
@@ -101,7 +102,9 @@
 
 <script src="" />
 <script>
+import { mapActions } from 'vuex';
 import EventBus from '@/util/EventBus.js';
+
 export default {
 	name: 'EditAside',
 	data() {
@@ -120,9 +123,11 @@ export default {
 			dialog: false,
 
 			fileName: '',
+			vid: null,
 
 			remainingTime: 0,
 			progressRate: 0,
+			isSuccess: false,
 		};
 	},
 	computed: {
@@ -183,6 +188,7 @@ export default {
 		this.duration = 0;
 	},
 	methods: {
+		...mapActions(['upload', 'uploadVideo', 'saveVideo']),
 		canvasResize() {
 			const { clientWidth, clientHeight } = this.$refs.editAside;
 			if (clientWidth > ((clientHeight - 50) * 16) / 9) {
@@ -254,6 +260,8 @@ export default {
 			this.dialog = true;
 
 			this.fileName = '';
+			this.vid = null;
+
 			const canvas = document.createElement('canvas');
 
 			canvas.width = 1920;
@@ -305,8 +313,39 @@ export default {
 
 		movieToBlob(movie) {
 			movie.record(25).then(res => {
-				// todo: upload to server
+				let formData = new FormData();
+				formData.append('file', res);
 				// console.dir(URL.createObjectURL(res));
+				this.upload({
+					data: formData,
+					target: 'video',
+				})
+					.then(({ data }) => {
+						this.isSuccess = true;
+						this.createVideo(data);
+					})
+					.catch(() => {
+						alert('업로드 실패!');
+						this.dialog = false;
+					});
+			});
+		},
+
+		createVideo(url) {
+			this.uploadVideo({
+				vid_url: url,
+				vid_pno: this.vid,
+			}).then(({ data }) => {
+				this.saveVideo({
+					vid_no: data,
+				})
+					.then(({ data }) => {
+						this.$router.push('/');
+					})
+					.catch(res => {
+						alert('업로드 실패!!');
+						this.dialog = false;
+					});
 			});
 		},
 
@@ -339,7 +378,10 @@ export default {
 		async addMedia(movie, media, width, height, muted) {
 			return new Promise(resolve => {
 				if (media.type == 'video') {
-					if (this.fileName == '') this.fileName = media.name;
+					if (this.fileName == '') {
+						this.fileName = media.name;
+						this.vid = media.vid_no;
+					}
 					let video = document.createElement('video');
 					video.src = media.blob;
 
