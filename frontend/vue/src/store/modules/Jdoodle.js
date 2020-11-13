@@ -15,9 +15,9 @@ export default {
 	actions: {
 		compile(context, payload) {
 			return axios.post(URL.DOMAIN, {
-				clientId: '4cd1af623a8965c83bb833b2a2c01024',
+				clientId: 'bef508a76e6980f3c3e9157b07ce4d5e',
 				clientSecret:
-					'e5f7bc09f39277e0c238c831fb8dd49ef0082dbee8d1f586be3228822f8361fb',
+					'a4fe5d60d5904f039e0a5e4c42b13fafadf131169838e703eefa2bb8a62f9c1f',
 				script: payload.script,
 				language: payload.language,
 				versionIndex: payload.versionIndex,
