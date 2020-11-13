@@ -34,10 +34,10 @@ public class UserController {
 	@PostMapping(value = "/users")
 	public ResponseEntity<String> singup(@RequestBody UserDto dto) {
 		if(dto.getProfile() == null) {
-			dto.setProfile("profile_default.png");
+			dto.setProfile("https://go-learn.s3.ap-northeast-2.amazonaws.com/member/profile/75c4a934-d35f-4c6c-aa3b-95580ccb3d491920-1.png");
 		}
 		if(dto.getBanner() == null) {
-			dto.setBanner("profile_banner_default.png");
+			dto.setBanner("https://go-learn.s3.ap-northeast-2.amazonaws.com/member/banner/profile_banner_default.png");
 		}
 		int res = userService.save(dto);
 		if(res == 0) {
