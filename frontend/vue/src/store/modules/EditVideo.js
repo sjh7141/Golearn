@@ -1,3 +1,13 @@
+import axios from 'axios';
+
+const URL = {
+	DOMAIN: 'https://golearn.co.kr/api',
+	VIDEO: 'video-service',
+	videoBuild() {
+		return Array(this.DOMAIN, this.VIDEO).join('/');
+	},
+};
+
 export default {
 	state: {
 		currentTime: 0,
@@ -47,5 +57,30 @@ export default {
 			state.isChange = payload;
 		},
 	},
-	actions: {},
+	actions: {
+		uploadVideo(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.getters.token,
+				},
+			};
+			return axios.post(URL.videoBuild(), payload, config);
+		},
+		saveVideo(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.getters.token,
+				},
+			};
+			return axios.post(URL.videoBuild() + '/save', payload, config);
+		},
+		getStorageList(context) {
+			const config = {
+				headers: {
+					Authorization: context.getters.token,
+				},
+			};
+			return axios.get(URL.videoBuild() + '/save', config);
+		},
+	},
 };

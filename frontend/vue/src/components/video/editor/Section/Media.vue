@@ -65,9 +65,10 @@
 
 <script>
 import EventBus from '@/util/EventBus.js';
+import getBlobDuration from 'get-blob-duration';
+
 export default {
 	name: 'EditMedia',
-	watch: {},
 	data() {
 		return {
 			fileList: [],
@@ -75,12 +76,34 @@ export default {
 		};
 	},
 	mounted() {
+		EventBus.$on('loadVideo', video => {
+			let newFile = {
+				name: video.vid_title ? video.vid_title : 'Untitled',
+				fadeIn: 0,
+				fadeOut: 0,
+				thumbnail: video.vid_thumbnail,
+				blob: video.blob,
+
+				startTime: 0,
+				volume: 100,
+			};
+			this.typeList.forEach(type => {
+				if (video.type.indexOf(type) != -1) newFile.type = type;
+			});
+			(async function() {
+				newFile.duration = await getBlobDuration(video.blob);
+			})();
+
+			this.fileList.push(newFile);
+		});
 		EventBus.$on('addMedia', f => {
 			var reader = new FileReader();
 			let newFile = {
 				name: f.name,
 				fadeIn: 0,
 				fadeOut: 0,
+				startTime: 0,
+				volume: 100,
 				thumbnail: '',
 				blob: '',
 			};
@@ -90,11 +113,15 @@ export default {
 
 			reader.onload = function(file) {
 				newFile.blob = file.target.result;
+				(async function() {
+					newFile.duration = await getBlobDuration(
+						file.target.result,
+					);
+				})();
 				if (newFile.type == 'video' || newFile.type == 'audio') {
 					const video = document.createElement('video');
 					video.src = file.target.result;
 					video.onloadeddata = () => {
-						newFile.duration = video.duration;
 						newFile.startTime = 0;
 						newFile.volume = 100;
 						if (newFile.type == 'video') {
@@ -121,7 +148,6 @@ export default {
 				}
 			};
 			reader.readAsDataURL(f);
-
 			this.fileList.push(newFile);
 		});
 	},

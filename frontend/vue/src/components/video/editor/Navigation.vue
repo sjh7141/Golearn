@@ -10,11 +10,12 @@
 	>
 		<div class="mt-3">
 			<v-img
-				src="@/assets/logo.png"
-				max-width="60"
-				max-height="60"
+				src="@/assets/edit_logo2.png"
+				max-width="40"
+				max-height="40"
 				@click="$router.push('/')"
-				style="cursor:pointer"
+				style="cursor:pointer; border-radius:5px;"
+				class="mx-auto mb-1"
 			/>
 		</div>
 		<v-tab
