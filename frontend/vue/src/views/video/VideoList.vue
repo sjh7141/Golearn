@@ -1,13 +1,13 @@
 <template>
 	<div ref="app">
-		<course-list> </course-list>
+		<video-list> </video-list>
 	</div>
 </template>
 
 <script>
-import CourseList from '@/components/component/CourseSearchList';
+import VideoList from '@/components/component/VideoSearchList';
 export default {
-	components: { CourseList },
+	components: { VideoList },
 	data() {
 		return {};
 	},

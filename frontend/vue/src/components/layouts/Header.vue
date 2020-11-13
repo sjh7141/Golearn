@@ -36,6 +36,7 @@
 					outlined
 					@focus="isFocus = true"
 					@blur="isFocus = false"
+					@keydown.enter="keywordSearch()"
 				>
 					<v-icon
 						:class="{ basic: isFocus }"
@@ -154,7 +155,7 @@ export default {
 			menus: [
 				{
 					title: '로드맵',
-					link: '/course',
+					link: '/roadmap',
 				},
 				{
 					title: '코스',
@@ -169,7 +170,9 @@ export default {
 	},
 
 	methods: {
-		keywordSearch() {},
+		keywordSearch() {
+			this.$router.push(`/video?search=${this.keyword}`);
+		},
 		goToLogin() {
 			this.$router.push('/login');
 		},
