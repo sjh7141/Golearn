@@ -7,8 +7,9 @@ public class LoadmapDto {
 	private int ldmNo;
 	private int mbrNo;
 	private String mbrNickname;
+	private String ldmTitle;
 	private String ldmContent;
-	private String ldmTuhmbnail;
+	private String ldmThumbnail;
 	private Date regDt;
 	private Date chgDt;
 
@@ -44,12 +45,20 @@ public class LoadmapDto {
 		this.ldmContent = ldmContent;
 	}
 
-	public String getLdmTuhmbnail() {
-		return ldmTuhmbnail;
+	public String getLdmTitle() {
+		return ldmTitle;
 	}
 
-	public void setLdmTuhmbnail(String ldmTuhmbnail) {
-		this.ldmTuhmbnail = ldmTuhmbnail;
+	public void setLdmTitle(String ldmTitle) {
+		this.ldmTitle = ldmTitle;
+	}
+
+	public String getLdmThumbnail() {
+		return ldmThumbnail;
+	}
+
+	public void setLdmThumbnail(String ldmThumbnail) {
+		this.ldmThumbnail = ldmThumbnail;
 	}
 
 	public Date getRegDt() {
