@@ -13,7 +13,7 @@
 					<v-list-item>
 						<v-list-item-subtitle
 							style="font-size:14px; color:black; font-weight:600;"
-							@click="move('/course/intro', 0)"
+							@click="move('/course/intro', 0, -1)"
 						>
 							소개
 						</v-list-item-subtitle>
@@ -21,7 +21,7 @@
 					<v-list-item>
 						<v-list-item-subtitle
 							style="font-size:14px; color:black; font-weight:600;"
-							@click="move('/course/intro', 1)"
+							@click="move('/course/intro', 1, -1)"
 						>
 							요청 목록
 						</v-list-item-subtitle>
@@ -38,11 +38,12 @@
 						class="pl-6"
 						v-for="(item, i) in chapters"
 						:key="`chapters_${i}`"
+						@click="move(`/course/play?no=${i}`, 3, i)"
 					>
 						<v-list-item-subtitle
 							style="font-size:12px;"
 							:style="{
-								color: i == 0 ? 'rgb(60,60,223)' : '',
+								color: no == i ? 'rgb(60,60,223)' : '',
 							}"
 						>
 							{{ item.title }}
@@ -56,10 +57,10 @@
 				lg9
 				xl9
 				style="border-left:1px solid rgba(0,0,0,0.13)"
-				:style="{ height: height + 'px' }"
 			>
 				<Introduce v-if="index == 0" />
 				<RequestList v-else-if="index == 1" @move="move" />
+				<Play v-else-if="index == 3" @move="move" />
 			</v-flex>
 		</v-layout>
 	</div>
@@ -68,11 +69,13 @@
 <script>
 import Introduce from '@/components/course/Introduce.vue';
 import RequestList from '@/components/course/RequestList.vue';
+import Play from '@/components/course/Play.vue';
 export default {
 	name: 'Index',
 	components: {
 		Introduce,
 		RequestList,
+		Play,
 	},
 	data() {
 		return {
@@ -96,6 +99,7 @@ export default {
 				{ title: '리스트와 반복문', time: '38 : 56' },
 			],
 			index: 0,
+			no: -1,
 		};
 	},
 	mounted() {
@@ -103,11 +107,14 @@ export default {
 		if (this.$route.params.id == 'intro') this.index = 0;
 		if (this.$route.params.id == 'requestlist') this.index = 1;
 		if (this.$route.params.id == 'request') this.index = 2;
+		if (this.$route.params.id == 'play') this.index = 3;
+		this.no = this.$route.query.no;
 	},
 	methods: {
-		move(url, index) {
+		move(url, index, no) {
 			this.$router.push(url);
 			this.index = index;
+			this.no = no;
 		},
 	},
 };
