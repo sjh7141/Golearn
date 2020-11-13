@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.golearn.domain.LoadmapCourseDto;
 import com.golearn.domain.LoadmapDto;
 import com.golearn.mapper.LoadmapMapper;
@@ -30,6 +31,7 @@ public class LoadmapServiceImpl implements LoadmapService{
 	public int updateLoadmap(Map<String, Object> map, int userNo) {
 		Gson gson = new Gson();
 		ObjectMapper mapper = new ObjectMapper();
+		mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
 		LoadmapDto loadmap = mapper.convertValue(map.get("loadmap"), LoadmapDto.class);
 		loadmap.setMbrNo(userNo);
 		if(loadmap.getLdmThumbnail() == null) {
