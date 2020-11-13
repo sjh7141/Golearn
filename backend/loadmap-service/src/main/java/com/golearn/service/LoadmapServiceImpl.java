@@ -32,6 +32,9 @@ public class LoadmapServiceImpl implements LoadmapService{
 		ObjectMapper mapper = new ObjectMapper();
 		LoadmapDto loadmap = mapper.convertValue(map.get("loadmap"), LoadmapDto.class);
 		loadmap.setMbrNo(userNo);
+		if(loadmap.getLdmThumbnail() == null) {
+			loadmap.setLdmThumbnail("https://go-learn.s3.ap-northeast-2.amazonaws.com/member/banner/profile_banner_default.png");
+		}
 		
 		List<LoadmapCourseDto> insert = gson.fromJson(map.get("insert").toString(), new TypeToken<List<LoadmapCourseDto>>() {}.getType());
 		List<LoadmapCourseDto> update = gson.fromJson(map.get("update").toString(), new TypeToken<List<LoadmapCourseDto>>() {}.getType());
