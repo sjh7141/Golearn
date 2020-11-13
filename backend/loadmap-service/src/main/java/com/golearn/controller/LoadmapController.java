@@ -65,9 +65,8 @@ public class LoadmapController {
 	}
 	
 	@ApiOperation(value = "로드맵 삭제하기")
-	@DeleteMapping(value = "/")
-	public ResponseEntity<String> removeLoadmap(@ApiIgnore @RequestHeader("X-USERNO") String userNo, @RequestBody Map<String, Object> map){
-		int ldmNo = (int)map.get("	");
+	@DeleteMapping(value = "/{ldm_no}")
+	public ResponseEntity<String> removeLoadmap(@ApiIgnore @RequestHeader("X-USERNO") String userNo, @PathVariable("ldm_no") int ldmNo){
 		int res = loadmapService.deleteLoadmap(ldmNo, Integer.parseInt(userNo));
 		if(res == 0) {
 			return ResponseEntity.ok("삭제 실패");
