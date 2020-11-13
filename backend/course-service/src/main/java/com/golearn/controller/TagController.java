@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.golearn.dto.Tag;
@@ -45,10 +47,8 @@ public class TagController {
 	}
 	
 	@ApiOperation(value = "코스 태그 삭제")
-	@DeleteMapping(value = "/")
-	public ResponseEntity<String> removeTag(@RequestBody Map<String, Object> map){
-		int cosNo = (int)map.get("cos_no");
-		List<Integer> list = (List<Integer>)map.get("list");
+	@DeleteMapping(value = "/{cos_no}/{list}")
+	public ResponseEntity<String> removeTag(@PathVariable("cos_no") int cosNo, @PathVariable("list") List<Integer> list){
 		int res = tagService.deleteTag(cosNo, list);
 		if(res == 0) {
 			return ResponseEntity.ok("삭제 실패");

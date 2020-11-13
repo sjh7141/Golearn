@@ -45,11 +45,14 @@ public class CourseManagerController {
 	}
 
 	// 코스 관리자 삭제
-	@RequestMapping(method = RequestMethod.DELETE, value = "/manager")
+	@RequestMapping(method = RequestMethod.DELETE, value = "/manager/{cos_no}/{manager_no}")
 	@ApiOperation(value = "코스 관리자 삭제")
 	public ResponseEntity deleteCourseManager(@ApiIgnore @RequestHeader(value = "X-USERNO") String mbrNo,
-			@RequestBody CourseManager request) {
+			@PathVariable("cos_no") int cosNo, @PathVariable("manager_no") int managerNo) {
 		logger.info(">> LOAD deleteCourseManager <<");
+		CourseManager request = new CourseManager();
+		request.setCosNo(cosNo);
+		request.setMbrNo(managerNo);
 		if(courseManagerService.checkManager(request.getCosNo(), Long.parseLong(mbrNo)) == 0) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
