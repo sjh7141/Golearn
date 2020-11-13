@@ -8,37 +8,29 @@
 	</select>
 	
 	<select id="findVideo" resultMap="videoResultMap">
-		select t.tag_no, t.tag_name, sub.*
-		from gl_tag t inner join 
-			(
-			select distinct v.*
-			from gl_video_tag vt inner join gl_video v
-			on vt.vid_no = v.vid_no and v.vid_title like CONCAT('%', #{search}, '%')
-			<if test="tag != null and tag.size != 0">
-			 	and vt.tag_no in
-				<foreach collection='tag' index='index' item='item' open='(' separator=',' close=')'>
-					#{item}
-				</foreach>
-			</if>
-			) sub
+		select distinct v.*
+		from gl_video_tag vt inner join gl_video v
+		on vt.vid_no = v.vid_no and v.vid_title like CONCAT('%', #{search}, '%')
+		<if test="tag != null and tag.size != 0">
+		 	and vt.tag_no in
+			<foreach collection='tag' index='index' item='item' open='(' separator=',' close=')'>
+				#{item}
+			</foreach>
+		</if>
 		order by reg_dt desc
 		limit #{startIndex}, #{perPageNum}
 	</select>
 	
 	<select id="countByVideo" resultType="Integer">
-		select count(*)
-		from gl_tag t inner join 
-			(
-			select distinct v.*
-			from gl_video_tag vt inner join gl_video v
-			on vt.vid_no = v.vid_no and v.vid_title like CONCAT('%', #{search}, '%')
-			<if test="tag != null and tag.size != 0">
-			 	and vt.tag_no in
-				<foreach collection='tag' index='index' item='item' open='(' separator=',' close=')'>
-					#{item}
-				</foreach>
-			</if>
-			) sub
+		select count(distinct v.vid_no)
+		from gl_video_tag vt inner join gl_video v
+		on vt.vid_no = v.vid_no and v.vid_title like CONCAT('%', #{search}, '%')
+		<if test="tag != null and tag.size != 0">
+		 	and vt.tag_no in
+			<foreach collection='tag' index='index' item='item' open='(' separator=',' close=')'>
+				#{item}
+			</foreach>
+		</if>
 	</select>
 	
 	<select id="findTagByVideo" parameterType="java.util.Map" resultType="com.golearn.domain.TagDto">
