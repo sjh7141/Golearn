@@ -2,19 +2,9 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 import Index from '@/views/Index.vue';
-import PlayChannel from '@/views/channel/play.vue';
+import PlayVideo from '@/views/video/play.vue';
 import Login from '@/views/Login.vue';
-import Course from '@/views/course/index.vue';
-import Request from '@/views/course/Request.vue';
-import RequestDetail from '@/views/course/RequestDetail.vue';
-import EditCourse from '@/views/course/Edit.vue';
-import EditLoadMap from '@/views/loadmap/Edit.vue';
 
-import EditVideo from '@/views/channel/EditVideo.vue';
-
-import Channel from '@/views/channel/Channel.vue';
-import Mypage from '@/views/Mypage.vue';
-import CourseList from '@/views/course/CourseList.vue';
 Vue.use(VueRouter);
 
 const routes = [
@@ -24,59 +14,14 @@ const routes = [
 		component: Index,
 	},
 	{
-		path: '/channel/play',
-		name: 'PlayChannel',
-		component: PlayChannel,
-	},
-	{
-		path: '/channel/edit',
-		name: 'EditVideo',
-		component: EditVideo,
+		path: '/video/play',
+		name: 'PlayVideo',
+		component: PlayVideo,
 	},
 	{
 		path: '/login',
 		name: 'Login',
 		component: Login,
-	},
-	{
-		path: '/course/:id',
-		name: 'Course',
-		component: Course,
-	},
-	{
-		path: '/course',
-		name: 'CourseList',
-		component: CourseList,
-	},
-	{
-		path: '/request',
-		name: 'Request',
-		component: Request,
-	},
-	{
-		path: '/request/:id',
-		name: 'RequestDetail',
-		component: RequestDetail,
-	},
-	{
-		path: '/course/management/:id',
-		name: 'EditCourse',
-		component: EditCourse,
-	},
-	{
-		path: '/loadmap/management/:id',
-		name: 'EditLoadMap',
-		component: EditLoadMap,
-	},
-	{
-		path: '/channel/:id',
-		name: 'Channel',
-		component: Channel,
-	},
-	{
-		path: '/mypage',
-		name: 'Mypage',
-		component: Mypage,
 	},
 ];
 
