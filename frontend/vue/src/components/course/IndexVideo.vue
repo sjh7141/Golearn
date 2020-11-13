@@ -1,7 +1,7 @@
 <template>
 	<v-row height="200">
 		<v-col
-			class="mx-3 pb-0"
+			class="mr-3 pb-0"
 			@click="select"
 			style="color:black; cursor: pointer; text-align:center;"
 		>

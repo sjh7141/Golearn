@@ -128,9 +128,7 @@ export default {
 			this.$store
 				.dispatch('setCourse')
 				.then(() => {})
-				.catch(() => {
-					console.log('코스등록시 오류가 발생하였습니다.');
-				});
+				.catch(() => {});
 
 			this.makeTags();
 		},
@@ -160,7 +158,6 @@ export default {
 			for (let tag of checkList) {
 				if (!tag.check) {
 					for (let item of this.allTags) {
-						console.log(item.tag_name, tag.tag_name);
 						if (item.tag_name == tag.tag_name) {
 							addList.push(item.tag_no);
 							break;
@@ -168,19 +165,27 @@ export default {
 					}
 				}
 			}
-			console.log(addList, deleteList);
-			this.$store
-				.dispatch('setCourseTag', {
-					cos_no: Number(this.$route.params.id),
-					list: addList,
-				})
-				.then(({ data }) => {
-					console.log(data);
-				});
-			this.$store.dispatch('deleteCourseTag', {
-				cos_no: Number(this.$route.params.id),
-				list: deleteList,
-			});
+			if (addList.length != 0) {
+				this.$store
+					.dispatch('setCourseTag', {
+						cos_no: Number(this.$route.params.id),
+						list: addList,
+					})
+					.then(() => {
+						addList = [];
+					});
+			}
+			if (deleteList.length != 0) {
+				this.$store
+					.dispatch('deleteCourseTag', {
+						cos_no: Number(this.$route.params.id),
+						list: deleteList,
+					})
+					.then(() => {
+						deleteList = [];
+					})
+					.catch(() => {});
+			}
 		},
 	},
 	watch: {

@@ -76,6 +76,14 @@ export default {
 		getIndex(context, payload) {
 			return axios.get(URL.courseBuild() + `/index/${payload}`);
 		},
+		setIndex(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.put(URL.courseBuild() + '/index', payload, config);
+		},
 		getCourseTag(context, payload) {
 			return axios.get(URL.courseBuild() + `/tag/${payload}`);
 		},
@@ -85,7 +93,6 @@ export default {
 					Authorization: context.rootGetters.token,
 				},
 			};
-			console.log(payload);
 			return axios.post(
 				URL.courseBuild() + '-service/tag/',
 				payload,
@@ -93,11 +100,51 @@ export default {
 			);
 		},
 		deleteCourseTag(context, payload) {
-			console.log(payload);
-			return axios.delete(URL.courseBuild() + '-service/tag/', {
-				data: payload,
-				headers: { Authorization: context.rootGetters.token },
-			});
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			let variable = payload.list.join(',');
+			return axios.delete(
+				URL.courseBuild() +
+					`-service/tag/${payload.cos_no}/${variable}`,
+				config,
+			);
+		},
+		getManagers(context, payload) {
+			return axios.get(URL.courseBuild() + `/manager/${payload}`);
+		},
+		setManager(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.post(URL.courseBuild() + '/manager', payload, config);
+		},
+		deleteManager(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.delete(
+				URL.courseBuild() +
+					`/manager/${payload.cos_no}/${payload.mbr_no}`,
+				config,
+			);
+		},
+		getManagerSearch(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(
+				URL.courseBuild() + `/manager/${payload}/search`,
+				config,
+			);
 		},
 	},
 };

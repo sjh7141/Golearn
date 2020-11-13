@@ -57,16 +57,68 @@
 						<v-row
 							class="list-group-item ma-1 pa-3 mb-5 index-box"
 							v-for="(element, index) in list"
-							:key="element.index"
+							:key="index + '_index'"
 						>
-							<v-col cols="10">
+							<v-col cols="12">
 								목차{{ index + 1 }}: {{ element.idx_title }}
 							</v-col>
-							<v-col cols="2" align="end">
+							<v-col cols="10">
+								<v-row height="200">
+									<v-col cols="1" />
+									<v-col cols="3">
+										<v-img
+											v-if="element"
+											class="border-radius-10"
+											:src="
+												element.map.video.vid_thumbnail
+											"
+											width="100%"
+											style="display: inline-block;"
+										/>
+									</v-col>
+									<v-col cols="8">
+										<div
+											v-if="element"
+											style="margin: 0 auto;"
+										>
+											<div
+												style="display: inline-block; vertical-align:top; word-break:break-all;"
+											>
+												<span
+													class="bold"
+													style="font-size: 20px; color:#303030;"
+												>
+													제목
+												</span>
+												<br />
+												<span
+													style="font-size: 15.75px; color:#5e5e5e; font-weight: 500;"
+												>
+													{{
+														element.map.author
+															.mbr_nick_name
+													}}
+													• 조회수
+													{{
+														element.map.video
+															.vid_view
+													}}회 •
+													{{
+														element.map.video
+															.reg_dt | diffDate
+													}}
+												</span>
+											</div>
+										</div>
+									</v-col>
+								</v-row>
+							</v-col>
+							<v-col cols="2" align="end" align-self="center">
 								<v-icon
 									class="pr-2 pointer"
 									color="darken-2"
 									@click="setEditIndex(index)"
+									style="vertical-align:center;"
 								>
 									mdi-file-edit-outline
 								</v-icon>
@@ -78,70 +130,18 @@
 									mdi-trash-can-outline
 								</v-icon>
 							</v-col>
-							<v-row height="200">
-								<v-col sm="1" md="2" />
-								<v-col class="pb-0" sm="10" md="8">
-									<v-img
-										v-if="element"
-										class="border-radius-10"
-										:src="element.map.video.vid_thumbnail"
-										width="100%"
-										height="300px;"
-										style="display: inline-block;"
-									/>
-								</v-col>
-								<v-col sm="1" md="2" />
-								<v-col sm="1" md="2" />
-								<v-col class="mx-3 pt-0" sm="10" md="8">
-									<div v-if="element" style="margin: 0 auto;">
-										<v-avatar
-											class="mr-2"
-											style="vertical-align:top;"
-										>
-											<img
-												:src="
-													element.map.author
-														.mbr_profile
-												"
-												alt="프로필"
-											/>
-										</v-avatar>
-										<div
-											style="display: inline-block; vertical-align:top; word-break:break-all;"
-										>
-											<span
-												class="bold"
-												style="font-size: 20px; color:#303030;"
-											>
-												제목
-											</span>
-											<br />
-											<span
-												style="font-size: 15.75px; color:#5e5e5e; font-weight: 500;"
-											>
-												{{
-													element.map.author
-														.mbr_nick_name
-												}}
-												• 조회수
-												{{
-													element.map.video.vid_view
-												}}회 •
-												{{
-													element.map.video.reg_dt
-														| diffDate
-												}}
-											</span>
-										</div>
-									</div>
-								</v-col>
-							</v-row>
 						</v-row>
 					</draggable>
 				</div>
 			</div>
 			<div class="mt-6" style="text-align:end;">
-				<v-btn outlined class="mr-3" style="border: 1px solid #c9c9c9;">
+				<v-btn
+					outlined
+					class="mr-3"
+					style="border: 1px solid #c9c9c9;"
+					@click="save"
+					:loading="loading"
+				>
 					저장
 				</v-btn>
 				<v-btn dark color="#5500ff" @click="changeActive">
@@ -173,7 +173,7 @@
 						<template v-for="(element, index) in videoList">
 							<div
 								class="mb-2 border-radius-10"
-								:key="element.vid_no"
+								:key="index + '_vid'"
 							>
 								<index-video
 									:video="element"
@@ -242,7 +242,6 @@ import IndexVideo from '@/components/course/IndexVideo.vue';
 import { mapGetters } from 'vuex';
 
 let order = 1;
-// const nameTemplate = '제목입력과 강의영상을 선택해 주세요.';
 export default {
 	components: {
 		draggable,
@@ -263,6 +262,8 @@ export default {
 			editIdx: -1,
 			editTitle: '',
 			videoList: [],
+			videoLikeList: [],
+			loading: false,
 			selectVideoNo: -1,
 		};
 	},
@@ -297,10 +298,10 @@ export default {
 							.mbr_profile,
 					},
 				},
-				video_no: this.videoList[this.selectVideoNo].vid_no,
+				vid_no: this.videoList[this.selectVideoNo].vid_no,
+				isEdit: false,
 			};
 			this.list.push(newIndex);
-			console.log(newIndex);
 			this.editTitle = '';
 			this.isAdd = false;
 			this.resetVideo();
@@ -313,12 +314,12 @@ export default {
 			this.isEdit = true;
 			this.isAdd = true;
 			this.editIdx = idx;
-			this.editTitle = this.list[idx].name;
+			this.editTitle = this.list[idx].idx_title;
 		},
 		confirmDelete() {
 			const temp = this.list[this.deleteIdx];
 			this.list.splice(this.deleteIdx, 1);
-			if (temp.no != 0) {
+			if (temp.idx_no != 0) {
 				this.deleteList.push(temp);
 			}
 			order--;
@@ -326,7 +327,21 @@ export default {
 			this.isDelete = false;
 		},
 		confirmEdit() {
-			this.list[this.editIdx].name = this.editTitle;
+			this.list[this.editIdx].idx_title = this.editTitle;
+			this.list[this.editIdx].isEdit = true;
+			if (this.selectVideoNo != -1) {
+				this.list[this.editIdx].vid_no = this.videoList[
+					this.selectVideoNo
+				].vid_no;
+				this.list[this.editIdx].map.video = this.videoList[
+					this.selectVideoNo
+				];
+				this.list[this.editIdx].map.author = {
+					mbr_nick_name: this.videoList[this.selectVideoNo]
+						.mbr_nick_name,
+					mbr_profile: this.videoList[this.selectVideoNo].mbr_profile,
+				};
+			}
 			this.editIdx = -1;
 			this.editTitle = '';
 			this.isEdit = false;
@@ -346,6 +361,49 @@ export default {
 		changeActive() {
 			this.$emit('changeActive');
 		},
+		save() {
+			let deleteList = [];
+			let insertList = [];
+			let updateList = [];
+			for (let index of this.deleteList) {
+				deleteList.push({
+					idx_no: index.idx_no,
+				});
+			}
+			for (let idx in this.list) {
+				let index = this.list[idx];
+				if (
+					(idx + 1 != index.idx_order || index.isEdit) &&
+					index.idx_no != 0
+				) {
+					updateList.push({
+						cos_no: index.cos_no,
+						idx_order: idx + 1,
+						idx_title: index.idx_title,
+						vid_no: index.vid_no,
+						idx_no: index.idx_no,
+					});
+				}
+				if (index.idx_no == 0) {
+					insertList.push({
+						cos_no: index.cos_no,
+						idx_order: idx + 1,
+						idx_title: index.idx_title,
+						vid_no: index.vid_no,
+					});
+				}
+			}
+			this.loading = true;
+			this.$store
+				.dispatch('setIndex', {
+					delete: deleteList,
+					insert: insertList,
+					update: updateList,
+				})
+				.finally(() => {
+					this.loading = false;
+				});
+		},
 	},
 	computed: {
 		...mapGetters(['course', 'user']),
@@ -354,16 +412,30 @@ export default {
 		this.$store
 			.dispatch('getIndex', this.$route.params.id)
 			.then(({ data }) => {
-				console.log(data);
+				for (let index of data) {
+					index.isEdit = false;
+				}
 				this.list = data;
+				order = data.length + 1;
 			});
 		this.$store.dispatch('getVideos').then(({ data }) => {
-			console.log(data);
-			for (var video of data) {
+			for (let video of data) {
 				video.mbr_nick_name = this.user.nickname;
 				video.mbr_profile = this.user.profile;
 			}
 			this.videoList = data;
+		});
+		this.$store.dispatch('getLikeVideo').then(({ data }) => {
+			this.videoLikeList = data;
+			for (let video of data) {
+				this.$store
+					.dispatch('getUserByNo', video.mbr_no)
+					.then(({ data }) => {
+						video.mbr_nick_name = data.nickname;
+						video.mbr_profile = data.profile;
+						this.videoList.push(video);
+					});
+			}
 		});
 	},
 	filters: {
