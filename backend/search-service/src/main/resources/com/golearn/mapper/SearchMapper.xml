@@ -45,10 +45,15 @@
 	</select>
 	
 	<select id="findChannel" resultType="com.golearn.domain.ChannelDto">
-        select gl.mbr_no as no, gl.mbr_id as username, gl.mbr_nickname as nickname, gl.mbr_profile as profile, count(gms.mbr_no) as likeCount
-		from gl_member gl left join gl_member_subscribe gms
-		on gl.mbr_id like CONCAT('%', #{search}, '%') and gl.mbr_no = gms.mbr_no
-        group by gms.mbr_no
+	select gl.mbr_no as no, gl.mbr_id as username, gl.mbr_nickname as nickname, gl.mbr_profile as profile, count(gms.mbr_no) as likeCount
+	from
+		(
+			select *
+			from gl_member 
+			where mbr_id like CONCAT('%', #{search}, '%')
+		) gl left join gl_member_subscribe gms
+	    on gl.mbr_no = gms.mbr_no
+	    group by username
 		limit #{startIndex}, #{perPageNum}
 	</select>
 	
