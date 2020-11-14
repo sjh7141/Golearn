@@ -83,7 +83,7 @@
 						</v-slide-item>
 					</v-slide-group>
 					<v-divider></v-divider>
-					<h2 class="mt-15" @click="$router.push('/channel/edit')">
+					<h2 class="mt-15">
 						이런 강의 어떠세요?
 					</h2>
 					<v-row>

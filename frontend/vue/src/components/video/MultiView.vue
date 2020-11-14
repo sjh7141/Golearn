@@ -124,14 +124,14 @@
 				id="video-player"
 				controls
 				data-setup="{}"
-				poster="https://cdn.inflearn.com/wp-content/uploads/ktw_algorithm3.jpg"
+				:poster="poster"
 				style="height:100%; width:100%;background-color:white; "
 				:style="{
 					'background-color': dark ? '#1c1c1c' : '#fff',
 					'padding-left': editMode ? '10px' : '0px',
 				}"
 			>
-				<source src="@/assets/sample.mp4" />
+				<source :src="src" />
 				<div
 					style="position: absolute; right:0; height:100%; background-color:red; width:4px;"
 				/>
@@ -252,7 +252,7 @@
 import { mapActions } from 'vuex';
 export default {
 	name: 'MultiView',
-	props: ['width', 'height', 'source', 'type'],
+	props: ['width', 'height', 'source', 'type', 'poster', 'src'],
 	watch: {
 		dark() {
 			var editor = ace.edit('editor');
@@ -320,10 +320,15 @@ export default {
 		this.resizeVideo();
 	},
 	beforeDestroy() {
+		this.removeVideo();
 		window.removeEventListener('resize', this.resizeVideo);
 	},
 	methods: {
 		...mapActions(['compile']),
+		removeVideo() {
+			var player = videojs('video-player');
+			player.dispose();
+		},
 		executeScript() {
 			var editor = ace.edit('editor');
 			const script = ace.edit('editor').getValue();

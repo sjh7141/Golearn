@@ -29,10 +29,46 @@ export default {
 		setCourse() {
 			return axios.put(URL.courseBuild() + `/`);
 		},
+
+		getLikeCourse(context, id) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(URL.courseBuild() + `/like/${id}`, config);
+		},
+
+		setLikeCourse(context, id) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.post(URL.courseBuild() + `/like/${id}`, {}, config);
+		},
+
+		removeLikeCourse(context, id) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.delete(URL.courseBuild() + `/like/${id}`, config);
+		},
+
+		getChapterDetail(contex, id) {
+			return axios.get(URL.courseBuild() + `/index/detail/${id}`);
+		},
+
+		getCourseIndexs(context, payload) {
+			return axios.get(URL.courseBuild() + `/index/${payload}`);
+		},
+
 		getChannelCourses(context, payload) {
 			return axios.get(URL.courseBuild() + `/member/${payload}`);
 		},
-		getLikeCourse(context) {
+		getLikeCourses(context) {
 			const config = {
 				headers: {
 					Authorization: context.rootGetters.token,
@@ -47,6 +83,37 @@ export default {
 				},
 			};
 			return axios.get(URL.courseBuild() + '/view', config);
+		},
+
+		getCompleteChapter(context, id) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(URL.courseBuild() + `/index/check/${id}`, config);
+		},
+
+		setCompleteChapter(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(
+				URL.courseBuild() + `/index-complete`,
+				payload,
+				config,
+			);
+		},
+
+		getVersions(context, id) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(URL.courseBuild() + `/versions/${id}`, config);
 		},
 	},
 };

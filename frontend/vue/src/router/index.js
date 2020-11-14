@@ -39,7 +39,7 @@ const routes = [
 		component: Login,
 	},
 	{
-		path: '/course/:id',
+		path: '/course/:no/:id',
 		name: 'Course',
 		component: Course,
 	},

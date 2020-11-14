@@ -24,6 +24,28 @@ export default {
 			};
 			return axios.get(URL.accountBuild() + `/like/${id}`, config);
 		},
+		setSubscribed({ rootGetters }, id) {
+			const config = {
+				headers: {
+					Authorization: rootGetters.token,
+				},
+			};
+			return axios.post(
+				URL.accountBuild() + `/like`,
+				{
+					mbr_no: id,
+				},
+				config,
+			);
+		},
+		removeSubscribed({ rootGetters }, id) {
+			const config = {
+				headers: {
+					Authorization: rootGetters.token,
+				},
+			};
+			return axios.delete(URL.accountBuild() + `/like/${id}`, config);
+		},
 		setBanner(context, payload) {
 			const config = {
 				headers: {
