@@ -1,9 +1,11 @@
 <template>
-	<router-view />
+	<router-view :key="$route.fullPath" />
 </template>
 
 <script>
-export default {};
+export default {
+	mounted() {},
+};
 </script>
 
 <style></style>

@@ -42,9 +42,8 @@ export default {
 					Authorization: rootGetters.token,
 					'Content-Type': 'application/json',
 				},
-				params: { mbr_no: id },
 			};
-			return axios.delete(URL.accountBuild() + `/like`, config);
+			return axios.delete(URL.accountBuild() + `/like/${id}`, config);
 		},
 		setBanner(context, payload) {
 			const config = {

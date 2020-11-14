@@ -10,16 +10,16 @@ const URL = {
 
 export default {
 	state: {
-		tags: null,
+		tag: null,
 	},
 	getters: {
-		tags(state) {
-			return state.tags;
+		tag(state) {
+			return state.tag;
 		},
 	},
 	mutations: {
 		setTags(state, payload) {
-			state.tags = payload;
+			state.tag = payload;
 		},
 	},
 	actions: {

@@ -136,7 +136,7 @@ export default {
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
 
 .content-component {
-	background-color: #fff;
+	background-color: #fafafa;
 }
 .card {
 	background: #f9f9f9 !important;

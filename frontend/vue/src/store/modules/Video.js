@@ -6,6 +6,9 @@ const URL = {
 	videoBuild() {
 		return Array(this.DOMAIN, this.PREFIX).join('/');
 	},
+	commentBuild() {
+		return Array(this.DOMAIN, this.PREFIX, this.COMMENT).join('/');
+	},
 };
 
 export default {
@@ -74,6 +77,41 @@ export default {
 		},
 	},
 	actions: {
+		_getVideoComments(context, id) {
+			return axios.get(URL.commentBuild() + `/${id}`);
+		},
+		_writeComment(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.post(
+				URL.commentBuild() + `/${payload.vid_no}`,
+				payload,
+				config,
+			);
+		},
+
+		_getVideoSubComments(context, payload) {
+			return axios.get(
+				URL.commentBuild() +
+					`/${payload.vid_no}/${payload.vid_cmt_pno}`,
+			);
+		},
+		_writeSubComment(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.post(
+				URL.commentBuild() +
+					`/${payload.vid_no}/${payload.vid_cmt_pno}`,
+				payload,
+				config,
+			);
+		},
 		getVideos(context) {
 			const config = {
 				headers: {
@@ -108,7 +146,18 @@ export default {
 			};
 			return axios.delete(URL.videoBuild(), config);
 		},
-		getLikeVideo(context) {
+		getSaveVideos(context) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(URL.videoBuild() + '/save', config);
+		},
+		getVideoDetail(context, id) {
+			return axios.get(URL.videoBuild() + `/${id}`);
+		},
+		getLikeVideos(context) {
 			const config = {
 				headers: {
 					Authorization: context.rootGetters.token,
@@ -116,13 +165,57 @@ export default {
 			};
 			return axios.get(URL.videoBuild() + '/like', config);
 		},
-		getSaveVideo(context) {
+
+		getLikeVideo(context, id) {
 			const config = {
 				headers: {
 					Authorization: context.rootGetters.token,
 				},
 			};
-			return axios.get(URL.videoBuild() + '/save', config);
+			return axios.get(URL.videoBuild() + `/like/${id}`, config);
+		},
+
+		likeVideo(context, id) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.post(URL.videoBuild() + `/like/${id}`, {}, config);
+		},
+
+		cancelVideo(context, id) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.delete(URL.videoBuild() + `/like/${id}`, config);
+		},
+
+		getSaveVideo(context, id) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(URL.videoBuild() + `/save/${id}`, config);
+		},
+		setSaveVideo(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.getters.token,
+				},
+			};
+			return axios.post(URL.videoBuild() + '/save', payload, config);
+		},
+		removeSaveVideo(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.getters.token,
+				},
+			};
+			return axios.delete(URL.videoBuild() + `/save/${payload}`, config);
 		},
 	},
 };

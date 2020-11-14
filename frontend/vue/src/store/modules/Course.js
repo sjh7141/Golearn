@@ -57,14 +57,6 @@ export default {
 		getChannelCourses(context, payload) {
 			return axios.get(URL.courseBuild() + `/member/${payload}`);
 		},
-		getLikeCourse(context) {
-			const config = {
-				headers: {
-					Authorization: context.rootGetters.token,
-				},
-			};
-			return axios.get(URL.courseBuild() + '/like', config);
-		},
 		getLearnCourse(context) {
 			const config = {
 				headers: {
@@ -140,6 +132,123 @@ export default {
 				URL.courseBuild() + `/manager/${payload}/search`,
 				config,
 			);
+		},
+
+		getLikeCourse(context, id) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(URL.courseBuild() + `/like/${id}`, config);
+		},
+
+		setLikeCourse(context, id) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.post(URL.courseBuild() + `/like/${id}`, {}, config);
+		},
+
+		removeLikeCourse(context, id) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.delete(URL.courseBuild() + `/like/${id}`, config);
+		},
+
+		getChapterDetail(contex, id) {
+			return axios.get(URL.courseBuild() + `/index/detail/${id}`);
+		},
+
+		getCourseIndexs(context, payload) {
+			return axios.get(URL.courseBuild() + `/index/${payload}`);
+		},
+
+		getLikeCourses(context) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(URL.courseBuild() + '/like', config);
+		},
+
+		getCompleteChapter(context, id) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(URL.courseBuild() + `/index/check/${id}`, config);
+		},
+
+		setCompleteChapter(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(
+				URL.courseBuild() + `/index-complete`,
+				payload,
+				config,
+			);
+		},
+
+		getVersions(context, id) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(URL.courseBuild() + `/versions/${id}`, config);
+		},
+
+		getRequestList(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(
+				URL.courseBuild() +
+					`/video/${payload.cos_no}?page=${payload.page}`,
+				config,
+			);
+		},
+
+		getRequestDetail(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(
+				URL.courseBuild() + `/video/request/${payload}`,
+				config,
+			);
+		},
+
+		sendRequest(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.post(URL.courseBuild() + '/video', payload, config);
+		},
+		returnResponse(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.put(URL.courseBuild() + '/video', payload, config);
 		},
 	},
 };

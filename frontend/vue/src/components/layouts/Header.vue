@@ -8,7 +8,7 @@
 		>
 			<v-card flat tile style="background-color:transparent" class="mr-6">
 				<router-link to="/">
-					<v-img src="@/assets/logo.png" max-width="60" contain />
+					<v-img src="@/assets/logo.png" max-width="40" contain />
 				</router-link>
 			</v-card>
 			<template v-for="(menu, idx) in menus">
@@ -245,7 +245,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
 	name: 'Header',
@@ -285,10 +285,13 @@ export default {
 						'고런고런의 편집기를 사용하여 영상을 직접 편집할 수 있습니다.',
 				},
 			],
+			notiCount: 0,
+			notifications: [],
 		};
 	},
 
 	methods: {
+		...mapActions(['getNotiCount', 'getNotification']),
 		keywordSearch() {
 			this.$router.push(`/video?search=${this.keyword}`);
 		},
@@ -311,19 +314,27 @@ export default {
 			this.video = false;
 			this.$router.push(`/video/${path}`);
 		},
+		getNoti() {
+			this.getNotification().then(res => {
+				this.notifications = res.data;
+			});
+		},
 	},
 	computed: {
 		...mapGetters(['isLogin', 'user']),
 	},
-	mounted() {},
+	mounted() {
+		this.getNotiCount().then(res => {
+			this.notiCount = res.data.num_of_noti;
+		});
+	},
 };
 </script>
 
 <style scoped>
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
-@import url(//db.onlinewebfonts.com/c/b0a3d74c91dbd95db951a7c8c8ad6089?family=BM+JUA);
 .nav {
-	font-family: 'BM JUA', sans-serif !important;
+	font-family: 'BMJUA', sans-serif !important;
 	font-size: 18px;
 	font-weight: 600;
 	color: #4a4a4a;
@@ -362,5 +373,13 @@ export default {
 	vertical-align: top;
 	text-align: center;
 	font-size: 30px;
+}
+
+@font-face {
+	font-family: 'BMJUA';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
 }
 </style>
