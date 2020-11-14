@@ -50,7 +50,7 @@ public class VideoSpaceController {
     @GetMapping("save/{vid_no}")
     public ResponseEntity checkMyVideo(@PathVariable("vid_no") int vidNo, @ApiIgnore @RequestHeader("X-USERNO") int mbrNo) {
     	int result = videoSpaceService.checkMyVideo(mbrNo, vidNo);
-    	return result > 0 ? new ResponseEntity<Boolean>(true, HttpStatus.OK) : new ResponseEntity<Boolean>(false, HttpStatus.NO_CONTENT); 
+    	return result > 0 ? new ResponseEntity<Boolean>(true, HttpStatus.OK) : new ResponseEntity<Boolean>(false, HttpStatus.OK); 
     }
 }
 //
