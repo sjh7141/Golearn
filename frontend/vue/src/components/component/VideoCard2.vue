@@ -93,7 +93,6 @@ export default {
 </script>
 
 <style scoped>
-@import url(//db.onlinewebfonts.com/c/b0a3d74c91dbd95db951a7c8c8ad6089?family=BM+JUA);
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 .image-wrapper {
 	overflow: hidden;
