@@ -465,12 +465,10 @@ export default {
 		this.user = this.$store.getters.user;
 		this.cos_no = this.$route.query.cos_no;
 		this.getChannelVideos(this.user.no).then(({ data }) => {
-			console.dir(data);
 			this.videos = data;
 			if (data.length > 0) this.videoIndex = 0;
 		});
 		this.getCourseIndexs(this.cos_no).then(({ data }) => {
-			console.dir(data);
 			this.chapters = data;
 			if (data.length > 0) this.chapterIndex = 0;
 		});
