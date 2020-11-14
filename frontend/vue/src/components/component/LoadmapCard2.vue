@@ -16,7 +16,7 @@
 			</v-img>
 
 			<v-card-title
-				style="font-size:0.9rem; font-weight:bold; padding-bottom:0px; padding-top:10px"
+				style="font-size:0.9rem; font-weight:bold; title padding-bottom:0px; padding-top:10px"
 				>{{ loadmap.ldm_title }}</v-card-title
 			>
 
@@ -81,5 +81,12 @@ export default {
 }
 .asdf:hover {
 	box-shadow: 0 0 0 0.2rem #c3aed644 !important;
+}
+.v-card .title {
+	white-space: nowrap;
+	word-break: normal;
+	overflow: hidden;
+	display: block !important;
+	text-overflow: ellipsis;
 }
 </style>

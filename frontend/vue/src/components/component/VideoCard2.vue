@@ -133,4 +133,11 @@ export default {
 	font-size: 0.8rem;
 	opacity: 0.8;
 }
+.v-card .title {
+	white-space: nowrap;
+	word-break: normal;
+	overflow: hidden;
+	display: block !important;
+	text-overflow: ellipsis;
+}
 </style>

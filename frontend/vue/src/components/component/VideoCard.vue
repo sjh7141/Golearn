@@ -30,8 +30,8 @@
 			<v-row no-gutters>
 				<v-col>
 					<v-card-title
-						class="pl-2 pt-3 subtitle-1 font-weight-bold"
-						style="line-height: 1.2rem"
+						class="pl-2 pt-3 subtitle-1 title font-weight-bold"
+						style="line-height: 1.2rem;"
 					>
 						{{ video.vid_title }}
 					</v-card-title>
@@ -141,5 +141,12 @@ export default {
 	width: 100%;
 	height: 100%;
 	top: 0px;
+}
+.v-card .title {
+	white-space: nowrap;
+	word-break: normal;
+	overflow: hidden;
+	display: block !important;
+	text-overflow: ellipsis;
 }
 </style>
