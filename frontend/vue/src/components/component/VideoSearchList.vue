@@ -216,7 +216,6 @@ export default {
 
 <style scoped>
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
-@import url(//db.onlinewebfonts.com/c/b0a3d74c91dbd95db951a7c8c8ad6089?family=BM+JUA);
 .content-component {
 	background-color: #fafafa;
 }
