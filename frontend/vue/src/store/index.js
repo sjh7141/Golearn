@@ -9,6 +9,7 @@ import Jdoodle from './modules/Jdoodle';
 import Video from './modules/Video';
 import Account from './modules/Acoount';
 import File from './modules/File';
+import Notification from './modules/Notification';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -25,5 +26,6 @@ export default new Vuex.Store({
 		Account: Account,
 		File: File,
 		Jdoodle: Jdoodle,
+		Notification: Notification,
 	},
 });

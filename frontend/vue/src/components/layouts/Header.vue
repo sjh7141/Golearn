@@ -143,7 +143,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
 	name: 'Header',
@@ -166,10 +166,13 @@ export default {
 					link: '/course',
 				},
 			],
+			notiCount: 0,
+			notifications: [],
 		};
 	},
 
 	methods: {
+		...mapActions(['getNotiCount', 'getNotification']),
 		keywordSearch() {
 			this.$router.push(`/video?search=${this.keyword}`);
 		},
@@ -188,11 +191,21 @@ export default {
 			this.$store.commit('setToken', null);
 			this.$router.push('/');
 		},
+		getNoti() {
+			console.log('asdfasdf');
+			this.getNotification().then(res => {
+				this.notifications = res.data;
+			});
+		},
 	},
 	computed: {
 		...mapGetters(['isLogin', 'user']),
 	},
-	mounted() {},
+	mounted() {
+		this.getNotiCount().then(res => {
+			this.notiCount = res.data.num_of_noti;
+		});
+	},
 };
 </script>
 

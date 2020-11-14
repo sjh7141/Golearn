@@ -29,7 +29,7 @@
 						@click.prevent
 						@click="$router.push(`/channel/${course.mbr_no}`)"
 					>
-						{{ course.mbr_nickname }}
+						By {{ course.mbr_nickname }}
 					</v-row>
 					<v-row class="hashtag">
 						<span

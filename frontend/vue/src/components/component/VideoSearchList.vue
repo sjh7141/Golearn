@@ -7,7 +7,10 @@
 					show-arrows
 					style="height: 50px;"
 				>
-					<v-slide-item v-for="tag in categories" :key="tag">
+					<v-slide-item
+						v-for="(tag, i) in categories"
+						:key="`tag_${i}`"
+					>
 						<v-btn
 							class="px-1 mx-2"
 							active-class="white--text"
@@ -16,10 +19,10 @@
 							elevation="0"
 							style="text-transform:none; color:#8675a9;font-size:13px"
 							:class="{
-								selected: selectedTags.includes(tag),
+								selected: tags === tag.tag_no,
 							}"
 						>
-							{{ tag }}
+							{{ tag.tag_name }}
 						</v-btn>
 					</v-slide-item>
 				</v-slide-group>
@@ -92,25 +95,12 @@ import InfiniteLoading from 'vue-infinite-loading';
 export default {
 	data: () => ({
 		loading: false,
-		selectedTags: [],
-		tags: [],
+		tags: '',
 		search: '',
 		pageNo: 1,
 		videos: [],
 		channels: [],
-		categories: [
-			'운영체제',
-			'네트워크',
-			'게임개발',
-			'보안',
-			'프로그래밍언어',
-			'알고리즘',
-			'데이터베이스',
-			'블록체인',
-			'자동화',
-			'웹 개발',
-			'서버 개발',
-		],
+		categories: [],
 		swiperOption: {
 			navigation: {
 				nextEl: '.swiper-button-next',
@@ -154,7 +144,7 @@ export default {
 		...mapActions(['getTags', 'getSearchResult']),
 		setTags() {
 			this.getTags().then(res => {
-				this.tags = res.data;
+				this.categories = res.data;
 			});
 		},
 		infiniteHandler($state) {
@@ -179,6 +169,7 @@ export default {
 			const payload = {
 				search: this.search ? this.search : '',
 				page_no: this.pageNo,
+				tag_no: this.tags,
 				type: 'video',
 			};
 			this.getSearchResult(payload).then(res => {
@@ -191,6 +182,7 @@ export default {
 			const payload = {
 				search: this.search ? this.search : '',
 				page_no: 1,
+				tag_no: this.tags,
 				type: 'channel',
 			};
 			this.getSearchResult(payload).then(res => {
@@ -198,18 +190,15 @@ export default {
 			});
 		},
 		goToSearch(value) {
-			if (this.selectedTags.includes(value)) {
-				const index = this.selectedTags.indexOf(value);
-				this.selectedTags.splice(index, 1);
-			} else {
-				this.selectedTags.push(value);
-			}
+			this.tags = value.tag_no;
+			this.searchVideo();
 		},
 	},
 
 	mounted() {
 		this.search = this.$route.query.search;
 		this.searchChannel();
+		this.setTags();
 	},
 
 	watch: {
@@ -228,7 +217,7 @@ export default {
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
 @import url(//db.onlinewebfonts.com/c/b0a3d74c91dbd95db951a7c8c8ad6089?family=BM+JUA);
 .content-component {
-	background-color: #fff;
+	background-color: #fafafa;
 }
 
 .asd {
