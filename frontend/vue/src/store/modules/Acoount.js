@@ -24,7 +24,7 @@ export default {
 			};
 			return axios.get(URL.accountBuild() + `/like/${id}`, config);
 		},
-		setSubscribed({ rootGetters }, id) {
+		like({ rootGetters }, id) {
 			const config = {
 				headers: {
 					Authorization: rootGetters.token,
@@ -32,16 +32,15 @@ export default {
 			};
 			return axios.post(
 				URL.accountBuild() + `/like`,
-				{
-					mbr_no: id,
-				},
+				{ mbr_no: id },
 				config,
 			);
 		},
-		removeSubscribed({ rootGetters }, id) {
+		unlike({ rootGetters }, id) {
 			const config = {
 				headers: {
 					Authorization: rootGetters.token,
+					'Content-Type': 'application/json',
 				},
 			};
 			return axios.delete(URL.accountBuild() + `/like/${id}`, config);

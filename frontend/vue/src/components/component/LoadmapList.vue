@@ -1,6 +1,6 @@
 <template>
 	<div ref="app">
-		<v-card class="transparent" flat v-if="loadmaps.data.length !== 0">
+		<v-card class="transparent" flat v-if="loadmaps.length !== 0">
 			<v-card-title>로드맵</v-card-title>
 			<v-row>
 				<v-col
@@ -8,7 +8,7 @@
 					sm="6"
 					md="4"
 					lg="3"
-					v-for="(loadmap, i) in loading ? 10 : loadmaps.data"
+					v-for="(loadmap, i) in loading ? 10 : loadmaps"
 					:key="i"
 					class="mx-xs-auto"
 				>

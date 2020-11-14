@@ -2,17 +2,18 @@
 	<div ref="app">
 		<v-card
 			tile
-			elevation="0"
-			class="mx-auto  clickable"
+			class="mx-auto  clickable asdf"
 			width="300"
-			height="350"
+			height="330"
+			style="border: 1px solid #e5e5e5;"
+			:to="`/course/${course.cos_no}`"
 		>
-			<v-img width="300" height="200" :src="course.cos_thumbnail">
+			<v-img width="300" height="168.75" :src="course.cos_thumbnail">
 				<v-progress-linear
 					style="position:absolute;bottom:0px;width:100%"
 					value="30"
 					buffer-value="100"
-					color="red"
+					color="#c3aed6"
 				></v-progress-linear>
 			</v-img>
 
@@ -25,14 +26,15 @@
 				<v-container>
 					<v-row
 						class="content name"
+						@click.prevent
 						@click="$router.push(`/channel/${course.mbr_no}`)"
 					>
-						{{ course.mbr_nickname }}
+						By {{ course.mbr_nickname }}
 					</v-row>
-					<v-row>
+					<v-row class="hashtag">
 						<span
 							style="font-size:0.8rem;"
-							class="mr-1"
+							class="mr-1 "
 							v-for="(i, index) in course.tags"
 							:key="`${course.cos_no}_tag_${index}`"
 							>#{{ i.tag_name }}</span
@@ -41,13 +43,20 @@
 					<v-row class="others">
 						<span class="mr-2">
 							<v-icon color="#d4d4d4" small>mdi-account</v-icon>
-							<span>123</span>
+							<span>{{
+								course.cos_title.length * 21 +
+									course.tags.length +
+									course.cos_thumbnail.length
+							}}</span>
 						</span>
 						<span class="mr-2">
 							<v-icon class="mr-1" color="#d4d4d4" small
 								>mdi-heart</v-icon
 							>
-							<span>123</span>
+							<span>{{
+								course.cos_title.length * 13 +
+									course.tags.length
+							}}</span>
 						</span>
 						<v-spacer></v-spacer>
 						<span class="mr-1">
@@ -104,6 +113,13 @@ export default {
 	-webkit-line-clamp: 1;
 	-webkit-box-orient: vertical;
 }
+.hashtag {
+	word-break: break-all;
+	overflow: hidden;
+	-webkit-line-clamp: 1;
+	text-overflow: ellipsis;
+	height: 30px;
+}
 .name:hover {
 	color: purple;
 	cursor: pointer;
@@ -113,5 +129,11 @@ export default {
 }
 .clickable {
 	cursor: pointer;
+}
+.asdf {
+	box-shadow: none !important;
+}
+.asdf:hover {
+	box-shadow: 0 0 0 0.2rem #c3aed644 !important;
 }
 </style>

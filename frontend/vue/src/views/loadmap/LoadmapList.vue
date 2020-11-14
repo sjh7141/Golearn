@@ -1,13 +1,13 @@
 <template>
 	<div ref="app">
-		<course-list> </course-list>
+		<loadmap-list> </loadmap-list>
 	</div>
 </template>
 
 <script>
-import CourseList from '@/components/component/CourseSearchList';
+import LoadmapList from '@/components/component/LoadmapSearchList';
 export default {
-	components: { CourseList },
+	components: { LoadmapList },
 	data() {
 		return {};
 	},

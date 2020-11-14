@@ -227,8 +227,8 @@ export default {
 			'getLikeVideo',
 			'likeVideo',
 			'cancelVideo',
-			'setSubscribed',
-			'removeSubscribed',
+			'like',
+			'unlike',
 			'setSaveVideo',
 			'removeSaveVideo',
 			'getSaveVideo',
@@ -249,11 +249,11 @@ export default {
 		toggleSubscribe() {
 			if (this.isMine) return;
 			if (this.subscribed) {
-				this.removeSubscribed(this.mbr_no).then(() => {
+				this.unlike(this.mbr_no).then(() => {
 					this.subscribed = !this.subscribed;
 				});
 			} else {
-				this.setSubscribed(this.mbr_no).then(() => {
+				this.like(this.mbr_no).then(() => {
 					this.subscribed = !this.subscribed;
 				});
 			}

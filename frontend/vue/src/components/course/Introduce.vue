@@ -96,8 +96,8 @@ export default {
 	methods: {
 		...mapActions([
 			'isLike',
-			'setSubscribed',
-			'removeSubscribed',
+			'like',
+			'unlike',
 			'setLikeCourse',
 			'removeLikeCourse',
 			'getLikeCourse',
@@ -106,11 +106,11 @@ export default {
 			if (this.isMine) return;
 
 			if (this.subscribed) {
-				this.removeSubscribed(this.info.mbr_no).then(() => {
+				this.unlike(this.info.mbr_no).then(() => {
 					this.subscribed = false;
 				});
 			} else {
-				this.setSubscribed(this.info.mbr_no).then(() => {
+				this.like(this.info.mbr_no).then(() => {
 					this.subscribed = true;
 				});
 			}

@@ -1,7 +1,26 @@
 <template>
 	<div id="csl" ref="app">
+		<v-img height="200" src="@/assets/roadmap_banner.jpg">
+			<v-row class="center" style="margin-left:0px">
+				<div class="text-center" style="width:100%;">
+					<v-row>
+						<v-col cols="10">
+							훌륭한 강의들로 구성된
+							<span class="bold">로드맵</span>을 따라
+						</v-col>
+					</v-row>
+					<v-row>
+						<v-spacer></v-spacer>
+						<v-col cols="9">
+							한걸음 <span class="bold">더</span> 성장할 수
+							있습니다.
+						</v-col>
+					</v-row>
+				</div>
+			</v-row>
+		</v-img>
 		<v-container class="asd content-component">
-			<v-card class="transparent" flat v-if="courses.length !== 0">
+			<v-card class="transparent" flat v-if="loadmaps.length !== 0">
 				<v-row>
 					<v-spacer></v-spacer>
 					<v-col cols="4" class="text-right">
@@ -11,39 +30,13 @@
 							flat
 							dense
 							outlined
-							placeholder="코스 검색"
-							@keydown.enter="searchCourse"
-							@click:append="searchCourse"
 							append-icon="mdi-magnify"
+							@click:append="searchRoadmap"
+							@keydown.enter="searchRoadmap"
+							placeholder="로드맵 검색"
 						>
 						</v-text-field>
 					</v-col>
-				</v-row>
-				<v-row>
-					<v-slide-group
-						class="my-5 px-5"
-						show-arrows
-						style="height: 50px;"
-					>
-						<v-slide-item
-							v-for="(tag, i) in categories"
-							:key="`tag_${i}`"
-						>
-							<v-btn
-								class="px-1 mx-2"
-								active-class="white--text"
-								text
-								@click="goToSearch(tag)"
-								elevation="0"
-								style="text-transform:none; color:#8675a9;font-size:13px"
-								:class="{
-									selected: tags === tag.tag_no,
-								}"
-							>
-								{{ tag.tag_name }}
-							</v-btn>
-						</v-slide-item>
-					</v-slide-group>
 				</v-row>
 				<v-row>
 					<v-col>
@@ -52,16 +45,16 @@
 								cols="12"
 								sm="6"
 								md="4"
-								lg="3"
-								v-for="(course, i) in courses"
+								lg="4"
+								v-for="(loadmap, i) in loadmaps"
 								:key="i"
 								class="mx-xs-auto pt-0 pb-6"
 							>
 								<v-skeleton-loader type="card-avatar">
-									<course-card
-										:card="{ maxWidth: 250 }"
-										:course="course"
-									></course-card>
+									<loadmap-card
+										:card="{ maxWidth: 400 }"
+										:loadmap="loadmap"
+									></loadmap-card>
 								</v-skeleton-loader>
 							</v-col>
 						</v-row>
@@ -75,40 +68,38 @@
 
 <script>
 import { mapActions } from 'vuex';
-import CourseCard from './CourseCard2';
+import LoadmapCard from './LoadmapCard2';
 import InfiniteLoading from 'vue-infinite-loading';
 export default {
 	data: () => ({
 		loading: false,
 		selectedTags: [],
-		tags: '',
+		tags: [],
 		search: '',
 		pageNo: 1,
-		courses: [],
-		categories: [],
+		loadmaps: [],
 	}),
 	computed: {},
 	components: {
 		InfiniteLoading,
-		CourseCard,
+		LoadmapCard,
 	},
 	methods: {
 		...mapActions(['getTags', 'getSearchResult']),
 		setTags() {
 			this.getTags().then(res => {
-				this.categories = res.data;
+				this.tags = res.data;
 			});
 		},
 		infiniteHandler($state) {
 			const payload = {
 				search: this.search ? this.search : '',
 				page_no: this.pageNo,
-				type: 'course',
-				tag_no: this.tags,
+				type: 'loadmap',
 			};
 			this.getSearchResult(payload).then(res => {
-				if (res.data.course.length > 0) {
-					this.courses.push(...res.data.course);
+				if (res.data.loadmap.length > 0) {
+					this.loadmaps.push(...res.data.loadmap);
 					$state.loaded();
 					this.pageNo += 1;
 				} else {
@@ -116,23 +107,18 @@ export default {
 				}
 			});
 		},
-		searchCourse() {
+		searchRoadmap() {
 			this.pageNo = 1;
-			this.courses = [];
+			this.loadmaps = [];
 			const payload = {
 				search: this.search ? this.search : '',
 				page_no: this.pageNo,
-				type: 'course',
-				tag_no: this.tags,
+				type: 'loadmap',
 			};
 			this.getSearchResult(payload).then(res => {
-				this.courses.push(...res.data.course);
+				this.loadmaps.push(...res.data.loadmap);
 				this.pageNo += 1;
 			});
-		},
-		goToSearch(value) {
-			this.tags = value.tag_no;
-			this.searchCourse();
 		},
 	},
 	created() {
@@ -147,6 +133,8 @@ export default {
 </script>
 
 <style scoped>
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
+
 .content-component {
 	background-color: #fafafa;
 }
@@ -165,7 +153,27 @@ export default {
 	width: 10.7%;
 }
 .selected {
-	background-color: #c3aed633;
+	background-color: rgba(31, 179, 215, 0.12);
+}
+.center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-family: 'Lato', 'Spoqa Han Sans';
+	height: 100%;
+	font-size: 2rem;
+	font-weight: 500;
+	color: #f9f9f9;
+	width: 100%;
+	/* background-color: #f9f9f977; */
+	background: linear-gradient(
+		to right,
+		rgba(20, 20, 20, 0) 10%,
+		rgba(20, 20, 20, 0.25) 25%,
+		rgba(20, 20, 20, 0.5) 50%,
+		rgba(20, 20, 20, 0.75) 75%,
+		rgba(20, 20, 20, 1) 100%
+	);
 }
 </style>
 

@@ -1,6 +1,6 @@
 <template>
 	<div ref="app">
-		<v-card class="transparent" flat v-if="loadmaps.data.length !== 0">
+		<v-card class="transparent" flat v-if="loadmaps.length !== 0">
 			<v-divider></v-divider>
 
 			<v-card-title>로드맵</v-card-title>
@@ -36,7 +36,7 @@
 					slot="button-next"
 				></div>
 				<swiper-slide
-					v-for="(loadmap, i) in loading ? 5 : loadmaps.data"
+					v-for="(loadmap, i) in loading ? 5 : loadmaps"
 					:key="i"
 				>
 					<v-skeleton-loader
