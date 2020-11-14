@@ -179,11 +179,19 @@ export default {
 			});
 		},
 		goToSearch(value) {
-			this.tags = value.tag_no;
-			this.$router.replace({
-				path: '/video',
-				query: { tag: value.tag_no, search: this.search },
-			});
+			if (this.tags == value.tag_no) {
+				this.tags = '';
+				this.$router.replace({
+					path: '/video',
+					query: { tag: '', search: this.search },
+				});
+			} else {
+				this.tags = value.tag_no;
+				this.$router.replace({
+					path: '/video',
+					query: { tag: value.tag_no, search: this.search },
+				});
+			}
 		},
 	},
 
