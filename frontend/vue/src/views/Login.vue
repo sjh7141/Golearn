@@ -2,8 +2,9 @@
 	<v-container fluid class="login-wrapper">
 		<v-row>
 			<v-img
-				src="@/assets/logo2.png"
+				src="@/assets/logo.png"
 				max-width="260"
+				max-height="120"
 				contain
 				class="ml-15 mt-10"
 				style="cursor: pointer;"
@@ -15,7 +16,7 @@
 				<login-form
 					v-if="!isSignup"
 					@goToSignup="goToSignup"
-					style="margin-top:100px;"
+					style="margin-top:50px;"
 				/>
 				<signup-form v-else @goToSignup="goToSignup" />
 			</v-col>
@@ -36,7 +37,7 @@
 						</v-container>
 					</v-card-title>
 					<v-card-text style="text-align:center">
-						Run & Go 에서 다양한 활동을 즐겨보세요!
+						고런고런 에서 다양한 활동을 즐겨보세요!
 					</v-card-text>
 					<v-card-actions style="text-align:center">
 						<v-spacer></v-spacer>
