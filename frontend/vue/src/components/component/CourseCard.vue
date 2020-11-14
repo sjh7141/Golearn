@@ -24,13 +24,14 @@
 							>mdi-play</v-icon
 						> -->
 						<div class="mx-auto content-wrapper">
-							<span class="mx-auto content">
-								{{ course.cos_content }}
+							<span
+								class="mx-auto content"
+								v-html="course.cos_content"
+							>
 							</span>
 						</div>
-					</div>
-				</v-fade-transition></v-img
-			>
+					</div> </v-fade-transition
+			></v-img>
 			<v-row no-gutters>
 				<v-col>
 					<v-card-title

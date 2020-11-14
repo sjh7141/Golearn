@@ -263,7 +263,6 @@ export default {
 		getVersionList(id) {
 			this.getVersions(id).then(({ data }) => {
 				this.versions = data;
-				console.dir(data);
 			});
 		},
 	},

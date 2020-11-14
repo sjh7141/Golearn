@@ -114,7 +114,7 @@
 					0501-070-0000 고객상담센터 020-737-2020
 				</v-row>
 				<v-row>
-					Copyright © 2020 Run&Go Inc. All rights reserved.
+					Copyright © 2020 고런고런 Inc. All rights reserved.
 				</v-row>
 			</v-col>
 			<v-col cols="3" class="d-flex justify-center">
@@ -143,7 +143,7 @@
 					</li>
 					<li class="icon">
 						<a
-							href="https://play.google.com/store/search?q=%EA%B3%A0%EB%9F%B0%EA%B3%A0%EB%9F%B0"
+							href="https://go-learn.s3.ap-northeast-2.amazonaws.com/app-release.apk"
 						>
 							<v-icon class="mdi-36px">mdi-android</v-icon>
 						</a>

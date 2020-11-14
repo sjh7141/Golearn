@@ -19,7 +19,7 @@
 							elevation="0"
 							style="text-transform:none; color:#8675a9;font-size:13px"
 							:class="{
-								selected: tags === tag.tag_no,
+								selected: tags == tag.tag_no,
 							}"
 						>
 							{{ tag.tag_name }}
@@ -152,6 +152,7 @@ export default {
 				search: this.search ? this.search : '',
 				page_no: this.pageNo,
 				type: 'video',
+				tag_no: this.tags,
 			};
 			this.getSearchResult(payload).then(res => {
 				if (res.data.video.length > 0) {
@@ -163,20 +164,7 @@ export default {
 				}
 			});
 		},
-		searchVideo() {
-			this.pageNo = 1;
-			this.videos = [];
-			const payload = {
-				search: this.search ? this.search : '',
-				page_no: this.pageNo,
-				tag_no: this.tags,
-				type: 'video',
-			};
-			this.getSearchResult(payload).then(res => {
-				this.videos.push(...res.data.video);
-				this.pageNo += 1;
-			});
-		},
+
 		searchChannel() {
 			this.channels = [];
 			const payload = {
@@ -185,26 +173,47 @@ export default {
 				tag_no: this.tags,
 				type: 'channel',
 			};
+
 			this.getSearchResult(payload).then(res => {
 				this.channels = res.data.channel;
 			});
 		},
 		goToSearch(value) {
-			this.tags = value.tag_no;
-			this.searchVideo();
+			if (this.tags == value.tag_no) {
+				this.tags = '';
+				this.$router.replace({
+					path: '/video',
+					query: { tag: '', search: this.search },
+				});
+			} else {
+				this.tags = value.tag_no;
+				this.$router.replace({
+					path: '/video',
+					query: { tag: value.tag_no, search: this.search },
+				});
+			}
 		},
 	},
 
 	mounted() {
 		this.search = this.$route.query.search;
+		this.tags = this.$route.query.tag;
 		this.searchChannel();
 		this.setTags();
 	},
 
 	watch: {
-		$route() {
+		'$route.query.search'() {
 			this.search = this.$route.query.search;
+			this.tags = this.$route.query.tag;
 			this.searchChannel();
+			this.videos = [];
+			this.pageNo = 1;
+			this.$refs.InfiniteLoading.stateChanger.reset();
+		},
+		'$route.query.tag'() {
+			this.search = this.$route.query.search;
+			this.tags = this.$route.query.tag;
 			this.videos = [];
 			this.pageNo = 1;
 			this.$refs.InfiniteLoading.stateChanger.reset();
@@ -215,7 +224,6 @@ export default {
 
 <style scoped>
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
-@import url(//db.onlinewebfonts.com/c/b0a3d74c91dbd95db951a7c8c8ad6089?family=BM+JUA);
 .content-component {
 	background-color: #fafafa;
 }

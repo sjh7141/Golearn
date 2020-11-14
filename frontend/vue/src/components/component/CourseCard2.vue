@@ -9,12 +9,12 @@
 			:to="`/course/${course.cos_no}`"
 		>
 			<v-img width="300" height="168.75" :src="course.cos_thumbnail">
-				<v-progress-linear
+				<!-- <v-progress-linear
 					style="position:absolute;bottom:0px;width:100%"
 					value="30"
 					buffer-value="100"
 					color="#c3aed6"
-				></v-progress-linear>
+				></v-progress-linear> -->
 			</v-img>
 
 			<v-card-title

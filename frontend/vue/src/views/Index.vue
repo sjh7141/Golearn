@@ -6,24 +6,34 @@
 				<swiper-slide
 					class="slide pb-5 pt-9"
 					v-for="(item, index) in banner"
-					:key="index"
+					:key="`banner_${index}`"
 					:style="{
-						'background-image': 'url(' + item.thumbnail + ')',
-						'background-size': item.zoom + '%',
+						'background-image': 'url(' + item.cos_thumbnail + ')',
+						'background-size': '3000%',
 					}"
 				>
-					<v-row class="info-upper" style="width:85%;">
+					<v-row
+						@click="$router.push(`/course/${item.cos_no}`)"
+						class="info-upper"
+						style="width:85%;"
+					>
 						<v-col cols="6">
 							<img
 								class="swiper-img"
 								height="400px"
 								width="100%"
-								:src="item.thumbnail"
+								:src="item.cos_thumbnail"
 							/>
 						</v-col>
 						<v-col cols="6" class="pl-10">
-							<div class="title py-5" v-html="item.title"></div>
-							<div class="text" v-html="item.text"></div>
+							<div
+								class="title py-5"
+								v-html="item.cos_title"
+							></div>
+							<div
+								class="text content"
+								v-html="item.cos_content"
+							></div>
 							<div>
 								<v-row>
 									<div class="px-5">
@@ -65,39 +75,68 @@
 						show-arrows
 						style="height: 50px;"
 					>
-						<v-slide-item v-for="tag in search" :key="tag">
+						<v-slide-item
+							v-for="(tag, index) in tags"
+							:key="`tag_${index}`"
+						>
 							<v-btn
-								class="mx-2"
+								class="mx-2 tag"
 								active-class="blue white--text"
 								color="white"
 								large
 								rounded
-								@click="goToSearch(tag)"
+								@click="goToSearch(tag.tag_no)"
 								style="text-transform:none;"
 							>
 								<v-icon color="#c3aed6" left>
 									mdi-magnify
 								</v-icon>
-								{{ tag }}
+								{{ tag.tag_name }}
 							</v-btn>
 						</v-slide-item>
 					</v-slide-group>
 					<v-divider></v-divider>
-					<h2 class="mt-15">
-						이런 강의 어떠세요?
-					</h2>
+					<h2 class="mt-15">❓ 이런 강의 어떠세요</h2>
+
 					<v-row>
-						<vcards :items="cards"> </vcards>
+						<v-col
+							cols="12"
+							sm="6"
+							md="6"
+							lg="3"
+							v-for="(course, i) in courses.slice(0, 4)"
+							:key="`course_${i}`"
+						>
+							<course-card :course="course"> </course-card>
+						</v-col>
 					</v-row>
 					<v-divider></v-divider>
 					<h2 class="mt-15">🚨 금주의 인기강의</h2>
 					<v-row>
-						<vcards :items="hit"></vcards>
+						<v-col
+							cols="12"
+							sm="6"
+							md="6"
+							lg="3"
+							v-for="(course, i) in courses.slice(4, 8)"
+							:key="`course_${i}`"
+						>
+							<course-card :course="course"> </course-card>
+						</v-col>
 					</v-row>
 					<v-divider></v-divider>
 					<h2 class="mt-15">🔥 수강생 급상승 강의</h2>
 					<v-row>
-						<vcards :items="cards"></vcards>
+						<v-col
+							cols="12"
+							sm="6"
+							md="6"
+							lg="3"
+							v-for="(course, i) in courses.slice(8, 12)"
+							:key="`course_${i}`"
+						>
+							<course-card :course="course"> </course-card>
+						</v-col>
 					</v-row>
 					<v-row class="py-15">
 						<v-img
@@ -121,7 +160,16 @@
 					<v-divider></v-divider>
 					<h2 class="mt-15">신규 강의</h2>
 					<v-row>
-						<vcards :items="hit"></vcards>
+						<v-col
+							cols="12"
+							sm="6"
+							md="6"
+							lg="3"
+							v-for="(course, i) in courses.slice(3, 7)"
+							:key="`course_${i}`"
+						>
+							<course-card :course="course"> </course-card>
+						</v-col>
 					</v-row>
 				</v-container>
 			</div>
@@ -130,7 +178,7 @@
 				<v-row class="py-15">
 					<v-col cols="12">
 						<div class="pb-10 pl-16 bold" style="font-size:45px;">
-							Run & Go
+							고런고런
 						</div>
 						<v-row class="pb-15">
 							<v-col cols="7">
@@ -153,7 +201,7 @@
 								<div
 									style=" font-weight:200; padding-right:150px;"
 								>
-									Run&Go는 누구에게나 성장의 기회를 균등하게
+									고런고런은 누구에게나 성장의 기회를 균등하게
 									부여하고자 하는 온라인 학습,
 									<span class="bold">
 										지식 공유의 참여형 강의 플랫폼
@@ -230,14 +278,15 @@
 </template>
 
 <script>
-import vcards from '@/components/component/cards';
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
+import CourseCard from '@/components/component/CourseCard2';
 import 'swiper/css/swiper.css';
+import { mapActions } from 'vuex';
 export default {
 	components: {
-		vcards,
 		Swiper,
 		SwiperSlide,
+		CourseCard,
 	},
 	data() {
 		return {
@@ -245,6 +294,7 @@ export default {
 				spaceBetween: 30,
 				centeredSlides: true,
 				loop: true,
+				courses: [],
 				autoplay: {
 					delay: 2500,
 					disableOnInteraction: false,
@@ -263,210 +313,17 @@ export default {
 				lazy: true,
 			},
 			cycle: true,
-			items: [
-				{
-					title: 'go learn, go run',
-					src:
-						'https://www.udacity.com/www-proxy/contentful/assets/2y9b3o528xhq/4QTUWa3i4VL7CMc6MjXJe0/556a951cc5ff56725c4f82d0654fe9fc/HomepageBanner_tablet.jpg',
-				},
-				{
-					title: 'go learn, go run222',
-					src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
-				},
-				{
-					title: 'go learn, go run333',
-					src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
-				},
-				{
-					title: 'go learn, go run444',
-					src:
-						'https://www.udacity.com/www-proxy/contentful/assets/2y9b3o528xhq/4QTUWa3i4VL7CMc6MjXJe0/556a951cc5ff56725c4f82d0654fe9fc/HomepageBanner_tablet.jpg',
-				},
-			],
-			cards: [
-				{
-					title: 'C++ 기초 강의',
-					viewer: 50,
-					like: 1000,
-					thumbnail:
-						'https://cdn.inflearn.com/wp-content/uploads/ktw_algorithm3.jpg',
-					tags: ['C', 'C++'],
-					nickname: '고런',
-					id: 'golearn',
-					profile:
-						'https://www.creativefabrica.com/wp-content/uploads/2019/02/Monogram-GR-Logo-Design-by-Greenlines-Studios.jpg',
-				},
-				{
-					title: 'Python으로 여자친구만들기',
-					viewer: 50,
-					like: 1000,
-					thumbnail:
-						'https://cdn.inflearn.com/wp-content/uploads/python-2.jpg',
-					tags: ['Python', '연애'],
-					nickname: '귀도 반 로썸',
-					id: 'JSmaster',
-					profile:
-						'https://mblogthumb-phinf.pstatic.net/MjAxODEwMTRfMjMw/MDAxNTM5NTI0MDA4NTU1.lqwYXl0waT8to2HT3ZvKZf1MpOZJvtkDj64qC2cfI6sg.xbisRBnM7Q6Kdz-lwNzYiz_lQGPpnPrELpr82NaMIngg.JPEG.rhksdlr134/GuidoAvatar_400x400.jpg?type=w800',
-				},
-				{
-					title: 'C를 마스터해보자',
-					viewer: 50,
-					like: 1000,
-					thumbnail:
-						'https://cdn.inflearn.com/wp-content/uploads/c002.jpg',
-					tags: ['C'],
-					nickname: '토발즈',
-					id: 'windows',
-					profile:
-						'https://upload.wikimedia.org/wikipedia/commons/0/01/LinuxCon_Europe_Linus_Torvalds_03_%28cropped%29.jpg',
-				},
-				{
-					title: '알고리즘 심화 강의',
-					viewer: 50,
-					like: 1000,
-					thumbnail:
-						'https://cdn.inflearn.com/public/course-325806-cover/0e0d07a7-840c-4d01-907c-626e9d6b97d5',
-					tags: ['알고리즘', '수학', 'Python'],
-					nickname: '안성민',
-					id: 'algorithmBoy',
-					profile:
-						'https://post-phinf.pstatic.net/MjAxOTA5MDVfMTU4/MDAxNTY3Njc2NDkyNTUz.yxnxow6Ff5DXIRAHGcOgNUvkV2J_Nh6WttPIi0aEk_kg.rORnLOgHe8wp3_D_UsEGapDaUtlv3JrZvFA6CalCJPEg.JPEG/%EB%AF%B8%EC%B3%A4%EC%8A%B5%EB%8B%88%EA%B9%8C_%ED%9C%B4%EB%A8%BC.jpg?type=w1200',
-				},
-			],
-			hit: [
-				{
-					title: 'Python으로 여자친구만들기',
-					viewer: 50,
-					like: 1000,
-					thumbnail:
-						'https://cdn.inflearn.com/wp-content/uploads/python-2.jpg',
-					tags: ['Python', '연애'],
-					nickname: '귀도 반 로썸',
-					id: 'JSmaster',
-					profile:
-						'https://mblogthumb-phinf.pstatic.net/MjAxODEwMTRfMjMw/MDAxNTM5NTI0MDA4NTU1.lqwYXl0waT8to2HT3ZvKZf1MpOZJvtkDj64qC2cfI6sg.xbisRBnM7Q6Kdz-lwNzYiz_lQGPpnPrELpr82NaMIngg.JPEG.rhksdlr134/GuidoAvatar_400x400.jpg?type=w800',
-				},
-				{
-					title: 'Python으로 여자친구만들기',
-					viewer: 50,
-					like: 1000,
-					thumbnail:
-						'https://cdn.inflearn.com/wp-content/uploads/python-2.jpg',
-					tags: ['Python', '연애'],
-					nickname: '귀도 반 로썸',
-					id: 'JSmaster',
-					profile:
-						'https://mblogthumb-phinf.pstatic.net/MjAxODEwMTRfMjMw/MDAxNTM5NTI0MDA4NTU1.lqwYXl0waT8to2HT3ZvKZf1MpOZJvtkDj64qC2cfI6sg.xbisRBnM7Q6Kdz-lwNzYiz_lQGPpnPrELpr82NaMIngg.JPEG.rhksdlr134/GuidoAvatar_400x400.jpg?type=w800',
-				},
-				{
-					title: 'Python으로 여자친구만들기',
-					viewer: 50,
-					like: 1000,
-					thumbnail:
-						'https://cdn.inflearn.com/wp-content/uploads/python-2.jpg',
-					tags: ['Python', '연애'],
-					nickname: '귀도 반 로썸',
-					id: 'JSmaster',
-					profile:
-						'https://mblogthumb-phinf.pstatic.net/MjAxODEwMTRfMjMw/MDAxNTM5NTI0MDA4NTU1.lqwYXl0waT8to2HT3ZvKZf1MpOZJvtkDj64qC2cfI6sg.xbisRBnM7Q6Kdz-lwNzYiz_lQGPpnPrELpr82NaMIngg.JPEG.rhksdlr134/GuidoAvatar_400x400.jpg?type=w800',
-				},
-				{
-					title: 'Python으로 여자친구만들기',
-					viewer: 50,
-					like: 1000,
-					thumbnail:
-						'https://cdn.inflearn.com/wp-content/uploads/python-2.jpg',
-					tags: ['Python', '연애'],
-					nickname: '귀도 반 로썸',
-					id: 'JSmaster',
-					profile:
-						'https://mblogthumb-phinf.pstatic.net/MjAxODEwMTRfMjMw/MDAxNTM5NTI0MDA4NTU1.lqwYXl0waT8to2HT3ZvKZf1MpOZJvtkDj64qC2cfI6sg.xbisRBnM7Q6Kdz-lwNzYiz_lQGPpnPrELpr82NaMIngg.JPEG.rhksdlr134/GuidoAvatar_400x400.jpg?type=w800',
-				},
-			],
-			search: [
-				'C',
-				'C++',
-				'JAVA',
-				'Python',
-				'Javascript',
-				'CSS',
-				'HTML',
-				'Spring',
-				'Django',
-				'Algorithm',
-				'MySQL',
-				'NoSQL',
-				'C1',
-				'C++1',
-				'JAVA1',
-				'Python1',
-				'Javascript1',
-				'CSS1',
-				'HTML1',
-				'Spring1',
-				'Django1',
-				'Algorithm1',
-				'MySQL1',
-				'NoSQL1',
-			],
-			banner: [
-				{
-					thumbnail:
-						'https://www.educative.io/api/page/5393602882568192/image/download/6038586442907648',
-					title: `트리플 교수님의<br />폭풍 C++강의`,
-					text: `<p>당신이 지금까지 찾을 수 없었던 Javascript강의, <br />
-							15만명의 선택으로 만들어진 최대규모 강의
-							프로젝트, <br />
-							20년도 Run&Go 최우수 강의 선정, <br />
-							지금 바로 여기서 확인하세요!
-							</p>`,
-					zoom: 3000,
-				},
-				{
-					thumbnail:
-						'https://cdn.inflearn.com/public/course-324235-cover/12a6aceb-1c38-4ce1-b50c-ab9d32e43edd',
-					title: `트리플 교수님의<br />열혈 Javascript강의`,
-					text: `<p>당신이 지금까지 찾을 수 없었던 Javascript강의, <br />
-							15만명의 선택으로 만들어진 최대규모 강의
-							프로젝트, <br />
-							20년도 Run&Go 최우수 강의 선정, <br />
-							지금 바로 여기서 확인하세요!
-							</p>`,
-					zoom: 2000,
-				},
-				{
-					thumbnail:
-						'https://cdn.inflearn.com/wp-content/uploads/c002.jpg',
-					title: `트리플 교수님의<br />열혈 Javascript강의`,
-					text: `<p>당신이 지금까지 찾을 수 없었던 Javascript강의, <br />
-							15만명의 선택으로 만들어진 최대규모 강의
-							프로젝트, <br />
-							20년도 Run&Go 최우수 강의 선정, <br />
-							지금 바로 여기서 확인하세요!
-							</p>`,
-					zoom: 2000,
-				},
-				{
-					thumbnail:
-						'https://cdn.class101.net/images/d8641423-a054-4622-af7b-b0582742fb28/1440xauto.webp',
-					title: `트리플 교수님의<br />열혈 Javascript강의`,
-					text: `<p>당신이 지금까지 찾을 수 없었던 Javascript강의, <br />
-							15만명의 선택으로 만들어진 최대규모 강의
-							프로젝트, <br />
-							20년도 Run&Go 최우수 강의 선정, <br />
-							지금 바로 여기서 확인하세요!
-							</p>`,
-					zoom: 3000,
-				},
-			],
+			tags: [],
+			banner: [],
+			courses: [],
 		};
 	},
 	methods: {
-		// goToSearch(query) {
-		// 	//검색페이지 이동
-		// 	console.log(query);
-		// },
-		goToSearch() {},
+		...mapActions(['getSearchResult', 'getTags']),
+
+		goToSearch(value) {
+			this.$router.push(`/video?tag=${value}`);
+		},
 		changeReview(num) {
 			const len = this.review.length;
 			this.reviewIdx = (this.reviewIdx + num + len) % len;
@@ -481,7 +338,20 @@ export default {
 			}
 		},
 	},
-	mounted() {},
+	created() {
+		const payload = {
+			search: '',
+			page_no: 1,
+			type: 'course',
+		};
+		this.getSearchResult(payload).then(res => {
+			this.banner = res.data.course;
+			this.courses = res.data.course;
+		});
+		this.getTags().then(res => {
+			this.tags = res.data;
+		});
+	},
 };
 </script>
 
@@ -533,7 +403,9 @@ export default {
 
 	line-height: 1.32;
 }
-
+.slide:hover {
+	cursor: pointer;
+}
 .slide:after {
 	content: '';
 	position: absolute;
@@ -573,5 +445,28 @@ export default {
 #description {
 	background-color: #f5f7f8;
 	font-family: 'Lato', 'Spoqa Han Sans';
+}
+.content {
+	color: black;
+	font-weight: bold;
+	font-size: 0.85rem;
+	word-break: break-all;
+	display: -webkit-box;
+	margin-bottom: 0.5rem;
+	line-height: 1.2em;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	-webkit-line-clamp: 7;
+	-webkit-box-orient: vertical;
+}
+.tag {
+	font-family: 'BMJUA';
+}
+@font-face {
+	font-family: 'BMJUA';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
 }
 </style>
