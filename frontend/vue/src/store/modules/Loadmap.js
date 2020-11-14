@@ -12,7 +12,7 @@ export default {
 	state: {
 		loadmap: null,
 		ldmBanner: null,
-		loadmapCourse: null,
+		loadmapCourse: [],
 	},
 	getters: {
 		loadmap(state) {
@@ -46,6 +46,14 @@ export default {
 		},
 	},
 	actions: {
+		makeLoadmap(context) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.post(URL.loadmapBuild() + '/', {}, config);
+		},
 		getLoadmap(context, payload) {
 			return axios.get(URL.loadmapBuild() + `/${payload}`);
 		},

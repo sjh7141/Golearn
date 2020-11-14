@@ -36,6 +36,7 @@
 							placeholder="로드맵 검색"
 						>
 						</v-text-field>
+						<v-btn @click="make">로드맵등록</v-btn>
 					</v-col>
 				</v-row>
 				<v-row>
@@ -85,9 +86,9 @@ export default {
 		LoadmapCard,
 	},
 	methods: {
-		...mapActions(['getTags', 'getSearchResult']),
+		...mapActions(['getTagList', 'getSearchResult', 'makeLoadmap']),
 		setTags() {
-			this.getTags().then(res => {
+			this.getTagList().then(res => {
 				this.tags = res.data;
 			});
 		},
@@ -120,6 +121,11 @@ export default {
 				this.pageNo += 1;
 			});
 		},
+		make() {
+			this.makeLoadmap().then(({ data }) => {
+				this.$router.push(`/roadmap/management/${data}`);
+			});
+		},
 	},
 	created() {
 		this.setTags();
@@ -136,10 +142,10 @@ export default {
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
 
 .content-component {
-	background-color: #fafafa;
+	/* background-color: #fafafa; */
 }
 .card {
-	background: #f9f9f9 !important;
+	/* background: #f9f9f9 !important; */
 }
 .asd {
 	max-width: 1220px;

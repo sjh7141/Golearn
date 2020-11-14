@@ -372,7 +372,7 @@ export default {
 		},
 	},
 	mounted() {
-		this.$store.dispatch('getSaveVideo').then(({ data }) => {
+		this.$store.dispatch('getSaveVideos').then(({ data }) => {
 			for (let video of data) {
 				this.$store
 					.dispatch('getUserByNo', video.mbr_no)

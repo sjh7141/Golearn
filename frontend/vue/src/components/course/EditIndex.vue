@@ -432,7 +432,7 @@ export default {
 			}
 			this.videoList = data;
 		});
-		this.$store.dispatch('getLikeVideo').then(({ data }) => {
+		this.$store.dispatch('getLikeVideos').then(({ data }) => {
 			this.videoLikeList = data;
 			for (let video of data) {
 				this.$store

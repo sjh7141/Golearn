@@ -39,6 +39,14 @@ export default {
 		},
 	},
 	actions: {
+		makeCourse(context) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.post(URL.courseBuild() + '/', {}, config);
+		},
 		getCourse(context, payload) {
 			return axios.get(URL.courseBuild() + `/${payload}`);
 		},

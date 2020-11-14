@@ -4,7 +4,6 @@
 			flat
 			tile
 			style="background-color:white; padding:0; height:100%"
-			class="px-10"
 		>
 			<v-card flat tile style="background-color:transparent" class="mr-6">
 				<router-link to="/">
@@ -38,6 +37,7 @@
 					@focus="isFocus = true"
 					@blur="isFocus = false"
 					@keydown.enter="keywordSearch()"
+					style="margin-right:100px;"
 				>
 					<v-icon
 						:class="{ basic: isFocus }"
@@ -48,7 +48,6 @@
 					</v-icon>
 				</v-text-field>
 			</v-card>
-			<v-spacer />
 			<div>
 				<v-btn
 					v-if="isLogin === 0"
@@ -61,8 +60,8 @@
 					로그인
 				</v-btn>
 				<template v-else>
-					<v-btn icon large class="mr-5" @click="video = true">
-						<v-avatar>
+					<v-btn icon large @click="video = true">
+						<v-avatar size="48">
 							<v-icon large>
 								mdi-video-plus
 							</v-icon>
@@ -71,8 +70,8 @@
 
 					<v-menu bottom min-width="200px" rounded offset-y>
 						<template v-slot:activator="{ on }">
-							<v-btn icon large v-on="on" class="mr-5">
-								<v-avatar>
+							<v-btn icon large v-on="on">
+								<v-avatar size="48">
 									<v-icon>
 										mdi-bell
 									</v-icon>
@@ -87,8 +86,8 @@
 					</v-menu>
 					<v-menu bottom min-width="200px" rounded offset-y>
 						<template v-slot:activator="{ on }">
-							<v-btn icon large v-on="on">
-								<v-avatar>
+							<v-btn icon color="transparent" v-on="on">
+								<v-avatar size="48">
 									<img
 										:src="
 											user.profile
@@ -176,7 +175,7 @@
 				<v-card-text class="pt-5">
 					<v-row justify="center">
 						<v-img
-							src="@/assets/logo3.png"
+							src="@/assets/logo.png"
 							max-width="100"
 							contain
 						/>

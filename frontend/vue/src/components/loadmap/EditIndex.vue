@@ -342,7 +342,7 @@ export default {
 	mounted() {
 		this.list = this.loadmapCourse;
 		order = this.loadmapCourse.length + 1;
-		this.$store.dispatch('getLikeCourse').then(({ data }) => {
+		this.$store.dispatch('getLikeCourses').then(({ data }) => {
 			for (let course of data) {
 				this.$store
 					.dispatch('getUserByNo', course.mbr_no)

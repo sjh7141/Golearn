@@ -121,6 +121,6 @@ export default {
 	top: 30%;
 }
 .card {
-	background: #f9f9f9 !important;
+	/* background: #f9f9f9 !important; */
 }
 </style>

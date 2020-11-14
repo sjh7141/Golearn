@@ -3,7 +3,7 @@
 		<v-row fill-height>
 			<v-col cols="1" />
 			<v-col cols="1" align="center">
-				<v-img src="@/assets/logo3.png" />
+				<v-img src="@/assets/logo.png" width="70" height="70" />
 			</v-col>
 			<v-col cols="6">
 				<v-row>

@@ -13,7 +13,7 @@
 			class="pl-5 my-4"
 			v-for="(item, i) in chapters"
 			:key="`chapter_${i}`"
-			@click="$router.push(`/channel/play?no=${item.vid_no}`)"
+			@click="$router.push(`/channel/play/${item.vid_no}`)"
 			style="cursor:pointer;"
 		>
 			<v-col class="pa-0" :cols="3">

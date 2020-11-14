@@ -27,7 +27,7 @@ const routes = [
 		component: Index,
 	},
 	{
-		path: '/channel/play',
+		path: '/channel/play/:no',
 		name: 'PlayChannel',
 		component: PlayChannel,
 	},
@@ -40,6 +40,11 @@ const routes = [
 		path: '/login',
 		name: 'Login',
 		component: Login,
+	},
+	{
+		path: '/course/management/:id',
+		name: 'EditCourse',
+		component: EditCourse,
 	},
 	{
 		path: '/course/:no/:id',
@@ -72,12 +77,7 @@ const routes = [
 		component: RequestDetail,
 	},
 	{
-		path: '/course/management/:id',
-		name: 'EditCourse',
-		component: EditCourse,
-	},
-	{
-		path: '/loadmap/management/:id',
+		path: '/roadmap/management/:id',
 		name: 'EditLoadMap',
 		component: EditLoadMap,
 	},
