@@ -114,7 +114,7 @@
 					0501-070-0000 고객상담센터 020-737-2020
 				</v-row>
 				<v-row>
-					Copyright © 2020 Run&Go Inc. All rights reserved.
+					Copyright © 2020 고런고런 Inc. All rights reserved.
 				</v-row>
 			</v-col>
 			<v-col cols="3" class="d-flex justify-center">
