@@ -2,37 +2,40 @@
 	<v-card
 		ref="app"
 		:width="width"
-		:height="height"
 		outlined
 		flat
 		tile
 		class="mr-6"
-		style="overflow-y: auto; position:fixed; right:0;"
+		style="overflow-y: auto; "
 		:style="{ top: top }"
 	>
 		<v-row
 			class="pl-5 my-4"
 			v-for="(item, i) in chapters"
 			:key="`chapter_${i}`"
+			@click="$router.push(`/channel/play?no=${item.vid_no}`)"
+			style="cursor:pointer;"
 		>
 			<v-col class="pa-0" :cols="3">
-				<v-img
-					:src="`https://picsum.photos/500/300?image=${i * 5 + 10}`"
-					style="border-radius:3px;"
-				>
+				<v-img :src="item.vid_thumbnail" style="border-radius:3px;">
 					<v-layout
 						style="position: absolute; bottom:3px; right:3px; background-color:rgba(0,0,0,0.8); color:white; font-size: 12px;line-height: 18px;border-radius: 2px;padding: 0 4px;"
-						>{{ item.time }}</v-layout
+						>{{ item.vid_length | convertM }}:{{
+							item.vid_length | convertS
+						}}</v-layout
 					>
 				</v-img>
 			</v-col>
 			<v-col class="pa-0 pl-2" :cols="9">
 				<div>
 					<span style="font-size:14px; font-weight:500;">
-						{{ i + 1 }}. {{ item.title }}</span
+						{{ i + 1 }}.
+						{{ item.vid_title ? item.vid_title : 'Untitled' }}</span
 					><br />
 					<span style="font-size: 12px;color: #949596;">
-						미용쓰기
+						<span v-for="(tag, j) in item.tags" :key="`tag_${j}`">
+							#{{ tag }}
+						</span>
 					</span>
 				</div>
 			</v-col>
@@ -41,8 +44,27 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
 	name: 'Chapter',
+	props: ['no'],
+	watch: {
+		no() {
+			this.getPlayList(this.no);
+		},
+	},
+	filters: {
+		convertM(t) {
+			let ret = parseInt(t / 60);
+			return ret;
+		},
+		convertS(t) {
+			let ret = parseInt(t) % 60;
+			if (ret < 10) ret = '0' + ret;
+			return ret;
+		},
+	},
 	data() {
 		return {
 			width: 0,
@@ -77,6 +99,12 @@ export default {
 		window.removeEventListener('resize', this.resizeChapter);
 	},
 	methods: {
+		...mapActions(['getChannelVideos']),
+		getPlayList(no) {
+			this.getChannelVideos(no).then(({ data }) => {
+				this.chapters = data;
+			});
+		},
 		resizeChapter() {
 			if (window.innerWidth < 960) {
 				this.width = '100%';

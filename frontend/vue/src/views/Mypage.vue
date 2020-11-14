@@ -297,10 +297,10 @@ export default {
 		},
 	},
 	mounted() {
-		this.$store.dispatch('getLikeVideo').then(({ data }) => {
+		this.$store.dispatch('getLikeVideos').then(({ data }) => {
 			this.likeVideos = data;
 		});
-		this.$store.dispatch('getLikeCourse').then(({ data }) => {
+		this.$store.dispatch('getLikeCourses').then(({ data }) => {
 			this.likeCourses = data;
 		});
 		this.$store.dispatch('getLearnCourse').then(({ data }) => {
