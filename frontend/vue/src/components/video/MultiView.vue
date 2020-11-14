@@ -130,6 +130,7 @@
 					'background-color': dark ? '#1c1c1c' : '#fff',
 					'padding-left': editMode ? '10px' : '0px',
 				}"
+				v-if="src"
 			>
 				<source :src="src" />
 				<div

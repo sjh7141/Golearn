@@ -8,14 +8,14 @@
 		</v-img>
 
 		<div class="py-5" style="width:1080px; margin:0 auto;" ref="contain">
-			<h3 style="">New Merge Request</h3>
+			<h3 style="">{{ req ? req.vid_req_comment : '' }}</h3>
 			<v-layout class="mt-5">
 				<v-flex class="pr-5" md6 lg6 xl6>
 					<v-card flat outlined class="mb-4">
 						<div
 							style="background-color:#fafafa;padding:5px 10px;font-size:14px;font-weight:600"
 						>
-							Source branch
+							영상
 						</div>
 						<v-divider />
 						<div style="padding:10px 5px;">
@@ -27,7 +27,7 @@
 									:nudge-bottom="3"
 									z-index="200"
 								>
-									<template v-slot:activator="{ on, attrs }">
+									<template v-slot:activator="{ attrs }">
 										<v-btn
 											class="request-button"
 											left
@@ -38,70 +38,14 @@
 											:ripple="false"
 											style="border-color:#e5e5e5; color:2e2e2e; font-size:14px;"
 											v-bind="attrs"
-											v-on="on"
 										>
-											{{ channels[channelIndex] }}
-											<v-icon
-												size="18"
-												style="position: absolute; right: 0px;"
-											>
-												mdi-chevron-down
-											</v-icon>
+											{{
+												video.author
+													? video.author.mbr_nick_name
+													: ''
+											}}
 										</v-btn>
 									</template>
-									<v-card outlined flat>
-										<div
-											class="pa-2"
-											style="text-align:center;width:100%;color:#212121;font-size:13px;font-weight:600;"
-										>
-											Select source project
-										</div>
-										<v-divider class="pa-2" />
-										<div class="dropdown-input mx-2">
-											<input
-												class="dropdown-input-field"
-												type="search"
-												placeholder="Search projects"
-												autocomplete="off"
-												@click.stop=""
-											/>
-											<v-icon
-												style="position: absolute; right:12px; top:60px;"
-												size="18"
-											>
-												mdi-magnify</v-icon
-											>
-										</div>
-										<v-list
-											style="font-size: 14px; max-height:200px; overflow-y:auto;"
-											class="pa-0 ma-0"
-										>
-											<v-list-item-group
-												v-model="channelIndex"
-											>
-												<v-list-item
-													dense
-													v-for="(item,
-													i) in channels"
-													:key="`channels_${i}`"
-												>
-													<v-icon
-														small
-														class="mr-2"
-														v-if="i == channelIndex"
-													>
-														mdi-check-bold
-													</v-icon>
-													<v-icon
-														v-else
-														class="pa-2 mr-2"
-													>
-													</v-icon>
-													{{ item }}
-												</v-list-item>
-											</v-list-item-group>
-										</v-list>
-									</v-card>
 								</v-menu>
 							</div>
 							<div
@@ -112,7 +56,7 @@
 									:nudge-bottom="3"
 									z-index="200"
 								>
-									<template v-slot:activator="{ on, attrs }">
+									<template v-slot:activator="{ attrs }">
 										<v-btn
 											class="request-button"
 											left
@@ -123,69 +67,14 @@
 											:ripple="false"
 											style="border-color:#e5e5e5; color:2e2e2e; font-size:14px;"
 											v-bind="attrs"
-											v-on="on"
 										>
-											{{ videos[videoIndex] }}
-											<v-icon
-												size="18"
-												style="position: absolute; right: 0px;"
-											>
-												mdi-chevron-down
-											</v-icon>
+											{{
+												video.video
+													? video.video.vid_title
+													: ''
+											}}
 										</v-btn>
 									</template>
-									<v-card outlined flat>
-										<div
-											class="pa-2"
-											style="text-align:center;width:100%;color:#212121;font-size:13px;font-weight:600;"
-										>
-											Select source project
-										</div>
-										<v-divider class="pa-2" />
-										<div class="dropdown-input mx-2">
-											<input
-												class="dropdown-input-field"
-												type="search"
-												placeholder="Search projects"
-												autocomplete="off"
-												@click.stop=""
-											/>
-											<v-icon
-												style="position: absolute; right:12px; top:60px;"
-												size="18"
-											>
-												mdi-magnify</v-icon
-											>
-										</div>
-										<v-list
-											style="font-size: 14px; max-height:200px; overflow-y:auto;"
-											class="pa-0 ma-0"
-										>
-											<v-list-item-group
-												v-model="videoIndex"
-											>
-												<v-list-item
-													dense
-													v-for="(item, i) in videos"
-													:key="`videos_${i}`"
-												>
-													<v-icon
-														small
-														class="mr-2"
-														v-if="i == videoIndex"
-													>
-														mdi-check-bold
-													</v-icon>
-													<v-icon
-														v-else
-														class="pa-2 mr-2"
-													>
-													</v-icon>
-													{{ item }}
-												</v-list-item>
-											</v-list-item-group>
-										</v-list>
-									</v-card>
 								</v-menu>
 							</div>
 						</div>
@@ -195,7 +84,13 @@
 						>
 							<v-list style="background-color:transparent;">
 								<v-list-item dense class="pa-0 ma-0">
-									<MultiView width="498" height="280" />
+									<video
+										width="498"
+										height="280"
+										:src="video.video.vid_url"
+										v-if="video.video"
+										controls
+									/>
 								</v-list-item>
 								<v-list-item dense class="pa-0 mt-7 mb-3">
 									<v-list-item-content>
@@ -205,18 +100,18 @@
 										>
 											강의 제목
 										</v-list-item-title>
-										<v-list-item-title>
-											<v-text-field
-												:ripple="false"
-												outlined
-												dense
-												filled
-												readonly
-												:value="`HTML & Internet`"
-												style="font-size:14px;"
-												hide-details
-											/>
-										</v-list-item-title>
+										<div
+											class="mb-1 px-3 py-4"
+											style="background-color:rgb(235,235,235); border-radius:4px; color:rgb(146,146,146)"
+										>
+											<span>
+												{{
+													video.video
+														? video.video.vid_title
+														: ''
+												}}
+											</span>
+										</div>
 									</v-list-item-content>
 								</v-list-item>
 								<v-list-item dense class="pa-0" filled>
@@ -230,32 +125,13 @@
 
 										<div
 											class="mb-1 px-3 py-4"
-											style="background-color:rgb(235,235,235); border-radius:4px;"
-										>
-											<span>
-												CPU는 계속해서 다음에 무엇을
-												할지 물어 봅니다.
-												<p />
-												이것에 대한 답변은 사람이 하며,
-												답변들의 목록이나 순차적으로
-												진행되어야 할 사항들을 파이썬
-												언어로 작성한 뒤 보조 기억장치에
-												저장합니다.
-												<p />
-												CPU의 질문에 답변을 해야 하는
-												순간이 오면 메인 메모리에 해당
-												내용을 로드 합니다. 이 과정에서
-												2진수로 만들어져 있는 기계어로
-												마법처럼 변환이 되며 이는
-												컴퓨터가 이해할 수 있는 언어로
-												전달 되게 됩니다.
-												<p />
-												그 후 내부적으로는 1초에
-												수십억번(CPU에 성능에 따라
-												달라집니다)에 걸쳐 질문과 답변이
-												이루어 지게 됩니다.
-											</span>
-										</div>
+											style="background-color:rgb(235,235,235); border-radius:4px; color:rgb(146,146,146)"
+											v-html="
+												video.video
+													? video.video.vid_content
+													: ''
+											"
+										></div>
 									</v-list-item-content>
 								</v-list-item>
 							</v-list>
@@ -267,7 +143,7 @@
 						<div
 							style="background-color:#fafafa;padding:5px 10px;font-size:14px;font-weight:600"
 						>
-							Target branch
+							코스
 						</div>
 						<v-divider />
 						<div style="padding:10px 5px;">
@@ -279,7 +155,7 @@
 									:nudge-bottom="3"
 									z-index="200"
 								>
-									<template v-slot:activator="{ on, attrs }">
+									<template v-slot:activator="{ attrs }">
 										<v-btn
 											class="request-button"
 											left
@@ -290,69 +166,10 @@
 											:ripple="false"
 											style="border-color:#e5e5e5; color:2e2e2e; font-size:14px;"
 											v-bind="attrs"
-											v-on="on"
 										>
-											{{ courses[courseIndex] }}
-											<v-icon
-												size="18"
-												style="position: absolute; right: 0px;"
-											>
-												mdi-chevron-down
-											</v-icon>
+											{{ course ? course.cos_title : '' }}
 										</v-btn>
 									</template>
-									<v-card outlined flat>
-										<div
-											class="pa-2"
-											style="text-align:center;width:100%;color:#212121;font-size:13px;font-weight:600;"
-										>
-											Select source project
-										</div>
-										<v-divider class="pa-2" />
-										<div class="dropdown-input mx-2">
-											<input
-												class="dropdown-input-field"
-												type="search"
-												placeholder="Search projects"
-												autocomplete="off"
-												@click.stop=""
-											/>
-											<v-icon
-												style="position: absolute; right:12px; top:60px;"
-												size="18"
-											>
-												mdi-magnify</v-icon
-											>
-										</div>
-										<v-list
-											style="font-size: 14px; max-height:200px; overflow-y:auto;"
-											class="pa-0 ma-0"
-										>
-											<v-list-item-group
-												v-model="courseIndex"
-											>
-												<v-list-item
-													dense
-													v-for="(item, i) in courses"
-													:key="`courses_${i}`"
-												>
-													<v-icon
-														small
-														class="mr-2"
-														v-if="i == courseIndex"
-													>
-														mdi-check-bold
-													</v-icon>
-													<v-icon
-														v-else
-														class="pa-2 mr-2"
-													>
-													</v-icon>
-													{{ item }}
-												</v-list-item>
-											</v-list-item-group>
-										</v-list>
-									</v-card>
 								</v-menu>
 							</div>
 							<div
@@ -363,7 +180,7 @@
 									:nudge-bottom="3"
 									z-index="200"
 								>
-									<template v-slot:activator="{ on, attrs }">
+									<template v-slot:activator="{ attrs }">
 										<v-btn
 											class="request-button"
 											left
@@ -374,70 +191,12 @@
 											:ripple="false"
 											style="border-color:#e5e5e5; color:2e2e2e; font-size:14px;"
 											v-bind="attrs"
-											v-on="on"
 										>
-											{{ chapters[chapterIndex] }}
-											<v-icon
-												size="18"
-												style="position: absolute; right: 0px;"
-											>
-												mdi-chevron-down
-											</v-icon>
+											{{
+												chapter ? chapter.idx_title : ''
+											}}
 										</v-btn>
 									</template>
-									<v-card outlined flat>
-										<div
-											class="pa-2"
-											style="text-align:center;width:100%;color:#212121;font-size:13px;font-weight:600;"
-										>
-											Select source project
-										</div>
-										<v-divider class="pa-2" />
-										<div class="dropdown-input mx-2">
-											<input
-												class="dropdown-input-field"
-												type="search"
-												placeholder="Search projects"
-												autocomplete="off"
-												@click.stop=""
-											/>
-											<v-icon
-												style="position: absolute; right:12px; top:60px;"
-												size="18"
-											>
-												mdi-magnify</v-icon
-											>
-										</div>
-										<v-list
-											style="font-size: 14px; max-height:200px; overflow-y:auto;"
-											class="pa-0 ma-0"
-										>
-											<v-list-item-group
-												v-model="chapterIndex"
-											>
-												<v-list-item
-													dense
-													v-for="(item,
-													i) in chapters"
-													:key="`chapters_${i}`"
-												>
-													<v-icon
-														small
-														class="mr-2"
-														v-if="i == chapterIndex"
-													>
-														mdi-check-bold
-													</v-icon>
-													<v-icon
-														v-else
-														class="pa-2 mr-2"
-													>
-													</v-icon>
-													{{ item }}
-												</v-list-item>
-											</v-list-item-group>
-										</v-list>
-									</v-card>
 								</v-menu>
 							</div>
 						</div>
@@ -447,7 +206,13 @@
 						>
 							<v-list style="background-color:transparent;">
 								<v-list-item dense class="pa-0 ma-0">
-									<MultiView width="498" height="280" />
+									<video
+										width="498"
+										height="280"
+										:src="chapter.map.video.vid_url"
+										v-if="chapter.map"
+										controls
+									/>
 								</v-list-item>
 								<v-list-item dense class="pa-0 mt-7 mb-3">
 									<v-list-item-content>
@@ -457,18 +222,21 @@
 										>
 											강의 제목
 										</v-list-item-title>
-										<v-list-item-title>
-											<v-text-field
-												:ripple="false"
-												outlined
-												dense
-												filled
-												readonly
-												:value="`HTML & Internet`"
-												style="font-size:14px;"
-												hide-details
-											/>
-										</v-list-item-title>
+										<div
+											class="mb-1 px-3 py-4"
+											style="background-color:rgb(235,235,235); border-radius:4px; color:rgb(146,146,146)"
+										>
+											<span>
+												{{
+													chapter &&
+													chapter.map &&
+													chapter.map.video
+														? chapter.map.video
+																.vid_title
+														: ''
+												}}
+											</span>
+										</div>
 									</v-list-item-content>
 								</v-list-item>
 								<v-list-item dense class="pa-0" filled>
@@ -482,32 +250,16 @@
 
 										<div
 											class="mb-1 px-3 py-4"
-											style="background-color:rgb(235,235,235); border-radius:4px;"
-										>
-											<span>
-												CPU는 계속해서 다음에 무엇을
-												할지 물어 봅니다.
-												<p />
-												이것에 대한 답변은 사람이 하며,
-												답변들의 목록이나 순차적으로
-												진행되어야 할 사항들을 파이썬
-												언어로 작성한 뒤 보조 기억장치에
-												저장합니다.
-												<p />
-												CPU의 질문에 답변을 해야 하는
-												순간이 오면 메인 메모리에 해당
-												내용을 로드 합니다. 이 과정에서
-												2진수로 만들어져 있는 기계어로
-												마법처럼 변환이 되며 이는
-												컴퓨터가 이해할 수 있는 언어로
-												전달 되게 됩니다.
-												<p />
-												그 후 내부적으로는 1초에
-												수십억번(CPU에 성능에 따라
-												달라집니다)에 걸쳐 질문과 답변이
-												이루어 지게 됩니다.
-											</span>
-										</div>
+											style="background-color:rgb(235,235,235); border-radius:4px; color:rgb(146,146,146)"
+											v-html="
+												chapter &&
+												chapter.map &&
+												chapter.map.video
+													? chapter.map.video
+															.vid_content
+													: ''
+											"
+										/>
 									</v-list-item-content>
 								</v-list-item>
 							</v-list>
@@ -520,7 +272,7 @@
 			</div>
 
 			<v-avatar size="48" style="float:left;" class="mr-5">
-				<v-img src="@/assets/default_profile.png" />
+				<v-img :src="user.profile" />
 			</v-avatar>
 
 			<v-textarea
@@ -540,22 +292,28 @@
 						right
 						bottom
 						depressed
+						:outlined="!message.length"
 						tile
-						color="success"
-						style="right:200px;"
+						dark
+						:color="message.length ? 'success' : '#e4e4e4'"
+						style="font-size:14px;right:90px;"
+						@click="message.length ? responseVideo(1) : null"
 					>
-						Merge
+						수락
 					</v-btn>
 					<v-btn
 						absolute
 						right
 						bottom
 						depressed
-						outlined
+						:outlined="!message.length"
 						tile
-						color="warning"
+						dark
+						:color="message.length ? 'warning' : '#e4e4e4'"
+						style="font-size:14px;"
+						@click="message.length ? responseVideo(2) : null"
 					>
-						Close Merge Request
+						거절
 					</v-btn>
 				</template>
 			</v-textarea>
@@ -564,57 +322,73 @@
 </template>
 
 <script>
-import MultiView from '@/components/video/MultiView.vue';
+import { mapActions } from 'vuex';
 export default {
 	name: 'Request',
-	components: {
-		MultiView,
-	},
 
 	data() {
 		return {
-			channels: [
-				's03-final/s03p31a402',
-				's03-final/s03p31a403',
-				's03-final/s03p31a404',
-				's03-final/s03p31a402',
-				's03-final/s03p31a403',
-				's03-final/s03p31a404',
-			],
-			channelIndex: 0,
-
-			videos: [
-				'cicd',
-				'course-service',
-				'develop',
-				'feature/account-service',
-				'feature/auth-service',
-				'feature/board-service',
-			],
-			videoIndex: 0,
-
-			courses: [
-				's03-final/s03p31a402',
-				's03-final/s03p31a403',
-				's03-final/s03p31a404',
-				's03-final/s03p31a402',
-				's03-final/s03p31a403',
-				's03-final/s03p31a404',
-			],
-			courseIndex: 0,
-
-			chapters: [
-				'cicd',
-				'course-service',
-				'develop',
-				'feature/account-service',
-				'feature/auth-service',
-				'feature/board-service',
-			],
-			chapterIndex: 0,
-
 			message: '',
+			user: {},
+			req_no: -1,
+			cos_no: -1,
+			vid_no: -1,
+			idx_no: -1,
+
+			course: {},
+			video: {},
+			chapter: {},
+			req: {},
 		};
+	},
+	mounted() {
+		this.user = this.$store.getters.user;
+		this.req_no = this.$route.params.id;
+
+		this.getRequestDetail(this.req_no).then(({ data }) => {
+			this.req = data;
+			const { cos_no, vid_no, idx_no } = data;
+			this.cos_no = cos_no;
+			this.vid_no = vid_no;
+			this.idx_no = idx_no;
+
+			this.getCourse(cos_no).then(({ data }) => {
+				this.course = data;
+			});
+			this.getVideoDetail(vid_no).then(({ data }) => {
+				this.video = data;
+			});
+			this.getChapterDetail(idx_no).then(({ data }) => {
+				const tmpData = data;
+				this.getVideoDetail(data.vid_no).then(({ data }) => {
+					tmpData.map = data;
+					this.chapter = tmpData;
+				});
+			});
+		});
+	},
+	methods: {
+		...mapActions([
+			'getRequestDetail',
+			'getCourse',
+			'getChapterDetail',
+			'getVideoDetail',
+			'returnResponse',
+		]),
+
+		responseVideo(yn) {
+			this.returnResponse({
+				idx_no: this.idx_no,
+				vid_no: this.vid_no,
+				cos_no: this.cos_no,
+				vid_req_accept_yn: yn,
+				vid_req_no: parseInt(this.req_no),
+				vid_res_comment: this.message,
+			}).then(() => {
+				alert('처리되었습니다.');
+				this.$router.push(`/course/${this.cos_no}/requestlist`);
+			});
+		},
 	},
 };
 </script>

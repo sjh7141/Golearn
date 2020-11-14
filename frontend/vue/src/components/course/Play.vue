@@ -8,7 +8,12 @@
 		</v-layout>
 		<v-divider class="mb-5" />
 		<div>
-			<MultiView :width="729" :height="410" />
+			<MultiView
+				:width="729"
+				:height="410"
+				:poster="video.vid_thumbnail"
+				:src="video.vid_url"
+			/>
 			<div class="mt-5" v-html="video.vid_content" />
 		</div>
 		<v-layout class="mt-8 mb-1">
@@ -184,6 +189,7 @@ export default {
 			this.vid_no = data.vid_no;
 			this.cos_no = data.cos_no;
 			this.checkCompleteChapter(this.idx_no);
+			this.getVersionList(this.idx_no);
 		});
 	},
 	methods: {

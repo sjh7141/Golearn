@@ -1,195 +1,111 @@
 <template>
 	<div>
-		<div style="width:100%;">
-			<v-tabs
-				v-model="tabs"
-				color="black"
-				slider-color="rgb(60, 65, 223)"
-				dense
-				style="border-top:1px solid rgba(0,0,0,0.13);"
+		<v-layout wrap>
+			<h3 class="my-auto">요청 목록</h3>
+			<v-spacer />
+			<v-btn
+				dark
+				depressed
+				color="#9382D7"
+				@click="$router.push(`/request?cos_no=${no}`)"
 			>
-				<v-tab>
-					Open
-				</v-tab>
-
-				<v-tab>
-					Merged
-				</v-tab>
-
-				<v-tab>
-					Closed
-				</v-tab>
-
-				<v-tab>
-					All
-				</v-tab>
-
-				<v-btn
-					depressed
-					style="position:absolute; right:0; margin-top:6px"
-					color="success"
-					@click="$emit('move', '/request', 2)"
+				<span style="font-size:14px; font-weight:400">
+					기여하기
+				</span>
+			</v-btn>
+		</v-layout>
+		<v-divider class="mt-2 mb-5" />
+		<v-row
+			v-for="(item, i) in requestList"
+			:key="`requestlist_${i}`"
+			class="pa-0 ma-0 mb-3"
+			style="cursor:pointer"
+			@click="$router.push(`/request/${item.vid_req_no}`)"
+			v-show="item.vid_req_accept_yn == 0"
+		>
+			<v-col :cols="4" class="py-0">
+				<v-img
+					:src="item.info.video.vid_thumbnail"
+					v-if="item.info.video"
+					max-width="100%"
+				/>
+			</v-col>
+			<v-col :cols="8" class="py-0 px-1" style="position: relative;">
+				<v-list-item-title style="font-weight:700; font-size:16px;">
+					{{ item.chapter.idx_title }}
+				</v-list-item-title>
+				<v-list-item-subtitle style="font-size:14px;">
+					{{ item.info.video ? item.info.video.vid_title : '' }}
+				</v-list-item-subtitle>
+				<v-list-item-subtitle style="font-size:14px;">
+					{{ item.vid_req_comment }}
+				</v-list-item-subtitle>
+				<v-list-item-subtitle
+					style="font-size:14px;position: absolute; bottom:0"
 				>
-					<span style="font-size:14px; font-weight:400">
-						New pull request
+					<v-avatar size="20">
+						<v-img
+							:src="item.info.author.mbr_profile"
+							v-if="item.info.author"
+						/>
+					</v-avatar>
+					<span style="font-size:12px;">
+						{{
+							item.info.author
+								? item.info.author.mbr_nick_name
+								: ''
+						}}
 					</span>
-				</v-btn>
-			</v-tabs>
-			<v-tabs-items v-model="tabs">
-				<v-tab-item v-for="i in 4" :key="`item_${i}`">
-					<v-list
-						class="pa-0 ma-0"
-						v-for="(item, j) in items"
-						:key="`list_${j}`"
-						style="background-color:#fafafa"
-					>
-						<v-divider />
-						<v-list-item @click="$emit('move', '/request/1', -1)">
-							<v-list-item-avatar>
-								<v-img
-									:src="
-										`https://picsum.photos/500/300?image=${j *
-											5 +
-											10}`
-									"
-								/>
-							</v-list-item-avatar>
-							<v-list-item-content>
-								<v-list-item-title>
-									{{ item.title }}
-								</v-list-item-title>
-								<v-list-item-subtitle>
-									{{ item.subtitle }}
-								</v-list-item-subtitle>
-							</v-list-item-content>
-							<v-list-item-action>
-								<v-icon v-if="item.flag == 1" color="success">
-									mdi-check
-								</v-icon>
-								<v-icon
-									v-else-if="item.flag == 2"
-									color="error"
-								>
-									mdi-close
-								</v-icon>
-							</v-list-item-action>
-						</v-list-item>
-					</v-list>
-				</v-tab-item>
-			</v-tabs-items>
-		</div>
+				</v-list-item-subtitle>
+			</v-col>
+		</v-row>
 	</div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
 	name: 'RequestList',
 	data() {
 		return {
 			tabs: 0,
-			items: [
-				{
-					title: 'modify : course 불러오기',
-					subtitle: 'opened 4 hours ago by 김현수',
-					flag: 1,
-				},
-				{
-					title: 'modify : 회원가입 수정',
-					subtitle: 'opened 6 hours ago by 김현수',
-					flag: 0,
-				},
-				{
-					title: 'feat: 회원 계정 관련 구현 완료',
-					subtitle: 'opened 22 hours ago by 김명석',
-					flag: 0,
-				},
-				{
-					title: 'modify : token 수정',
-					subtitle: 'opened 2 days ago by 김현수',
-					flag: 0,
-				},
-				{
-					title: 'modify : course 불러오기',
-					subtitle: 'opened 4 hours ago by 김현수',
-					flag: 0,
-				},
-				{
-					title: 'modify : 회원가입 수정',
-					subtitle: 'opened 6 hours ago by 김현수',
-					flag: 0,
-				},
-				{
-					title: 'feat: 회원 계정 관련 구현 완료',
-					subtitle: 'opened 22 hours ago by 김명석',
-					flag: 0,
-				},
-				{
-					title: 'modify : token 수정',
-					subtitle: 'opened 2 days ago by 김현수',
-					flag: 1,
-				},
-				{
-					title: 'modify : course 불러오기',
-					subtitle: 'opened 4 hours ago by 김현수',
-					flag: 2,
-				},
-				{
-					title: 'modify : 회원가입 수정',
-					subtitle: 'opened 6 hours ago by 김현수',
-					flag: 0,
-				},
-				{
-					title: 'feat: 회원 계정 관련 구현 완료',
-					subtitle: 'opened 22 hours ago by 김명석',
-					flag: 0,
-				},
-				{
-					title: 'modify : token 수정',
-					subtitle: 'opened 2 days ago by 김현수',
-					flag: 0,
-				},
-				{
-					title: 'modify : course 불러오기',
-					subtitle: 'opened 4 hours ago by 김현수',
-					flag: 0,
-				},
-				{
-					title: 'modify : 회원가입 수정',
-					subtitle: 'opened 6 hours ago by 김현수',
-					flag: 2,
-				},
-				{
-					title: 'feat: 회원 계정 관련 구현 완료',
-					subtitle: 'opened 22 hours ago by 김명석',
-					flag: 1,
-				},
-				{
-					title: 'modify : token 수정',
-					subtitle: 'opened 2 days ago by 김현수',
-					flag: 1,
-				},
-				{
-					title: 'modify : course 불러오기',
-					subtitle: 'opened 4 hours ago by 김현수',
-					flag: 1,
-				},
-				{
-					title: 'modify : 회원가입 수정',
-					subtitle: 'opened 6 hours ago by 김현수',
-					flag: 1,
-				},
-				{
-					title: 'feat: 회원 계정 관련 구현 완료',
-					subtitle: 'opened 22 hours ago by 김명석',
-					flag: 1,
-				},
-				{
-					title: 'modify : token 수정',
-					subtitle: 'opened 2 days ago by 김현수',
-					flag: 0,
-				},
-			],
+			requestList: [],
+			no: -1,
 		};
+	},
+	mounted() {
+		this.no = this.$route.params.no;
+		this.initRequestList();
+	},
+	methods: {
+		...mapActions(['getRequestList', 'getVideoDetail', 'getChapterDetail']),
+		initRequestList() {
+			this.getRequestList({
+				cos_no: this.no,
+				page: 1,
+			}).then(({ data }) => {
+				for (let i in data) {
+					data[i].info = {};
+					data[i].chapter = {};
+				}
+				this.requestList = data;
+
+				for (let i in this.requestList) {
+					this.getVideoInfo(this.requestList[i]);
+					this.getChapterInfo(this.requestList[i]);
+				}
+			});
+		},
+		getVideoInfo(item) {
+			this.getVideoDetail(item.vid_no).then(({ data }) => {
+				item.info = data;
+			});
+		},
+		getChapterInfo(item) {
+			this.getChapterDetail(item.idx_no).then(({ data }) => {
+				item.chapter = data;
+			});
+		},
 	},
 };
 </script>
