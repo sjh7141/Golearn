@@ -115,5 +115,47 @@ export default {
 			};
 			return axios.get(URL.courseBuild() + `/versions/${id}`, config);
 		},
+
+		getRequestList(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(
+				URL.courseBuild() +
+					`/video/${payload.cos_no}?page=${payload.page}`,
+				config,
+			);
+		},
+
+		getRequestDetail(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(
+				URL.courseBuild() + `/video/request/${payload}`,
+				config,
+			);
+		},
+
+		sendRequest(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.post(URL.courseBuild() + '/video', payload, config);
+		},
+		returnResponse(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.put(URL.courseBuild() + '/video', payload, config);
+		},
 	},
 };
