@@ -13,7 +13,7 @@
 					<v-list-item>
 						<v-list-item-subtitle
 							style="font-size:14px; color:black; font-weight:600;"
-							@click="move('/course/intro', 0, -1)"
+							@click="move(`/course/${no}/intro`, 0, -1)"
 						>
 							소개
 						</v-list-item-subtitle>
@@ -21,7 +21,7 @@
 					<v-list-item>
 						<v-list-item-subtitle
 							style="font-size:14px; color:black; font-weight:600;"
-							@click="move('/course/intro', 1, -1)"
+							@click="move(`/course/${no}/requestlist`, 1, -1)"
 						>
 							요청 목록
 						</v-list-item-subtitle>
@@ -38,15 +38,24 @@
 						class="pl-6"
 						v-for="(item, i) in chapters"
 						:key="`chapters_${i}`"
-						@click="move(`/course/play?no=${i}`, 3, i)"
+						@click="
+							move(
+								`/course/${no}/play?chapter=${item.idx_no}`,
+								3,
+								item.idx_no,
+							)
+						"
 					>
 						<v-list-item-subtitle
 							style="font-size:12px;"
 							:style="{
-								color: no == i ? 'rgb(60,60,223)' : '',
+								color:
+									chapter == item.idx_no
+										? 'rgb(60,60,223)'
+										: '',
 							}"
 						>
-							{{ item.title }}
+							{{ item.idx_title }}
 						</v-list-item-subtitle>
 					</v-list-item>
 				</v-card>
@@ -58,15 +67,16 @@
 				xl9
 				style="border-left:1px solid rgba(0,0,0,0.13)"
 			>
-				<Introduce v-if="index == 0" />
+				<Introduce :info="info" v-if="index == 0" />
 				<RequestList v-else-if="index == 1" @move="move" />
-				<Play v-else-if="index == 3" @move="move" />
+				<Play v-else-if="index == 3" :idx_no="chapter" @move="move" />
 			</v-flex>
 		</v-layout>
 	</div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import Introduce from '@/components/course/Introduce.vue';
 import RequestList from '@/components/course/RequestList.vue';
 import Play from '@/components/course/Play.vue';
@@ -80,26 +90,12 @@ export default {
 	data() {
 		return {
 			height: 0,
-			chapters: [
-				{ title: '구름IDE에서 파이썬 코딩 시작하기', time: '14 : 27' },
-				{ title: '수와 연산', time: '28: 11' },
-				{ title: '변수: 대입과 비교 연산', time: '30 : 01' },
-				{ title: '논리 연산과 조건문', time: '31 : 54' },
-				{ title: '리스트와 반복문', time: '38 : 56' },
-				{ title: '열린 사물함의 갯수 문제', time: '31 : 44' },
-				{ title: '함수의 활용과 소수의 판별', time: '43 : 49' },
-				{ title: '에라토스테네스의 체', time: '27 : 13' },
-				{ title: '소인수 분해', time: '28 : 20' },
-				{ title: '최대공약수 구하기', time: '23 : 02' },
-				{ title: '최소 공배수 구하기', time: '24 : 48' },
-				{ title: '구름IDE에서 파이썬 코딩 시작하기', time: '14 : 27' },
-				{ title: '수와 연산', time: '28: 11' },
-				{ title: '변수: 대입과 비교 연산', time: '30 : 01' },
-				{ title: '논리 연산과 조건문', time: '31 : 54' },
-				{ title: '리스트와 반복문', time: '38 : 56' },
-			],
+			chapters: [],
+			info: {},
 			index: 0,
 			no: -1,
+			chapter: -1,
+			video: -1,
 		};
 	},
 	mounted() {
@@ -108,13 +104,29 @@ export default {
 		if (this.$route.params.id == 'requestlist') this.index = 1;
 		if (this.$route.params.id == 'request') this.index = 2;
 		if (this.$route.params.id == 'play') this.index = 3;
-		this.no = this.$route.query.no;
+		this.no = this.$route.params.no;
+		this.chapter = this.$route.query.chapter;
+		this.getCourseInfo(this.no);
+		this.getCourseIndexList(this.no);
 	},
 	methods: {
+		...mapActions(['getCourse', 'getCourseIndexs']),
+
 		move(url, index, no) {
-			this.$router.push(url);
+			history.pushState(null, null, url);
 			this.index = index;
-			this.no = no;
+			this.chapter = no;
+		},
+
+		getCourseInfo(no) {
+			this.getCourse(no).then(({ data }) => {
+				this.info = data;
+			});
+		},
+		getCourseIndexList(no) {
+			this.getCourseIndexs(no).then(({ data }) => {
+				this.chapters = data;
+			});
 		},
 	},
 };
