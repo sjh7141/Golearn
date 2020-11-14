@@ -27,7 +27,10 @@ public class S3Service {
 	private String bucket;
 
 	public String fileUpload(MultipartFile file, String place) {
-		String fileName = UUID.randomUUID() + file.getOriginalFilename();
+	    int pos = file.getOriginalFilename().lastIndexOf(".");
+        String format = file.getOriginalFilename().substring(pos);
+		String fileName = UUID.randomUUID() + format;
+		
 		String key = place + "/" + fileName;
 		
 		ObjectMetadata omd = new ObjectMetadata();
