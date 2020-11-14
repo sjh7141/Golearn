@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.golearn.domain.CourseManager;
 import com.golearn.domain.CourseManagerResopnse;
+import com.golearn.dto.VideoRequestDto;
 import com.golearn.mapper.CourseMapper;
 import com.golearn.repository.CourseManagerRepository;
 
@@ -14,6 +15,9 @@ import com.golearn.repository.CourseManagerRepository;
 public class CourseManagerService {
 	@Autowired
 	private CourseManagerRepository courseManagerRepository;
+	
+	@Autowired
+	private CourseMapper courseMapper;
 	
 	// 코스 관리자 생성
 	public void save(CourseManager request) {
@@ -38,6 +42,10 @@ public class CourseManagerService {
 	
 	public int checkManager(long cosNo, long mbrNo) {
 		return courseManagerRepository.checkManager(cosNo, mbrNo);
+	}
+	
+	public VideoRequestDto findByRequestNo(int vidReqNo) {
+		return courseMapper.findByRequestNo(vidReqNo);
 	}
 	
 }
