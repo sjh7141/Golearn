@@ -63,25 +63,16 @@
 								</div>
 								<v-img
 									class="ml-2 mr-4 border-radius-10"
-									src="@/assets/thumbnail_1.jpg"
+									:src="element.cos_thumbnail"
 									height="130"
 									width="210"
 									style="display: inline-block;"
 								/>
-								<v-avatar
-									class="mr-2"
-									style="vertical-align:top;"
-								>
-									<img
-										src="@/assets/default_profile.png"
-										alt="프로필"
-									/>
-								</v-avatar>
 								<div
 									style="display: inline-block; vertical-align:top; word-break:break-all; width:210px;"
 								>
 									<span class="bold" style="font-size: 20px;">
-										{{ element.cosTitle }}
+										{{ element.cos_title }}
 									</span>
 									<br />
 									<span
@@ -231,93 +222,7 @@ export default {
 			isEdit: false,
 			editIdx: -1,
 			editTitle: '',
-			courseList: [
-				{
-					cosNo: 3,
-					mbrNo: 2,
-					mbr_nickname: '하늘을날자',
-					vidPno: 0,
-					cosTitle: '파이썬 기초1',
-					cosContent: null,
-					regDt: '2020-10-27T11:26:14.000+00:00',
-					courseThumbnail: 'video_default_thumbnail.png',
-					tags: [
-						'C',
-						'Python',
-						'Python',
-						'Python',
-						'Python',
-						'Python',
-						'Python',
-					],
-				},
-				{
-					cosNo: 4,
-					mbrNo: 2,
-					mbr_nickname: '하늘을날자',
-					vidPno: 0,
-					cosTitle: '파이썬 기초2',
-					cosContent: null,
-					regDt: '2020-10-27T11:26:14.000+00:00',
-					courseThumbnail: 'video_default_thumbnail.png',
-					tags: ['C', 'Python'],
-				},
-				{
-					cosNo: 5,
-					mbrNo: 2,
-					mbr_nickname: '하늘을날자',
-					vidPno: 0,
-					cosTitle: '파이썬 기초3',
-					cosContent: null,
-					regDt: '2020-10-27T11:26:14.000+00:00',
-					courseThumbnail: 'video_default_thumbnail.png',
-					tags: ['C', 'Python'],
-				},
-				{
-					cosNo: 6,
-					mbrNo: 2,
-					mbr_nickname: '하늘을날자',
-					vidPno: 0,
-					cosTitle: '파이썬 기초 파이썬 기초 파이썬 기초',
-					cosContent: null,
-					regDt: '2020-10-27T11:26:14.000+00:00',
-					courseThumbnail: 'video_default_thumbnail.png',
-					tags: ['C', 'Python'],
-				},
-				{
-					cosNo: 7,
-					mbrNo: 2,
-					mbr_nickname: '하늘을날자',
-					vidPno: 0,
-					cosTitle: '파이썬 기초5',
-					cosContent: null,
-					regDt: '2020-10-27T11:26:14.000+00:00',
-					courseThumbnail: 'video_default_thumbnail.png',
-					tags: ['C', 'Python'],
-				},
-				{
-					cosNo: 8,
-					mbrNo: 2,
-					mbr_nickname: '하늘을날자',
-					vidPno: 0,
-					cosTitle: '파이썬 기초6',
-					cosContent: null,
-					regDt: '2020-10-27T11:26:14.000+00:00',
-					courseThumbnail: 'video_default_thumbnail.png',
-					tags: ['C', 'Python'],
-				},
-				{
-					cosNo: 9,
-					mbrNo: 2,
-					mbr_nickname: '하늘을날자',
-					vidPno: 0,
-					cosTitle: '파이썬 기초7',
-					cosContent: null,
-					regDt: '2020-10-27T11:26:14.000+00:00',
-					courseThumbnail: 'video_default_thumbnail.png',
-					tags: ['C', 'Python'],
-				},
-			],
+			courseList: [],
 			selectCourseNo: -1,
 			page: 1,
 		};
@@ -387,7 +292,11 @@ export default {
 		},
 	},
 	computed: {
-		...mapGetters(['course']),
+		...mapGetters(['loadmap', 'loadmapCourse']),
+	},
+	mounted() {
+		console.log(this.loadmapCourse);
+		this.list = this.loadmapCourse;
 	},
 };
 </script>

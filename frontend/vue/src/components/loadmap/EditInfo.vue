@@ -105,6 +105,9 @@ export default {
 				return;
 			}
 			this.content = this.$refs.editor.getHTML();
+			this.$store.commit('setLoadmapTitle', this.title);
+			this.$store.commit('setLoadmapContent', this.content);
+			this.$store.dispatch('setLoadmap');
 		},
 		changeActive() {
 			this.$emit('changeActive');
@@ -122,15 +125,43 @@ export default {
 		this.$store
 			.dispatch('getLoadmap', this.$route.params.id)
 			.then(({ data }) => {
+				console.log(data);
+				if (data.course.length != 0) {
+					this.$store.commit(
+						'setLoadmapBanner',
+						data.course[0].cos_banner,
+					);
+				} else {
+					this.$store.commit('setLoadmapBanner', null);
+				}
 				this.$store.commit('setLoadmap', data.loadmap);
+				let self = data.course;
+				for (let course of data.course) {
+					this.$store
+						.dispatch('getUserByNo', course.mbr_no)
+						.then(({ data }) => {
+							course.mbr_nickname = data.nickname;
+							course.mbr_profile = data.profile;
+							this.$store.commit('setLoadmapCourse', self);
+						});
+					this.$store
+						.dispatch('getCourseTag', course.cos_no)
+						.then(({ data }) => {
+							course.tags = [];
+							for (let tag of tags) {
+								course.tags.push(tag.tag_name);
+							}
+							this.$store.commit('setLoadmapCourse', self);
+						});
+				}
 				this.title =
-					this.loadmap.ldmTitle == null
+					this.loadmap.ldm_title == null
 						? '[로드맵 이름 예시] Web 단기 완성'
-						: this.loadmap.ldmTitle;
+						: this.loadmap.ldm_title;
 				this.content =
-					this.loadmap.ldmContent == null
+					this.loadmap.ldm_content == null
 						? this.preContent
-						: this.loadmap.ldmContent;
+						: this.loadmap.ldm_content;
 			});
 	},
 };
