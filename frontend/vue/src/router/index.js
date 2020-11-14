@@ -9,9 +9,15 @@ import Request from '@/views/course/Request.vue';
 import RequestDetail from '@/views/course/RequestDetail.vue';
 import EditCourse from '@/views/course/Edit.vue';
 import EditLoadMap from '@/views/loadmap/Edit.vue';
+
+import EditVideo from '@/views/channel/EditVideo.vue';
+
 import Channel from '@/views/channel/Channel.vue';
 import Mypage from '@/views/Mypage.vue';
 import VideoUpload from '@/views/video/Upload.vue';
+import CourseList from '@/views/course/CourseList.vue';
+import LoadmapList from '@/views/loadmap/LoadmapList.vue';
+import VideoList from '@/views/video/VideoList.vue';
 Vue.use(VueRouter);
 
 const routes = [
@@ -26,6 +32,11 @@ const routes = [
 		component: PlayChannel,
 	},
 	{
+		path: '/channel/edit',
+		name: 'EditVideo',
+		component: EditVideo,
+	},
+	{
 		path: '/login',
 		name: 'Login',
 		component: Login,
@@ -34,6 +45,21 @@ const routes = [
 		path: '/course/:id',
 		name: 'Course',
 		component: Course,
+	},
+	{
+		path: '/course',
+		name: 'CourseList',
+		component: CourseList,
+	},
+	{
+		path: '/roadmap',
+		name: 'LoadmapList',
+		component: LoadmapList,
+	},
+	{
+		path: '/video',
+		name: 'VideoList',
+		component: VideoList,
 	},
 	{
 		path: '/request',

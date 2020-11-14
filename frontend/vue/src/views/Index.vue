@@ -75,15 +75,17 @@
 								@click="goToSearch(tag)"
 								style="text-transform:none; color:#4287f5;"
 							>
-								<v-icon color="#4287f5" left>
-									mdi-search-web
+								<v-icon color="#c3aed6" left>
+									mdi-magnify
 								</v-icon>
 								{{ tag }}
 							</v-btn>
 						</v-slide-item>
 					</v-slide-group>
 					<v-divider></v-divider>
-					<h2 class="mt-15">이런 강의 어떠세요?</h2>
+					<h2 class="mt-15" @click="$router.push('/channel/edit')">
+						이런 강의 어떠세요?
+					</h2>
 					<v-row>
 						<vcards :items="cards"> </vcards>
 					</v-row>

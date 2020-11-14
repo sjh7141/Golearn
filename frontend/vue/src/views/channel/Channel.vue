@@ -136,18 +136,25 @@
 				<v-container class="mx-auto px-0">
 					<v-tabs-items v-model="tab" class="transparent ">
 						<v-tab-item>
-							<video-slider> </video-slider>
-							<course-slider></course-slider>
-							<loadmap-slider></loadmap-slider>
+							<video-slider :videos="videos"> </video-slider>
+							<course-slider :courses="courses"></course-slider>
+							<loadmap-slider
+								:loadmaps="loadmaps"
+							></loadmap-slider>
 						</v-tab-item>
 						<v-tab-item>
-							<video-list :channel="channel"> </video-list>
+							<video-list
+								@getChannel="getChannel"
+								:channel="channel"
+								:videos="videos"
+							>
+							</video-list>
 						</v-tab-item>
 						<v-tab-item>
-							<course-list></course-list>
+							<course-list :courses="courses"></course-list>
 						</v-tab-item>
 						<v-tab-item>
-							<loadmap-list></loadmap-list>
+							<loadmap-list :loadmaps="loadmaps"></loadmap-list>
 						</v-tab-item>
 						<v-tab-item>
 							<v-container class="information ma-1">
@@ -221,6 +228,9 @@ export default {
 		items: ['홈', '동영상', '코스', '로드맵', '정보'],
 		channel: {},
 		details: {},
+		videos: [],
+		courses: [],
+		loadmaps: [],
 	}),
 	computed: {
 		...mapGetters(['isLogin', 'user']),
@@ -236,14 +246,45 @@ export default {
 		LoadmapList,
 	},
 	methods: {
-		...mapActions(['getMember', 'isLike', 'upload', 'setBanner']),
+		...mapActions([
+			'getMember',
+			'isLike',
+			'upload',
+			'setBanner',
+			'getChannelVideos',
+			'getChannelLoadmaps',
+			'getChannelCourses',
+			'like',
+			'unlike',
+		]),
 		subscribe() {
+			const self = this;
 			if (!this.isLogin) {
 				this.$router.push('/login');
+			} else if (this.subscribed) {
+				this.unlike(this.channel.no).then(function() {
+					self.isLike(self.channel.no).then(res => {
+						self.subscribed = res.data;
+					});
+				});
+			} else {
+				this.like(this.channel.no).then(function() {
+					self.isLike(self.channel.no).then(res => {
+						self.subscribed = res.data;
+					});
+				});
 			}
 		},
-		modify() {},
 		async getChannel(id) {
+			this.getChannelVideos(id).then(res => {
+				this.videos = res.data;
+			});
+			this.getChannelLoadmaps(id).then(res => {
+				this.loadmaps = res.data;
+			});
+			this.getChannelCourses(id).then(res => {
+				this.courses = res.data;
+			});
 			this.getMember(id).then(res => {
 				this.channel = res.data;
 			});

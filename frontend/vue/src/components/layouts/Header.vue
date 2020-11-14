@@ -12,7 +12,11 @@
 				</router-link>
 			</v-card>
 			<template v-for="(menu, idx) in menus">
-				<div :key="`menu_${idx}`" class="nav px-5">
+				<div
+					:key="`menu_${idx}`"
+					class="nav px-5"
+					@click="$router.push(menu.link)"
+				>
 					{{ menu.title }}
 				</div>
 			</template>
@@ -33,6 +37,7 @@
 					outlined
 					@focus="isFocus = true"
 					@blur="isFocus = false"
+					@keydown.enter="keywordSearch()"
 				>
 					<v-icon
 						:class="{ basic: isFocus }"
@@ -252,12 +257,15 @@ export default {
 			menus: [
 				{
 					title: '로드맵',
+					link: '/roadmap',
 				},
 				{
 					title: '코스',
+					link: '/course',
 				},
 				{
 					title: '커뮤니티',
+					link: '/course',
 				},
 			],
 			video: false,
@@ -281,7 +289,9 @@ export default {
 	},
 
 	methods: {
-		keywordSearch() {},
+		keywordSearch() {
+			this.$router.push(`/video?search=${this.keyword}`);
+		},
 		goToLogin() {
 			this.$router.push('/login');
 		},
@@ -311,8 +321,9 @@ export default {
 
 <style scoped>
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+@import url(//db.onlinewebfonts.com/c/b0a3d74c91dbd95db951a7c8c8ad6089?family=BM+JUA);
 .nav {
-	font-family: 'Noto Sans KR', sans-serif !important;
+	font-family: 'BM JUA', sans-serif !important;
 	font-size: 18px;
 	font-weight: 600;
 	color: #4a4a4a;

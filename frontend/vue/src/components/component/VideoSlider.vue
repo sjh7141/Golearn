@@ -1,6 +1,6 @@
 <template>
 	<div ref="app">
-		<v-card class="transparent" flat v-if="videos.data.length !== 0">
+		<v-card class="transparent" flat v-if="videos.length !== 0">
 			<v-card-title>최신 동영상</v-card-title>
 			<!-- <v-sheet class="mx-auto"> -->
 			<swiper class="swiper-container" :options="swiperOption">
@@ -13,7 +13,7 @@
 					slot="button-next"
 				></div>
 				<swiper-slide
-					v-for="(video, i) in loading ? 5 : videos.data"
+					v-for="(video, i) in loading ? 5 : videos"
 					:key="i"
 				>
 					<v-skeleton-loader
@@ -43,6 +43,7 @@ export default {
 	components: {
 		VideoCard,
 	},
+	props: ['videos'],
 	data: () => ({
 		tab: null,
 		loading: false,
@@ -50,7 +51,6 @@ export default {
 		subscribed: false,
 		subscribeLoading: false,
 		showSubBtn: true,
-		videos: {},
 		channel: {
 			mbr_nickname: 'asm9677',
 			_id: 'asdf',
@@ -99,26 +99,6 @@ export default {
 
 	methods: {
 		...mapActions(['getChannelVideos']),
-		async getChannel(id) {
-			// console.log(this.$route.params.id)
-			this.loading = true;
-			this.errored = false;
-
-			this.getChannelVideos(id).then(res => {
-				this.videos = res;
-			});
-
-			// console.log(channel)
-			this.loading = false;
-		},
-		subscribe() {},
-	},
-	mounted() {
-		this.getChannel(this.$route.params.id);
-	},
-	beforeRouteUpdate(to, from, next) {
-		this.getChannel(to.params.id);
-		next();
 	},
 };
 </script>

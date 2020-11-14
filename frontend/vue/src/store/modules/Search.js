@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const URL = {
-	DOMAIN: 'http://k3a402.p.ssafy.io:8801',
+	DOMAIN: 'https://golearn.co.kr/api',
 	PREFIX: 'search-service/v1',
 	searchBuild() {
 		return Array(this.DOMAIN, this.PREFIX).join('/');
@@ -25,6 +25,12 @@ export default {
 	actions: {
 		getTagList() {
 			return axios.get(URL.searchBuild() + '/tag');
+		},
+		getSearchResult(context, payload) {
+			const config = {
+				params: payload,
+			};
+			return axios.get(URL.searchBuild() + '/search', config);
 		},
 	},
 };

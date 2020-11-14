@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const URL = {
-	DOMAIN: 'http://k3a402.p.ssafy.io:8801',
+	DOMAIN: 'https://golearn.co.kr/api',
 	FILE: 'file/upload',
 	fileBuild() {
 		return Array(this.DOMAIN, this.FILE).join('/');
