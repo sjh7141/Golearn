@@ -61,7 +61,6 @@ export default {
 				update: payload.update,
 				loadmap: context.state.loadmap,
 			};
-			console.log(data);
 			return axios.put(URL.loadmapBuild() + `/`, data, config);
 		},
 		getChannelLoadmaps(context, payload) {

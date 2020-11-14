@@ -129,7 +129,6 @@ export default {
 		this.$store
 			.dispatch('getLoadmap', this.$route.params.id)
 			.then(({ data }) => {
-				console.log(data);
 				if (data.course.length != 0) {
 					this.$store.commit(
 						'setLoadmapBanner',
@@ -152,7 +151,6 @@ export default {
 					this.$store
 						.dispatch('getCourseTag', course.cos_no)
 						.then(({ data }) => {
-							console.log(data, course.cos_no);
 							course.tags = [];
 							for (let tag of data) {
 								course.tags.push(tag.tag_name);

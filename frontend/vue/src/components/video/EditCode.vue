@@ -125,7 +125,6 @@ public class InfiniteLoop {
 		},
 		save() {
 			this.$store.commit('setVideoCode', this.editor.getValue());
-			console.log(this.uploadVideo);
 			if (this.uploadVideo.vid_code == '') {
 				alert('강의 코드를 작성해주세요.');
 				return;

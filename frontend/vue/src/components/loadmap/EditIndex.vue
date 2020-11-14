@@ -342,7 +342,6 @@ export default {
 	mounted() {
 		this.list = this.loadmapCourse;
 		order = this.loadmapCourse.length + 1;
-		console.log(this.list);
 		this.$store.dispatch('getLikeCourse').then(({ data }) => {
 			for (let course of data) {
 				this.$store
