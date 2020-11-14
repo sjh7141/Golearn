@@ -34,7 +34,7 @@ public class Video {
     private int vidPno;
 
     private String vidTitle;
-
+    @Column(columnDefinition = "TEXT")
     private String vidContent;
 
     private String vidUrl;
