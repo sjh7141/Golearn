@@ -40,7 +40,7 @@
 		<foreach collection="list" item="item" index="index">
 			update gl_loadmap_course 
 			set cos_no = #{item.cosNo}, ldm_order = #{item.ldmOrder}
-			where ldm_no = #{item.ldmNo} and no = #{item.no}
+			where ldm_no = #{item.ldmNo} and no = #{item.no};
 		</foreach>
 	</update>
 	
