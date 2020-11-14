@@ -45,12 +45,12 @@ eureka:
 
 feign:
   course-api:
-    url: http://k3a402.p.ssafy.io:8801/course
+    url: https://golearn.co.kr/api/course
   video-api:
-#    url: http://k3a402.p.ssafy.io:8801/video
-    url: http://localhost:8801/video
+    url: https://golearn.co.kr/api/video
+#    url: http://localhost:8801/video
   board-api:
-    url: http://k3a402.p.ssafy.io:8801/board
+    url: https://golearn.co.kr/api/board
 
 
 logging:
