@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -77,5 +78,15 @@ public class CourseManagerController {
 		logger.info(">> LOAD searchToAddManagers <<");
 		List<CourseManagerResopnse> response = courseManagerService.searchToAddManagers(cosNo, search);
 		return new ResponseEntity<List<CourseManagerResopnse>>(response, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "현재 코스 관리자 인지 아닌지 쳌")
+	@GetMapping(value = "/manager/check/{cos_no}")
+	public ResponseEntity<Boolean> checkManager(@ApiIgnore @RequestHeader("X-USERNO") String no, @PathVariable("cos_no") int cosNo){
+		int res = courseManagerService.checkManager(cosNo, Long.parseLong(no));
+		if(res == 0) {
+			return ResponseEntity.ok(false);
+		}
+		return ResponseEntity.ok(true);
 	}
 }
