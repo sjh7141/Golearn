@@ -195,7 +195,7 @@
 			</div>
 			<div class="mt-6" style="text-align:end;">
 				<v-btn dark color="#5500ff" @click="save" :loading="loading">
-					다음
+					저장
 				</v-btn>
 			</div>
 			<v-dialog v-model="isAdd" max-width="600">

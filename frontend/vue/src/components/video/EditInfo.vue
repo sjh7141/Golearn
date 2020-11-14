@@ -48,7 +48,7 @@
 					:loading="loading"
 					@click="saveInfo"
 				>
-					다음
+					저장
 				</v-btn>
 			</div>
 		</v-col>
@@ -116,6 +116,9 @@ export default {
 		saveInfo() {
 			if (!this.title.length || this.title.length < 5) {
 				this.$refs.title.focus();
+				return;
+			} else if (this.selectTags.length == 0) {
+				alert('태그를 1개이상 선택해주세요.');
 				return;
 			}
 			this.content = this.$refs.editor.getHTML();
