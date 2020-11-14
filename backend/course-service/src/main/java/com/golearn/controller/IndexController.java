@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -81,9 +82,20 @@ public class IndexController {
 	// 목차 수강 완료
 	@RequestMapping(method = RequestMethod.POST, value = "/index-complete")
 	@ApiOperation(value = "목차 수강 완료")
-	public ResponseEntity completeIndex(@RequestBody CourseViewer request) {
+	public ResponseEntity completeIndex(@ApiIgnore @RequestHeader("X-USERNO") String no, @RequestBody CourseViewer request) {
 		logger.info(">> LOAD completeIndex <<");
+		request.setMbrNo(Long.parseLong(no));
 		courseViewerService.save(request);
 		return new ResponseEntity(HttpStatus.NO_CONTENT);
+	}
+	
+	@ApiOperation(value = "목차 수강 했는지 안했는지 쳌")
+	@GetMapping(value = "/index/check/{idx_no}")
+	public ResponseEntity<Boolean> checkIndex(@ApiIgnore @RequestHeader("X-USERNO") String no, @PathVariable("idx_no") int idxNo){
+		int res = indexService.checkIndex(Integer.parseInt(no), idxNo);
+		if(res == 0) {
+			return ResponseEntity.ok(false);
+		}
+		return ResponseEntity.ok(true);
 	}
 }

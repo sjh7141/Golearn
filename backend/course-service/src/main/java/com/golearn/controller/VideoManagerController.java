@@ -2,13 +2,12 @@ package com.golearn.controller;
 
 import java.util.List;
 
-import javax.ws.rs.core.Response;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.golearn.domain.VideoManager;
 import com.golearn.domain.VideoVersioningResopnse;
+import com.golearn.dto.VideoRequestDto;
 import com.golearn.service.CourseManagerService;
 import com.golearn.service.VideoManagerService;
 
@@ -65,10 +65,6 @@ public class VideoManagerController {
 			@ApiIgnore @RequestHeader(value = "X-USERNO") String mbrNo, @PathVariable("cos_no") long cosNo,
 			@RequestParam("page") int page) {
 		logger.info(">> LOAD getRequestVideos <<");
-		System.out.println(cosNo + " " + mbrNo);
-		if(courseManagerService.checkManager(cosNo, Long.parseLong(mbrNo)) == 0) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-		}
 		List<VideoManager> response = videoManagerService.perPageBy20(cosNo, page);
 		return new ResponseEntity<List<VideoManager>>(response, HttpStatus.CREATED);
 	}
@@ -80,5 +76,12 @@ public class VideoManagerController {
 		logger.info(">> LOAD getRequestVideos <<");
 		List<VideoVersioningResopnse> response = videoManagerService.getVersioning(idxNo);
 		return new ResponseEntity<List<VideoVersioningResopnse>>(response, HttpStatus.CREATED);
+	}
+	
+	@ApiOperation(value = "요청 영상 상세보기")
+	@GetMapping(value = "/video/request/{vid_req_no}")
+	public ResponseEntity<VideoRequestDto> getVideoRequest(@PathVariable("vid_req_no") int vidReqNo){
+		VideoRequestDto data = courseManagerService.findByRequestNo(vidReqNo);
+		return ResponseEntity.ok(data);
 	}
 }

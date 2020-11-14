@@ -59,4 +59,14 @@ public class LikeController {
 		return ResponseEntity.ok(course);
 	}
 	
+	@ApiOperation(value = "해당 코스 좋아요 했는지 쳌쳌")
+	@GetMapping(value = "/like/{cos_no}")
+	public ResponseEntity<Boolean> checkCourseLike(@ApiIgnore @RequestHeader("X-USERNO") String no, @PathVariable("cos_no") int cosNo){
+		int res = likeService.checkLike(Integer.parseInt(no), cosNo);
+		if(res == 0) {
+			return ResponseEntity.ok(false);
+		}
+		return ResponseEntity.ok(true);
+	}
+	
 }

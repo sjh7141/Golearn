@@ -15,6 +15,9 @@ public class IndexService {
 	@Autowired
 	private IndexRepository indexRepository;
 	
+	@Autowired
+	private CourseMapper courseMapper;
+	
 	// 목차 생성
 	public void saveAll(List<Index> indexs) {
 		indexRepository.saveAll(indexs);
@@ -40,6 +43,10 @@ public class IndexService {
 	// 목차 상세 정보
 	public Index findById(long idxNo) {
 		return indexRepository.findById(idxNo);
+	}
+	
+	public int checkIndex(int userNo, int idxNo) {
+		return courseMapper.checkIndex(userNo, idxNo);
 	}
 
 }

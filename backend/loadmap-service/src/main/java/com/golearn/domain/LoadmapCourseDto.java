@@ -88,4 +88,13 @@ public class LoadmapCourseDto {
 		this.ldmOrder = ldmOrder;
 	}
 
+	@Override
+	public String toString() {
+		return "LoadmapCourseDto [no=" + no + ", cosNo=" + cosNo + ", ldmNo=" + ldmNo + ", mbrNo=" + mbrNo
+				+ ", ldmOrder=" + ldmOrder + ", cosTitle=" + cosTitle + ", cosContent=" + cosContent + ", cosThumbnail="
+				+ cosThumbnail + ", cosBanner=" + cosBanner + "]";
+	}
+	
+	
+
 }

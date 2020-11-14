@@ -151,9 +151,9 @@ public class UserController {
 	}
 	
 	@ApiOperation(value = "채널 구독 취소하기")
-	@DeleteMapping(value = "/like")
-	public ResponseEntity<String> channelDislike(@ApiIgnore @RequestHeader("X-USERNO") String no, @RequestBody Map<String, Integer> map){
-		int res = userService.subscribeCancle(Integer.parseInt(no), map.get("mbr_no"));
+	@DeleteMapping(value = "/like/{mbr_no}")
+	public ResponseEntity<String> channelDislike(@ApiIgnore @RequestHeader("X-USERNO") String no, @PathVariable("mbr_no") int mbrNo){
+		int res = userService.subscribeCancle(Integer.parseInt(no), mbrNo);
 		if(res == 0) {
 			return ResponseEntity.ok("구독 취소 실패");
 		}
