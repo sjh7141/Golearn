@@ -65,6 +65,9 @@ export default {
 </script>
 
 <style scoped>
+.v-card {
+	background-color: #fafafa;
+}
 .pause {
 	animation-play-state: paused;
 }

@@ -2,7 +2,7 @@
 	<v-card
 		class="content-bg card mx-auto"
 		width="250"
-		height="220"
+		height="240"
 		flat
 		tile
 		router
@@ -24,8 +24,12 @@
 				>
 					{{ video.vid_title }}
 				</v-card-title>
-				<v-card-text class="nickname pa-0">
-					고런고런
+				<v-card-text
+					@click.prevent
+					@click="$router.push(`/channel/${video.mbr_no}`)"
+					class="nickname pa-0"
+				>
+					{{ video.mbr_nickname }}
 				</v-card-text>
 				<v-card-subtitle class="pl-0 pt-0 others">
 					<v-icon small>mdi-play</v-icon>
@@ -102,6 +106,13 @@ export default {
 	width: 100%;
 	height: 100%;
 	top: 0px;
+}
+.nickname:hover {
+	color: purple;
+	cursor: pointer;
+}
+.v-card {
+	background-color: #fafafa;
 }
 .v-card .v-image {
 	overflow: hidden;

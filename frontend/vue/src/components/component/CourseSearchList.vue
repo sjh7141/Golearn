@@ -25,19 +25,22 @@
 						show-arrows
 						style="height: 50px;"
 					>
-						<v-slide-item v-for="tag in categories" :key="tag">
+						<v-slide-item
+							v-for="(tag, i) in categories"
+							:key="`tag_${i}`"
+						>
 							<v-btn
 								class="px-1 mx-2"
 								active-class="white--text"
 								text
 								@click="goToSearch(tag)"
 								elevation="0"
-								style="text-transform:none; color:rgb(31,179,215);font-size:13px"
+								style="text-transform:none; color:#8675a9;font-size:13px"
 								:class="{
-									selected: selectedTags.includes(tag),
+									selected: tags === tag.tag_no,
 								}"
 							>
-								{{ tag }}
+								{{ tag.tag_name }}
 							</v-btn>
 						</v-slide-item>
 					</v-slide-group>
@@ -78,49 +81,11 @@ export default {
 	data: () => ({
 		loading: false,
 		selectedTags: [],
-		tags: [],
+		tags: '',
 		search: '',
 		pageNo: 1,
 		courses: [],
-		categories: [
-			'운영체제',
-			'네트워크',
-			'게임개발',
-			'보안',
-			'프로그래밍언어',
-			'알고리즘',
-			'데이터베이스',
-			'블록체인',
-			'자동화',
-			'웹 개발',
-			'서버 개발',
-		],
-		search2: [
-			'C',
-			'C++',
-			'JAVA',
-			'Python',
-			'Javascript',
-			'CSS',
-			'HTML',
-			'Spring',
-			'Django',
-			'Algorithm',
-			'MySQL',
-			'NoSQL',
-			'C1',
-			'C++1',
-			'JAVA1',
-			'Python1',
-			'Javascript1',
-			'CSS1',
-			'HTML1',
-			'Spring1',
-			'Django1',
-			'Algorithm1',
-			'MySQL1',
-			'NoSQL1',
-		],
+		categories: [],
 	}),
 	computed: {},
 	components: {
@@ -131,7 +96,7 @@ export default {
 		...mapActions(['getTags', 'getSearchResult']),
 		setTags() {
 			this.getTags().then(res => {
-				this.tags = res.data;
+				this.categories = res.data;
 			});
 		},
 		infiniteHandler($state) {
@@ -139,6 +104,7 @@ export default {
 				search: this.search ? this.search : '',
 				page_no: this.pageNo,
 				type: 'course',
+				tag_no: this.tags,
 			};
 			this.getSearchResult(payload).then(res => {
 				if (res.data.course.length > 0) {
@@ -157,6 +123,7 @@ export default {
 				search: this.search ? this.search : '',
 				page_no: this.pageNo,
 				type: 'course',
+				tag_no: this.tags,
 			};
 			this.getSearchResult(payload).then(res => {
 				this.courses.push(...res.data.course);
@@ -164,12 +131,8 @@ export default {
 			});
 		},
 		goToSearch(value) {
-			if (this.selectedTags.includes(value)) {
-				const index = this.selectedTags.indexOf(value);
-				this.selectedTags.splice(index, 1);
-			} else {
-				this.selectedTags.push(value);
-			}
+			this.tags = value.tag_no;
+			this.searchCourse();
 		},
 	},
 	created() {
@@ -185,7 +148,7 @@ export default {
 
 <style scoped>
 .content-component {
-	background-color: #fff;
+	background-color: #fafafa;
 }
 .card {
 	background: #f9f9f9 !important;
@@ -202,7 +165,7 @@ export default {
 	width: 10.7%;
 }
 .selected {
-	background-color: rgba(31, 179, 215, 0.12);
+	background-color: #c3aed633;
 }
 </style>
 
