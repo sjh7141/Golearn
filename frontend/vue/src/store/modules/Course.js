@@ -94,11 +94,7 @@ export default {
 					Authorization: context.rootGetters.token,
 				},
 			};
-			return axios.post(
-				URL.courseBuild() + '-service/tag/',
-				payload,
-				config,
-			);
+			return axios.post(URL.courseBuild() + '/tag/', payload, config);
 		},
 		deleteCourseTag(context, payload) {
 			const config = {
@@ -108,8 +104,7 @@ export default {
 			};
 			let variable = payload.list.join(',');
 			return axios.delete(
-				URL.courseBuild() +
-					`-service/tag/${payload.cos_no}/${variable}`,
+				URL.courseBuild() + `/tag/${payload.cos_no}/${variable}`,
 				config,
 			);
 		},

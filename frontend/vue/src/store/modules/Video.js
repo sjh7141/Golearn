@@ -20,7 +20,7 @@ export default {
 			vid_url: '',
 			vid_length: 0,
 			vid_code: '',
-			vid_code_type: 'c_cpp',
+			vid_code_type: 'java',
 		},
 	},
 	getters: {

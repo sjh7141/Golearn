@@ -244,6 +244,7 @@
 <script>
 import IndexVideo from '@/components/course/IndexVideo.vue';
 import { mapGetters } from 'vuex';
+import getBlobDuration from 'get-blob-duration';
 
 export default {
 	components: { IndexVideo },
@@ -283,11 +284,16 @@ export default {
 				self.isVideo = true;
 				self.isNew = true;
 				self.$refs.video.src = reader.result;
+				self.setTotalTime(reader.result);
 			};
 
 			if (file) {
 				reader.readAsDataURL(file);
 			}
+		},
+		async setTotalTime(src) {
+			const duration = await getBlobDuration(src);
+			this.$store.commit('setVideoLength', parseInt(duration));
 		},
 		clickImg() {
 			this.$refs.file.value = null;
@@ -314,6 +320,7 @@ export default {
 			}
 			this.isVideo = true;
 			this.$refs.video.src = this.videoList[this.selectVideoNo].vid_url;
+			this.setTotalTime(this.videoList[this.selectVideoNo].vid_url);
 			this.connectVideo = this.videoList[this.selectVideoNo];
 			this.isNew = false;
 			this.resetVideo();

@@ -70,7 +70,7 @@ export default {
 		return {
 			title: '',
 			rules: [v => v.length > 4 || '5자이상 입력이 필요합니다.'],
-			selectTags: ['C++'],
+			selectTags: ['JAVA'],
 			tags: [],
 			allTags: [],
 			loading: false,
@@ -101,7 +101,7 @@ export default {
 							</li>
 						</ul>
 						<blockquote>
-							모든 국민은 코딩을 배워야합니다. 코딩은 생각하는 방법을 가르쳐주기 때문입니다. 👏
+							모든 국민은 코딩을 배워야합니다. 코딩은 생각하는 방법을 가르쳐주기 때문입니다.
 							<br />
 							– 스티브 잡스(Steve Jobs)
 						</blockquote>

@@ -89,7 +89,7 @@ export default {
 				Python: 'python',
 			},
 			outerType: ['C', 'C++', 'Java', 'Python'],
-			selectType: 'C',
+			selectType: 'Java',
 			source_code: `import java.util.ArrayList;
 import java.util.Vector;
 
@@ -146,7 +146,6 @@ public class InfiniteLoop {
 				this.changeActive(0);
 			} else {
 				this.$store.dispatch('setVideo').then(({ data }) => {
-					console.log(data);
 					this.changeActive(3);
 				});
 			}
