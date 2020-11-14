@@ -35,7 +35,7 @@
 			<v-row no-gutters>
 				<v-col>
 					<v-card-title
-						class="pl-2 pt-3 subtitle-1 font-weight-bold"
+						class="pl-2 pt-3 subtitle-1 title font-weight-bold"
 						style="line-height: 1.2rem"
 					>
 						{{ loadmap.ldm_title }}
@@ -94,5 +94,12 @@ export default {
 	overflow: hidden;
 	-webkit-line-clamp: 7;
 	-webkit-box-orient: vertical;
+}
+.v-card .title {
+	white-space: nowrap;
+	word-break: normal;
+	overflow: hidden;
+	display: block !important;
+	text-overflow: ellipsis;
 }
 </style>
