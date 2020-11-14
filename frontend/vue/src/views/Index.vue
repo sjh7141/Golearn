@@ -99,7 +99,7 @@
 						<v-col
 							cols="12"
 							sm="6"
-							md="4"
+							md="6"
 							lg="3"
 							v-for="(course, i) in courses.slice(0, 4)"
 							:key="`course_${i}`"
@@ -113,7 +113,7 @@
 						<v-col
 							cols="12"
 							sm="6"
-							md="4"
+							md="6"
 							lg="3"
 							v-for="(course, i) in courses.slice(4, 8)"
 							:key="`course_${i}`"
@@ -127,7 +127,7 @@
 						<v-col
 							cols="12"
 							sm="6"
-							md="4"
+							md="6"
 							lg="3"
 							v-for="(course, i) in courses.slice(8, 12)"
 							:key="`course_${i}`"
@@ -160,7 +160,7 @@
 						<v-col
 							cols="12"
 							sm="6"
-							md="4"
+							md="6"
 							lg="3"
 							v-for="(course, i) in courses.slice(3, 7)"
 							:key="`course_${i}`"
