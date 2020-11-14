@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.golearn.domain.CourseManager;
 import com.golearn.domain.CourseManagerResopnse;
+import com.golearn.mapper.CourseMapper;
 import com.golearn.repository.CourseManagerRepository;
 
 @Service
@@ -38,4 +39,5 @@ public class CourseManagerService {
 	public int checkManager(long cosNo, long mbrNo) {
 		return courseManagerRepository.checkManager(cosNo, mbrNo);
 	}
+	
 }
