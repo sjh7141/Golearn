@@ -317,7 +317,9 @@ export default {
 	methods: {
 		...mapActions(['getSearchResult', 'getTags']),
 
-		goToSearch() {},
+		goToSearch(value) {
+			this.$router.push(`/video?tag=${value}`);
+		},
 		changeReview(num) {
 			const len = this.review.length;
 			this.reviewIdx = (this.reviewIdx + num + len) % len;
