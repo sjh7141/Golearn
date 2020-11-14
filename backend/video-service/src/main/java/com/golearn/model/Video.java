@@ -3,11 +3,7 @@ package com.golearn.model;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
@@ -33,12 +29,7 @@ public class Video {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int vidNo;
-//    @OneToOne
-//    @JoinColumn(name="mbr_no")
-//    private Member mbrNo;
-//    @OneToOne
-//    @JoinColumn(name = "vid_pno")
-//    private Video vidPno;
+
     private int mbrNo;
     private int vidPno;
 
@@ -57,6 +48,11 @@ public class Video {
     private String vidThumbnail;
 
     private int vidLength;
+
+    @Column(columnDefinition = "TEXT")
+    private String vidCode;
+
+    private String vidCodeType;
 
     @Transient
     private List<Tag> tags;
