@@ -203,7 +203,9 @@ export default {
 			if (thumbnailURL) {
 				this.$store.commit('setLoadmapThumbnail', thumbnailURL.data);
 			}
-			this.$store.dispatch('setLoadmap').then(() => {});
+			this.$store
+				.dispatch('setLoadmap', { insert: [], delete: [], update: [] })
+				.then(() => {});
 		},
 		saveThumbnail() {
 			let formData = new FormData();

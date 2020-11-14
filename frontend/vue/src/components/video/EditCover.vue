@@ -42,30 +42,24 @@
 				<div>
 					<div class="bold">영상</div>
 					<div class="pb-8" style="text-align:end;">
-						<v-btn outlined class="add-btn" @click="clickVideo">
+						<v-btn
+							outlined
+							class="add-btn mr-3"
+							@click="clickVideo"
+						>
 							<v-icon color="darken-3">
 								mdi-plus
 							</v-icon>
 							<span style="font-size:15px;">업로드</span>
 						</v-btn>
+						<v-btn outlined class="add-btn" @click="isAdd = true">
+							<v-icon color="darken-3">
+								mdi-plus
+							</v-icon>
+							<span style="font-size:15px;">가져오기</span>
+						</v-btn>
 					</div>
 					<v-row class="pb-5">
-						<!-- <v-col md="5">
-							<v-btn
-								tile
-								class="py-7"
-								text
-								color="gray"
-								id="banner-btn"
-								@click="clickVideo"
-								style="text-align:center;"
-							>
-								<v-icon class="upload-icon pt-15">
-									mdi-image-plus
-								</v-icon>
-								<div class="pb-4">파일을 선택해주세요.</div>
-							</v-btn>
-						</v-col> -->
 						<v-col md="8" offset="2">
 							<video
 								v-show="isVideo"
@@ -200,13 +194,45 @@
 				</div>
 			</div>
 			<div class="mt-6" style="text-align:end;">
-				<v-btn outlined class="mr-3" style="border: 1px solid #c9c9c9;">
-					저장
-				</v-btn>
-				<v-btn dark color="#5500ff" @click="changeActive">
+				<v-btn dark color="#5500ff" @click="save" :loading="loading">
 					다음
 				</v-btn>
 			</div>
+			<v-dialog v-model="isAdd" max-width="600">
+				<v-card>
+					<v-card-title class="headline pb-6">
+						보관함 목록
+					</v-card-title>
+					<v-card-text>
+						<template v-for="(element, index) in videoList">
+							<div
+								class="mb-2 border-radius-10"
+								:key="index + '_vid'"
+							>
+								<index-video
+									:video="element"
+									:idx="index"
+									:selectVideoNo="selectVideoNo"
+									@selectVideo="selectVideo"
+								/>
+							</div>
+						</template>
+					</v-card-text>
+					<v-card-actions>
+						<v-spacer></v-spacer>
+						<v-btn
+							color="error darken-1"
+							text
+							@click="isAdd = false"
+						>
+							<span class="bold" @click="resetVideo">취소</span>
+						</v-btn>
+						<v-btn color="darken-1" text @click="confirm">
+							<span class="bold">확인</span>
+						</v-btn>
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
 		</v-col>
 		<v-col cols="3">
 			<div>💕썸네일 고르는 Tip!</div>
@@ -216,12 +242,21 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
+import IndexVideo from '@/components/course/IndexVideo.vue';
+import { mapGetters } from 'vuex';
+
 export default {
-	components: {},
+	components: { IndexVideo },
 	data() {
 		return {
 			isImg: false,
+			isNew: false,
 			isVideo: false,
+			isAdd: false,
+			videoList: [],
+			connectVideo: null,
+			selectVideoNo: -1,
+			loading: false,
 		};
 	},
 	methods: {
@@ -246,6 +281,7 @@ export default {
 
 			reader.onloadend = function() {
 				self.isVideo = true;
+				self.isNew = true;
 				self.$refs.video.src = reader.result;
 			};
 
@@ -264,9 +300,85 @@ export default {
 		deleteImg() {
 			this.isImg = false;
 		},
-		changeActive() {
-			this.$emit('changeActive');
+		selectVideo(idx) {
+			this.selectVideoNo = idx;
 		},
+		resetVideo() {
+			this.selectVideoNo = -1;
+			this.isAdd = false;
+		},
+		confirm() {
+			if (this.selectVideoNo == -1) {
+				alert('영상을 선택해주세요');
+				return;
+			}
+			this.isVideo = true;
+			this.$refs.video.src = this.videoList[this.selectVideoNo].vid_url;
+			this.connectVideo = this.videoList[this.selectVideoNo];
+			this.isNew = false;
+			this.resetVideo();
+		},
+		async save() {
+			if (!this.isVideo) {
+				alert('영상을 업로드 또는 보관함에서 선택해주세요');
+				return;
+			}
+			this.loading = true;
+			var thumbnailURL = await this.saveThumbnail();
+			var videoURL = this.isNew
+				? await this.saveVideo()
+				: this.connectVideo.vid_url;
+			this.loading = false;
+			if (thumbnailURL) {
+				this.$store.commit('setThumbnailURL', thumbnailURL.data);
+			}
+			if (videoURL) {
+				this.$store.commit('setVideoURL', videoURL.data);
+			}
+			this.$emit('changeActive', 0);
+		},
+		saveThumbnail() {
+			let formData = new FormData();
+			if (document.getElementById('file').files[0]) {
+				formData.append(
+					'file',
+					document.getElementById('file').files[0],
+				);
+				return this.$store.dispatch('upload', {
+					data: formData,
+					target: 'video/thumbnail',
+				});
+			}
+		},
+		saveVideo() {
+			let formData = new FormData();
+			if (document.getElementById('videoFile').files[0]) {
+				formData.append(
+					'file',
+					document.getElementById('videoFile').files[0],
+				);
+				return this.$store.dispatch('upload', {
+					data: formData,
+					target: 'video',
+				});
+			}
+		},
+	},
+	mounted() {
+		this.$store.dispatch('getSaveVideo').then(({ data }) => {
+			for (let video of data) {
+				this.$store
+					.dispatch('getUserByNo', video.mbr_no)
+					.then(({ data }) => {
+						video.mbr_nick_name = data.nickname;
+						video.mbr_profile = data.profile;
+						this.videoList.push(video);
+					});
+			}
+		});
+	},
+	computed: {
+		...mapGetters(['uploadVideo']),
 	},
 };
 </script>

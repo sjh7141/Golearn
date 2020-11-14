@@ -49,16 +49,16 @@ export default {
 		getLoadmap(context, payload) {
 			return axios.get(URL.loadmapBuild() + `/${payload}`);
 		},
-		setLoadmap(context) {
+		setLoadmap(context, payload) {
 			const config = {
 				headers: {
 					Authorization: context.rootGetters.token,
 				},
 			};
 			let data = {
-				insert: [],
-				delete: [],
-				update: [],
+				insert: payload.insert,
+				delete: payload.delete,
+				update: payload.update,
 				loadmap: context.state.loadmap,
 			};
 			console.log(data);

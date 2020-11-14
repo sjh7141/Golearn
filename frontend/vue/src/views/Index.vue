@@ -73,7 +73,7 @@
 								large
 								rounded
 								@click="goToSearch(tag)"
-								style="text-transform:none; color:#4287f5;"
+								style="text-transform:none; color:#c3aed6"
 							>
 								<v-icon color="#c3aed6" left>
 									mdi-magnify

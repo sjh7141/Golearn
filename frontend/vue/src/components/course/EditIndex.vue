@@ -59,10 +59,34 @@
 							v-for="(element, index) in list"
 							:key="index + '_index'"
 						>
-							<v-col cols="12">
-								목차{{ index + 1 }}: {{ element.idx_title }}
-							</v-col>
 							<v-col cols="10">
+								<div class="list-icon mr-3">
+									{{ index + 1 }}
+								</div>
+								<div
+									style="display: inline-block; vertical-align:top; word-break:break-all;"
+								>
+									{{ element.idx_title }}
+								</div>
+							</v-col>
+							<v-col cols="2" align="end">
+								<v-icon
+									class="pr-2 pointer"
+									color="darken-2"
+									@click="setEditIndex(index)"
+									style="vertical-align:center;"
+								>
+									mdi-file-edit-outline
+								</v-icon>
+								<v-icon
+									class="pointer"
+									color="darken-2"
+									@click="setDeleteIndex(index)"
+								>
+									mdi-trash-can-outline
+								</v-icon>
+							</v-col>
+							<v-col cols="12">
 								<v-row height="200">
 									<v-col cols="1" />
 									<v-col cols="3">
@@ -112,23 +136,6 @@
 										</div>
 									</v-col>
 								</v-row>
-							</v-col>
-							<v-col cols="2" align="end" align-self="center">
-								<v-icon
-									class="pr-2 pointer"
-									color="darken-2"
-									@click="setEditIndex(index)"
-									style="vertical-align:center;"
-								>
-									mdi-file-edit-outline
-								</v-icon>
-								<v-icon
-									class="pointer"
-									color="darken-2"
-									@click="setDeleteIndex(index)"
-								>
-									mdi-trash-can-outline
-								</v-icon>
 							</v-col>
 						</v-row>
 					</draggable>
@@ -373,12 +380,12 @@ export default {
 			for (let idx in this.list) {
 				let index = this.list[idx];
 				if (
-					(idx + 1 != index.idx_order || index.isEdit) &&
+					(Number(idx) + 1 != index.idx_order || index.isEdit) &&
 					index.idx_no != 0
 				) {
 					updateList.push({
 						cos_no: index.cos_no,
-						idx_order: idx + 1,
+						idx_order: Number(idx) + 1,
 						idx_title: index.idx_title,
 						vid_no: index.vid_no,
 						idx_no: index.idx_no,
@@ -387,7 +394,7 @@ export default {
 				if (index.idx_no == 0) {
 					insertList.push({
 						cos_no: index.cos_no,
-						idx_order: idx + 1,
+						idx_order: Number(idx) + 1,
 						idx_title: index.idx_title,
 						vid_no: index.vid_no,
 					});
@@ -494,5 +501,16 @@ export default {
 
 .selectBorder {
 	border: 3px solid #30dcff;
+}
+
+.list-icon {
+	display: inline-block;
+	border: 1px solid gray;
+	width: 25px;
+	height: 25px;
+	text-align: center;
+	font-size: 15px;
+	border-radius: 6px;
+	vertical-align: top;
 }
 </style>

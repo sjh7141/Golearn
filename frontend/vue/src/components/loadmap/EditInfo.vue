@@ -107,7 +107,11 @@ export default {
 			this.content = this.$refs.editor.getHTML();
 			this.$store.commit('setLoadmapTitle', this.title);
 			this.$store.commit('setLoadmapContent', this.content);
-			this.$store.dispatch('setLoadmap');
+			this.$store.dispatch('setLoadmap', {
+				insert: [],
+				delete: [],
+				update: [],
+			});
 		},
 		changeActive() {
 			this.$emit('changeActive');
@@ -137,6 +141,7 @@ export default {
 				this.$store.commit('setLoadmap', data.loadmap);
 				let self = data.course;
 				for (let course of data.course) {
+					course.isEdit = false;
 					this.$store
 						.dispatch('getUserByNo', course.mbr_no)
 						.then(({ data }) => {
@@ -147,8 +152,9 @@ export default {
 					this.$store
 						.dispatch('getCourseTag', course.cos_no)
 						.then(({ data }) => {
+							console.log(data, course.cos_no);
 							course.tags = [];
-							for (let tag of tags) {
+							for (let tag of data) {
 								course.tags.push(tag.tag_name);
 							}
 							this.$store.commit('setLoadmapCourse', self);

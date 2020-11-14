@@ -48,6 +48,7 @@ export default {
 					Authorization: context.rootGetters.token,
 				},
 			};
+			console.log(context.state.course);
 			return axios.put(
 				URL.courseBuild() + `/`,
 				context.state.course,

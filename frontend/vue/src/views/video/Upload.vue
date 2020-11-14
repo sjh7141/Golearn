@@ -93,10 +93,11 @@ export default {
 		setBanner(src) {
 			this.$refs.img.src = src;
 		},
-		changeActive() {
-			this.select = (this.select + 1) % this.iconList.length;
-			if (this.select == 0) {
+		changeActive(idx) {
+			if (idx == 3) {
 				this.$router.push('/');
+			} else {
+				this.select = (idx + 1) % this.iconList.length;
 			}
 		},
 	},
