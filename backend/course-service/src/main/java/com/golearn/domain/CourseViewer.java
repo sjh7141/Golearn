@@ -6,6 +6,10 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 
+/**
+ * @author HS
+ *
+ */
 @Entity(name = "gl_course_viewer")
 @Table(name = "gl_course_viewer")
 @IdClass(value = CourseViewerKey.class)
@@ -54,4 +58,10 @@ public class CourseViewer {
 		this.idxNo = idxNo;
 	}
 
+	@Override
+	public String toString() {
+		return "CourseViewer [mbrNo=" + mbrNo + ", cosNo=" + cosNo + ", idxNo=" + idxNo + "]";
+	}
+	
+	
 }
