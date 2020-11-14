@@ -26,4 +26,10 @@
 		where mbr_no = #{userNo} and idx_no = #{idxNo}
 	</select>
 	
+	<select id="findByRequestNo" resultType="com.golearn.dto.VideoRequestDto">
+		select *
+		from gl_video_request
+		where vid_req_no = #{vidReqNo} 
+	</select>
+	
 </mapper>
