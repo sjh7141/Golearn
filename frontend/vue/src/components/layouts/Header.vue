@@ -192,7 +192,6 @@ export default {
 			this.$router.push('/');
 		},
 		getNoti() {
-			console.log('asdfasdf');
 			this.getNotification().then(res => {
 				this.notifications = res.data;
 			});
@@ -213,7 +212,7 @@ export default {
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 @import url(https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff);
 .nav {
-	font-family: 'BMJUA', sans-serif !important;
+	font-family: 'BM JUA', sans-serif !important;
 	font-size: 18px;
 }
 .nav:hover {

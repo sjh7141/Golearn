@@ -143,7 +143,7 @@
 					</li>
 					<li class="icon">
 						<a
-							href="https://play.google.com/store/search?q=%EA%B3%A0%EB%9F%B0%EA%B3%A0%EB%9F%B0"
+							href="https://go-learn.s3.ap-northeast-2.amazonaws.com/app-release.apk"
 						>
 							<v-icon class="mdi-36px">mdi-android</v-icon>
 						</a>
