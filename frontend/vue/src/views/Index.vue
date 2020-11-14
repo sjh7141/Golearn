@@ -95,8 +95,8 @@
 							</v-btn>
 						</v-slide-item>
 					</v-slide-group>
-					<v-divider></v-divider>
-					<h2 class="mt-15">❓ 이런 강의 어떠세요</h2>
+					<v-divider class="mt-15"></v-divider>
+					<h2 class="mt-15">이런 강의 어떠세요?</h2>
 
 					<v-row>
 						<v-col
@@ -110,8 +110,8 @@
 							<course-card :course="course"> </course-card>
 						</v-col>
 					</v-row>
-					<v-divider></v-divider>
-					<h2 class="mt-15">🚨 금주의 인기강의</h2>
+					<v-divider class="mt-15"></v-divider>
+					<h2 class="mt-15">금주의 인기강의</h2>
 					<v-row>
 						<v-col
 							cols="12"
@@ -124,8 +124,8 @@
 							<course-card :course="course"> </course-card>
 						</v-col>
 					</v-row>
-					<v-divider></v-divider>
-					<h2 class="mt-15">🔥 수강생 급상승 강의</h2>
+					<v-divider class="mt-15"></v-divider>
+					<h2 class="mt-15">수강생 급상승 강의</h2>
 					<v-row>
 						<v-col
 							cols="12"
@@ -319,7 +319,7 @@ export default {
 		};
 	},
 	methods: {
-		...mapActions(['getSearchResult', 'getTags']),
+		...mapActions(['getSearchResult', 'getTagList']),
 
 		goToSearch(value) {
 			this.$router.push(`/video?tag=${value}`);
@@ -348,7 +348,7 @@ export default {
 			this.banner = res.data.course;
 			this.courses = res.data.course;
 		});
-		this.getTags().then(res => {
+		this.getTagList().then(res => {
 			this.tags = res.data;
 		});
 	},
@@ -461,12 +461,5 @@ export default {
 }
 .tag {
 	font-family: 'BMJUA';
-}
-@font-face {
-	font-family: 'BMJUA';
-	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff')
-		format('woff');
-	font-weight: normal;
-	font-style: normal;
 }
 </style>

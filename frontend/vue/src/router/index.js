@@ -14,6 +14,7 @@ import EditVideo from '@/views/channel/EditVideo.vue';
 
 import Channel from '@/views/channel/Channel.vue';
 import Mypage from '@/views/Mypage.vue';
+import VideoUpload from '@/views/video/Upload.vue';
 import CourseList from '@/views/course/CourseList.vue';
 import LoadmapList from '@/views/loadmap/LoadmapList.vue';
 import VideoList from '@/views/video/VideoList.vue';
@@ -26,7 +27,7 @@ const routes = [
 		component: Index,
 	},
 	{
-		path: '/channel/play',
+		path: '/channel/play/:no',
 		name: 'PlayChannel',
 		component: PlayChannel,
 	},
@@ -39,6 +40,11 @@ const routes = [
 		path: '/login',
 		name: 'Login',
 		component: Login,
+	},
+	{
+		path: '/course/management/:id',
+		name: 'EditCourse',
+		component: EditCourse,
 	},
 	{
 		path: '/course/:no/:id',
@@ -71,12 +77,7 @@ const routes = [
 		component: RequestDetail,
 	},
 	{
-		path: '/course/management/:id',
-		name: 'EditCourse',
-		component: EditCourse,
-	},
-	{
-		path: '/loadmap/management/:id',
+		path: '/roadmap/management/:id',
 		name: 'EditLoadMap',
 		component: EditLoadMap,
 	},
@@ -89,6 +90,16 @@ const routes = [
 		path: '/mypage',
 		name: 'Mypage',
 		component: Mypage,
+	},
+	{
+		path: '/video/upload',
+		name: 'VideoUpload',
+		component: VideoUpload,
+	},
+	{
+		path: '/video/edit',
+		name: 'VideoUpload',
+		component: VideoUpload,
 	},
 ];
 

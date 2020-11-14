@@ -55,6 +55,6 @@ export default {
 
 <style scoped>
 .card {
-	background: #f9f9f9 !important;
+	/* background: #f9f9f9 !important; */
 }
 </style>

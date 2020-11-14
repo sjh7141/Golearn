@@ -141,9 +141,9 @@ export default {
 		ChannelCard,
 	},
 	methods: {
-		...mapActions(['getTags', 'getSearchResult']),
+		...mapActions(['getTagList', 'getSearchResult']),
 		setTags() {
-			this.getTags().then(res => {
+			this.getTagList().then(res => {
 				this.categories = res.data;
 			});
 		},

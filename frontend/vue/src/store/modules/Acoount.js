@@ -80,5 +80,16 @@ export default {
 				config,
 			);
 		},
+		getUserByNo(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(
+				URL.accountBuild() + `/users/no/${payload}`,
+				config,
+			);
+		},
 	},
 };

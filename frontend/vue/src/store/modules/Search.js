@@ -23,7 +23,7 @@ export default {
 		},
 	},
 	actions: {
-		getTags() {
+		getTagList() {
 			return axios.get(URL.searchBuild() + '/tag');
 		},
 		getSearchResult(context, payload) {

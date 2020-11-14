@@ -1,39 +1,54 @@
 <template>
 	<v-row height="200">
 		<v-col
-			class="mx-3"
+			class="mr-3 pb-0"
 			@click="select"
 			style="color:black; cursor: pointer;"
 		>
 			<v-img
-				class="ml-2 mr-4 border-radius-10"
-				src="@/assets/thumbnail_1.jpg"
-				height="130"
-				width="210"
+				class="border-radius-10"
+				:src="course.cos_thumbnail"
+				width="100%"
+				height="300px;"
 				style="display: inline-block;"
 			/>
-			<v-avatar class="mr-2" style="vertical-align:top;">
-				<img src="@/assets/default_profile.png" alt="프로필" />
-			</v-avatar>
+			<v-fab-transition>
+				<v-icon
+					v-if="selectCourseNo == idx"
+					x-large
+					icon
+					color="pink"
+					style="position:absolute; right:40px;"
+				>
+					mdi-check-circle
+				</v-icon>
+			</v-fab-transition>
+		</v-col>
+		<v-col
+			class="mx-3 pt-0"
+			cols="12"
+			@click="select"
+			style="cursor: pointer;"
+		>
 			<div
-				style="display: inline-block; vertical-align:top; word-break:break-all; width:210px;"
+				class="pl-2"
+				style="display: inline-block; vertical-align:top; word-break:break-all;"
 			>
-				<span class="bold" style="font-size: 20px;">
-					{{ course.cosTitle }}
+				<span class="bold" style="font-size: 20px; color:#303030;">
+					{{ course.cos_title }}
 				</span>
 				<br />
-				{{ this.mbr.mbr_nickname }}
-				<br />
+				By {{ course.mbr_nickname }}
 				<v-row>
 					<v-col cols="12" class="py-0">
-						<v-chip
-							class="mr-1 mb-1"
+						<span
+							class="mr-1"
 							v-for="(tag, i) in course.tags"
 							:key="i"
-							small
+							style="font-size:14px; color:#ababab; font-weight:500;"
 						>
-							{{ tag }}
-						</v-chip>
+							#{{ tag }}
+						</span>
 					</v-col>
 				</v-row>
 			</div>
@@ -43,7 +58,7 @@
 
 <script>
 export default {
-	props: ['course', 'idx'],
+	props: ['course', 'idx', 'selectCourseNo'],
 	filters: {
 		diffDate(val) {
 			let diff = (new Date() - new Date(val)) / 1000;
@@ -74,22 +89,14 @@ export default {
 		},
 	},
 	data() {
-		return {
-			mbrNo: 0,
-			mbr: {
-				mbr_nickname: '우리동네대장',
-				mbr_profile: 'default_profile.png',
-			},
-		};
+		return {};
 	},
 	methods: {
 		select() {
 			this.$emit('selectCourse', this.idx);
 		},
 	},
-	mounted() {
-		this.mbrNo = this.course.mbrNo;
-	},
+	mounted() {},
 };
 </script>
 

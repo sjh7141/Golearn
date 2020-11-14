@@ -1,4 +1,16 @@
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+@font-face {
+	font-family: 'BMJUA';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'BMJUA';
+}
+
 .px-5 {
 	padding: 0 20px;
 }

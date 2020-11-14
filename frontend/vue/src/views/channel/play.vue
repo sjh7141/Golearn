@@ -193,7 +193,7 @@ export default {
 		},
 	},
 	mounted() {
-		this.no = this.$route.query.no;
+		this.no = this.$route.params.no;
 		if (!this.no) {
 			alert('존재하지 않는 영상입니다');
 			this.$router.push('/');

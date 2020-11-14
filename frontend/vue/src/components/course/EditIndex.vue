@@ -23,6 +23,10 @@
 							<span class="bold">좋아요</span>한 영상을 등록할 수
 							있습니다.
 						</li>
+						<li>
+							추가된 목차는 <span class="bold">드래그</span>를
+							통해 순서 변경이 가능합니다.
+						</li>
 					</ul>
 				</div>
 				<v-divider class="pb-8"></v-divider>
@@ -47,23 +51,30 @@
 						:disabled="!enabled"
 						class="list-group"
 						ghost-class="ghost"
-						:move="checkMove"
 						@start="dragging = true"
 						@end="dragging = false"
 					>
 						<v-row
 							class="list-group-item ma-1 pa-3 mb-5 index-box"
 							v-for="(element, index) in list"
-							:key="element.index"
+							:key="index + '_index'"
 						>
 							<v-col cols="10">
-								목차{{ index + 1 }}: {{ element.name }}
+								<div class="list-icon mr-3">
+									{{ index + 1 }}
+								</div>
+								<div
+									style="display: inline-block; vertical-align:top; word-break:break-all;"
+								>
+									{{ element.idx_title }}
+								</div>
 							</v-col>
 							<v-col cols="2" align="end">
 								<v-icon
 									class="pr-2 pointer"
 									color="darken-2"
 									@click="setEditIndex(index)"
+									style="vertical-align:center;"
 								>
 									mdi-file-edit-outline
 								</v-icon>
@@ -75,12 +86,69 @@
 									mdi-trash-can-outline
 								</v-icon>
 							</v-col>
+							<v-col cols="12">
+								<v-row height="200">
+									<v-col cols="1" />
+									<v-col cols="3">
+										<v-img
+											v-if="element"
+											class="border-radius-10"
+											:src="
+												element.map.video.vid_thumbnail
+											"
+											width="100%"
+											style="display: inline-block;"
+										/>
+									</v-col>
+									<v-col cols="8">
+										<div
+											v-if="element"
+											style="margin: 0 auto;"
+										>
+											<div
+												style="display: inline-block; vertical-align:top; word-break:break-all;"
+											>
+												<span
+													class="bold"
+													style="font-size: 20px; color:#303030;"
+												>
+													제목
+												</span>
+												<br />
+												<span
+													style="font-size: 15.75px; color:#5e5e5e; font-weight: 500;"
+												>
+													{{
+														element.map.author
+															.mbr_nick_name
+													}}
+													• 조회수
+													{{
+														element.map.video
+															.vid_view
+													}}회 •
+													{{
+														element.map.video
+															.reg_dt | diffDate
+													}}
+												</span>
+											</div>
+										</div>
+									</v-col>
+								</v-row>
+							</v-col>
 						</v-row>
 					</draggable>
 				</div>
 			</div>
 			<div class="mt-6" style="text-align:end;">
-				<v-btn outlined class="mr-3" style="border: 1px solid #c9c9c9;">
+				<v-btn
+					outlined
+					class="mr-3"
+					style="border: 1px solid #c9c9c9;"
+					@click="save"
+					:loading="loading"
+				>
 					저장
 				</v-btn>
 				<v-btn dark color="#5500ff" @click="changeActive">
@@ -103,6 +171,7 @@
 							ref="title"
 							filled
 							placeholder="제목입력 후 강의 영상을 선택해 주세요."
+							error-messages=""
 							maxlength="30"
 						></v-text-field>
 					</v-card-text>
@@ -111,14 +180,12 @@
 						<template v-for="(element, index) in videoList">
 							<div
 								class="mb-2 border-radius-10"
-								:class="{
-									selectBorder: index == selectVideoNo,
-								}"
-								:key="element.vidno"
+								:key="index + '_vid'"
 							>
 								<index-video
 									:video="element"
 									:idx="index"
+									:selectVideoNo="selectVideoNo"
 									@selectVideo="selectVideo"
 								/>
 							</div>
@@ -127,7 +194,7 @@
 					<v-card-actions>
 						<v-spacer></v-spacer>
 						<v-btn color="error darken-1" text @click="resetVideo">
-							취소
+							<span class="bold">취소</span>
 						</v-btn>
 						<v-btn
 							color="darken-1"
@@ -155,10 +222,16 @@
 							color="error darken-1"
 							text
 							@click="isDelete = false"
+							class="bold"
 						>
 							취소
 						</v-btn>
-						<v-btn color="darken-1" text @click="confirmDelete">
+						<v-btn
+							color="darken-1"
+							text
+							@click="confirmDelete"
+							class="bold"
+						>
 							확인
 						</v-btn>
 					</v-card-actions>
@@ -176,7 +249,6 @@ import IndexVideo from '@/components/course/IndexVideo.vue';
 import { mapGetters } from 'vuex';
 
 let order = 1;
-// const nameTemplate = '제목입력과 강의영상을 선택해 주세요.';
 export default {
 	components: {
 		draggable,
@@ -189,105 +261,16 @@ export default {
 			deleteList: [],
 			dragging: false,
 			rules: [v => v.length > 4 || '5자이상 입력이 필요합니다.'],
+			errorMessage: '',
 			isDelete: false,
 			deleteIdx: -1,
 			isAdd: false,
 			isEdit: false,
 			editIdx: -1,
 			editTitle: '',
-			videoList: [
-				{
-					vidNo: 3,
-					mbrNo: 2,
-					vidPno: 0,
-					vidTitle: '테스트 영상',
-					vidContent: null,
-					vidUrl: null,
-					vidView: 18,
-					regDt: '2020-10-27T11:26:14.000+00:00',
-					vidHide: true,
-					vidThumbnail: 'video_default_thumbnail.png',
-					vidLength: 0,
-				},
-				{
-					vidNo: 3,
-					mbrNo: 2,
-					vidPno: 0,
-					vidTitle: '테스트 영상',
-					vidContent: null,
-					vidUrl: null,
-					vidView: 18,
-					regDt: '2020-10-27T11:26:14.000+00:00',
-					vidHide: true,
-					vidThumbnail: 'video_default_thumbnail.png',
-					vidLength: 0,
-				},
-				{
-					vidNo: 3,
-					mbrNo: 2,
-					vidPno: 0,
-					vidTitle: '테스트 영상',
-					vidContent: null,
-					vidUrl: null,
-					vidView: 18,
-					regDt: '2020-10-27T11:26:14.000+00:00',
-					vidHide: true,
-					vidThumbnail: 'video_default_thumbnail.png',
-					vidLength: 0,
-				},
-				{
-					vidNo: 3,
-					mbrNo: 2,
-					vidPno: 0,
-					vidTitle: '테스트 영상 테스트 영상 테스트 영상',
-					vidContent: null,
-					vidUrl: null,
-					vidView: 18,
-					regDt: '2020-10-27T11:26:14.000+00:00',
-					vidHide: true,
-					vidThumbnail: 'video_default_thumbnail.png',
-					vidLength: 0,
-				},
-				{
-					vidNo: 3,
-					mbrNo: 2,
-					vidPno: 0,
-					vidTitle: '테스트 영상',
-					vidContent: null,
-					vidUrl: null,
-					vidView: 18,
-					regDt: '2020-10-27T11:26:14.000+00:00',
-					vidHide: true,
-					vidThumbnail: 'video_default_thumbnail.png',
-					vidLength: 0,
-				},
-				{
-					vidNo: 3,
-					mbrNo: 2,
-					vidPno: 0,
-					vidTitle: '테스트 영상',
-					vidContent: null,
-					vidUrl: null,
-					vidView: 18,
-					regDt: '2020-10-27T11:26:14.000+00:00',
-					vidHide: true,
-					vidThumbnail: 'video_default_thumbnail.png',
-					vidLength: 0,
-				},
-				{
-					vidNo: 3,
-					mbrNo: 2,
-					vidPno: 0,
-					vidTitle: '테스트 영상',
-					vidContent: null,
-					vidUrl: null,
-					vidView: 18,
-					regDt: '2020-10-27T11:26:14.000+00:00',
-					vidHide: true,
-					vidThumbnail: 'video_default_thumbnail.png',
-					vidLength: 0,
-				},
-			],
+			videoList: [],
+			videoLikeList: [],
+			loading: false,
 			selectVideoNo: -1,
 		};
 	},
@@ -298,25 +281,37 @@ export default {
 		},
 		confirmAdd() {
 			if (this.editTitle.length < 5) {
+				this.errorMessage = '5자이상 입력이 필요합니다.';
 				this.$refs.title.focus();
 				return;
 			} else if (this.selectVideoNo == -1) {
 				alert('영상을 선택해 주세요.');
 				return;
+			} else {
+				this.errorMessage = '';
 			}
-			this.list.push({
-				name: this.editTitle,
-				no: 0,
-				order: order++,
-				vid_no: this.selectVideoNo,
-			});
+
+			var newIndex = {
+				cos_no: this.$route.params.id,
+				idx_no: 0,
+				idx_title: this.editTitle,
+				idx_order: order++,
+				map: {
+					video: this.videoList[this.selectVideoNo],
+					author: {
+						mbr_nick_name: this.videoList[this.selectVideoNo]
+							.mbr_nick_name,
+						mbr_profile: this.videoList[this.selectVideoNo]
+							.mbr_profile,
+					},
+				},
+				vid_no: this.videoList[this.selectVideoNo].vid_no,
+				isEdit: false,
+			};
+			this.list.push(newIndex);
 			this.editTitle = '';
 			this.isAdd = false;
 			this.resetVideo();
-		},
-		checkMove() {
-			//e) {
-			// window.console.log('Future index: ' + e.draggedContext.futureIndex);
 		},
 		setDeleteIndex(idx) {
 			this.isDelete = true;
@@ -326,12 +321,12 @@ export default {
 			this.isEdit = true;
 			this.isAdd = true;
 			this.editIdx = idx;
-			this.editTitle = this.list[idx].name;
+			this.editTitle = this.list[idx].idx_title;
 		},
 		confirmDelete() {
 			const temp = this.list[this.deleteIdx];
 			this.list.splice(this.deleteIdx, 1);
-			if (temp.no != 0) {
+			if (temp.idx_no != 0) {
 				this.deleteList.push(temp);
 			}
 			order--;
@@ -339,7 +334,21 @@ export default {
 			this.isDelete = false;
 		},
 		confirmEdit() {
-			this.list[this.editIdx].name = this.editTitle;
+			this.list[this.editIdx].idx_title = this.editTitle;
+			this.list[this.editIdx].isEdit = true;
+			if (this.selectVideoNo != -1) {
+				this.list[this.editIdx].vid_no = this.videoList[
+					this.selectVideoNo
+				].vid_no;
+				this.list[this.editIdx].map.video = this.videoList[
+					this.selectVideoNo
+				];
+				this.list[this.editIdx].map.author = {
+					mbr_nick_name: this.videoList[this.selectVideoNo]
+						.mbr_nick_name,
+					mbr_profile: this.videoList[this.selectVideoNo].mbr_profile,
+				};
+			}
 			this.editIdx = -1;
 			this.editTitle = '';
 			this.isEdit = false;
@@ -359,9 +368,111 @@ export default {
 		changeActive() {
 			this.$emit('changeActive');
 		},
+		save() {
+			let deleteList = [];
+			let insertList = [];
+			let updateList = [];
+			for (let index of this.deleteList) {
+				deleteList.push({
+					idx_no: index.idx_no,
+				});
+			}
+			for (let idx in this.list) {
+				let index = this.list[idx];
+				if (
+					(Number(idx) + 1 != index.idx_order || index.isEdit) &&
+					index.idx_no != 0
+				) {
+					updateList.push({
+						cos_no: index.cos_no,
+						idx_order: Number(idx) + 1,
+						idx_title: index.idx_title,
+						vid_no: index.vid_no,
+						idx_no: index.idx_no,
+					});
+				}
+				if (index.idx_no == 0) {
+					insertList.push({
+						cos_no: index.cos_no,
+						idx_order: Number(idx) + 1,
+						idx_title: index.idx_title,
+						vid_no: index.vid_no,
+					});
+				}
+			}
+			this.loading = true;
+			this.$store
+				.dispatch('setIndex', {
+					delete: deleteList,
+					insert: insertList,
+					update: updateList,
+				})
+				.finally(() => {
+					this.loading = false;
+				});
+		},
 	},
 	computed: {
-		...mapGetters(['course']),
+		...mapGetters(['course', 'user']),
+	},
+	mounted() {
+		this.$store
+			.dispatch('getIndex', this.$route.params.id)
+			.then(({ data }) => {
+				for (let index of data) {
+					index.isEdit = false;
+				}
+				this.list = data;
+				order = data.length + 1;
+			});
+		this.$store.dispatch('getVideos').then(({ data }) => {
+			for (let video of data) {
+				video.mbr_nick_name = this.user.nickname;
+				video.mbr_profile = this.user.profile;
+			}
+			this.videoList = data;
+		});
+		this.$store.dispatch('getLikeVideos').then(({ data }) => {
+			this.videoLikeList = data;
+			for (let video of data) {
+				this.$store
+					.dispatch('getUserByNo', video.mbr_no)
+					.then(({ data }) => {
+						video.mbr_nick_name = data.nickname;
+						video.mbr_profile = data.profile;
+						this.videoList.push(video);
+					});
+			}
+		});
+	},
+	filters: {
+		diffDate(val) {
+			let diff = (new Date() - new Date(val)) / 1000;
+			if (diff < 60) {
+				return '방금 전';
+			}
+			diff /= 60;
+			if (diff < 60) {
+				return parseInt(diff) + '분 전';
+			}
+
+			diff /= 60;
+			if (diff < 24) {
+				return parseInt(diff) + '시간 전';
+			}
+
+			diff /= 24;
+			if (diff < 7) {
+				return parseInt(diff) + '일 전';
+			}
+			if (diff < 30) {
+				return parseInt(diff / 7) + '주 전';
+			}
+			if (diff < 365) {
+				return parseInt(diff / 30) + '달 전';
+			}
+			return parseInt(diff / 365) + '년 전';
+		},
 	},
 };
 </script>
@@ -373,7 +484,7 @@ export default {
 }
 
 .index-box {
-	border: 1px solid #8c94ff;
+	border: 1px solid #e3e3e3;
 	font-weight: 600;
 	font-size: 20px;
 	cursor: move;
@@ -390,5 +501,16 @@ export default {
 
 .selectBorder {
 	border: 3px solid #30dcff;
+}
+
+.list-icon {
+	display: inline-block;
+	border: 1px solid gray;
+	width: 25px;
+	height: 25px;
+	text-align: center;
+	font-size: 15px;
+	border-radius: 6px;
+	vertical-align: top;
 }
 </style>

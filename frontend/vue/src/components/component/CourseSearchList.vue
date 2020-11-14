@@ -17,6 +17,7 @@
 							append-icon="mdi-magnify"
 						>
 						</v-text-field>
+						<v-btn @click="make">코스등록</v-btn>
 					</v-col>
 				</v-row>
 				<v-row>
@@ -93,9 +94,9 @@ export default {
 		CourseCard,
 	},
 	methods: {
-		...mapActions(['getTags', 'getSearchResult']),
+		...mapActions(['getTagList', 'getSearchResult', 'makeCourse']),
 		setTags() {
-			this.getTags().then(res => {
+			this.getTagList().then(res => {
 				this.categories = res.data;
 			});
 		},
@@ -134,6 +135,11 @@ export default {
 			this.tags = value.tag_no;
 			this.searchCourse();
 		},
+		make() {
+			this.makeCourse().then(({ data }) => {
+				this.$router.push(`/course/management/${data.cos_no}`);
+			});
+		},
 	},
 	created() {
 		this.setTags();
@@ -148,10 +154,10 @@ export default {
 
 <style scoped>
 .content-component {
-	background-color: #fafafa;
+	background-color: transparent;
 }
 .card {
-	background: #f9f9f9 !important;
+	/* background: #f9f9f9 !important; */
 }
 .asd {
 	max-width: 1220px;

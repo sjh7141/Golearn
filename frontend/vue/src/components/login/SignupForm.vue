@@ -181,7 +181,7 @@
 						</v-col>
 						<v-col cols="12">
 							<span class="headline">
-								Run&GO 개인정보 처리방침
+								개인정보 처리방침
 							</span>
 						</v-col>
 					</v-row>
@@ -211,7 +211,7 @@
 							</v-btn>
 						</v-col>
 						<v-col cols="12">
-							<span class="headline">Run&Go 이용약관</span>
+							<span class="headline">이용약관</span>
 						</v-col>
 					</v-row>
 				</v-card-title>
@@ -418,7 +418,7 @@ export default {
 							this.signup(data);
 						})
 						.catch(() => {
-							this.loading - false;
+							this.loading = false;
 							alert('업로드 에러');
 						});
 				} else {

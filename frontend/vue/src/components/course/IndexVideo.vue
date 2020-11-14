@@ -1,30 +1,52 @@
 <template>
 	<v-row height="200">
 		<v-col
-			class="mx-3"
+			class="mr-3 pb-0"
 			@click="select"
-			style="color:black; cursor: pointer;"
+			style="color:black; cursor: pointer; text-align:center;"
 		>
 			<v-img
-				class="ml-2 mr-4 border-radius-10"
-				src="@/assets/thumbnail_1.jpg"
-				height="130"
-				width="210"
+				class="border-radius-10"
+				:src="video.vid_thumbnail"
+				width="100%"
+				height="300px;"
 				style="display: inline-block;"
 			/>
-			<v-avatar class="mr-2" style="vertical-align:top;">
-				<img src="@/assets/default_profile.png" alt="프로필" />
-			</v-avatar>
-			<div
-				style="display: inline-block; vertical-align:top; word-break:break-all; width:210px;"
-			>
-				<span class="bold" style="font-size: 20px;">
-					{{ video.vidTitle }}
-				</span>
-				<br />
-				{{ this.mbr.mbr_nickname }}
-				<br />
-				조회수 {{ video.vidView }}회 • {{ video.regDt | diffDate }}
+			<v-fab-transition>
+				<v-icon
+					v-if="selectVideoNo == idx"
+					x-large
+					icon
+					color="pink"
+					style="position:absolute; right:40px;"
+				>
+					mdi-check-circle
+				</v-icon>
+			</v-fab-transition>
+		</v-col>
+		<v-col
+			class="mx-3 pt-0"
+			cols="12"
+			@click="select"
+			style="cursor: pointer;"
+		>
+			<div style="margin: 0 auto;">
+				<v-avatar class="mr-2" style="vertical-align:top;">
+					<img :src="video.mbr_profile" alt="프로필" />
+				</v-avatar>
+				<div
+					style="display: inline-block; vertical-align:top; word-break:break-all;"
+				>
+					<span class="bold" style="color:#303030;">
+						{{ video.vid_title }}
+					</span>
+					<br />
+					<span style="color:#5e5e5e;">
+						{{ video.mbr_nick_name }} • 조회수
+						{{ video.vid_view }}회 •
+						{{ video.reg_dt | diffDate }}
+					</span>
+				</div>
 			</div>
 		</v-col>
 	</v-row>
@@ -32,7 +54,7 @@
 
 <script>
 export default {
-	props: ['video', 'idx'],
+	props: ['video', 'idx', 'selectVideoNo'],
 	filters: {
 		diffDate(val) {
 			let diff = (new Date() - new Date(val)) / 1000;
@@ -63,22 +85,14 @@ export default {
 		},
 	},
 	data() {
-		return {
-			mbrNo: 0,
-			mbr: {
-				mbr_nickname: '우리동네대장',
-				mbr_profile: 'default_profile.png',
-			},
-		};
+		return {};
 	},
 	methods: {
 		select() {
 			this.$emit('selectVideo', this.idx);
 		},
 	},
-	mounted() {
-		this.mbrNo = this.video.mbrNo;
-	},
+	mounted() {},
 };
 </script>
 

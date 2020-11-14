@@ -14,7 +14,7 @@
 					:rules="rules"
 					ref="title"
 					filled
-					placeholder="[코스 이름 예시] CSS의 시작"
+					placeholder="[강의 이름 예시] CSS의 시작"
 					maxlength="30"
 				></v-text-field>
 			</div>
@@ -43,15 +43,12 @@
 			</div>
 			<div style="text-align:end;">
 				<v-btn
-					outlined
-					class="mr-3"
-					style="border: 1px solid #c9c9c9;"
+					dark
+					color="#5500ff"
+					:loading="loading"
 					@click="saveInfo"
 				>
 					저장
-				</v-btn>
-				<v-btn dark color="#5500ff" @click="changeActive">
-					다음
 				</v-btn>
 			</div>
 		</v-col>
@@ -74,13 +71,13 @@ export default {
 			title: '',
 			rules: [v => v.length > 4 || '5자이상 입력이 필요합니다.'],
 			selectTags: ['JAVA'],
-			originalTags: [],
 			tags: [],
 			allTags: [],
+			loading: false,
 			preContent: `
 						<h3>[강의 예시]</h3>
 						<h2>
-							'css 마스터' 코스에 오신걸 환영합니다.
+							'css 마스터'
 						</h2>
 						<p>
 							해당 강의에서는 css의 기본을 다질 수 있습니다.
@@ -114,78 +111,29 @@ export default {
 	},
 	methods: {
 		changeActive() {
-			this.$emit('changeActive');
+			this.$emit('changeActive', 1);
 		},
 		saveInfo() {
 			if (!this.title.length || this.title.length < 5) {
 				this.$refs.title.focus();
 				return;
+			} else if (this.selectTags.length == 0) {
+				alert('태그를 1개이상 선택해주세요.');
+				return;
 			}
 			this.content = this.$refs.editor.getHTML();
-			this.$store.commit('setTitle', this.title);
-			this.$store.commit('setContent', this.content);
-			this.$store.commit('setTags', this.selectTags);
-			this.$store
-				.dispatch('setCourse')
-				.then(() => {})
-				.catch(() => {});
-
-			this.makeTags();
-		},
-		makeTags() {
-			var deleteList = [];
-			var addList = [];
-			var checkList = [];
+			this.$store.commit('setVideoTitle', this.title);
+			this.$store.commit('setVideoContent', this.content);
+			let tempTag = [];
 			for (let tag of this.selectTags) {
-				checkList.push({
-					tag_name: tag,
-					check: false,
-				});
-			}
-			for (let original of this.originalTags) {
-				let flag = false;
-				for (let tag of checkList) {
-					if (tag.tag_name == original.tag_name) {
-						tag.check = true;
-						flag = true;
-						break;
-					}
-				}
-				if (!flag) {
-					deleteList.push(original.tag_no);
-				}
-			}
-			for (let tag of checkList) {
-				if (!tag.check) {
-					for (let item of this.allTags) {
-						if (item.tag_name == tag.tag_name) {
-							addList.push(item.tag_no);
-							break;
-						}
+				for (let originalTag of this.allTags) {
+					if (tag == originalTag.tag_name) {
+						tempTag.push({ tag_no: originalTag.tag_no });
 					}
 				}
 			}
-			if (addList.length != 0) {
-				this.$store
-					.dispatch('setCourseTag', {
-						cos_no: Number(this.$route.params.id),
-						list: addList,
-					})
-					.then(() => {
-						addList = [];
-					});
-			}
-			if (deleteList.length != 0) {
-				this.$store
-					.dispatch('deleteCourseTag', {
-						cos_no: Number(this.$route.params.id),
-						list: deleteList,
-					})
-					.then(() => {
-						deleteList = [];
-					})
-					.catch(() => {});
-			}
+			this.$store.commit('setVideoTags', tempTag);
+			this.changeActive();
 		},
 	},
 	watch: {
@@ -197,33 +145,13 @@ export default {
 		...mapGetters(['course']),
 	},
 	created() {
-		this.$store
-			.dispatch('getCourse', this.$route.params.id)
-			.then(({ data }) => {
-				this.$store.commit('setCourse', data);
-				this.title =
-					this.course.cos_title == null
-						? '[코스 이름 예시] CSS의 시작'
-						: this.course.cos_title;
-				this.content =
-					this.course.cos_content == null
-						? this.preContent
-						: this.course.cos_content;
-			});
+		this.content = this.preContent;
 		this.$store.dispatch('getTagList').then(({ data }) => {
 			this.allTags = data;
 			for (var tag of data) {
 				this.tags.push(tag.tag_name);
 			}
 		});
-		this.$store
-			.dispatch('getCourseTag', this.$route.params.id)
-			.then(({ data }) => {
-				for (var tag of data) {
-					this.selectTags.push(tag.tag_name);
-				}
-				this.originalTags = data;
-			});
 	},
 };
 </script>

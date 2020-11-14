@@ -2,11 +2,7 @@
 	<div>
 		<v-row align="center">
 			<v-img
-				:src="
-					course
-						? course.cos_banner
-						: require('@/assets/golearn_banner.jpg')
-				"
+				src="@/assets/golearn_banner.jpg"
 				height="200"
 				style="filter: grayscale(50%);"
 				ref="img"
@@ -14,7 +10,7 @@
 				<v-col style="height:100%;">
 					<div class="banner-wrapper">
 						<div id="banner-text">
-							{{ title == '' ? title_default : title }}
+							동영상 업로드
 						</div>
 					</div>
 				</v-col>
@@ -23,7 +19,7 @@
 		<v-progress-linear
 			color="#47e0ff"
 			height="6"
-			:value="(select + 1) * 25"
+			:value="(select + 1) * 33.33333"
 		></v-progress-linear>
 		<v-container fluid class="course-wrapper py-0 ">
 			<v-row class="height-100">
@@ -43,22 +39,18 @@
 					</v-row>
 				</v-col>
 				<v-col md="10" style="border-left: 1px solid #f2f2f2">
-					<edit-info
-						@setTitle="setTitle"
-						v-if="select == 0"
-						@changeActive="changeActive"
-					/>
 					<edit-cover
 						@setBanner="setBanner"
-						v-if="select == 1"
+						v-show="select == 0"
 						@changeActive="changeActive"
 					/>
-					<edit-index
-						v-if="select == 2"
+					<edit-info
+						@setTitle="setTitle"
+						v-show="select == 1"
 						@changeActive="changeActive"
 					/>
-					<edit-manager
-						v-if="select == 3"
+					<edit-code
+						v-show="select == 2"
 						@changeActive="changeActive"
 					/>
 				</v-col>
@@ -68,23 +60,21 @@
 </template>
 
 <script>
-import EditInfo from '@/components/course/EditInfo.vue';
-import EditCover from '@/components/course/EditCover.vue';
-import EditIndex from '@/components/course/EditIndex.vue';
-import EditManager from '@/components/course/EditManager.vue';
+import EditInfo from '@/components/video/EditInfo.vue';
+import EditCover from '@/components/video/EditCover.vue';
+import EditCode from '@/components/video/EditCode.vue';
 import { mapGetters } from 'vuex';
 
 export default {
 	components: {
 		EditInfo,
 		EditCover,
-		EditIndex,
-		EditManager,
+		EditCode,
 	},
 	data() {
 		return {
 			id: this.$route.params.id,
-			iconList: ['강의정보', '이미지', '목차', '관리자'],
+			iconList: ['영상', '기본정보', '예시코드'],
 			select: 0,
 			title: '',
 			title_default: '[코스 이름 예시] CSS의 시작',
@@ -103,10 +93,11 @@ export default {
 		setBanner(src) {
 			this.$refs.img.src = src;
 		},
-		changeActive() {
-			this.select = (this.select + 1) % this.iconList.length;
-			if (this.select == 0) {
+		changeActive(idx) {
+			if (idx == 3) {
 				this.$router.push('/');
+			} else {
+				this.select = (idx + 1) % this.iconList.length;
 			}
 		},
 	},

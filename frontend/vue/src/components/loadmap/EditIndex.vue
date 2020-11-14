@@ -63,42 +63,32 @@
 								</div>
 								<v-img
 									class="ml-2 mr-4 border-radius-10"
-									src="@/assets/thumbnail_1.jpg"
+									:src="element.cos_thumbnail"
 									height="130"
 									width="210"
 									style="display: inline-block;"
 								/>
-								<v-avatar
-									class="mr-2"
-									style="vertical-align:top;"
-								>
-									<img
-										src="@/assets/default_profile.png"
-										alt="프로필"
-									/>
-								</v-avatar>
 								<div
-									style="display: inline-block; vertical-align:top; word-break:break-all; width:210px;"
+									style="display: inline-block; vertical-align:top; word-break:break-all;"
 								>
 									<span class="bold" style="font-size: 20px;">
-										{{ element.cosTitle }}
+										{{ element.cos_title }}
 									</span>
 									<br />
-									<span
-										style="font-weight:500; font-size: 17px;"
-										>{{ element.mbr_nickname }}</span
-									>
+									<span style="font-size: 17px;">
+										By {{ element.mbr_nickname }}
+									</span>
 									<br />
 									<v-row>
 										<v-col cols="12" class="py-0">
-											<v-chip
-												class="mr-1 mb-1"
+											<span
+												class="mr-1"
 												v-for="(tag, i) in element.tags"
 												:key="i"
-												small
+												style="font-size:14px; color:#ababab; font-weight:500;"
 											>
-												{{ tag }}
-											</v-chip>
+												#{{ tag }}
+											</span>
 										</v-col>
 									</v-row>
 								</div>
@@ -124,7 +114,13 @@
 				</div>
 			</div>
 			<div class="mt-6" style="text-align:end;">
-				<v-btn outlined class="mr-3" style="border: 1px solid #c9c9c9;">
+				<v-btn
+					outlined
+					class="mr-3"
+					style="border: 1px solid #c9c9c9;"
+					@click="save"
+					:loading="loading"
+				>
 					저장
 				</v-btn>
 				<v-btn dark color="#5500ff" @click="changeActive">
@@ -144,28 +140,26 @@
 						<template v-for="(element, index) in courseList">
 							<div
 								class="mb-2 border-radius-10"
-								:class="{
-									selectBorder: index == selectCourseNo,
-								}"
 								:key="element.cosNo"
 							>
 								<index-course
 									:course="element"
 									:idx="index"
+									:selectCourseNo="selectCourseNo"
 									@selectCourse="selectCourse"
 								/>
 							</div>
 						</template>
-						<v-pagination
+						<!-- <v-pagination
 							v-model="page"
 							:length="30"
 							total-visible="7"
 							@input="next"
-						></v-pagination>
+						></v-pagination> -->
 					</v-card-text>
 					<v-card-actions>
 						<v-spacer></v-spacer>
-						<v-btn color="error darken-1" text @click="resetVideo">
+						<v-btn color="error darken-1" text @click="resetCourse">
 							취소
 						</v-btn>
 						<v-btn
@@ -232,114 +226,27 @@ export default {
 			isAdd: false,
 			isEdit: false,
 			editIdx: -1,
-			editTitle: '',
-			courseList: [
-				{
-					cosNo: 3,
-					mbrNo: 2,
-					mbr_nickname: '하늘을날자',
-					vidPno: 0,
-					cosTitle: '파이썬 기초1',
-					cosContent: null,
-					regDt: '2020-10-27T11:26:14.000+00:00',
-					courseThumbnail: 'video_default_thumbnail.png',
-					tags: [
-						'C',
-						'Python',
-						'Python',
-						'Python',
-						'Python',
-						'Python',
-						'Python',
-						'Python',
-					],
-				},
-				{
-					cosNo: 4,
-					mbrNo: 2,
-					mbr_nickname: '하늘을날자',
-					vidPno: 0,
-					cosTitle: '파이썬 기초2',
-					cosContent: null,
-					regDt: '2020-10-27T11:26:14.000+00:00',
-					courseThumbnail: 'video_default_thumbnail.png',
-					tags: ['C', 'Python'],
-				},
-				{
-					cosNo: 5,
-					mbrNo: 2,
-					mbr_nickname: '하늘을날자',
-					vidPno: 0,
-					cosTitle: '파이썬 기초3',
-					cosContent: null,
-					regDt: '2020-10-27T11:26:14.000+00:00',
-					courseThumbnail: 'video_default_thumbnail.png',
-					tags: ['C', 'Python'],
-				},
-				{
-					cosNo: 6,
-					mbrNo: 2,
-					mbr_nickname: '하늘을날자',
-					vidPno: 0,
-					cosTitle: '파이썬 기초 파이썬 기초 파이썬 기초',
-					cosContent: null,
-					regDt: '2020-10-27T11:26:14.000+00:00',
-					courseThumbnail: 'video_default_thumbnail.png',
-					tags: ['C', 'Python'],
-				},
-				{
-					cosNo: 7,
-					mbrNo: 2,
-					mbr_nickname: '하늘을날자',
-					vidPno: 0,
-					cosTitle: '파이썬 기초5',
-					cosContent: null,
-					regDt: '2020-10-27T11:26:14.000+00:00',
-					courseThumbnail: 'video_default_thumbnail.png',
-					tags: ['C', 'Python'],
-				},
-				{
-					cosNo: 8,
-					mbrNo: 2,
-					mbr_nickname: '하늘을날자',
-					vidPno: 0,
-					cosTitle: '파이썬 기초6',
-					cosContent: null,
-					regDt: '2020-10-27T11:26:14.000+00:00',
-					courseThumbnail: 'video_default_thumbnail.png',
-					tags: ['C', 'Python'],
-				},
-				{
-					cosNo: 9,
-					mbrNo: 2,
-					mbr_nickname: '하늘을날자',
-					vidPno: 0,
-					cosTitle: '파이썬 기초7',
-					cosContent: null,
-					regDt: '2020-10-27T11:26:14.000+00:00',
-					courseThumbnail: 'video_default_thumbnail.png',
-					tags: ['C', 'Python'],
-				},
-			],
+			courseList: [],
 			selectCourseNo: -1,
 			page: 1,
+			loading: false,
 		};
 	},
 	methods: {
 		setAdd() {
 			this.isAdd = true;
-			this.editTitle = '';
 		},
 		confirmAdd() {
 			if (this.selectCourseNo == -1) {
 				alert('코스를 선택해 주세요.');
 				return;
 			}
-			const selected = this.courseList[this.selectCourseNo];
+			let selected = this.courseList[this.selectCourseNo];
+			selected.no = 0;
+			selected.isEdit = false;
 			this.list.push(selected);
-			this.editTitle = '';
 			this.isAdd = false;
-			this.resetVideo();
+			this.resetCourse();
 		},
 		setDeleteIndex(idx) {
 			this.isDelete = true;
@@ -349,7 +256,6 @@ export default {
 			this.isEdit = true;
 			this.isAdd = true;
 			this.editIdx = idx;
-			this.editTitle = this.list[idx].name;
 		},
 		confirmDelete() {
 			const temp = this.list[this.deleteIdx];
@@ -363,13 +269,13 @@ export default {
 		},
 		confirmEdit() {
 			const selected = this.courseList[this.selectCourseNo];
+			selected.isEdit = true;
 			this.list[this.editIdx] = selected;
 
 			this.editIdx = -1;
-			this.editTitle = '';
 			this.isEdit = false;
 			this.isAdd = false;
-			this.resetVideo();
+			this.resetCourse();
 		},
 		getOrder() {
 			return order;
@@ -377,7 +283,7 @@ export default {
 		selectCourse(idx) {
 			this.selectCourseNo = idx;
 		},
-		resetVideo() {
+		resetCourse() {
 			this.selectCourseNo = -1;
 			this.isAdd = false;
 		},
@@ -385,12 +291,76 @@ export default {
 			this.$emit('changeActive');
 		},
 		next(page) {
-			//api 나오면 검색결과 페이징해서 list에 반영
+			//페이징 미정
 			this.page = page;
+		},
+		save() {
+			let deleteList = [];
+			let insertList = [];
+			let updateList = [];
+			for (let course of this.deleteList) {
+				deleteList.push({
+					no: course.no,
+				});
+			}
+			for (let idx in this.list) {
+				let course = this.list[idx];
+				if (
+					(Number(idx) + 1 != course.ldm_order || course.isEdit) &&
+					course.no != 0
+				) {
+					updateList.push({
+						no: course.no,
+						ldm_order: Number(idx) + 1,
+						cos_no: course.cos_no,
+						ldm_no: Number(this.$route.params.id),
+					});
+				}
+				if (course.no == 0) {
+					insertList.push({
+						ldm_order: Number(idx) + 1,
+						cos_no: course.cos_no,
+						ldm_no: Number(this.$route.params.id),
+					});
+				}
+			}
+			this.loading = true;
+			this.$store
+				.dispatch('setLoadmap', {
+					delete: deleteList,
+					insert: insertList,
+					update: updateList,
+				})
+				.finally(() => {
+					this.loading = false;
+				});
 		},
 	},
 	computed: {
-		...mapGetters(['course']),
+		...mapGetters(['loadmap', 'loadmapCourse']),
+	},
+	mounted() {
+		this.list = this.loadmapCourse;
+		order = this.loadmapCourse.length + 1;
+		this.$store.dispatch('getLikeCourses').then(({ data }) => {
+			for (let course of data) {
+				this.$store
+					.dispatch('getUserByNo', course.mbr_no)
+					.then(({ data }) => {
+						course.mbr_nickname = data.nickname;
+						course.mbr_profile = data.profile;
+						this.$store
+							.dispatch('getCourseTag', course.cos_no)
+							.then(({ data }) => {
+								course.tags = [];
+								for (let tag of data) {
+									course.tags.push(tag.tag_name);
+								}
+								this.courseList.push(course);
+							});
+					});
+			}
+		});
 	},
 };
 </script>
