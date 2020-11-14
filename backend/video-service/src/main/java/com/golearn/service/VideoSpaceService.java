@@ -35,4 +35,8 @@ public class VideoSpaceService {
         VideoCompositeKey videoCompositekey = new VideoCompositeKey(vidNo, mbrNo);
         videoSpaceRepository.deleteById(videoCompositekey);
     }
+    
+    public int checkMyVideo(long mbrNo, long vidNo) {
+    	return videoSpaceRepository.checkMyVideo(mbrNo, vidNo);
+    }
 }

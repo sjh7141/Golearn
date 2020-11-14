@@ -45,5 +45,12 @@ public class VideoSpaceController {
         videoSpaceService.removeVideoInSpace(vidNo, mbrNo);
         return new ResponseEntity(HttpStatus.OK);
     }
+    
+    @ApiOperation(value= "보관함 내 영상 여부")
+    @GetMapping("save/{vid_no}")
+    public ResponseEntity checkMyVideo(@PathVariable("vid_no") int vidNo, @ApiIgnore @RequestHeader("X-USERNO") int mbrNo) {
+    	int result = videoSpaceService.checkMyVideo(mbrNo, vidNo);
+    	return result > 0 ? new ResponseEntity<Boolean>(true, HttpStatus.OK) : new ResponseEntity<Boolean>(false, HttpStatus.OK); 
+    }
 }
 //
