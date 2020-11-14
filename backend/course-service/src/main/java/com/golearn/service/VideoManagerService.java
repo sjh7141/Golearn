@@ -1,5 +1,6 @@
 package com.golearn.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.golearn.domain.VideoManager;
 import com.golearn.domain.VideoVersioningResopnse;
-import com.golearn.repository.CourseManagerRepository;
 import com.golearn.repository.VideoManagerRepository;
 
 @Service
@@ -23,6 +23,7 @@ public class VideoManagerService {
 
 	// 영상 요청 승인|거부
 	public VideoManager updateVideo(String mbrNo, VideoManager request) {
+		request.setRegDt(new Date());
 		request.setMbrAdminNo(Long.parseLong(mbrNo));
 		createVersioning(request);
 		return videoManagerRepository.save(request);
