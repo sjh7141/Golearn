@@ -65,10 +65,6 @@ public class VideoManagerController {
 			@ApiIgnore @RequestHeader(value = "X-USERNO") String mbrNo, @PathVariable("cos_no") long cosNo,
 			@RequestParam("page") int page) {
 		logger.info(">> LOAD getRequestVideos <<");
-		System.out.println(cosNo + " " + mbrNo);
-		if(courseManagerService.checkManager(cosNo, Long.parseLong(mbrNo)) == 0) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-		}
 		List<VideoManager> response = videoManagerService.perPageBy20(cosNo, page);
 		return new ResponseEntity<List<VideoManager>>(response, HttpStatus.CREATED);
 	}
