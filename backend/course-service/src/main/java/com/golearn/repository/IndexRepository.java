@@ -12,4 +12,5 @@ public interface IndexRepository extends CrudRepository<Index, Long>{
 	
 	// 목차 상세 정보 조회
 	Index findById(long idxNo);
+	
 }
