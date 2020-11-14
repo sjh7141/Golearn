@@ -34,4 +34,8 @@ public class LikeService {
 	public List<Course> findByViewer(int userNo) {
 		return courseMapper.findByViewer(userNo);
 	}
+
+	public int checkLike(int userNo, int cosNo) {
+		return courseMapper.checkLike(userNo, cosNo);
+	}
 }

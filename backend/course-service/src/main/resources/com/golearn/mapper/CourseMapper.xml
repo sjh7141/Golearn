@@ -14,4 +14,16 @@
 		on cv.mbr_no = #{userNo} and c.cos_no = cv.cos_no;
 	</select>
 	
+	<select id="checkLike" resultType="Integer">
+		select count(*)
+		from gl_course_like
+		where mbr_no = #{userNo} and cos_no = #{cosNo}
+	</select>
+	
+	<select id="checkIndex" resultType="Integer">
+		select count(*)
+		from gl_course_viewer
+		where mbr_no = #{userNo} and idx_no = #{idxNo}
+	</select>
+	
 </mapper>
