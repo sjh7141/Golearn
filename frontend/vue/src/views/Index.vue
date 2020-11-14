@@ -30,7 +30,10 @@
 								class="title py-5"
 								v-html="item.cos_title"
 							></div>
-							<div class="text" v-html="item.cos_content"></div>
+							<div
+								class="text content"
+								v-html="item.cos_content"
+							></div>
 							<div>
 								<v-row>
 									<div class="px-5">
@@ -77,7 +80,7 @@
 							:key="`tag_${index}`"
 						>
 							<v-btn
-								class="mx-2"
+								class="mx-2 tag"
 								active-class="blue white--text"
 								color="white"
 								large
@@ -312,6 +315,7 @@ export default {
 			cycle: true,
 			tags: [],
 			banner: [],
+			courses: [],
 		};
 	},
 	methods: {
@@ -441,5 +445,28 @@ export default {
 #description {
 	background-color: #f5f7f8;
 	font-family: 'Lato', 'Spoqa Han Sans';
+}
+.content {
+	color: black;
+	font-weight: bold;
+	font-size: 0.85rem;
+	word-break: break-all;
+	display: -webkit-box;
+	margin-bottom: 0.5rem;
+	line-height: 1.2em;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	-webkit-line-clamp: 7;
+	-webkit-box-orient: vertical;
+}
+.tag {
+	font-family: 'BMJUA';
+}
+@font-face {
+	font-family: 'BMJUA';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
 }
 </style>
