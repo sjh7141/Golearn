@@ -85,7 +85,6 @@ public class IndexController {
 	public ResponseEntity completeIndex(@ApiIgnore @RequestHeader("X-USERNO") String no, @RequestBody CourseViewer request) {
 		logger.info(">> LOAD completeIndex <<");
 		request.setMbrNo(Long.parseLong(no));
-		System.out.println(request.toString());
 		courseViewerService.save(request);
 		return new ResponseEntity(HttpStatus.NO_CONTENT);
 	}

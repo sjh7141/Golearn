@@ -12,7 +12,9 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.golearn.domain.LoadmapCourseDto;
 import com.golearn.domain.LoadmapDto;
 import com.golearn.mapper.LoadmapMapper;
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 @Service
@@ -29,7 +31,7 @@ public class LoadmapServiceImpl implements LoadmapService{
 	@Override
 	@Transactional
 	public int updateLoadmap(Map<String, Object> map, int userNo) {
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
 		LoadmapDto loadmap = mapper.convertValue(map.get("loadmap"), LoadmapDto.class);
