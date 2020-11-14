@@ -2,11 +2,19 @@
 	<div>
 		<div style="font-size:18px;" class="mb-5">
 			<span> 댓글 </span>
-			<span class="basic" style="font-weight:600"> 3 </span>
+			<span class="basic" style="font-weight:600">
+				{{ reply.length }}
+			</span>
 		</div>
 
 		<v-avatar size="48" style="float:left;" class="mr-5">
-			<v-img src="@/assets/default_profile.png" />
+			<v-img
+				:src="
+					user
+						? user.profile
+						: 'https://go-learn.s3.ap-northeast-2.amazonaws.com/member/profile/profile_default1.png'
+				"
+			/>
 		</v-avatar>
 
 		<v-textarea
@@ -14,12 +22,12 @@
 			no-resize
 			outlined
 			auto-grow
-			tile
 			flat
 			rows="5"
 			color="#8e8e8e"
 			@click="disableFocus"
 			placeholder="내용을 입력해주세요."
+			style="border-radius:1px;"
 		>
 			<template slot="append">
 				<v-btn
@@ -29,7 +37,9 @@
 					depressed
 					outlined
 					tile
-					:color="replyText.length ? 'rgb(60, 65, 223)' : '#e4e4e4'"
+					:color="replyText.length ? '#9382D7' : '#e4e4e4'"
+					style="font-size:14px;"
+					@click="replyText.length ? writeComment() : null"
 				>
 					등록
 				</v-btn>
@@ -44,22 +54,26 @@
 			>
 				<div style="width:100%;">
 					<v-avatar size="48" style="float:left;" class="mx-5">
-						<v-img src="@/assets/default_profile.png" />
+						<v-img :src="item.member.mbr_profile" />
 					</v-avatar>
 					<div class="my-5">
 						<div>
 							<span style="font-size:13px; font-weight:700;">
-								{{ item.nickname }}
+								{{ item.member.mbr_nickname }}
 								<span
 									style="font-size:12px; font-weight:400; color:#979797;"
 								>
-									&middot; {{ item.date }}
+									&middot;
+									{{
+										item.reg_dt
+											| moment('YYYY-MM-DD hh:mm:ss')
+									}}
 								</span>
 							</span>
 						</div>
 						<div>
 							<span style="font-size:13px; font-weight:400;">
-								{{ item.content }}
+								{{ item.vid_comment }}
 							</span>
 						</div>
 						<div class="mt-5" style="margin-left:88px;">
@@ -70,19 +84,22 @@
 								tile
 								class="px-3"
 								style="font-size:13px;"
-								@click="item.active = !item.active"
+								@click="getVideoSubComments(item)"
 							>
 								<span class="black--text">
 									답글
 									<span
 										class="basic"
 										style="font-size:14px;"
-										v-show="item.count"
+										v-show="item.num_of_reply"
 									>
-										{{ item.count }}
+										{{ item.num_of_reply }}
 									</span>
 								</span>
-								<span v-show="!item.count" class="black--text">
+								<span
+									v-show="!item.num_of_reply"
+									class="black--text"
+								>
 									쓰기
 								</span>
 								<v-icon class="ma-0 pa-0" color="black">
@@ -94,7 +111,7 @@
 								</v-icon>
 							</v-btn>
 						</div>
-						<div v-show="item.active">
+						<div v-if="item.active">
 							<div
 								v-for="(child, j) in item.child"
 								:key="`child_${j}`"
@@ -107,18 +124,24 @@
 									style="float:left;"
 									class="mx-5 my-5"
 								>
-									<v-img src="@/assets/default_profile.png" />
+									<v-img :src="item.member.mbr_profile" />
 								</v-avatar>
 								<div style="float:left;" class="my-5">
 									<div>
 										<span
 											style="font-size:13px; font-weight:700;"
 										>
-											{{ child.nickname }}
+											{{ child.member.mbr_nickname }}
 											<span
 												style="font-size:12px; font-weight:400; color:#979797;"
 											>
-												&middot; {{ child.date }}
+												&middot;
+												{{
+													child.reg_dt
+														| moment(
+															'YYYY-MM-DD hh:mm:ss',
+														)
+												}}
 											</span>
 										</span>
 									</div>
@@ -126,7 +149,7 @@
 										<span
 											style="font-size:13px; font-weight:400;"
 										>
-											{{ child.content }}
+											{{ child.vid_comment }}
 										</span>
 									</div>
 								</div>
@@ -139,7 +162,13 @@
 									style="float:left;"
 									class="mx-5"
 								>
-									<v-img src="@/assets/default_profile.png" />
+									<v-img
+										:src="
+											user
+												? user.profile
+												: 'https://go-learn.s3.ap-northeast-2.amazonaws.com/member/profile/profile_default1.png'
+										"
+									/>
 								</v-avatar>
 
 								<v-textarea
@@ -153,6 +182,7 @@
 									color="#8e8e8e"
 									placeholder="내용을 입력해주세요."
 									@click="disableFocus"
+									style="border-radius:1px;"
 								>
 									<template slot="append">
 										<v-btn
@@ -164,9 +194,11 @@
 											tile
 											:color="
 												item.replyText.length
-													? 'rgb(60, 65, 223)'
+													? '#9382D7'
 													: '#e4e4e4'
 											"
+											style="font-size:14px;"
+											@click="writeSubComment(item)"
 										>
 											등록
 										</v-btn>
@@ -183,64 +215,75 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
 	name: 'VideoComment',
+	props: ['no'],
+	watch: {
+		no() {
+			this.getVideoComments();
+		},
+	},
 	data() {
 		return {
 			replyText: '',
-			reply: [
-				{
-					profile: '@/assets/default_profile.png',
-					nickname: '미용쓰기',
-					date: '2020-10-29 10:16:06',
-					content: '좋은 정보 감사합니다.',
-					count: 3,
-					child: [
-						{
-							profile: '@/assets/default_profile.png',
-							nickname: '미용쓰기',
-							date: '2020-10-29 10:16:06',
-							content: '좋은 정보 감사합니다.',
-						},
-						{
-							profile: '@/assets/default_profile.png',
-							nickname: 'asm9677',
-							date: '2020-10-29 11:52:32',
-							content: '좋아요',
-						},
-						{
-							profile: '@/assets/default_profile.png',
-							nickname: 'tlagyqls7',
-							content: '굿',
-							date: '2020-10-29 13:44:08 ',
-						},
-					],
-					replyText: '',
-					active: false,
-				},
-				{
-					profile: '@/assets/default_profile.png',
-					nickname: 'asm9677',
-					date: '2020-10-29 11:52:32',
-					content: '좋아요',
-					count: 0,
-					replyText: '',
-					active: false,
-				},
-				{
-					profile: '@/assets/default_profile.png',
-					nickname: 'tlagyqls7',
-					content: '굿',
-					date: '2020-10-29 13:44:08 ',
-					count: 0,
-					replyText: '',
-					active: false,
-				},
-			],
+			reply: [],
+			user: {},
 		};
 	},
-	mounted() {},
+	mounted() {
+		this.getVideoComments();
+		this.user = this.$store.getters.user;
+	},
 	methods: {
+		...mapActions([
+			'_getVideoComments',
+			'_getVideoSubComments',
+			'_writeComment',
+			'_writeSubComment',
+		]),
+
+		getVideoComments() {
+			this._getVideoComments(this.no).then(({ data }) => {
+				for (let i in data) {
+					data[i].replyText = '';
+					data[i].active = false;
+					data[i].child = [];
+				}
+				this.reply = data;
+			});
+		},
+
+		writeComment() {
+			this._writeComment({
+				vid_no: this.no,
+				vid_comment: this.replyText,
+			}).then(() => {
+				this.getVideoComments();
+			});
+		},
+
+		getVideoSubComments(item) {
+			item.active = !item.active;
+
+			this._getVideoSubComments({
+				vid_no: this.no,
+				vid_cmt_pno: item.vid_cmt_no,
+			}).then(({ data }) => {
+				item.child = data;
+			});
+		},
+
+		writeSubComment(item) {
+			this._writeSubComment({
+				vid_no: this.no,
+				vid_cmt_pno: item.vid_cmt_no,
+				vid_comment: item.replyText,
+			}).then(() => {
+				this.getVideoComments(item);
+			});
+		},
+
 		disableFocus() {
 			const qs = document.querySelector('.v-input--is-focused');
 			if (qs) {
