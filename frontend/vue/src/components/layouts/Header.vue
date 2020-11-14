@@ -7,7 +7,7 @@
 		>
 			<v-card flat tile style="background-color:transparent">
 				<router-link to="/">
-					<v-img src="@/assets/logo.png" max-width="60" contain />
+					<v-img src="@/assets/logo.png" max-width="40" contain />
 				</router-link>
 			</v-card>
 			<template v-for="(menu, idx) in menus">
@@ -210,9 +210,9 @@ export default {
 
 <style scoped>
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
-@import url(//db.onlinewebfonts.com/c/b0a3d74c91dbd95db951a7c8c8ad6089?family=BM+JUA);
+@import url(https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff);
 .nav {
-	font-family: 'BM JUA', sans-serif !important;
+	font-family: 'BMJUA', sans-serif !important;
 	font-size: 18px;
 }
 .nav:hover {
