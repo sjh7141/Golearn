@@ -210,9 +210,8 @@ export default {
 
 <style scoped>
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
-@import url(https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff);
 .nav {
-	font-family: 'BM JUA', sans-serif !important;
+	font-family: 'BMJUA', sans-serif !important;
 	font-size: 18px;
 }
 .nav:hover {
@@ -222,5 +221,12 @@ export default {
 
 .append-icon:focus {
 	color: rgb(60, 65, 223) !important;
+}
+@font-face {
+	font-family: 'BMJUA';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
 }
 </style>
