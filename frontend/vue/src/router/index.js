@@ -32,7 +32,7 @@ const routes = [
 		component: PlayChannel,
 	},
 	{
-		path: '/channel/edit',
+		path: '/video/edit',
 		name: 'EditVideo',
 		component: EditVideo,
 	},
@@ -93,11 +93,6 @@ const routes = [
 	},
 	{
 		path: '/video/upload',
-		name: 'VideoUpload',
-		component: VideoUpload,
-	},
-	{
-		path: '/video/edit',
 		name: 'VideoUpload',
 		component: VideoUpload,
 	},

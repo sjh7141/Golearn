@@ -112,7 +112,10 @@
 													class="bold"
 													style="font-size: 20px; color:#303030;"
 												>
-													제목
+													{{
+														element.map.video
+															.vid_title
+													}}
 												</span>
 												<br />
 												<span
@@ -175,12 +178,26 @@
 							maxlength="30"
 						></v-text-field>
 					</v-card-text>
+					<div class="bold px-6 pb-2">영상검색</div>
+					<v-card-text class="pb-0">
+						<v-text-field
+							v-model="search"
+							ref="search"
+							filled
+							placeholder="영상 제목을 검색해주세요."
+							maxlength="30"
+						></v-text-field>
+					</v-card-text>
 					<div class="bold px-6 pb-2">영상목록</div>
 					<v-card-text>
 						<template v-for="(element, index) in videoList">
 							<div
 								class="mb-2 border-radius-10"
 								:key="index + '_vid'"
+								v-show="
+									element.vid_title &&
+										element.vid_title.includes(search)
+								"
 							>
 								<index-video
 									:video="element"
@@ -272,6 +289,7 @@ export default {
 			videoLikeList: [],
 			loading: false,
 			selectVideoNo: -1,
+			search: '',
 		};
 	},
 	methods: {

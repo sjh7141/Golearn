@@ -340,7 +340,7 @@ export default {
 					vid_no: data,
 				})
 					.then(({ data }) => {
-						this.$router.push('/');
+						this.$router.push('/video/upload');
 					})
 					.catch(res => {
 						alert('업로드 실패!!');

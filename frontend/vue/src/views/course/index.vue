@@ -9,10 +9,10 @@
 
 		<v-layout wrap style="width:1080px; margin:0 auto;" ref="contain">
 			<v-flex md3 lg3 xl3>
-				<v-card flat tile class="mt-10">
+				<v-card flat tile class="mt-10" style="font-family: 'BMJUA';">
 					<v-list-item>
 						<v-list-item-subtitle
-							style="font-size:14px; color:black; font-weight:600;"
+							style="font-size:16px; color:black; font-weight:400;"
 							@click="move(`/course/${no}/intro`, 0, -1)"
 						>
 							소개
@@ -20,7 +20,7 @@
 					</v-list-item>
 					<v-list-item>
 						<v-list-item-subtitle
-							style="font-size:14px; color:black; font-weight:600;"
+							style="font-size:16px; color:black; font-weight:400;"
 							@click="move(`/course/${no}/requestlist`, 1, -1)"
 						>
 							요청 목록
@@ -28,7 +28,7 @@
 					</v-list-item>
 					<v-list-item>
 						<v-list-item-subtitle
-							style="font-size:14px; color:black; font-weight:600;"
+							style="font-size:16px; color:black; font-weight:400;"
 						>
 							목차
 						</v-list-item-subtitle>
@@ -47,7 +47,7 @@
 						"
 					>
 						<v-list-item-subtitle
-							style="font-size:12px;"
+							style="font-size:14px;"
 							:style="{
 								color:
 									chapter == item.idx_no

@@ -9,7 +9,7 @@
 					:key="`banner_${index}`"
 					:style="{
 						'background-image': 'url(' + item.cos_thumbnail + ')',
-						'background-size': '3000%',
+						'background-size': '10000%',
 					}"
 				>
 					<v-row
@@ -138,19 +138,26 @@
 							<course-card :course="course"> </course-card>
 						</v-col>
 					</v-row>
-					<v-row class="py-15">
+					<v-row class="mt-15" style="height:220px;">
 						<v-img
-							src="https://cdn.inflearn.com/public/main_sliders/38744ba0-b12a-491a-9ca2-43375c3905ba/share-you.jpg"
+							:src="require('@/assets/nature.jpg')"
+							style="position: absolute; left:0px;"
+							height="220"
+							width="100%"
+							position="50% 75%"
 						>
 							<div class="py-10 px-15">
 								<span
 									class="bold"
-									style="font-size: 30px; color:#2e2e2e;"
+									style="font-size: 40px; color:#2e2e2e; font-family: 'BMJUA';"
 								>
 									# 영상참여
 								</span>
 								<br />
-								<span class="bold" style="color:#808080;">
+								<span
+									class="bold"
+									style="color:#2e2e2e; font-family: 'BMJUA';"
+								>
 									여러분의 작은참여가 교육의 시작을
 									만들어냅니다
 								</span>

@@ -96,9 +96,6 @@
 										"
 										alt="프로필"
 									/>
-									<!-- <span class="white--text headline">{{
-									user.initials
-								}}</span> -->
 								</v-avatar>
 							</v-btn>
 						</template>
@@ -171,7 +168,7 @@
 			</div>
 		</v-app-bar>
 		<v-dialog v-model="video" max-width="700">
-			<v-card>
+			<v-card color="#f9f9f9">
 				<v-card-text class="pt-5">
 					<v-row justify="center">
 						<v-img
