@@ -153,7 +153,7 @@ export default {
 			});
 		},
 		vid_no() {
-			console.dir(this.vid_no);
+			// console.dir(this.vid_no);
 			this.getVideoDetail(this.vid_no).then(({ data }) => {
 				// console.dir(data);
 				this.author = data.author;

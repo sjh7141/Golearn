@@ -192,7 +192,7 @@ export default {
 			this.$router.push('/');
 		},
 		getNoti() {
-			console.log('asdfasdf');
+			// console.log('asdfasdf');
 			this.getNotification().then(res => {
 				this.notifications = res.data;
 			});
