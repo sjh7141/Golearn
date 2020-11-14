@@ -36,7 +36,7 @@ public class S3Service {
 		ObjectMetadata omd = new ObjectMetadata();
 		omd.setContentType(file.getContentType());
 		omd.setContentLength(file.getSize());
-		omd.setHeader("fileName", file.getOriginalFilename());
+		omd.setHeader("fileName", fileName);
 		
 		try {
 			s3.putObject(new PutObjectRequest(bucket, key, file.getInputStream(), omd)
