@@ -125,10 +125,7 @@ public class InfiniteLoop {
 		},
 		save() {
 			this.$store.commit('setVideoCode', this.editor.getValue());
-			if (this.uploadVideo.vid_code == '') {
-				alert('강의 코드를 작성해주세요.');
-				return;
-			} else if (this.uploadVideo.vid_url == '') {
+			if (this.uploadVideo.vid_url == '') {
 				alert('영상을 등록해주세요.');
 				this.changeActive(2);
 			} else if (this.uploadVideo.vid_title.length < 5) {
@@ -139,9 +136,6 @@ public class InfiniteLoop {
 				this.changeActive(0);
 			} else if (this.uploadVideo.tags.length == 0) {
 				alert('태그를 1개이상 선택해주세요.');
-				this.changeActive(0);
-			} else if (this.uploadVideo.vid_content == '') {
-				alert('강의 내용을 입력해주세요.');
 				this.changeActive(0);
 			} else {
 				this.$store.dispatch('setVideo').then(({ data }) => {

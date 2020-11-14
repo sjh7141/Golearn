@@ -3,6 +3,7 @@ import axios from 'axios';
 const URL = {
 	DOMAIN: 'https://golearn.co.kr/api',
 	PREFIX: 'video',
+	COMMENT: 'comment',
 	videoBuild() {
 		return Array(this.DOMAIN, this.PREFIX).join('/');
 	},

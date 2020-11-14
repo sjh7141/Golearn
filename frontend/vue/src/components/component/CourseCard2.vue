@@ -6,7 +6,7 @@
 			width="300"
 			height="330"
 			style="border: 1px solid #e5e5e5;"
-			:to="`/course/${course.cos_no}`"
+			:to="`/course/${course.cos_no}/intro`"
 		>
 			<v-img width="300" height="168.75" :src="course.cos_thumbnail">
 				<!-- <v-progress-linear

@@ -103,6 +103,7 @@
 										v-show="isImg"
 										ref="img"
 										height="300"
+										:src="imgURL"
 									>
 										<v-expand-transition>
 											<v-row
@@ -258,21 +259,17 @@ export default {
 			connectVideo: null,
 			selectVideoNo: -1,
 			loading: false,
+			imgURL: '',
 		};
 	},
 	methods: {
 		setImg() {
 			var self = this;
 			var file = document.getElementById('file').files[0];
-			var reader = new FileReader();
-
-			reader.onloadend = function() {
-				self.isImg = true;
-				self.$refs.img.src = reader.result;
-			};
 
 			if (file) {
-				reader.readAsDataURL(file);
+				this.isImg = true;
+				this.imgURL = URL.createObjectURL(file);
 			}
 		},
 		setVideo() {
