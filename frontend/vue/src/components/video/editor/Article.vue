@@ -307,6 +307,7 @@ export default {
 			this.caretPosition = this.durationToWidth(this.currentTime);
 			if (this.currentTime > this.duration) {
 				this.currentTime = this.duration;
+				console.log(this.$refs.box);
 			}
 		},
 		selectedItem() {

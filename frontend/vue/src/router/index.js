@@ -17,6 +17,7 @@ import Mypage from '@/views/Mypage.vue';
 import VideoUpload from '@/views/video/Upload.vue';
 import CourseList from '@/views/course/CourseList.vue';
 import LoadmapList from '@/views/loadmap/LoadmapList.vue';
+import Loadmap from '@/views/loadmap/Index.vue';
 import VideoList from '@/views/video/VideoList.vue';
 Vue.use(VueRouter);
 
@@ -60,6 +61,11 @@ const routes = [
 		path: '/roadmap',
 		name: 'LoadmapList',
 		component: LoadmapList,
+	},
+	{
+		path: '/roadmap/:ldm_no',
+		name: 'LoadmapDetail',
+		component: Loadmap,
 	},
 	{
 		path: '/video',
