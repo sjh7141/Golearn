@@ -24,6 +24,17 @@
 				<v-row>
 					<v-spacer></v-spacer>
 					<v-col cols="4" class="text-right">
+						<v-btn
+							dark
+							depressed
+							color="#7640e3"
+							class="mb-6"
+							@click="make"
+							rounded
+							style="	font-family: 'BMJUA';"
+						>
+							로드맵 만들기
+						</v-btn>
 						<v-text-field
 							class="basic"
 							v-model="search"
@@ -47,15 +58,6 @@
 							</v-icon>
 							<span style="color:black">로드맵 등록</span>
 						</v-btn> -->
-						<v-btn
-							dark
-							depressed
-							color="#6523e8"
-							class="bold"
-							@click="make"
-						>
-							로드맵 등록
-						</v-btn>
 					</v-col>
 				</v-row>
 				<v-row>
