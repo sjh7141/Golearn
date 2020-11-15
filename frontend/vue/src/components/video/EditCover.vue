@@ -391,9 +391,7 @@ export default {
 				this.$store.commit('setThumbnailURL', thumbnailURL.data);
 			}
 			if (videoURL) {
-				console.log(videoURL);
 				this.$store.commit('setVideoURL', videoURL.data);
-				console.log(this.uploadVideo);
 				if (!this.isNew) {
 					this.$store.commit(
 						'setVideoLength',

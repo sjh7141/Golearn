@@ -11,7 +11,6 @@ export default {
 				alert('유효하지 않은 로드맵입니다.');
 				this.$router.push('/roadmap');
 			} else {
-				console.log(data);
 				this.$router.push(
 					`/course/${data.course[0].cos_no}/intro?ldm_no=${data.loadmap.ldm_no}`,
 				);

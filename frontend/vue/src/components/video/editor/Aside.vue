@@ -290,7 +290,6 @@ export default {
 					100
 				).toFixed(1);
 			});
-			console.dir(this.mediaList);
 
 			this.addMedias(movie, this.mediaList, 0, 1920, 1080, false).finally(
 				() => {
