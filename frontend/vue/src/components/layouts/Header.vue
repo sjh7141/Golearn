@@ -292,6 +292,7 @@ export default {
 			this.$router.push(`/video?search=${this.keyword}`);
 		},
 		goToLogin() {
+			this.$store.commit('setPrevPage', this.$route.fullPath);
 			this.$router.push('/login');
 		},
 		goToMypage() {
