@@ -97,6 +97,7 @@ export default {
 	watch: {
 		$route() {
 			this.$refs.header.getTotalNotice();
+			window.scrollTo(0, 0);
 		},
 	},
 };
