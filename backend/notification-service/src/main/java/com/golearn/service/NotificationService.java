@@ -1,8 +1,10 @@
 package com.golearn.service;
 
+import com.golearn.client.AccountRestClient;
 import com.golearn.factory.NotificationGeneratorFactory;
 import com.golearn.generator.NotificationGenerator;
 import com.golearn.model.CountPayload;
+import com.golearn.model.MemberResponse;
 import com.golearn.model.Notification;
 import com.golearn.repository.NotificationRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -16,10 +18,11 @@ import java.util.List;
 public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final NotificationGeneratorFactory notificationGeneratorFactory;
-
-    NotificationService(NotificationRepository notificationRepository, NotificationGeneratorFactory notificationGeneratorFactory) {
+    private final AccountRestClient accountRestClient;
+    NotificationService(NotificationRepository notificationRepository, NotificationGeneratorFactory notificationGeneratorFactory, AccountRestClient accountRestClient) {
         this.notificationRepository = notificationRepository;
         this.notificationGeneratorFactory = notificationGeneratorFactory;
+        this.accountRestClient = accountRestClient;
     }
 
     public void sendNotification(Notification notification) {
@@ -35,6 +38,11 @@ public class NotificationService {
     @Transactional
     public List<Notification> getNotifications(int mbrNo) {
         List<Notification> notificationList = notificationRepository.findAllByMbrNo(mbrNo);
+        for(Notification notification : notificationList){
+            MemberResponse memberResponse = accountRestClient.getMember(notification.getNotiSender());
+            notification.setProfile(memberResponse.getProfile());
+            notification.setSenderNickname(memberResponse.getNickname());
+        }
         notificationRepository.readNotificationByMbrNo(mbrNo);
         return notificationList;
     }

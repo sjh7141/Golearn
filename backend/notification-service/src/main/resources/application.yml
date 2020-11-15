@@ -51,6 +51,8 @@ feign:
 #    url: http://localhost:8801/video
   board-api:
     url: https://golearn.co.kr/api/board
+  account-api:
+    url: https://golearn.co.kr/api/account
 
 
 logging:
