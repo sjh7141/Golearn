@@ -129,7 +129,6 @@ export default {
 				this.member = data;
 			});
 			this.checkCourseManager(this.course.cos_no).then(({ data }) => {
-				console.log(data);
 				this.isManager = data;
 			});
 		}
