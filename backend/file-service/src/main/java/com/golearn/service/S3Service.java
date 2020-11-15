@@ -28,7 +28,12 @@ public class S3Service {
 
 	public String fileUpload(MultipartFile file, String place) {
 	    int pos = file.getOriginalFilename().lastIndexOf(".");
-        String format = file.getOriginalFilename().substring(pos);
+	    String format = null;
+	    if(pos > 0) {
+	    	format = file.getOriginalFilename().substring(pos);
+	    } else {
+	    	format = file.getOriginalFilename();
+	    }
 		String fileName = UUID.randomUUID() + format;
 		
 		String key = place + "/" + fileName;
