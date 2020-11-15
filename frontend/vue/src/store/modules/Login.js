@@ -25,6 +25,7 @@ export default {
 		token: sessionStorage.getItem('token'),
 		isLogin: Number(sessionStorage.getItem('isLogin')),
 		user: sessionStorage.getItem('user'),
+		prevPage: sessionStorage.getItem('prevPage'),
 	},
 	getters: {
 		// token(state, getters, rootState, rootGetters) {
@@ -41,6 +42,9 @@ export default {
 				return null;
 			}
 		},
+		prevPage(state) {
+			return state.prevPage;
+		},
 	},
 	mutations: {
 		setToken(state, payload) {
@@ -54,6 +58,10 @@ export default {
 		setUser(state, payload) {
 			state.user = JSON.stringify(payload);
 			sessionStorage.setItem('user', state.user);
+		},
+		setPrevPage(state, payload) {
+			state.prevPage = payload;
+			sessionStorage.setItem('prevPage', payload);
 		},
 	},
 	actions: {

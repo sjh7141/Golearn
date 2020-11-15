@@ -92,7 +92,7 @@ export default {
 			this.$store.dispatch('getUser').then(({ data }) => {
 				this.$store.commit('setUser', data);
 			});
-			this.$router.push('/');
+			this.$router.push(this.$store.getters.prevPage);
 		},
 		login() {
 			if (this.id != '' && this.password != '') {
