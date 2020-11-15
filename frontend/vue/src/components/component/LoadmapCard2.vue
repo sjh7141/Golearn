@@ -17,7 +17,10 @@
 
 			<v-card-title
 				style="font-size:0.9rem; font-weight:bold; title padding-bottom:0px; padding-top:10px"
-				>{{ loadmap.ldm_title }}</v-card-title
+				><v-list-item-title
+					style="font-size:0.9rem; font-weight:bold; "
+					>{{ loadmap.ldm_title }}</v-list-item-title
+				></v-card-title
 			>
 
 			<v-card-text>
