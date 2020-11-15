@@ -1,11 +1,6 @@
 <template>
 	<div id="request">
-		<v-img width="100%" src="@/assets/bg_skin1.jpg" height="230">
-			<v-layout
-				style="background-color:rgba(0,0,0,0.4); width:100%;height:100%;"
-			>
-			</v-layout>
-		</v-img>
+		<course-banner :course="course" :src="course.cos_banner" />
 
 		<div class="py-5" style="width:1080px; margin:0 auto;" ref="contain">
 			<h3 style="">{{ req ? req.vid_req_comment : '' }}</h3>
@@ -323,8 +318,12 @@
 
 <script>
 import { mapActions } from 'vuex';
+import CourseBanner from '@/components/course/CourseBanner.vue';
 export default {
 	name: 'Request',
+	components: {
+		CourseBanner,
+	},
 
 	data() {
 		return {

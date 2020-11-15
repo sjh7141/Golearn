@@ -5,7 +5,12 @@
 			tile
 			style="background-color:white; padding:0; height:100%"
 		>
-			<v-card flat tile style="background-color:transparent" class="mr-6">
+			<v-card
+				flat
+				tile
+				style="background-color:transparent"
+				class="ml-4 mr-2"
+			>
 				<router-link to="/">
 					<v-img src="@/assets/logo.png" max-width="40" contain />
 				</router-link>
@@ -19,36 +24,41 @@
 					{{ menu.title }}
 				</div>
 			</template>
+
 			<v-spacer />
 			<v-card
 				dense
 				flat
 				height="100%"
-				width="350"
+				width="450"
+				tile
 				style="padding: 5px; margin-top:5px;"
 			>
 				<v-text-field
 					class="basic"
 					v-model="keyword"
-					flat
 					dense
-					solo
-					outlined
+					solo-inverted
 					@focus="isFocus = true"
 					@blur="isFocus = false"
 					@keydown.enter="keywordSearch()"
-					style="margin-right:100px;"
+					color="red"
+					flat
+					hide-details
+					style="color:red;"
 				>
-					<v-icon
-						:class="{ basic: isFocus }"
-						slot="append"
-						@click="keywordSearch()"
-					>
-						mdi-magnify
-					</v-icon>
+					<div slot="append">
+						<v-icon
+							:class="{ basic: isFocus }"
+							@click="keywordSearch()"
+						>
+							mdi-magnify
+						</v-icon>
+					</div>
 				</v-text-field>
 			</v-card>
-			<div>
+			<v-spacer />
+			<div style="width:300px; text-align:right;">
 				<v-btn
 					v-if="isLogin === 0"
 					light
@@ -60,9 +70,15 @@
 					로그인
 				</v-btn>
 				<template v-else>
-					<v-btn icon large @click="video = true">
-						<v-avatar size="48">
-							<v-icon large>
+					<v-btn
+						width="40"
+						height="40"
+						icon
+						class="mr-2"
+						@click="video = true"
+					>
+						<v-avatar size="24">
+							<v-icon size="24">
 								mdi-video-plus
 							</v-icon>
 						</v-avatar>
@@ -70,9 +86,15 @@
 
 					<v-menu bottom min-width="200px" rounded offset-y>
 						<template v-slot:activator="{ on }">
-							<v-btn icon large v-on="on">
-								<v-avatar size="48">
-									<v-icon>
+							<v-btn
+								width="40"
+								height="40"
+								icon
+								v-on="on"
+								class="mr-2"
+							>
+								<v-avatar size="24">
+									<v-icon size="24">
 										mdi-bell
 									</v-icon>
 								</v-avatar>
@@ -86,8 +108,13 @@
 					</v-menu>
 					<v-menu bottom min-width="200px" rounded offset-y>
 						<template v-slot:activator="{ on }">
-							<v-btn icon color="transparent" v-on="on">
-								<v-avatar size="48">
+							<v-btn
+								icon
+								color="transparent"
+								v-on="on"
+								class="ml-1 mr-5"
+							>
+								<v-avatar size="36">
 									<img
 										:src="
 											user.profile
@@ -378,5 +405,14 @@ export default {
 		format('woff');
 	font-weight: normal;
 	font-style: normal;
+}
+</style>
+<style>
+.v-input--is-focused > .v-input__control > .v-input__slot {
+	background-color: rgba(38, 38, 56, 0.13) !important;
+}
+
+.v-input--is-focused > .v-input__control > .v-input__slot input {
+	color: black !important;
 }
 </style>

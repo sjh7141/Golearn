@@ -201,7 +201,7 @@ export default {
 					Authorization: context.rootGetters.token,
 				},
 			};
-			return axios.get(
+			return axios.post(
 				URL.courseBuild() + `/index-complete`,
 				payload,
 				config,
@@ -257,6 +257,18 @@ export default {
 				},
 			};
 			return axios.put(URL.courseBuild() + '/video', payload, config);
+		},
+
+		checkCourseManager(context, id) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(
+				URL.courseBuild() + `/manager/check/${id}`,
+				config,
+			);
 		},
 	},
 };
