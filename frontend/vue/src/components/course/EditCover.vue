@@ -217,16 +217,10 @@ export default {
 			}
 		},
 		setBanner() {
-			var self = this;
-			var file = document.getElementById('banner').files[0];
-			var reader = new FileReader();
+			var banner = document.getElementById('banner').files[0];
 
-			reader.onloadend = function() {
-				self.$emit('setBanner', reader.result);
-			};
-
-			if (file) {
-				reader.readAsDataURL(file);
+			if (banner) {
+				this.$store.commit('setBanner', URL.createObjectURL(banner));
 			}
 		},
 		clickImg() {
@@ -285,7 +279,7 @@ export default {
 		...mapGetters(['course']),
 	},
 	mounted() {
-		this.$refs.img.src = this.course.cos_thumbnail;
+		this.imgURL = this.course.cos_thumbnail;
 		this.isImg = true;
 	},
 };

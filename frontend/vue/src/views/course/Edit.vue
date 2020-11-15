@@ -49,7 +49,6 @@
 						@changeActive="changeActive"
 					/>
 					<edit-cover
-						@setBanner="setBanner"
 						v-if="select == 1"
 						@changeActive="changeActive"
 					/>
@@ -101,9 +100,9 @@ export default {
 		setTitle(newTitle) {
 			this.title = newTitle;
 		},
-		setBanner(src) {
-			this.$refs.img.src = src;
-		},
+		// setBanner(src) {
+		// 	this.$refs.img.src = src;
+		// },
 		changeActive() {
 			this.select = (this.select + 1) % this.iconList.length;
 			if (this.select == 0) {
