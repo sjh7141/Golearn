@@ -1,12 +1,6 @@
 <template>
 	<div>
-		<v-img width="100%" src="@/assets/bg_skin1.jpg" height="230">
-			<v-layout
-				style="background-color:rgba(0,0,0,0.4); width:100%;height:100%;"
-			>
-			</v-layout>
-		</v-img>
-
+		<course-banner :course="info" :src="info.cos_banner" :ldm_no="ldm_no" />
 		<v-layout wrap style="width:1080px; margin:0 auto;" ref="contain">
 			<v-flex md3 lg3 xl3>
 				<v-card flat tile class="mt-10" style="font-family: 'BMJUA';">
@@ -80,12 +74,15 @@ import { mapActions } from 'vuex';
 import Introduce from '@/components/course/Introduce.vue';
 import RequestList from '@/components/course/RequestList.vue';
 import Play from '@/components/course/Play.vue';
+import CourseBanner from '@/components/course/CourseBanner.vue';
+
 export default {
 	name: 'Index',
 	components: {
 		Introduce,
 		RequestList,
 		Play,
+		CourseBanner,
 	},
 	data() {
 		return {
@@ -96,10 +93,13 @@ export default {
 			no: -1,
 			chapter: -1,
 			video: -1,
+			ldm_no: -1,
 		};
 	},
 	mounted() {
 		this.height = this.$refs.contain.clientHeight;
+		this.ldm_no = this.$route.query.ldm_no;
+
 		if (this.$route.params.id == 'intro') this.index = 0;
 		if (this.$route.params.id == 'requestlist') this.index = 1;
 		if (this.$route.params.id == 'request') this.index = 2;
