@@ -322,9 +322,9 @@ export default {
 				})
 					.then(({ data }) => {
 						this.isSuccess = true;
-						this.createVideo(data);
-						// this.$store.commit('setEditURL', data);
-						// this.$router.push('/video/upload');
+						// this.createVideo(data);
+						this.$store.commit('setEditURL', data);
+						this.$router.push('/video/upload');
 					})
 					.catch(() => {
 						alert('업로드 실패!');

@@ -263,11 +263,7 @@ export default {
 		},
 		src() {
 			var myPlayer = videojs('video-player');
-			myPlayer.src([
-				{ type: 'video/mp4', src: this.src },
-				{ type: 'video/webm', src: this.src },
-				{ type: 'video/ogg', src: this.src },
-			]);
+			myPlayer.src([{ src: this.src }]);
 		},
 		poster() {
 			var myPlayer = videojs('video-player');
@@ -407,6 +403,8 @@ export default {
 			videojs.registerComponent('MyButton', MyButton);
 			var player = videojs('video-player');
 			player.getChild('controlBar').addChild('myButton', {});
+			player.src([{ src: this.src }]);
+			player.poster(this.poster);
 		},
 		initCodeEditer() {
 			var editor = ace.edit('editor');
