@@ -17,12 +17,10 @@ public class FileServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(FileServiceApplication.class, args);
 	}
-	
+
 	@Bean
 	public AmazonS3 amazonS3() {
-		return AmazonS3ClientBuilder.standard()
-				.withCredentials(new EnvironmentVariableCredentialsProvider())
-				.withRegion(Regions.AP_NORTHEAST_2)
-				.build();
+		return AmazonS3ClientBuilder.standard().withCredentials(new EnvironmentVariableCredentialsProvider())
+				.withRegion(Regions.AP_NORTHEAST_2).build();
 	}
 }

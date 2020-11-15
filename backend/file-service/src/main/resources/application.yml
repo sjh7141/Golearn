@@ -1,6 +1,14 @@
 server:
   port: 8808
-  
+  ssl:
+    enabled: true
+    key-store: keystore.pkcs12
+    key-store-type: pkcs12
+    key-store-password: golearn
+    key-alias: golearn
+    trust-store: keytrust.pkcs12
+    trust-store-password: golearn
+    
 spring:
   application:
     name: file-service
