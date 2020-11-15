@@ -18,8 +18,11 @@
 			</v-img>
 
 			<v-card-title
-				style="font-size:0.9rem; font-weight:bold; title padding-bottom:10px; padding-top:10px"
-				>{{ course.cos_title }}</v-card-title
+				style="font-size:0.9rem; font-weight:bold;  padding-bottom:10px; padding-top:10px"
+				><v-list-item-title
+					style="font-size:0.9rem; font-weight:bold; "
+					>{{ course.cos_title }}</v-list-item-title
+				></v-card-title
 			>
 
 			<v-card-text>
