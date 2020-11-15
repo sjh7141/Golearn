@@ -1,5 +1,8 @@
 <template>
-	<v-layout style="position:fixed; top:0;left:0;z-index:100; width:100%;">
+	<v-layout
+		style="position:fixed; top:0;left:0;z-index:100; width:100%;"
+		id="header"
+	>
 		<v-app-bar
 			flat
 			tile
@@ -555,11 +558,11 @@ export default {
 }
 </style>
 <style>
-.v-input--is-focused > .v-input__control > .v-input__slot {
+#header .v-input--is-focused > .v-input__control > .v-input__slot {
 	background-color: rgba(38, 38, 56, 0.13) !important;
 }
 
-.v-input--is-focused > .v-input__control > .v-input__slot input {
+#header .v-input--is-focused > .v-input__control > .v-input__slot input {
 	color: black !important;
 }
 </style>

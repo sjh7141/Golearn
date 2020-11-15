@@ -263,9 +263,6 @@ export default {
 			this.pause();
 			this.dialog = true;
 
-			this.fileName = '';
-			this.vid = null;
-
 			const canvas = document.createElement('canvas');
 
 			canvas.width = 1920;
@@ -318,8 +315,8 @@ export default {
 		movieToBlob(movie) {
 			movie.record(25).then(res => {
 				let formData = new FormData();
+				console.dir(res);
 				formData.append('file', res);
-				// console.dir(URL.createObjectURL(res));
 				this.upload({
 					data: formData,
 					target: 'video',
@@ -456,6 +453,24 @@ export default {
 					};
 				} else if (media.type == 'caption') {
 					let opacity = {};
+					const areaWidth = width / 3;
+					const areaHeight = height / 3;
+					const textAlign =
+						media.position % 3 == 1
+							? 'start'
+							: media.position % 3 == 2
+							? 'center'
+							: 'end';
+					const textBaseline = 'middle';
+					const textX =
+						media.position % 3 == 1
+							? areaWidth / 20
+							: media.position % 3 == 2
+							? width / 2
+							: width - areaWidth / 20;
+					const textY =
+						areaHeight / 2 +
+						parseInt((media.position - 1) / 3) * areaHeight;
 
 					opacity[0] = 0;
 					opacity[media.fadeIn / 10] = 1;
@@ -468,13 +483,20 @@ export default {
 							media.duration,
 							media.name,
 							{
+								width,
+								height,
 								font: `${media.size}px sans-serif`,
-								x: (width / 3) * ((media.position - 1) % 3),
-								y:
-									(height / 3) *
-									parseInt((media.position - 1) / 3),
+								textAlign,
+								textBaseline,
+
+								x: 0,
+								y: 0,
+
 								color: media.color,
 								opacity,
+
+								textX,
+								textY,
 							},
 						),
 					);

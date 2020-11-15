@@ -13,6 +13,9 @@
 				:height="410"
 				:poster="video.vid_thumbnail"
 				:src="video.vid_url"
+				:title="video.vid_title"
+				:source="video.vid_code"
+				:type="video.vid_code_type"
 			/>
 			<div class="mt-5" v-html="video.vid_content" />
 		</div>
@@ -161,6 +164,9 @@ export default {
 			// console.dir(this.vid_no);
 			this.getVideoDetail(this.vid_no).then(({ data }) => {
 				// console.dir(data);
+				data.video.vid_code_type = ['c_cpp', 'java', 'python'].indexOf(
+					data.video.vid_code_type,
+				);
 				this.author = data.author;
 				this.editor = data.editor;
 				this.video = data.video;
