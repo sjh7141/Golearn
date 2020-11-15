@@ -297,6 +297,7 @@ export default {
 		return {
 			isImg: false,
 			isNew: false,
+			isEdit: false,
 			isVideo: false,
 			isAdd: false,
 			videoList: [],
@@ -304,6 +305,7 @@ export default {
 			selectVideoNo: -1,
 			loading: false,
 			imgURL: '',
+			vidURL: '',
 			search: '',
 		};
 	},
@@ -325,6 +327,7 @@ export default {
 			reader.onloadend = function() {
 				self.isVideo = true;
 				self.isNew = true;
+				self.isEdit = false;
 				self.$refs.video.src = reader.result;
 				self.setTotalTime(reader.result);
 			};
@@ -365,6 +368,7 @@ export default {
 			this.setTotalTime(this.videoList[this.selectVideoNo].vid_url);
 			this.connectVideo = this.videoList[this.selectVideoNo];
 			this.isNew = false;
+			this.isEdit = false;
 			this.resetVideo();
 		},
 		async save() {
@@ -374,15 +378,22 @@ export default {
 			}
 			this.loading = true;
 			var thumbnailURL = await this.saveThumbnail();
-			var videoURL = this.isNew
-				? await this.saveVideo()
-				: { data: this.connectVideo.vid_url };
-			this.loading = false;
+			var videoURL;
+			if (this.isEdit) {
+				videoURL = { data: this.vidURL };
+			} else {
+				videoURL = this.isNew
+					? await this.saveVideo()
+					: { data: this.connectVideo.vid_url };
+				this.loading = false;
+			}
 			if (thumbnailURL) {
 				this.$store.commit('setThumbnailURL', thumbnailURL.data);
 			}
 			if (videoURL) {
+				console.log(videoURL);
 				this.$store.commit('setVideoURL', videoURL.data);
+				console.log(this.uploadVideo);
 				if (!this.isNew) {
 					this.$store.commit(
 						'setVideoLength',
@@ -434,7 +445,10 @@ export default {
 		if (this.editURL.length != 0) {
 			this.isVideo = true;
 			this.isNew = true;
-			this.$refs.video.src = this.editURL;
+			this.isEdit = true;
+			this.vidURL = this.editURL;
+			this.$refs.video.src = this.vidURL;
+			this.setTotalTime(this.vidURL);
 			this.$store.commit('setEditURL', '');
 		}
 	},
