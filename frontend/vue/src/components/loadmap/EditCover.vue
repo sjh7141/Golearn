@@ -60,6 +60,7 @@
 										v-show="isImg"
 										ref="img"
 										height="300"
+										:src="imgURL"
 									>
 										<v-expand-transition>
 											<v-row
@@ -171,21 +172,16 @@ export default {
 	data() {
 		return {
 			isImg: false,
+			imgURL: '',
 		};
 	},
 	methods: {
 		setImg() {
-			var self = this;
 			var file = document.getElementById('file').files[0];
-			var reader = new FileReader();
-
-			reader.onloadend = function() {
-				self.isImg = true;
-				self.$refs.img.src = reader.result;
-			};
 
 			if (file) {
-				reader.readAsDataURL(file);
+				this.isImg = true;
+				this.imgURL = URL.createObjectURL(file);
 			}
 		},
 		clickImg() {

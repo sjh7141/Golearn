@@ -165,7 +165,7 @@
 
 				<button
 					class="menubar__button"
-					@click="showImagePrompt(commands.image)"
+					@click="clickImg(commands.image)"
 				>
 					<img
 						class="icon"
@@ -193,7 +193,14 @@
 				</button>
 			</div>
 		</editor-menu-bar>
-
+		<input
+			ref="file"
+			type="file"
+			id="editor-file"
+			v-show="false"
+			accept="image/png, image/jpeg, image/bmp"
+			@change="setImg"
+		/>
 		<editor-content class="editor__content pa-5" :editor="editor" />
 		<div id="editor-footer">
 			<div class="px-2 footer-btn">
@@ -203,6 +210,7 @@
 	</div>
 </template>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
 import { Editor, EditorContent, EditorMenuBar } from 'tiptap';
 import {
@@ -257,6 +265,7 @@ export default {
 				content: this.preContent,
 			}),
 			editorWidth: 0,
+			callBack: null,
 		};
 	},
 	methods: {
@@ -268,6 +277,21 @@ export default {
 		},
 		getHTML() {
 			return this.editor.getHTML();
+		},
+		clickImg(command) {
+			this.$refs.file.value = null;
+			$('#editor-file').click();
+			this.callBack = command;
+		},
+		setImg() {
+			var file = document.getElementById('editor-file').files[0];
+
+			if (file) {
+				const src = URL.createObjectURL(file);
+				if (src !== null) {
+					this.callBack({ src });
+				}
+			}
 		},
 	},
 	beforeDestroy() {

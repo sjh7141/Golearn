@@ -1,8 +1,8 @@
 <template>
 	<div class="signup-box-wrap pa-15 ">
-		<span class="signup-text">
+		<h1 class="signup-text">
 			회원가입
-		</span>
+		</h1>
 		<v-row justify="center" style="margin-top:20px;">
 			<input
 				v-show="false"
@@ -30,7 +30,7 @@
 					</v-btn>
 				</template>
 				<v-avatar color="#f5f5f5" width="130" height="130">
-					<v-img ref="img" />
+					<v-img ref="img" :src="imgURL" />
 				</v-avatar>
 			</v-badge>
 		</v-row>
@@ -260,6 +260,7 @@ export default {
 			nickSuccessMessage: '',
 			nickErrorMessage: '',
 			loading: false,
+			imgURL: '',
 		};
 	},
 	methods: {
@@ -268,16 +269,10 @@ export default {
 			this.$refs.file.click();
 		},
 		changeImg() {
-			var self = this;
 			var file = document.getElementById('file').files[0];
-			var reader = new FileReader();
-
-			reader.onloadend = function() {
-				self.$refs.img.src = reader.result;
-			};
 
 			if (file) {
-				reader.readAsDataURL(file);
+				this.imgURL = URL.createObjectURL(file);
 			}
 		},
 		goToSignup(state) {
@@ -482,7 +477,7 @@ export default {
 			.letters();
 	},
 	mounted() {
-		this.$refs.img.src = '/user.png';
+		this.imgURL = '/user.png';
 	},
 };
 </script>
@@ -502,8 +497,6 @@ a {
 .signup-text {
 	padding-bottom: 20px;
 	color: white;
-	font-size: 30px;
-	font-weight: 600;
 }
 
 .signup-box-wrap {

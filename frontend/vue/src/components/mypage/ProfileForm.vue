@@ -40,7 +40,7 @@
 							</v-btn>
 						</template>
 						<v-avatar color="#f5f5f5" width="130" height="130">
-							<v-img ref="img" />
+							<v-img ref="img" :src="imgURL" />
 						</v-avatar>
 					</v-badge>
 				</v-row>
@@ -384,6 +384,7 @@ export default {
 			deleteErrorMessage: '',
 			emailCodeErrorMessage: '',
 			loading: false,
+			imgURL: '',
 		};
 	},
 	computed: {
@@ -395,16 +396,10 @@ export default {
 			this.$refs.file.click();
 		},
 		changeImg() {
-			var self = this;
 			var file = document.getElementById('file').files[0];
-			var reader = new FileReader();
-
-			reader.onloadend = function() {
-				self.$refs.img.src = reader.result;
-			};
 
 			if (file) {
-				reader.readAsDataURL(file);
+				this.imgURL = URL.createObjectURL(file);
 			}
 		},
 		validParameter(param) {
@@ -651,7 +646,7 @@ export default {
 			this.$router.push('/login');
 		}
 		this.profile = this.user.profile;
-		this.$refs.img.src = this.profile;
+		this.imgURL = this.profile;
 		this.id = this.user.username;
 		this.email = this.user.email;
 		this.nickname = this.user.nickname;
