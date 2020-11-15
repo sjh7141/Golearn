@@ -7,7 +7,13 @@
 				dark
 				depressed
 				color="#9382D7"
-				@click="$router.push(`/request?cos_no=${no}`)"
+				@click="
+					$router.push(
+						`/request?cos_no=${no}${
+							ldm_no ? '&ldm_no=' + ldm_no : ''
+						}`,
+					)
+				"
 			>
 				<span style="font-size:14px; font-weight:400">
 					기여하기
@@ -20,7 +26,13 @@
 			:key="`requestlist_${i}`"
 			class="pa-0 ma-0 mb-3"
 			style="cursor:pointer"
-			@click="$router.push(`/request/${item.vid_req_no}`)"
+			@click="
+				$router.push(
+					`/request/${item.vid_req_no}${
+						ldm_no ? '?ldm_no=' + ldm_no : ''
+					}`,
+				)
+			"
 			v-show="item.vid_req_accept_yn == 0"
 		>
 			<v-col :cols="4" class="py-0">
@@ -71,10 +83,12 @@ export default {
 			tabs: 0,
 			requestList: [],
 			no: -1,
+			ldm_no: 0,
 		};
 	},
 	mounted() {
 		this.no = this.$route.params.no;
+		this.ldm_no = this.$route.query.ldm_no;
 		this.initRequestList();
 	},
 	methods: {

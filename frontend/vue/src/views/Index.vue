@@ -13,7 +13,7 @@
 					}"
 				>
 					<v-row
-						@click="$router.push(`/course/${item.cos_no}`)"
+						@click="$router.push(`/course/${item.cos_no}/intro`)"
 						class="info-upper"
 						style="width:85%;"
 					>

@@ -1,6 +1,10 @@
 <template>
 	<div id="request">
-		<course-banner :course="course" :src="course.cos_banner" />
+		<course-banner
+			:course="course"
+			:src="course.cos_banner"
+			:ldm_no="ldm_no"
+		/>
 
 		<div class="py-5" style="width:1080px; margin:0 auto;" ref="contain">
 			<h3 style="">영상 기여하기</h3>
@@ -457,10 +461,11 @@ export default {
 			user: {},
 			cos_no: -1,
 			course: {},
+			ldm_no: 0,
 		};
 	},
 	mounted() {
-		// console.dir(this.$store.getters.user);
+		this.ldm_no = this.$route.query.ldm_no;
 
 		this.user = this.$store.getters.user;
 		this.cos_no = this.$route.query.cos_no;
@@ -494,7 +499,11 @@ export default {
 				vid_req_comment: this.message,
 			}).then(() => {
 				alert('요청을 보냈습니다.');
-				this.$router.push(`/course/${this.cos_no}/requestlist`);
+				this.$router.push(
+					`/course/${this.cos_no}/requestlist${
+						this.ldm_no ? '?ldm_no=' + this.ldm_no : ''
+					}`,
+				);
 			});
 		},
 	},
