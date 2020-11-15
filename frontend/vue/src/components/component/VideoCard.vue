@@ -30,10 +30,12 @@
 			<v-row no-gutters>
 				<v-col>
 					<v-card-title
-						class="pl-2 pt-3 subtitle-1 title font-weight-bold"
+						class="pl-2 pt-3  font-weight-bold"
 						style="line-height: 1.2rem;"
 					>
-						{{ video.vid_title }}
+						<v-list-item-title>
+							{{ video.vid_title }}
+						</v-list-item-title>
 					</v-card-title>
 
 					<v-card-subtitle class="pl-2 pt-0" style="font-size:13px">
@@ -130,6 +132,9 @@ export default {
 </script>
 
 <style scoped>
+.v-card {
+	font-family: 'BMJUA';
+}
 .card {
 	background: #f9f9f9 !important;
 }
@@ -143,6 +148,8 @@ export default {
 	top: 0px;
 }
 .v-card .title {
+	font-size: 45px;
+	font-family: 'BMJUA';
 	white-space: nowrap;
 	word-break: normal;
 	overflow: hidden;

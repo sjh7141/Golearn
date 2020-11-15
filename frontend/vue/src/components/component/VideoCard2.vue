@@ -96,7 +96,9 @@ export default {
 </script>
 
 <style scoped>
-@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+.v-card {
+	font-family: 'BMJUA' !important;
+}
 .image-wrapper {
 	overflow: hidden;
 }
@@ -124,8 +126,7 @@ export default {
 .title {
 	font-weight: bold;
 	font-size: 0.85rem !important;
-	font-family: 'Noto Sans', AppleSDGothicNeo, 'Malgun Gothic', '맑은 고딕',
-		sans-serif !important;
+	font-family: 'BMJUA' !important;
 }
 .nickname {
 	font-size: 0.8rem;

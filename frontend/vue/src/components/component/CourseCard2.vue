@@ -97,7 +97,11 @@ export default {
 </script>
 
 <style scoped>
+.v-card {
+	font-family: 'BMJUA';
+}
 .content {
+	font-family: 'BMJUA';
 	color: black;
 	font-size: 0.8rem;
 	word-break: break-all;

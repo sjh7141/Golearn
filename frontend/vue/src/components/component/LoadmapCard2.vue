@@ -57,6 +57,9 @@ export default {
 </script>
 
 <style scoped>
+.v-card {
+	font-family: 'BMJUA';
+}
 .content {
 	color: black;
 	font-size: 0.8rem;
