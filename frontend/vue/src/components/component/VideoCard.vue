@@ -36,7 +36,7 @@
 						{{ video.vid_title }}
 					</v-card-title>
 
-					<v-card-subtitle class="pl-2 pt-0">
+					<v-card-subtitle class="pl-2 pt-0" style="font-size:13px">
 						조회수 {{ video.vid_view | viewFormatter }} 회<v-icon
 							>mdi-circle-small</v-icon
 						>{{ dateFormatter(video.reg_dt) }}

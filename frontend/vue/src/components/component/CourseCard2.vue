@@ -56,10 +56,7 @@
 							<v-icon class="mr-1" color="#d4d4d4" small
 								>mdi-heart</v-icon
 							>
-							<span>{{
-								course.cos_title.length * 13 +
-									course.tags.length
-							}}</span>
+							<span>{{ course.like_count }}</span>
 						</span>
 						<v-spacer></v-spacer>
 						<span class="mr-1">

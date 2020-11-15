@@ -41,7 +41,7 @@
 						{{ course.cos_title }}
 					</v-card-title>
 
-					<v-card-subtitle class="pl-2 pt-0">
+					<v-card-subtitle class="pl-2 pt-0" style="font-size:13px">
 						{{ dateFormatter(course.reg_dt) }}
 					</v-card-subtitle>
 				</v-col>

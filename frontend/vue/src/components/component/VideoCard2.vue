@@ -33,7 +33,7 @@
 				</v-card-text>
 				<v-card-subtitle class="pl-0 pt-0 others">
 					<v-icon small>mdi-play</v-icon>
-					{{ video.vid_view | viewFormatter }}
+					{{ (video.vid_view * 13) | vf }}
 					<v-icon>mdi-circle-small</v-icon
 					>{{ dateFormatter(video.reg_dt) }}
 				</v-card-subtitle>
@@ -82,6 +82,9 @@ export default {
 			} else if (value >= 1000) {
 				return '' + parseInt(value / 1000) + '천';
 			} else return value;
+		},
+		vf(value) {
+			return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		},
 	},
 	watch: {
