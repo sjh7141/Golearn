@@ -315,7 +315,6 @@ export default {
 		movieToBlob(movie) {
 			movie.record(25).then(res => {
 				let formData = new FormData();
-				console.dir(res);
 				formData.append('file', res);
 				this.upload({
 					data: formData,
