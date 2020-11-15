@@ -361,7 +361,7 @@ export default {
 						'https://cdn.pixabay.com/photo/2019/04/10/12/40/watercolour-4117017_960_720.png',
 					color: '#fcfcfc',
 					dark: false,
-					cos_no: 77,
+					cos_no: 99,
 					symbol: '인기',
 					title: '고런고런의<br />11월 최고 인기 강의',
 					content:
@@ -402,7 +402,7 @@ export default {
 					title: '고런고런에서 배우는<br />자바의 정석',
 					content:
 						'자바의 프로들이 모였다! <br /> 모든 Go-learner들이 기다린 강의',
-					footer: '#미용쓰기쌤 #누구든 함께해요',
+					footer: '#Go learn, Go run #누구든 함께해요',
 				},
 			],
 			courses: [],
