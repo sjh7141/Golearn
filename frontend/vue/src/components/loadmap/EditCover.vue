@@ -221,7 +221,7 @@ export default {
 		...mapGetters(['loadmap']),
 	},
 	mounted() {
-		this.$refs.img.src = this.loadmap.ldm_thumbnail;
+		this.imgURL = this.loadmap.ldm_thumbnail;
 		this.isImg = true;
 	},
 };

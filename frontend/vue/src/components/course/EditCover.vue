@@ -305,7 +305,6 @@ export default {
 	border: 1px solid #c9c9c9;
 	border-radius: 10px;
 	font-weight: 600;
-	color: #8a8a8a;
 }
 
 #banner-btn {
@@ -314,7 +313,6 @@ export default {
 	border: 1px solid #c9c9c9;
 	border-radius: 10px;
 	font-weight: 600;
-	color: #8a8a8a;
 }
 
 .upload-icon {

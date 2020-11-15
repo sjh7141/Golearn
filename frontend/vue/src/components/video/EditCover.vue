@@ -201,14 +201,50 @@
 			</div>
 			<v-dialog v-model="isAdd" max-width="600">
 				<v-card>
-					<v-card-title class="headline pb-6">
-						보관함 목록
-					</v-card-title>
-					<v-card-text>
+					<v-list-item class="pb-6">
+						<v-list-item-title
+							class="headline"
+							style="font-weight: 600 !important"
+						>
+							보관함 목록
+						</v-list-item-title>
+						<v-list-item-action>
+							<v-btn icon @click="isAdd = false">
+								<v-icon>
+									mdi-close
+								</v-icon>
+							</v-btn>
+						</v-list-item-action>
+					</v-list-item>
+					<v-card-text class="pb-0">
+						<v-text-field
+							v-model="search"
+							ref="search"
+							color="rgba(30, 30, 30, 0.5)"
+							dense
+							outlined
+							hide-details
+							placeholder="영상제목을 검색해주세요."
+							maxlength="50"
+							style="max-width: 250px; float:right;"
+						>
+							<v-icon slot="append" style="cursor: pointer;">
+								mdi-magnify
+							</v-icon>
+						</v-text-field>
+					</v-card-text>
+					<v-card-text
+						class="pt-3"
+						style="clear: both; height:640px; overflow-y: scroll;"
+					>
 						<template v-for="(element, index) in videoList">
 							<div
 								class="mb-2 border-radius-10"
 								:key="index + '_vid'"
+								v-show="
+									element.vid_title &&
+										element.vid_title.includes(search)
+								"
 							>
 								<index-video
 									:video="element"
@@ -218,6 +254,14 @@
 								/>
 							</div>
 						</template>
+						<div
+							v-if="videoList.length == 0"
+							style="text-align: center; font-weight: 600; font-size: 16px; padding-top:210px;"
+						>
+							보관함이 비어있네요.
+							<br />
+							고런고런의 영상을 보관함에 추가해보세요!😉
+						</div>
 					</v-card-text>
 					<v-card-actions>
 						<v-spacer></v-spacer>
@@ -260,6 +304,7 @@ export default {
 			selectVideoNo: -1,
 			loading: false,
 			imgURL: '',
+			search: '',
 		};
 	},
 	methods: {
@@ -331,13 +376,19 @@ export default {
 			var thumbnailURL = await this.saveThumbnail();
 			var videoURL = this.isNew
 				? await this.saveVideo()
-				: this.connectVideo.vid_url;
+				: { data: this.connectVideo.vid_url };
 			this.loading = false;
 			if (thumbnailURL) {
 				this.$store.commit('setThumbnailURL', thumbnailURL.data);
 			}
 			if (videoURL) {
 				this.$store.commit('setVideoURL', videoURL.data);
+				if (!this.isNew) {
+					this.$store.commit(
+						'setVideoLength',
+						this.connectVideo.vid_length,
+					);
+				}
 			}
 			this.$emit('changeActive', 0);
 		},
@@ -384,6 +435,7 @@ export default {
 			this.isVideo = true;
 			this.isNew = true;
 			this.$refs.video.src = this.editURL;
+			this.$store.commit('setEditURL', '');
 		}
 	},
 	computed: {

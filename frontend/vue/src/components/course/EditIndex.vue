@@ -161,12 +161,39 @@
 			<!-- 추가&수정 dialog -->
 			<v-dialog v-model="isAdd" max-width="600">
 				<v-card>
-					<v-card-title class="headline pb-6">
-						<span class="bold">
+					<v-list-item class="pb-6">
+						<v-list-item-title
+							class="headline"
+							style="font-weight: 600 !important"
+						>
 							목차 {{ isEdit ? editIdx + 1 : getOrder() }}
-						</span>
-					</v-card-title>
-					<div class="bold px-6 pb-2">제목</div>
+						</v-list-item-title>
+						<v-list-item-action>
+							<v-btn icon @click="resetVideo">
+								<v-icon>
+									mdi-close
+								</v-icon>
+							</v-btn>
+						</v-list-item-action>
+					</v-list-item>
+					<v-card-text class="pb-0">
+						<v-text-field
+							v-model="search"
+							ref="search"
+							color="rgba(30, 30, 30, 0.5)"
+							dense
+							outlined
+							hide-details
+							placeholder="영상제목을 검색해주세요."
+							maxlength="50"
+							style="max-width: 250px; float:right;"
+						>
+							<v-icon slot="append" style="cursor: pointer;">
+								mdi-magnify
+							</v-icon>
+						</v-text-field>
+					</v-card-text>
+					<div class="bold px-6 pb-2" style="clear:both;">제목</div>
 					<v-card-text class="pb-0">
 						<v-text-field
 							v-model="editTitle"
@@ -174,22 +201,11 @@
 							ref="title"
 							filled
 							placeholder="제목입력 후 강의 영상을 선택해 주세요."
-							error-messages=""
-							maxlength="30"
-						></v-text-field>
-					</v-card-text>
-					<div class="bold px-6 pb-2">영상검색</div>
-					<v-card-text class="pb-0">
-						<v-text-field
-							v-model="search"
-							ref="search"
-							filled
-							placeholder="영상 제목을 검색해주세요."
 							maxlength="30"
 						></v-text-field>
 					</v-card-text>
 					<div class="bold px-6 pb-2">영상목록</div>
-					<v-card-text>
+					<v-card-text style="height:640px; overflow-y: scroll;">
 						<template v-for="(element, index) in videoList">
 							<div
 								class="mb-2 border-radius-10"
@@ -207,11 +223,24 @@
 								/>
 							</div>
 						</template>
+						<div
+							v-if="videoList.length == 0"
+							style="text-align: center; font-weight: 600; font-size: 16px; padding-top:210px;"
+						>
+							활동하신 기록이 없네요.
+							<br />
+							영상을 업로드해보세요!😉
+						</div>
 					</v-card-text>
 					<v-card-actions>
 						<v-spacer></v-spacer>
-						<v-btn color="error darken-1" text @click="resetVideo">
-							<span class="bold">취소</span>
+						<v-btn
+							color="error darken-1"
+							text
+							@click="resetVideo"
+							class="bold"
+						>
+							취소
 						</v-btn>
 						<v-btn
 							color="darken-1"
@@ -229,7 +258,7 @@
 					<v-card-title class="headline">
 						<span class="bold">정말 삭제하시겠습니까?</span>
 					</v-card-title>
-					<v-card-text>
+					<v-card-text class="bold">
 						삭제된 목차는 복구되지 않으며 <br />
 						그 동안 사용되었던 기록이 제거됩니다.
 					</v-card-text>
@@ -352,6 +381,10 @@ export default {
 			this.isDelete = false;
 		},
 		confirmEdit() {
+			if (this.selectVideoNo == -1) {
+				alert('영상을 선택해 주세요.');
+				return;
+			}
 			this.list[this.editIdx].idx_title = this.editTitle;
 			this.list[this.editIdx].isEdit = true;
 			if (this.selectVideoNo != -1) {

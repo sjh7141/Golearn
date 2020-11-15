@@ -8,21 +8,21 @@
 			<v-img
 				class="border-radius-10"
 				:src="video.vid_thumbnail"
-				width="100%"
-				height="300px;"
+				width="550"
+				height="300"
 				style="display: inline-block;"
+				:style="{
+					border:
+						selectVideoNo == idx
+							? '3px solid #6952bf'
+							: '1px solid rgba(0,0,0,0.12)',
+				}"
 			/>
-			<v-fab-transition>
-				<v-icon
-					v-if="selectVideoNo == idx"
-					x-large
-					icon
-					color="pink"
-					style="position:absolute; right:40px;"
-				>
+			<!-- <v-fab-transition>
+				<v-icon v-if="selectVideoNo == idx" x-large icon color="pink">
 					mdi-check-circle
 				</v-icon>
-			</v-fab-transition>
+			</v-fab-transition> -->
 		</v-col>
 		<v-col
 			class="mx-3 pt-0"
