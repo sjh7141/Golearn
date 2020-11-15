@@ -31,5 +31,8 @@ public class Notification {
     private int notiSender;
     @Transient
     private int dest;
-
+    @Transient
+    private String profile;
+    @Transient
+    private String senderNickname;
 }
