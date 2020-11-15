@@ -124,15 +124,12 @@
 				id="video-player"
 				controls
 				data-setup="{}"
-				:poster="poster"
 				style="height:100%; width:100%;background-color:white; "
 				:style="{
 					'background-color': dark ? '#1c1c1c' : '#fff',
 					'padding-left': editMode ? '10px' : '0px',
 				}"
-				v-if="src"
 			>
-				<source :src="src" />
 				<div
 					style="position: absolute; right:0; height:100%; background-color:red; width:4px;"
 				/>
@@ -263,6 +260,18 @@ export default {
 		source() {
 			this.languages[this.type].script = this.source;
 			this.changeMode(this.type, this.language);
+		},
+		src() {
+			var myPlayer = videojs('video-player');
+			myPlayer.src([
+				{ type: 'video/mp4', src: this.src },
+				{ type: 'video/webm', src: this.src },
+				{ type: 'video/ogg', src: this.src },
+			]);
+		},
+		poster() {
+			var myPlayer = videojs('video-player');
+			myPlayer.poster(this.poster);
 		},
 	},
 	data() {
