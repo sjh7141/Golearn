@@ -100,6 +100,11 @@ export default {
 		changeActive() {
 			this.select = (this.select + 1) % this.iconList.length;
 			if (this.select == 0) {
+				this.$store.commit(
+					'setSBMessage',
+					'로드맵등록이 완료되었습니다.',
+				);
+				this.$store.commit('setSnackbar', true);
 				this.$router.push('/');
 			}
 		},

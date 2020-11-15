@@ -6,6 +6,16 @@
 			<div :style="{ 'margin-top': space + 'px' }" />
 			<Content class="content-component" />
 			<Footer v-if="showFooter" />
+			<v-snackbar
+				v-model="snackbar"
+				:multi-line="true"
+				:timeout="3000"
+				color="#1e2224"
+			>
+				<span style="color:#ebebeb; font-family: 'BMJUA';">
+					{{ SBMessage }}
+				</span>
+			</v-snackbar>
 		</div>
 	</v-app>
 </template>
@@ -15,6 +25,7 @@ import Header from '@/components/layouts/Header.vue';
 import Navigation from '@/components/layouts/Navigation.vue';
 import Content from '@/components/layouts/Content.vue';
 import Footer from '@/components/layouts/Footer.vue';
+import { mapGetters } from 'vuex';
 
 export default {
 	name: 'App',
@@ -33,6 +44,18 @@ export default {
 	},
 
 	computed: {
+		...mapGetters({
+			sb: 'snackbar',
+			SBMessage: 'SBMessage',
+		}),
+		snackbar: {
+			get() {
+				return this.sb;
+			},
+			set(flag) {
+				return flag;
+			},
+		},
 		showHeader() {
 			let render = true;
 			if (this.$route.path.indexOf('/login') > -1) {
@@ -54,6 +77,14 @@ export default {
 
 	mounted() {
 		this.space = this.$refs.header.$el.clientHeight;
+		console.log(this.snackbar);
+		if (this.snackbar) {
+			var self = this;
+			setTimeout(function() {
+				self.$store.commit('setSBMessage', '');
+				self.$store.commit('setSnackbar', false);
+			}, 3000);
+		}
 	},
 
 	methods: {
