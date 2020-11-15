@@ -4,10 +4,11 @@
 			<multi-view
 				:width="width"
 				:height="height"
-				:source="source"
-				:type="type"
+				:source="video.vid_code"
+				:type="video.vid_code_type"
 				:poster="video.vid_thumbnail"
 				:src="video.vid_url"
+				:title="video.vid_title"
 				v-if="!loading"
 			/>
 
@@ -140,6 +141,11 @@
 				style="padding:0px 65px;"
 				v-html="video.vid_content"
 			/>
+			<!-- <div class="my-3" style="padding:0px 65px;">
+				{{ video }}
+				{{ editor }}
+				{{ author }}
+			</div> -->
 
 			<v-divider class="mb-5" />
 
@@ -169,9 +175,6 @@ export default {
 			totalHeight: 0,
 			width: 0,
 			height: 0,
-
-			source: '',
-			type: -1,
 
 			no: 0,
 			mbr_no: 0,
@@ -206,7 +209,9 @@ export default {
 
 		this.getVideoDetail(this.no).then(({ data }) => {
 			// console.dir(data);
-			this.loading = false;
+			data.video.vid_code_type = ['c_cpp', 'java', 'python'].indexOf(
+				data.video.vid_code_type,
+			);
 			this.author = data.author;
 			this.editor = data.editor;
 			this.video = data.video;
@@ -215,6 +220,7 @@ export default {
 			this.checkLikeVideo(this.video.vid_no);
 			this.isMine = this.mbr_no == this.$store.getters.user.no;
 			this.checkSaveVideo(this.video.vid_no);
+			this.loading = false;
 		});
 	},
 	beforeDestroy() {
@@ -233,7 +239,6 @@ export default {
 			'removeSaveVideo',
 			'getSaveVideo',
 		]),
-
 		checkLikeVideo(id) {
 			this.getLikeVideo(id).then(({ data }) => {
 				this.liked = data.isLike;

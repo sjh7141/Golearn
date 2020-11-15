@@ -48,6 +48,7 @@ export default {
 	},
 	mutations: {
 		setToken(state, payload) {
+			console.log(payload);
 			state.token = payload;
 			sessionStorage.setItem('token', payload);
 		},
@@ -56,6 +57,7 @@ export default {
 			sessionStorage.setItem('isLogin', payload);
 		},
 		setUser(state, payload) {
+			console.dir(payload);
 			state.user = JSON.stringify(payload);
 			sessionStorage.setItem('user', state.user);
 		},
