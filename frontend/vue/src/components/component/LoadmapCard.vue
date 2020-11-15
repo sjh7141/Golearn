@@ -7,7 +7,7 @@
 			flat
 			tile
 			router
-			:to="`/watch/${loadmap.ldm_no}`"
+			:to="`/roadmap/${loadmap.ldm_no}`"
 		>
 			<v-img
 				:src="`${loadmap.ldm_thumbnail}`"
