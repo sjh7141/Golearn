@@ -383,7 +383,6 @@ export default {
 		if (this.editURL.length != 0) {
 			this.isVideo = true;
 			this.isNew = true;
-			console.log(this.editURL);
 			this.$refs.video.src = this.editURL;
 		}
 	},

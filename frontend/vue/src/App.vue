@@ -77,7 +77,6 @@ export default {
 
 	mounted() {
 		this.space = this.$refs.header.$el.clientHeight;
-		console.log(this.snackbar);
 		if (this.snackbar) {
 			var self = this;
 			setTimeout(function() {
