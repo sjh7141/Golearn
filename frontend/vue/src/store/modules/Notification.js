@@ -46,5 +46,24 @@ export default {
 			};
 			return axios.post(URL.notificationBuild(), payload, config);
 		},
+		removeNotification({ rootGetters }, payload) {
+			const config = {
+				headers: {
+					Authorization: rootGetters.token,
+				},
+			};
+			return axios.delete(
+				URL.notificationBuild() + `/${payload}`,
+				config,
+			);
+		},
+		removeNotifications({ rootGetters }) {
+			const config = {
+				headers: {
+					Authorization: rootGetters.token,
+				},
+			};
+			return axios.delete(URL.notificationBuild(), config);
+		},
 	},
 };

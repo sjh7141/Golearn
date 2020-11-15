@@ -84,28 +84,129 @@
 						</v-avatar>
 					</v-btn>
 
-					<v-menu bottom min-width="200px" rounded offset-y>
-						<template v-slot:activator="{ on }">
-							<v-btn
-								width="40"
-								height="40"
-								icon
-								v-on="on"
-								class="mr-2"
+					<v-menu left bottom offsetY>
+						<template v-slot:activator="{ on, attrs }">
+							<v-badge
+								color="error"
+								:content="
+									totalNotice > 9 ? '9+' : `${totalNotice}`
+								"
+								offset-x="24"
+								offset-y="24"
 							>
-								<v-avatar size="24">
-									<v-icon size="24">
-										mdi-bell
+								<v-btn
+									icon
+									v-bind="attrs"
+									v-on="on"
+									@click="getNoticeList"
+								>
+									<v-icon>
+										mdi-bell-outline
 									</v-icon>
-								</v-avatar>
-							</v-btn>
+								</v-btn>
+							</v-badge>
 						</template>
-						<v-card>
-							<v-list-item-content class="justify-center">
-								<div class="mx-auto"></div>
-							</v-list-item-content>
-						</v-card>
+						<v-list class="notice_list" outlined dense>
+							<v-list-item>
+								<v-list-item-content>
+									<v-list-item-title
+										>전체
+										{{ notices.length }}</v-list-item-title
+									>
+								</v-list-item-content>
+								<v-list-item-action>
+									<v-list-item-title
+										style="font-size:12px; cursor:pointer;"
+										@click.stop="removeAllNotice"
+										>전체 삭제</v-list-item-title
+									>
+								</v-list-item-action>
+							</v-list-item>
+							<template v-for="(notice, i) in notices">
+								<v-divider :key="`${i}_divider`" />
+								<v-list-item
+									:key="`${i}_notice`"
+									link
+									style="padding-left:0px;"
+									@click="$router.push(notice.noti_path)"
+								>
+									<v-icon
+										:color="
+											notice.noti_read == '0'
+												? 'primary'
+												: 'transparent'
+										"
+										style="margin:7px;"
+									>
+										mdi-circle-medium
+									</v-icon>
+									<v-list-item-avatar
+										style="margin-right:10px;"
+									>
+										<v-img :src="notice.profile"> </v-img>
+									</v-list-item-avatar>
+									<v-list-item-content>
+										<v-list-item-subtitle>
+											{{ notice.noti_msg }}
+										</v-list-item-subtitle>
+										<v-list-item-subtitle>
+											<span style="font-size:12px;">{{
+												notice.reg_dt | diffDate
+											}}</span>
+										</v-list-item-subtitle>
+									</v-list-item-content>
+
+									<v-list-item-action
+										@click.stop="removeNotice(notice)"
+									>
+										<v-icon>
+											mdi-close
+										</v-icon>
+									</v-list-item-action>
+								</v-list-item>
+							</template>
+							<template v-if="!notices.length">
+								<v-divider />
+								<v-container fluid>
+									<v-row>
+										<v-col cols="12">
+											<v-row align="end" justify="center">
+												<v-icon
+													style="font-size:120px;"
+												>
+													mdi-bell-off-outline
+												</v-icon>
+											</v-row>
+										</v-col>
+									</v-row>
+									<v-row>
+										<v-col cols="12">
+											<v-row align="end" justify="center">
+												<div style="font-size:20px">
+													새로운 알림이 없습니다
+												</div>
+											</v-row>
+										</v-col>
+									</v-row>
+									<v-row>
+										<v-col cols="12">
+											<v-row align="end" justify="center">
+												<div style="font-size:12px">
+													나의 활동 소식과 새 소식을
+												</div>
+											</v-row>
+											<v-row align="end" justify="center">
+												<div style="font-size:12px">
+													한번에 받아 보세요.
+												</div>
+											</v-row>
+										</v-col>
+									</v-row>
+								</v-container>
+							</template>
+						</v-list>
 					</v-menu>
+
 					<v-menu bottom min-width="200px" rounded offset-y>
 						<template v-slot:activator="{ on }">
 							<v-btn
@@ -269,7 +370,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-
+import moment from 'moment';
 export default {
 	name: 'Header',
 
@@ -308,13 +409,18 @@ export default {
 						'고런고런의 편집기를 사용하여 영상을 직접 편집할 수 있습니다.',
 				},
 			],
-			notiCount: 0,
-			notifications: [],
+			totalNotice: 0,
+			notices: [],
 		};
 	},
 
 	methods: {
-		...mapActions(['getNotiCount', 'getNotification']),
+		...mapActions([
+			'getNotiCount',
+			'getNotification',
+			'removeNotification',
+			'removeNotifications',
+		]),
 		keywordSearch() {
 			this.$router.push(`/video?search=${this.keyword}`);
 		},
@@ -338,9 +444,33 @@ export default {
 			this.video = false;
 			this.$router.push(`/video/${path}`);
 		},
-		getNoti() {
+		getNoticeList() {
 			this.getNotification().then(res => {
-				this.notifications = res.data;
+				this.notices = res.data;
+			});
+		},
+		dateFormatter(date) {
+			return moment(date).fromNow();
+		},
+		removeNotice(notice) {
+			const self = this;
+			this.removeNotification(notice.noti_no).then(function() {
+				const index = self.notices.indexOf(notice);
+				self.notices.splice(index, 1);
+				self.totalNotice =
+					self.totalNotice > 0 ? self.totalNotice - 1 : 0;
+			});
+		},
+		removeAllNotice() {
+			const self = this;
+			this.removeNotifications().then(function() {
+				self.notices = [];
+				self.totalNotice = 0;
+			});
+		},
+		getTotalNotice() {
+			this.getNotiCount().then(res => {
+				this.totalNotice = res.data.num_of_noti;
 			});
 		},
 	},
@@ -348,9 +478,12 @@ export default {
 		...mapGetters(['isLogin', 'user']),
 	},
 	mounted() {
-		this.getNotiCount().then(res => {
-			this.notiCount = res.data.num_of_noti;
-		});
+		this.getTotalNotice();
+	},
+	filters: {
+		diffDate(date) {
+			return moment(date).fromNow();
+		},
 	},
 };
 </script>
@@ -398,7 +531,21 @@ export default {
 	text-align: center;
 	font-size: 30px;
 }
+.v-menu__content {
+	box-shadow: none;
+	overflow-y: visible;
+	overflow-x: visible;
+	contain: none;
+}
 
+.notice_list {
+	border-radius: 3px;
+	width: 400px;
+	min-height: 200px;
+	max-height: 450px;
+	overflow-y: auto;
+	padding: 0px;
+}
 @font-face {
 	font-family: 'BMJUA';
 	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff')

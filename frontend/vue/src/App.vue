@@ -1,7 +1,7 @@
 <template>
 	<v-app>
 		<div id="app">
-			<Header ref="header" v-if="showHeader" />
+			<Header ref="header" :totalNotice="totalNotice" v-if="showHeader" />
 			<Navigation v-if="showHeader" />
 			<div :style="{ 'margin-top': space + 'px' }" />
 			<Content class="content-component" />
@@ -25,7 +25,7 @@ import Header from '@/components/layouts/Header.vue';
 import Navigation from '@/components/layouts/Navigation.vue';
 import Content from '@/components/layouts/Content.vue';
 import Footer from '@/components/layouts/Footer.vue';
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
 	name: 'App',
@@ -40,6 +40,7 @@ export default {
 	data() {
 		return {
 			space: 0,
+			totalNotice: 0,
 		};
 	},
 
@@ -87,9 +88,15 @@ export default {
 	},
 
 	methods: {
+		...mapActions(['getNotiCount']),
 		setSpace(value) {
 			// this.space = this.$refs.header.$el.clientHeight;
 			this.space = value;
+		},
+	},
+	watch: {
+		$route() {
+			this.$refs.header.getTotalNotice();
 		},
 	},
 };
