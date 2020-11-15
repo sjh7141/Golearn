@@ -88,6 +88,7 @@ export default {
 			select: 0,
 			title: '',
 			title_default: '[코스 이름 예시] CSS의 시작',
+			bannerURL: '',
 		};
 	},
 	methods: {

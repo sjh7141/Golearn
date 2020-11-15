@@ -26,6 +26,7 @@ export default {
 			vid_code: '',
 			vid_code_type: 'java',
 		},
+		editURL: '',
 	},
 	getters: {
 		tags(state) {
@@ -36,6 +37,9 @@ export default {
 		},
 		uploadVideo(state) {
 			return state.uploadVideo;
+		},
+		editURL(state) {
+			return state.editURL;
 		},
 	},
 	mutations: {
@@ -75,6 +79,9 @@ export default {
 		},
 		setVideoLength(state, payload) {
 			state.uploadVideo.vid_length = payload;
+		},
+		setEditURL(state, payload) {
+			state.editURL = payload;
 		},
 	},
 	actions: {
