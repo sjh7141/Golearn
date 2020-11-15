@@ -33,7 +33,7 @@
 					</v-list-item-subtitle>
 					<v-list-item-subtitle class="mt-1" style="font-size:13px;">
 						<span v-for="(tag, i) in video.tags" :key="`tag_${i}`">
-							#{tag}
+							#{{ tag.tag_name }}
 						</span>
 					</v-list-item-subtitle>
 				</v-list-item-content>

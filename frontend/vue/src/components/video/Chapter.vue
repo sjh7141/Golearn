@@ -26,17 +26,12 @@
 					>
 				</v-img>
 			</v-col>
-			<v-col class="pa-0 pl-2" :cols="9">
-				<div>
+			<v-col class="pa-0 pl-2" :cols="9" style="position:relative;">
+				<div style="height:100%; position:relative;">
 					<span style="font-size:14px; font-weight:500;">
 						{{ i + 1 }}.
 						{{ item.vid_title ? item.vid_title : 'Untitled' }}</span
 					><br />
-					<span style="font-size: 12px;color: #949596;">
-						<span v-for="(tag, j) in item.tags" :key="`tag_${j}`">
-							#{{ tag }}
-						</span>
-					</span>
 				</div>
 			</v-col>
 		</v-row>
