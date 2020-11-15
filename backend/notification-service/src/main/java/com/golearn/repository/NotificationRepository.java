@@ -14,8 +14,9 @@ public interface NotificationRepository extends JpaRepository<Notification, Inte
     List<Notification> findAllByMbrNoOrderByRegDtDesc(int mbrNo);
 
     //    int countAllByMbrNoAndNotiReadIsFalse(int mbrNo);
+    @Transactional
     void deleteAllByMbrNo(int mbrNo);
-
+    @Transactional
     void deleteByMbrNoAndNotiNo(int mbrNo, int notiNo);
     @Transactional
     @Modifying
