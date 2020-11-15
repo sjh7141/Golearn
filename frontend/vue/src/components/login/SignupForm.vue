@@ -126,7 +126,7 @@
 			</v-row>
 			<v-row justify="center">
 				<div class="pa-2" style="font-size: 13px; color:#a6a6a6;">
-					Run & Go 의
+					고런고런의
 					<a
 						href="#"
 						style="font-size: 13px; text-decoration:none;"
@@ -164,7 +164,7 @@
 			<v-card>
 				<v-card-title class="d-flex">
 					<v-row>
-						<v-col cols="12" align="end">
+						<v-col cols="12" align="end" class="px-0">
 							<v-btn
 								class="mx-2"
 								fab
@@ -180,9 +180,9 @@
 							</v-btn>
 						</v-col>
 						<v-col cols="12">
-							<span class="headline">
+							<h1 class="headline">
 								개인정보 처리방침
-							</span>
+							</h1>
 						</v-col>
 					</v-row>
 				</v-card-title>
@@ -195,7 +195,7 @@
 			<v-card>
 				<v-card-title class="d-flex">
 					<v-row>
-						<v-col cols="12" align="end">
+						<v-col cols="12" align="end" class="px-0">
 							<v-btn
 								class="mx-2"
 								fab
@@ -211,7 +211,7 @@
 							</v-btn>
 						</v-col>
 						<v-col cols="12">
-							<span class="headline">이용약관</span>
+							<h1 class="headline">이용약관</h1>
 						</v-col>
 					</v-row>
 				</v-card-title>
@@ -485,6 +485,11 @@ export default {
 <style scoped>
 a {
 	text-decoration: none;
+}
+
+.headline {
+	font-weight: 600;
+	font-size: 30px;
 }
 
 .signup-wrapper {

@@ -36,7 +36,26 @@
 							placeholder="로드맵 검색"
 						>
 						</v-text-field>
-						<v-btn @click="make">로드맵등록</v-btn>
+						<!-- <v-btn
+							outlined
+							class="bold"
+							style="border: 1px solid #c9c9c9;"
+							@click="make"
+						>
+							<v-icon color="darken-3">
+								mdi-plus
+							</v-icon>
+							<span style="color:black">로드맵 등록</span>
+						</v-btn> -->
+						<v-btn
+							dark
+							depressed
+							color="#6523e8"
+							class="bold"
+							@click="make"
+						>
+							로드맵 등록
+						</v-btn>
 					</v-col>
 				</v-row>
 				<v-row>
