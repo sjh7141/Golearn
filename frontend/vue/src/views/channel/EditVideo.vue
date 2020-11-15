@@ -1,6 +1,6 @@
 <template>
 	<div
-		style="position: fixed; height:100%; width:100%; z-index: 9999; background-color:white; top:0;"
+		style="position: fixed; height:100%; width:100%; z-index: 9999; background-color:white; top:0;font-family: 'BMJUA', sans-serif"
 		@click="focusOut"
 	>
 		<Navigation :index="index" @change="changeIndex" />

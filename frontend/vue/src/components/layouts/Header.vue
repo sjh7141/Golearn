@@ -3,11 +3,7 @@
 		style="position:fixed; top:0;left:0;z-index:100; width:100%;"
 		id="header"
 	>
-		<v-app-bar
-			flat
-			tile
-			style="background-color:white; padding:0; height:100%"
-		>
+		<v-app-bar tile style="background-color:white; padding:0; height:100%">
 			<v-card
 				flat
 				tile
@@ -61,7 +57,7 @@
 				</v-text-field>
 			</v-card>
 			<v-spacer />
-			<div style="width:300px; text-align:right;">
+			<div style="width:310px; text-align:right;">
 				<v-btn
 					v-if="isLogin === 0"
 					light
@@ -74,14 +70,24 @@
 				</v-btn>
 				<template v-else>
 					<v-btn
+						depressed
+						rounded
+						class="mr-7"
+						style="font-family: 'BMJUA', sans-serif; font-weight:200; font-size:14px;"
+						color="rgba(13,13,37,0.06)"
+						@click="make"
+					>
+						코스 만들기
+					</v-btn>
+					<v-btn
 						width="40"
 						height="40"
 						icon
-						class="mr-2"
+						class=""
 						@click="video = true"
 					>
-						<v-avatar size="24">
-							<v-icon size="24">
+						<v-avatar size="30">
+							<v-icon size="30">
 								mdi-video-plus
 							</v-icon>
 						</v-avatar>
@@ -94,17 +100,19 @@
 								:content="
 									totalNotice > 9 ? '9+' : `${totalNotice}`
 								"
-								offset-x="24"
-								offset-y="24"
+								offset-x="20"
+								offset-y="20"
 							>
 								<v-btn
 									icon
 									v-bind="attrs"
 									v-on="on"
 									@click="getNoticeList"
+									width="37"
+									height="37"
 								>
-									<v-icon>
-										mdi-bell-outline
+									<v-icon size="26">
+										mdi-bell
 									</v-icon>
 								</v-btn>
 							</v-badge>
@@ -216,9 +224,9 @@
 								icon
 								color="transparent"
 								v-on="on"
-								class="ml-1 mr-5"
+								class="ml-5 mr-5"
 							>
-								<v-avatar size="36">
+								<v-avatar size="40">
 									<img
 										:src="
 											user.profile
@@ -423,6 +431,7 @@ export default {
 			'getNotification',
 			'removeNotification',
 			'removeNotifications',
+			'makeCourse',
 		]),
 		keywordSearch() {
 			this.$router.push(`/video?search=${this.keyword}`);
@@ -474,6 +483,11 @@ export default {
 		getTotalNotice() {
 			this.getNotiCount().then(res => {
 				this.totalNotice = res.data.num_of_noti;
+			});
+		},
+		make() {
+			this.makeCourse().then(({ data }) => {
+				this.$router.push(`/course/management/${data.cos_no}`);
 			});
 		},
 	},
