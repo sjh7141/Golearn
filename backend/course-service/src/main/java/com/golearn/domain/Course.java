@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity(name = "gl_course")
 @Table(name = "gl_course")
@@ -32,6 +33,11 @@ public class Course {
 	private Date regDt;
 	@Column(name = "chg_dt")
 	private Date chgDt;
+
+	@Transient
+	private int likeCount;
+	@Transient
+	private int viewerCount;
 
 	public Course() {
 
@@ -101,6 +107,22 @@ public class Course {
 		this.chgDt = chgDt;
 	}
 
+	public int getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
+	}
+
+	public int getViewerCount() {
+		return viewerCount;
+	}
+
+	public void setViewerCount(int viewerCount) {
+		this.viewerCount = viewerCount;
+	}
+
 	@PrePersist
 	void prePersist() {
 		this.regDt = this.chgDt = new Date();
@@ -119,6 +141,5 @@ public class Course {
 				+ ", cosThumbnail=" + cosThumbnail + ", cosBanner=" + cosBanner + ", regDt=" + regDt + ", chgDt="
 				+ chgDt + "]";
 	}
-	
-	
+
 }

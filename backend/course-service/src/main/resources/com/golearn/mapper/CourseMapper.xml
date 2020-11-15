@@ -32,4 +32,16 @@
 		where vid_req_no = #{vidReqNo} 
 	</select>
 	
+	<select id="findCourseLikeCount" resultType="Integer">
+		select count(*)
+		from gl_course_like
+		where cos_no = #{cosNo}
+	</select>
+	
+	<select id="findCourseViewerCount" resultType="Integer">
+		select count(*)
+		from gl_course_viewer
+		where cos_no = #{cosNo}
+	</select>
+	
 </mapper>
