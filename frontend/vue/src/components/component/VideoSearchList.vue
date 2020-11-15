@@ -225,7 +225,6 @@ export default {
 <style scoped>
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
 .content-component {
-	background-color: #fafafa;
 }
 
 .asd {
