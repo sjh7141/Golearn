@@ -124,7 +124,7 @@
 									style="float:left;"
 									class="mx-5 my-5"
 								>
-									<v-img :src="item.member.mbr_profile" />
+									<v-img :src="child.member.mbr_profile" />
 								</v-avatar>
 								<div style="float:left;" class="my-5">
 									<div>
