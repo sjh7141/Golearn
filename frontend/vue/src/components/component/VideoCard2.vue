@@ -17,7 +17,7 @@
 			></v-img>
 		</div>
 		<v-row no-gutters>
-			<v-col>
+			<v-col class="pl-1">
 				<v-card-title
 					class="pl-0 pt-3 pb-1 title"
 					style="line-height: 1.2rem"
@@ -113,9 +113,7 @@ export default {
 	color: purple;
 	cursor: pointer;
 }
-.v-card {
-	background-color: #fafafa;
-}
+
 .v-card .v-image {
 	overflow: hidden;
 	transition: background-color 0.2s, transform 0.2s ease-in-out;

@@ -16,9 +16,9 @@
 			</v-img>
 
 			<v-card-title
-				style="font-size:0.9rem; font-weight:bold; title padding-bottom:0px; padding-top:10px"
+				style="font-size:0.9rem; font-weight:bold; padding-bottom:0px; padding-top:10px"
 				><v-list-item-title
-					style="font-size:0.9rem; font-weight:bold; "
+					style="font-size:0.9rem; font-weight:bold; padding-bottom:0px;"
 					>{{ loadmap.ldm_title }}</v-list-item-title
 				></v-card-title
 			>
@@ -80,6 +80,8 @@ export default {
 	cursor: pointer;
 }
 .asdf {
+	background-color: transparent;
+	background: transparent;
 	box-shadow: none !important;
 }
 .asdf:hover {
