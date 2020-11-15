@@ -86,7 +86,7 @@
 							mdi-picture-in-picture-bottom-right mdi-flip-h
 						</v-icon>
 						<span style="color:#C0C0CD;font-size:14px;">
-							위치
+							크기
 						</span>
 					</v-btn>
 				</v-slide-y-reverse-transition>
@@ -317,15 +317,13 @@
 		</v-tooltip>
 		<v-spacer />
 		<v-btn color="#665DC3" @click="exportVideo">
-			<v-icon left size="24" class="mr-3">
-				mdi-cloud-upload-outline
-			</v-icon>
-			업로드
+			영상 업로드
 		</v-btn>
 	</v-app-bar>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import EventBus from '@/util/EventBus.js';
 export default {
 	name: 'EditHeader',
@@ -384,8 +382,10 @@ export default {
 		});
 	},
 	methods: {
+		...mapGetters(['mediaList']),
 		exportVideo() {
-			this.$emit('exportVideo');
+			if (this.mediaList.length) this.$emit('exportVideo');
+			else alert('영상을 없어요!');
 		},
 	},
 };
