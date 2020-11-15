@@ -95,6 +95,11 @@ export default {
 		},
 		changeActive(idx) {
 			if (idx == 3) {
+				this.$store.commit(
+					'setSBMessage',
+					'영상 업로드가 완료되었습니다.',
+				);
+				this.$store.commit('setSnackbar', true);
 				this.$router.push('/');
 			} else {
 				this.select = (idx + 1) % this.iconList.length;
