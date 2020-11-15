@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface NotificationRepository extends JpaRepository<Notification, Integer> {
-    List<Notification> findAllByMbrNo(int mbrNo);
+    List<Notification> findAllByMbrNoOrderByRegDtDesc(int mbrNo);
 
     //    int countAllByMbrNoAndNotiReadIsFalse(int mbrNo);
     void deleteAllByMbrNo(int mbrNo);
