@@ -37,7 +37,7 @@ public class NotificationService {
 
     @Transactional
     public List<Notification> getNotifications(int mbrNo) {
-        List<Notification> notificationList = notificationRepository.findAllByMbrNo(mbrNo);
+        List<Notification> notificationList = notificationRepository.findAllByMbrNoOrderByRegDtDesc(mbrNo);
         for(Notification notification : notificationList){
             MemberResponse memberResponse = accountRestClient.getMember(notification.getNotiSender());
             notification.setProfile(memberResponse.getProfile());
