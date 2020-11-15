@@ -235,7 +235,7 @@
 					</v-card-text>
 					<v-card-text
 						class="pt-3"
-						style="clear: both; height:640px; overflow-y: scroll;"
+						style="clear: both; height:440px; overflow-y: scroll;"
 					>
 						<template v-for="(element, index) in videoList">
 							<div

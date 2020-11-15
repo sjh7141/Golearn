@@ -46,11 +46,7 @@
 					<v-row class="others">
 						<span class="mr-2">
 							<v-icon color="#d4d4d4" small>mdi-account</v-icon>
-							<span>{{
-								course.cos_title.length * 21 +
-									course.tags.length +
-									course.cos_thumbnail.length
-							}}</span>
+							<span>{{ course.viewer_count }}</span>
 						</span>
 						<span class="mr-2">
 							<v-icon class="mr-1" color="#d4d4d4" small

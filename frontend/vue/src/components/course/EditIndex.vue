@@ -205,7 +205,7 @@
 						></v-text-field>
 					</v-card-text>
 					<div class="bold px-6 pb-2">영상목록</div>
-					<v-card-text style="height:640px; overflow-y: scroll;">
+					<v-card-text style="height:440px; overflow-y: scroll;">
 						<template v-for="(element, index) in videoList">
 							<div
 								class="mb-2 border-radius-10"
