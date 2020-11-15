@@ -22,7 +22,10 @@
 					{{ channel.nickname }}
 				</v-card-title>
 
-				<v-card-subtitle class="center pl-2 pt-0">
+				<v-card-subtitle
+					class="center pl-2 pt-0"
+					style="font-size:14px"
+				>
 					구독자 {{ channel.like_count | viewFormatter }} 명
 				</v-card-subtitle>
 			</v-col>
