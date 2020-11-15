@@ -18,6 +18,9 @@ public class CourseService {
 	@Autowired
 	private CourseManagerRepository courseManagerRepository;
 	
+	@Autowired
+	private CourseMapper courseMapper;
+	
 	// 코스 20개씩 목록 조회
 	public List<Course> perPageBy20(int page) {
 		page = (page - 1) * 20;
@@ -27,7 +30,10 @@ public class CourseService {
 	
 	// 코스 상세 조회
 	public Course findById(int cosNo) {
-		return courseRepository.findById(cosNo);
+		Course course = courseRepository.findById(cosNo);
+		course.setLikeCount(courseMapper.findCourseLikeCount(cosNo));
+		course.setViewerCount(courseMapper.findCourseViewerCount(cosNo));
+		return course;
 	}
 	
 	// 코스 생성

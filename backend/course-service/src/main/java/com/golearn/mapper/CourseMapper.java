@@ -16,4 +16,6 @@ public interface CourseMapper {
 	public int checkLike(@Param("userNo") int userNo, @Param("cosNo") int cosNo);
 	public int checkIndex(@Param("userNo") int userNo, @Param("idxNo") int idxNo);
 	public VideoRequestDto findByRequestNo(@Param("vidReqNo") int vidReqNo);
+	public int findCourseLikeCount(long cosNo);
+	public int findCourseViewerCount(long cosNo);
 }
