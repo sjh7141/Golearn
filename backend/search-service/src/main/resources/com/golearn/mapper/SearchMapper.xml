@@ -83,23 +83,29 @@
 	</select>
 	
 	<select id="findCourse" resultMap="courseResultMap">
-	select sub1.*, sub2.likeCount
-	from (
-			(
-				select gc.*, gm.mbr_nickname, gm.mbr_profile
-				from gl_course gc inner join gl_member gm
-				on gc.cos_title like CONCAT('%', #{search}, '%') and gc.mbr_no = gm.mbr_no
-			) sub1
-		left join
-			(
-				select cos_no, count(cos_no) as likeCount
-				from gl_course_like
-				group by cos_no
-			) sub2
-	        on sub1.cos_no = sub2.cos_no
-		)
-	order by sub1.reg_dt desc
-	limit #{startIndex}, #{perPageNum}
+		select sub3.*, count(cv.cos_no) viewerCount
+    	from(
+	        select sub1.*, sub2.likeCount
+			from (
+					(
+						select gc.*, gm.mbr_nickname, gm.mbr_profile
+						from gl_course gc inner join gl_member gm
+						on gc.cos_title like CONCAT('%', #{search}, '%') and gc.mbr_no = gm.mbr_no
+					) sub1
+				left join
+					(
+						select cos_no, count(cos_no) as likeCount
+						from gl_course_like 
+						group by cos_no
+					) sub2
+			        on sub1.cos_no = sub2.cos_no
+				)
+				limit #{startIndex}, #{perPageNum}
+	        ) sub3 left join gl_course_viewer cv
+        on sub3.cos_no = cv.cos_no
+        group by sub3.cos_no
+        order by sub3.reg_dt desc
+
 	</select>
 	
 	<select id="countByCourse" resultType="Integer">

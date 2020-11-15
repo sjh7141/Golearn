@@ -13,6 +13,7 @@ public class CourseDto {
 	private String cosContent;
 	private String cosThumbnail;
 	private int likeCount;
+	private int viewerCount;
 	private Date regDt;
 	private Date chgDt;
 	private List<TagDto> tags;
@@ -103,6 +104,14 @@ public class CourseDto {
 
 	public void setTags(List<TagDto> tags) {
 		this.tags = tags;
+	}
+
+	public int getViewerCount() {
+		return viewerCount;
+	}
+
+	public void setViewerCount(int viewerCount) {
+		this.viewerCount = viewerCount;
 	}
 
 }
