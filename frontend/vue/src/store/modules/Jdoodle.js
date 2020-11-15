@@ -3,7 +3,7 @@ import axios from 'axios';
 const URL = {
 	// DOMAIN:
 	// 	'https://cors-anywhere.herokuapp.com/https://api.jdoodle.com/v1/execute',
-	DOMAIN: 'https://golearn.co.kr/u/v1/execute',
+	DOMAIN: 'https://golearn.co.kr/jdoodle/',
 	ApiBuild() {
 		return this.DOMAIN;
 	},
