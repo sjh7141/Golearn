@@ -130,17 +130,50 @@
 			<!-- 추가&수정 dialog -->
 			<v-dialog v-model="isAdd" max-width="600">
 				<v-card>
-					<v-card-title class="headline pb-6">
-						<span class="bold">
+					<v-list-item class="pb-6">
+						<v-list-item-title
+							class="headline"
+							style="font-weight: 600 !important"
+						>
 							순서 {{ isEdit ? editIdx + 1 : getOrder() }}
-						</span>
-					</v-card-title>
-					<div class="bold px-6 pb-2">코스목록</div>
-					<v-card-text>
+						</v-list-item-title>
+						<v-list-item-action>
+							<v-btn icon @click="resetCourse">
+								<v-icon>
+									mdi-close
+								</v-icon>
+							</v-btn>
+						</v-list-item-action>
+					</v-list-item>
+					<v-card-text class="pb-0">
+						<v-text-field
+							v-model="search"
+							ref="search"
+							color="rgba(30, 30, 30, 0.5)"
+							dense
+							outlined
+							hide-details
+							placeholder="코스제목을 검색해주세요."
+							maxlength="50"
+							style="max-width: 250px; float:right;"
+						>
+							<v-icon slot="append" style="cursor: pointer;">
+								mdi-magnify
+							</v-icon>
+						</v-text-field>
+					</v-card-text>
+					<div class="bold px-6 pb-2" style="clear:both;">
+						코스목록
+					</div>
+					<v-card-text style="height:640px; overflow-y: scroll;">
 						<template v-for="(element, index) in courseList">
 							<div
 								class="mb-2 border-radius-10"
-								:key="element.cosNo"
+								:key="element.cos_no"
+								v-show="
+									element.cos_title &&
+										element.cos_title.includes(search)
+								"
 							>
 								<index-course
 									:course="element"
@@ -150,6 +183,14 @@
 								/>
 							</div>
 						</template>
+						<div
+							v-if="courseList.length == 0"
+							style="text-align: center; font-weight: 600; font-size: 16px; padding-top:210px;"
+						>
+							활동하신 기록이 없네요.
+							<br />
+							코스를 좋아요한 뒤 목록에 추가해보세요!😉
+						</div>
 						<!-- <v-pagination
 							v-model="page"
 							:length="30"
@@ -160,7 +201,7 @@
 					<v-card-actions>
 						<v-spacer></v-spacer>
 						<v-btn color="error darken-1" text @click="resetCourse">
-							취소
+							<span class="bold">취소</span>
 						</v-btn>
 						<v-btn
 							color="darken-1"
@@ -178,7 +219,7 @@
 					<v-card-title class="headline">
 						<span class="bold">정말 삭제하시겠습니까?</span>
 					</v-card-title>
-					<v-card-text>
+					<v-card-text class="bold">
 						삭제된 코스목록은 복구되지 않으며 <br />
 						그 동안 사용되었던 기록이 제거됩니다.
 					</v-card-text>
@@ -189,10 +230,10 @@
 							text
 							@click="isDelete = false"
 						>
-							취소
+							<span class="bold">취소</span>
 						</v-btn>
 						<v-btn color="darken-1" text @click="confirmDelete">
-							확인
+							<span class="bold">확인</span>
 						</v-btn>
 					</v-card-actions>
 				</v-card>
@@ -230,6 +271,7 @@ export default {
 			selectCourseNo: -1,
 			page: 1,
 			loading: false,
+			search: '',
 		};
 	},
 	methods: {
@@ -268,8 +310,15 @@ export default {
 			this.isDelete = false;
 		},
 		confirmEdit() {
+			if (this.selectCourseNo == -1) {
+				alert('코스를 선택해 주세요.');
+				return;
+			}
 			const selected = this.courseList[this.selectCourseNo];
 			selected.isEdit = true;
+			if (this.list[this.editIdx].no == 0) {
+				selected.no = 0;
+			}
 			this.list[this.editIdx] = selected;
 
 			this.editIdx = -1;
@@ -324,6 +373,7 @@ export default {
 					});
 				}
 			}
+
 			this.loading = true;
 			this.$store
 				.dispatch('setLoadmap', {

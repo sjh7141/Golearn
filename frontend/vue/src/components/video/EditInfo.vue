@@ -70,7 +70,7 @@ export default {
 		return {
 			title: '',
 			rules: [v => v.length > 4 || '5자이상 입력이 필요합니다.'],
-			selectTags: ['JAVA'],
+			selectTags: [],
 			tags: [],
 			allTags: [],
 			loading: false,
