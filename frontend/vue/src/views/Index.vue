@@ -364,7 +364,9 @@ export default {
 
 <style scoped>
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
-
+.v-card {
+	font-family: 'BMJUA';
+}
 .container {
 	max-width: 1440px;
 }

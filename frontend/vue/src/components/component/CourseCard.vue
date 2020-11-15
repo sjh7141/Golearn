@@ -73,6 +73,9 @@ export default {
 </script>
 
 <style scoped>
+.v-card {
+	font-family: 'BMJUA';
+}
 .content-wrapper {
 	right: 0;
 	left: 0;
