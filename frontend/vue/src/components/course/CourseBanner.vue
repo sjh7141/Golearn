@@ -68,9 +68,10 @@
 				<div
 					class="mx-auto"
 					style="color:white; font-family: 'BMJUA', sans-serif !important; font-weight:400;"
+					v-if="roadmap != null"
 				>
 					<span
-						v-for="(item, i) in roadmap"
+						v-for="(item, i) in roadmap.course"
 						:key="`courseTitle_${i}`"
 						class="mx-5"
 						style="cursor:pointer"
@@ -91,7 +92,7 @@
 <script>
 import { mapActions } from 'vuex';
 export default {
-	props: ['course', 'src'],
+	props: ['course', 'src', 'ldm_no'],
 	data() {
 		return {
 			member: null,
@@ -103,7 +104,6 @@ export default {
 			// 	{ cos_title: 'HTML' },
 			// ],
 			roadmap: null,
-			ldm_no: 0,
 		};
 	},
 	watch: {
@@ -116,7 +116,7 @@ export default {
 			});
 		},
 		ldm_no() {
-			if (this.idm_no) {
+			if (this.ldm_no) {
 				this.getLoadmap(this.ldm_no).then(({ data }) => {
 					this.roadmap = data;
 				});
@@ -132,7 +132,7 @@ export default {
 				this.isManager = data;
 			});
 		}
-		if (this.idm_no) {
+		if (this.ldm_no) {
 			this.getLoadmap(this.ldm_no).then(({ data }) => {
 				this.roadmap = data;
 			});

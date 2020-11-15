@@ -107,6 +107,7 @@ import EventBus from '@/util/EventBus.js';
 
 export default {
 	name: 'EditAside',
+	props: ['doExport'],
 	data() {
 		return {
 			width: 0,
@@ -170,6 +171,9 @@ export default {
 		},
 		isChange() {
 			if (this.isChange) this.pause();
+		},
+		doExport() {
+			this.export();
 		},
 	},
 	mounted() {
@@ -322,30 +326,11 @@ export default {
 				})
 					.then(({ data }) => {
 						this.isSuccess = true;
-						// this.createVideo(data);
 						this.$store.commit('setEditURL', data);
 						this.$router.push('/video/upload');
 					})
 					.catch(() => {
 						alert('업로드 실패!');
-						this.dialog = false;
-					});
-			});
-		},
-
-		createVideo(url) {
-			this.uploadVideo({
-				vid_url: url,
-				vid_pno: this.vid,
-			}).then(({ data }) => {
-				this.saveVideo({
-					vid_no: data,
-				})
-					.then(({ data }) => {
-						this.$router.push('/video/upload');
-					})
-					.catch(res => {
-						alert('업로드 실패!!');
 						this.dialog = false;
 					});
 			});

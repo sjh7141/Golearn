@@ -385,7 +385,7 @@ export default {
 	},
 	methods: {
 		exportVideo() {
-			EventBus.$emit('exportVideo');
+			this.$emit('exportVideo');
 		},
 	},
 };
