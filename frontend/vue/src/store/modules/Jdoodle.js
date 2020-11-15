@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const URL = {
-	DOMAIN: 'https://api.jdoodle.com/v1/execute',
+	DOMAIN:
+		'https://cors-anywhere.herokuapp.com/https://api.jdoodle.com/v1/execute',
 	ApiBuild() {
 		return this.DOMAIN;
 	},
