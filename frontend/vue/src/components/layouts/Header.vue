@@ -60,12 +60,12 @@
 			<v-spacer />
 			<div style="width:300px; text-align:right;">
 				<v-btn
+					text
 					v-if="isLogin === 0"
 					light
 					depressed
-					outlined
 					@click="goToLogin"
-					class="bold"
+					class="bold login"
 				>
 					로그인
 				</v-btn>
@@ -537,7 +537,9 @@ export default {
 	overflow-x: visible;
 	contain: none;
 }
-
+.login {
+	font-family: 'BMJUA';
+}
 .notice_list {
 	border-radius: 3px;
 	width: 400px;
