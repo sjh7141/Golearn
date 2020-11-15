@@ -165,7 +165,7 @@
 					<div class="bold px-6 pb-2" style="clear:both;">
 						코스목록
 					</div>
-					<v-card-text style="height:640px; overflow-y: scroll;">
+					<v-card-text style="height:440px; overflow-y: scroll;">
 						<template v-for="(element, index) in courseList">
 							<div
 								class="mb-2 border-radius-10"
