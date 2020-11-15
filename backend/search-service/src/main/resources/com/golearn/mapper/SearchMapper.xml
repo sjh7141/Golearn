@@ -5,6 +5,7 @@
 	<select id="findTag" resultType="com.golearn.domain.TagDto">
 		select tag_no, tag_name
 		from gl_tag
+		order by tag_no desc
 	</select>
 	
 	<select id="findVideo" resultMap="videoResultMap">
