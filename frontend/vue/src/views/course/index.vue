@@ -7,7 +7,15 @@
 					<v-list-item>
 						<v-list-item-subtitle
 							style="font-size:16px; color:black; font-weight:400;"
-							@click="move(`/course/${no}/intro`, 0, -1)"
+							@click="
+								move(
+									`/course/${no}/intro${
+										ldm_no ? '?ldm_no=' + ldm_no : ''
+									}`,
+									0,
+									-1,
+								)
+							"
 						>
 							소개
 						</v-list-item-subtitle>
@@ -15,7 +23,15 @@
 					<v-list-item>
 						<v-list-item-subtitle
 							style="font-size:16px; color:black; font-weight:400;"
-							@click="move(`/course/${no}/requestlist`, 1, -1)"
+							@click="
+								move(
+									`/course/${no}/requestlist${
+										ldm_no ? '?ldm_no=' + ldm_no : ''
+									}`,
+									1,
+									-1,
+								)
+							"
 						>
 							요청 목록
 						</v-list-item-subtitle>
@@ -34,7 +50,9 @@
 						:key="`chapters_${i}`"
 						@click="
 							move(
-								`/course/${no}/play?chapter=${item.idx_no}`,
+								`/course/${no}/play?chapter=${item.idx_no}${
+									ldm_no ? '&ldm_no=' + ldm_no : ''
+								}`,
 								3,
 								item.idx_no,
 							)
@@ -93,7 +111,7 @@ export default {
 			no: -1,
 			chapter: -1,
 			video: -1,
-			ldm_no: -1,
+			ldm_no: 0,
 		};
 	},
 	mounted() {

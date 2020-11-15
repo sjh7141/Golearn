@@ -1,6 +1,10 @@
 <template>
 	<div id="request">
-		<course-banner :course="course" :src="course.cos_banner" />
+		<course-banner
+			:course="course"
+			:src="course.cos_banner"
+			:ldm_no="ldm_no"
+		/>
 
 		<div class="py-5" style="width:1080px; margin:0 auto;" ref="contain">
 			<h3 style="">{{ req ? req.vid_req_comment : '' }}</h3>
@@ -338,11 +342,13 @@ export default {
 			video: {},
 			chapter: {},
 			req: {},
+			ldm_no: 0,
 		};
 	},
 	mounted() {
 		this.user = this.$store.getters.user;
 		this.req_no = this.$route.params.id;
+		this.ldm_no = this.$route.query.ldm_no;
 
 		this.getRequestDetail(this.req_no).then(({ data }) => {
 			this.req = data;
@@ -385,7 +391,11 @@ export default {
 				vid_res_comment: this.message,
 			}).then(() => {
 				alert('처리되었습니다.');
-				this.$router.push(`/course/${this.cos_no}/requestlist`);
+				this.$router.push(
+					`/course/${this.cos_no}/requestlist${
+						this.ldm_no ? '?ldm_no=' + this.ldm_no : ''
+					}`,
+				);
 			});
 		},
 	},
