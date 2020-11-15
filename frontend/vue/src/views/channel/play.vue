@@ -218,7 +218,8 @@ export default {
 			this.mbr_no = data.author.mbr_no;
 			this.getSubscribe(this.mbr_no);
 			this.checkLikeVideo(this.video.vid_no);
-			this.isMine = this.mbr_no == this.$store.getters.user.no;
+			if (this.$store.getters.isLogin)
+				this.isMine = this.mbr_no == this.$store.getters.user.no;
 			this.checkSaveVideo(this.video.vid_no);
 			this.loading = false;
 		});

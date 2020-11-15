@@ -15,36 +15,10 @@
 							@keydown.enter="searchCourse"
 							@click:append="searchCourse"
 							append-icon="mdi-magnify"
+							hide-details
 						>
 						</v-text-field>
-						<v-btn @click="make">코스등록</v-btn>
 					</v-col>
-				</v-row>
-				<v-row>
-					<v-slide-group
-						class="my-5 px-5"
-						show-arrows
-						style="height: 50px;"
-					>
-						<v-slide-item
-							v-for="(tag, i) in categories"
-							:key="`tag_${i}`"
-						>
-							<v-btn
-								class="px-1 mx-2"
-								active-class="white--text"
-								text
-								@click="goToSearch(tag)"
-								elevation="0"
-								style="text-transform:none; color:#8675a9;font-size:13px"
-								:class="{
-									selected: tags === tag.tag_no,
-								}"
-							>
-								{{ tag.tag_name }}
-							</v-btn>
-						</v-slide-item>
-					</v-slide-group>
 				</v-row>
 				<v-row>
 					<v-col>
