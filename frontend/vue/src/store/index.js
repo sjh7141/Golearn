@@ -11,7 +11,7 @@ import Account from './modules/Acoount';
 import File from './modules/File';
 import Notification from './modules/Notification';
 import Common from './modules/Common';
-
+import Board from './modules/Board';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -30,5 +30,6 @@ export default new Vuex.Store({
 		Jdoodle: Jdoodle,
 		Notification: Notification,
 		Common: Common,
+		Board: Board,
 	},
 });
