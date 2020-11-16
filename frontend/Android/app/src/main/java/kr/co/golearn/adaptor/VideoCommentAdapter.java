@@ -3,9 +3,7 @@ package kr.co.golearn.adaptor;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +18,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.chip.Chip;
@@ -29,7 +26,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -141,7 +137,7 @@ public class VideoCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             regDate.setText(video.getDate());
             videoNickname.setText(author.getMbrNickName());
             videoLikeCount.setText(video.getVidLikes() + "");
-            subscriperCount.setText("구독자 " + 0 + "명");
+            subscriperCount.setText("구독자 " + 7 + "명");
             if (!alreadyChipSettings) {
                 for (Tag tag : tags) {
                     Chip chip = new Chip(itemView.getContext());

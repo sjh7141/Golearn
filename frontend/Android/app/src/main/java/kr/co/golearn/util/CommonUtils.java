@@ -14,7 +14,7 @@ public class CommonUtils {
     public static String calcTimeDate(Date date) {
         long curTime = (long) new Date().getTime();
         long time = (long) date.getTime();
-        long diff = (curTime - time) / 1000 + 32397;
+        long diff = (curTime - time) / 1000;
         if (diff < 60) {
             return diff + "초 전";
         }
