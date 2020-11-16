@@ -404,7 +404,7 @@
 			</div>
 
 			<v-avatar size="48" style="float:left;" class="mr-5">
-				<v-img src="@/assets/default_profile.png" />
+				<v-img :src="user.profile" />
 			</v-avatar>
 
 			<v-textarea

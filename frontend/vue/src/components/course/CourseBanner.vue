@@ -34,7 +34,7 @@
 								좋아요
 							</span>
 							<span>
-								{{ course.mbr_no }}
+								{{ course.like_count }}
 							</span>
 							<span style="font-size:8px" class="my-auto mx-2"
 								>|</span
@@ -42,7 +42,7 @@
 							<span style="opacity:0.6" class="my-auto">
 								수강자
 							</span>
-							<span> {{ course.cos_no }} </span>
+							<span> {{ course.viewer_count }} </span>
 						</span>
 
 						<v-icon
