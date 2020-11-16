@@ -128,6 +128,14 @@ export default {
 			};
 			return axios.get(URL.videoBuild(), config);
 		},
+		getVideo(context, payload) {
+			const config = {
+				headers: {
+					Authorization: context.rootGetters.token,
+				},
+			};
+			return axios.get(URL.videoBuild() + `/${payload}`, config);
+		},
 		setVideo(context) {
 			const config = {
 				headers: {
