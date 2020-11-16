@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.golearn.mapper.CourseMapper">
+
+	<select id="findByLike" resultType="com.golearn.domain.Course">
+		select c.*
+		from gl_course_like cl inner join gl_course c
+		on cl.mbr_no = #{userNo} and cl.cos_no = c.cos_no
+	</select>
+	
+	<select id="findByViewer" resultType="com.golearn.domain.Course">
+		select distinct c.*
+		from gl_course c inner join gl_course_viewer cv
+		on cv.mbr_no = #{userNo} and c.cos_no = cv.cos_no;
+	</select>
+	
+	<select id="checkLike" resultType="Integer">
+		select count(*)
+		from gl_course_like
+		where mbr_no = #{userNo} and cos_no = #{cosNo}
+	</select>
+	
+	<select id="checkIndex" resultType="Integer">
+		select count(*)
+		from gl_course_viewer
+		where mbr_no = #{userNo} and idx_no = #{idxNo}
+	</select>
+	
+	<select id="findByRequestNo" resultType="com.golearn.dto.VideoRequestDto">
+		select *
+		from gl_video_request
+		where vid_req_no = #{vidReqNo} 
+	</select>
+	
+	<select id="findCourseLikeCount" resultType="Integer">
+		select count(*)
+		from gl_course_like
+		where cos_no = #{cosNo}
+	</select>
+	
+	<select id="findCourseViewerCount" resultType="Integer">
+		select count(*)
+		from gl_course_viewer
+		where cos_no = #{cosNo}
+	</select>
+	
+</mapper>
