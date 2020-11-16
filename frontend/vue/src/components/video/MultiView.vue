@@ -247,7 +247,7 @@
 
 <script src="" />
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 export default {
 	name: 'MultiView',
 	props: ['width', 'height', 'source', 'type', 'poster', 'src', 'title'],
@@ -329,6 +329,9 @@ export default {
 		this.removeVideo();
 		window.removeEventListener('resize', this.resizeVideo);
 	},
+	computed: {
+		...mapGetters(['isLogin']),
+	},
 	methods: {
 		...mapActions(['compile']),
 		removeVideo() {
@@ -336,6 +339,10 @@ export default {
 			player.dispose();
 		},
 		executeScript() {
+			if (!this.isLogin) {
+				alert('로그인을 해주세요!');
+				return;
+			}
 			var editor = ace.edit('editor');
 			const script = ace.edit('editor').getValue();
 			this.loading = true;

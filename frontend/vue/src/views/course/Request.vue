@@ -404,7 +404,7 @@
 			</div>
 
 			<v-avatar size="48" style="float:left;" class="mr-5">
-				<v-img src="@/assets/default_profile.png" />
+				<v-img :src="user.profile" />
 			</v-avatar>
 
 			<v-textarea
@@ -469,12 +469,20 @@ export default {
 
 		this.user = this.$store.getters.user;
 		this.cos_no = this.$route.query.cos_no;
+		const self = this;
 		this.getChannelVideos(this.user.no).then(({ data }) => {
 			this.videos = data;
 			if (data.length > 0) this.videoIndex = 0;
 		});
 		this.getCourseIndexs(this.cos_no).then(({ data }) => {
+			data.forEach(res => {
+				res.vid_url = '';
+				self.getVideo(res.vid_no).then(result => {
+					res.vid_url = result.data.video.vid_url;
+				});
+			});
 			this.chapters = data;
+
 			if (data.length > 0) this.chapterIndex = 0;
 		});
 		this.getCourse(this.cos_no).then(({ data }) => {
@@ -487,6 +495,7 @@ export default {
 			'getCourseIndexs',
 			'sendRequest',
 			'getCourse',
+			'getVideo',
 		]),
 
 		requestVideo() {

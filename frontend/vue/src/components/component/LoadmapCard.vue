@@ -73,6 +73,9 @@ export default {
 </script>
 
 <style scoped>
+.v-card {
+	font-family: 'BMJUA';
+}
 .content-wrapper {
 	right: 0;
 	left: 0;
@@ -83,6 +86,7 @@ export default {
 	padding: 0.75rem;
 }
 .content {
+	font-family: 'BMJUA';
 	color: black;
 	font-weight: bold;
 	font-size: 0.85rem;

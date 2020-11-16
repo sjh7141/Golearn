@@ -8,7 +8,7 @@
 		<div
 			style="position: absolute;top:0; left:60px; background-color:#1C1C26; width: calc(100% - 60px); height:100%;"
 		>
-			<Header @exportVideo="exportFlag = true" />
+			<Header @exportVideo="exportFlag = !exportFlag" />
 			<v-layout wrap style="height: 50%" class="mt-3">
 				<v-flex md6 lg6 xl6 class="pl-10">
 					<Section :index="index" @change="changeIndex" />
