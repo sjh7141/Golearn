@@ -266,56 +266,58 @@
 					</v-card>
 				</v-flex>
 			</v-layout>
-			<div style="font-size:18px;" class="my-5">
-				<span> 응답 메세지 </span>
+			<div v-if="isManager">
+				<div style="font-size:18px;" class="my-5">
+					<span> 응답 메세지 </span>
+				</div>
+
+				<v-avatar size="48" style="float:left;" class="mr-5">
+					<v-img :src="user.profile" />
+				</v-avatar>
+
+				<v-textarea
+					v-model="message"
+					no-resize
+					outlined
+					auto-grow
+					tile
+					flat
+					rows="5"
+					color="#8e8e8e"
+					placeholder="내용을 입력해주세요."
+				>
+					<template slot="append">
+						<v-btn
+							absolute
+							right
+							bottom
+							depressed
+							:outlined="!message.length"
+							tile
+							dark
+							:color="message.length ? 'success' : '#e4e4e4'"
+							style="font-size:14px;right:90px;"
+							@click="message.length ? responseVideo(1) : null"
+						>
+							수락
+						</v-btn>
+						<v-btn
+							absolute
+							right
+							bottom
+							depressed
+							:outlined="!message.length"
+							tile
+							dark
+							:color="message.length ? 'warning' : '#e4e4e4'"
+							style="font-size:14px;"
+							@click="message.length ? responseVideo(2) : null"
+						>
+							거절
+						</v-btn>
+					</template>
+				</v-textarea>
 			</div>
-
-			<v-avatar size="48" style="float:left;" class="mr-5">
-				<v-img :src="user.profile" />
-			</v-avatar>
-
-			<v-textarea
-				v-model="message"
-				no-resize
-				outlined
-				auto-grow
-				tile
-				flat
-				rows="5"
-				color="#8e8e8e"
-				placeholder="내용을 입력해주세요."
-			>
-				<template slot="append">
-					<v-btn
-						absolute
-						right
-						bottom
-						depressed
-						:outlined="!message.length"
-						tile
-						dark
-						:color="message.length ? 'success' : '#e4e4e4'"
-						style="font-size:14px;right:90px;"
-						@click="message.length ? responseVideo(1) : null"
-					>
-						수락
-					</v-btn>
-					<v-btn
-						absolute
-						right
-						bottom
-						depressed
-						:outlined="!message.length"
-						tile
-						dark
-						:color="message.length ? 'warning' : '#e4e4e4'"
-						style="font-size:14px;"
-						@click="message.length ? responseVideo(2) : null"
-					>
-						거절
-					</v-btn>
-				</template>
-			</v-textarea>
 		</div>
 	</div>
 </template>
@@ -343,6 +345,7 @@ export default {
 			chapter: {},
 			req: {},
 			ldm_no: 0,
+			isManager: false,
 		};
 	},
 	mounted() {
@@ -356,6 +359,10 @@ export default {
 			this.cos_no = cos_no;
 			this.vid_no = vid_no;
 			this.idx_no = idx_no;
+
+			this.checkCourseManager(cos_no).then(({ data }) => {
+				this.isManager = data;
+			});
 
 			this.getCourse(cos_no).then(({ data }) => {
 				this.course = data;
@@ -379,6 +386,7 @@ export default {
 			'getChapterDetail',
 			'getVideoDetail',
 			'returnResponse',
+			'checkCourseManager',
 		]),
 
 		responseVideo(yn) {

@@ -208,7 +208,6 @@ export default {
 		this.type = 0;
 
 		this.getVideoDetail(this.no).then(({ data }) => {
-			// console.dir(data);
 			data.video.vid_code_type = ['c_cpp', 'java', 'python'].indexOf(
 				data.video.vid_code_type,
 			);

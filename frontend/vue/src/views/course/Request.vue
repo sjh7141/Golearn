@@ -465,6 +465,7 @@ export default {
 		};
 	},
 	mounted() {
+		if (!this.$store.getters.isLogin) this.$router.push('/login');
 		this.ldm_no = this.$route.query.ldm_no;
 
 		this.user = this.$store.getters.user;

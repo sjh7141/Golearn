@@ -155,7 +155,6 @@ public class InfiniteLoop {
 	mounted() {
 		this.initCodeEditer();
 		this.totalHeight = 500;
-		// console.log(this.editor.getValue());
 	},
 	computed: {
 		...mapGetters(['uploadVideo']),
