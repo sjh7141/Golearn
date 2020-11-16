@@ -10,7 +10,7 @@
 				>
 					<v-row
 						@click="$router.push(`/course/${item.cos_no}/intro`)"
-						class="info-upper"
+						class="info-upper mx-0"
 						style="width:100%;"
 					>
 						<v-col cols="6" class="pa-0">
