@@ -47,6 +47,7 @@ export default {
 		};
 	},
 	mounted() {
+		if (!this.$store.getters.isLogin) this.$router.push('/login');
 		this.$store.dispatch('initEditVideo');
 	},
 	methods: {

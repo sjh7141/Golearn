@@ -393,6 +393,8 @@ export default {
 		};
 	},
 	mounted() {
+		document.addEventListener('keydown', this.controlHandler);
+
 		EventBus.$on('addPlayer', item => {
 			if (
 				item.type == 'video' ||
@@ -400,11 +402,6 @@ export default {
 				item.type == 'background'
 			) {
 				this.videoList.push(item);
-				if (this.videoList.length == 2) {
-					// console.dir(this.videoList[0]);
-					// console.dir(this.videoList[1]);
-					// console.log(this.videoList[0] === this.videoList[1]);
-				}
 				this.videoDuration += item.duration;
 			} else if (item.type == 'audio') {
 				this.audioList.push(item);
@@ -429,9 +426,28 @@ export default {
 		});
 	},
 	beforeDestroy() {
+		document.removeEventListener('keydown', this.controlHandler);
 		window.removeEventListener('resize', this.handleTimeLine);
 	},
 	methods: {
+		controlHandler(e) {
+			if (e.ctrlKey && e.which == 67) {
+				e.preventDefault();
+				!this.cmdBtns[0].disabled ? this.copyItem() : null;
+			}
+			if (e.ctrlKey && e.which == 86) {
+				e.preventDefault();
+				!this.cmdBtns[1].disabled ? this.pasteItem() : null;
+			}
+			if (e.which == 46) {
+				e.preventDefault();
+				!this.cmdBtns[2].disabled ? this.deleteItem() : null;
+			}
+			if (e.ctrlKey && e.which == 88) {
+				e.preventDefault();
+				!this.cmdBtns[3].disabled ? this.cutItem() : null;
+			}
+		},
 		handleTimeLine() {
 			this.timeWidth = this.$refs.timeline.scrollWidth;
 		},
@@ -513,7 +529,6 @@ export default {
 		},
 
 		resizeStart(e, item, type) {
-			// console.log(e);
 			this.resizeType = type;
 			this.resizeItem = item;
 			this.resizeElement = e.target.parentElement;
@@ -625,8 +640,6 @@ export default {
 			) {
 				return;
 			}
-
-			// console.log(this.currentTime, startTime);
 
 			let leftItem = {};
 			let rightItem = {};
