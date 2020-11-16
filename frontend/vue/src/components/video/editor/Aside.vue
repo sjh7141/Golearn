@@ -260,6 +260,11 @@ export default {
 		},
 
 		export() {
+			if (this.mediaList.length == 0) {
+				alert('영상이 없습니다.');
+				return;
+			}
+
 			this.pause();
 			this.dialog = true;
 

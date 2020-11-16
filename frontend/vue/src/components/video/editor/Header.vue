@@ -323,7 +323,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import EventBus from '@/util/EventBus.js';
 export default {
 	name: 'EditHeader',
@@ -382,10 +381,8 @@ export default {
 		});
 	},
 	methods: {
-		...mapGetters(['mediaList']),
 		exportVideo() {
-			if (this.mediaList.length) this.$emit('exportVideo');
-			else alert('영상을 없어요!');
+			this.$emit('exportVideo');
 		},
 	},
 };
