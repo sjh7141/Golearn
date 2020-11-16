@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/card_video_detail_comment_header_txt_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="비디오 타이틀"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/card_video_detail_comment_header_txt_view_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="조회수 3회"
+        android:textColor="@color/gray"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/card_video_detail_comment_header_txt_title"
+        app:layout_constraintTop_toBottomOf="@+id/card_video_detail_comment_header_txt_title" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="·"
+        android:textColor="@color/gray"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/card_video_detail_comment_header_txt_view_count"
+        app:layout_constraintStart_toEndOf="@+id/card_video_detail_comment_header_txt_view_count"
+        app:layout_constraintTop_toTopOf="@+id/card_video_detail_comment_header_txt_view_count" />
+
+    <TextView
+        android:id="@+id/card_video_detail_comment_header_txt_reg_dt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="3일 전"
+        android:textColor="@color/gray"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView12"
+        app:layout_constraintStart_toEndOf="@+id/textView12"
+        app:layout_constraintTop_toTopOf="@+id/textView12" />
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="10dp"
+        android:scrollbars="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_video_detail_comment_header_txt_view_count">
+
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/card_video_detail_comment_header_chip_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleLine="true">
+
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
+
+    <CheckBox
+        android:id="@+id/card_video_detail_comment_header_thumb_up"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="10dp"
+        android:button="@drawable/thumb_up_check"
+        app:layout_constraintBottom_toBottomOf="@+id/card_video_detail_comment_header_txt_view_count"
+        app:layout_constraintEnd_toStartOf="@+id/card_video_detail_comment_header_txt_like"
+        app:layout_constraintTop_toTopOf="@+id/card_video_detail_comment_header_txt_title"
+        app:layout_constraintVertical_bias="0.461" />
+
+    <TextView
+        android:id="@+id/card_video_detail_comment_header_txt_like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:text="3"
+        android:textColor="@color/gray"
+        app:layout_constraintBottom_toBottomOf="@+id/card_video_detail_comment_header_txt_view_count"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/card_video_detail_comment_header_txt_title" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
+
+    <ImageView
+        android:id="@+id/card_video_detail_comment_header_img_profile"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+    <TextView
+        android:id="@+id/card_video_detail_comment_header_txt_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp"
+        android:text="Nickname"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/card_video_detail_comment_header_img_profile"
+        app:layout_constraintTop_toTopOf="@+id/card_video_detail_comment_header_img_profile" />
+
+    <TextView
+        android:id="@+id/card_video_detail_comment_header_txt_subscriper_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:text="구독자 0명"
+        android:textColor="@color/gray"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/card_video_detail_comment_header_img_profile"
+        app:layout_constraintStart_toStartOf="@+id/card_video_detail_comment_header_txt_nickname" />
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_video_detail_comment_header_img_profile" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/card_video_detail_comment_header_layout_comment"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view4">
+
+        <ImageView
+            android:id="@+id/card_video_detail_comment_header_comment_img_profile"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/comment_reply_btn_reply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="댓글 추가..."
+            app:layout_constraintBottom_toBottomOf="@+id/card_video_detail_comment_header_comment_img_profile"
+            app:layout_constraintStart_toEndOf="@+id/card_video_detail_comment_header_comment_img_profile"
+            app:layout_constraintTop_toTopOf="@+id/card_video_detail_comment_header_comment_img_profile" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
