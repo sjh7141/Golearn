@@ -75,9 +75,8 @@ public class BoardController {
 	}
 	
 	@ApiOperation(value = "게시글 삭제하기")
-	@DeleteMapping(value = "/")
-	public ResponseEntity<String> removeBoard(@ApiIgnore @RequestHeader("X-USERNO") String userNo, @RequestBody Map<String, Object> map){
-		int brdNo = (int)map.get("brd_no");
+	@DeleteMapping(value = "/{brd_no}")
+	public ResponseEntity<String> removeBoard(@ApiIgnore @RequestHeader("X-USERNO") String userNo, @PathVariable("brd_no") int brdNo){
 		int res = boardService.deleteBoard(brdNo, Integer.parseInt(userNo));
 		if(res == 0) {
 			return ResponseEntity.ok("삭제 실패");
