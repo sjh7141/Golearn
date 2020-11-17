@@ -36,6 +36,7 @@
 						</div>
 						<div class="pb-3" style="text-align:end;">
 							<v-btn
+								v-if="isLogin == 1"
 								dark
 								depressed
 								color="#7640e3"
@@ -52,11 +53,12 @@
 							:key="index"
 							style="width:100%;"
 						>
-							<v-card class="mb-3">
+							<v-card class="mb-6">
 								<v-img
 									class="white--text align-end"
 									height="68px"
 									src="https://cdn.pixabay.com/photo/2017/03/28/22/55/night-photograph-2183637_960_720.jpg"
+									@click="goToPost(item.brd_no)"
 								>
 									<v-card-title class="card-title bold">
 										{{ item.title }}
@@ -65,17 +67,17 @@
 
 								<v-card-text
 									class="text--primary"
-									style="min-height:100px;"
+									@click="goToPost(item.brd_no)"
 								>
-									<v-list-item two-line>
+									<div class="text-content">
 										{{ item.content }}
-									</v-list-item>
+									</div>
 								</v-card-text>
 								<v-card-text
 									class="text--primary"
 									style="font-family: 'BMJUA';"
 								>
-									<v-avatar size="24">
+									<v-avatar class="ml-3" size="24">
 										<v-img
 											:src="item.mbr_profile"
 											style="cursor:pointer;"
@@ -92,7 +94,7 @@
 												`/channel/${item.mbr_no}`,
 											)
 										"
-										class=" mr-5"
+										class="mr-5"
 										style="cursor: pointer;"
 									>
 										{{ item.mbr_nickname }}
@@ -101,7 +103,11 @@
 										class="mr-5"
 										style="font-size:14px; color:#a3a3a3"
 									>
-										{{ item.reg_date.substring(0, 10) }}
+										{{
+											item.reg_date
+												.substring(0, 10)
+												.replaceAll('-', '.')
+										}}
 									</span>
 									<span
 										class="mr-5"
@@ -131,10 +137,19 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
 	data() {
 		return {
 			tap: ['공지사항', 'FAQ', '질문게시판', '자유게시판'],
+			tapEn: ['notice', 'faq', 'question', 'general'],
+			tapCode: {
+				notice: 1,
+				faq: 2,
+				question: 3,
+				general: 4,
+			},
 			selectNo: 0,
 			boardList: [],
 			pageNo: 1,
@@ -142,18 +157,18 @@ export default {
 		};
 	},
 	watch: {
-		selectNo() {
-			this.changeBoard();
-			window.scrollTo(0, 0);
-		},
 		pageNo() {
-			this.changeBoard();
-			window.scrollTo(0, 0);
+			this.$router.push(
+				`/community/${this.tapEn[this.selectNo]}/${this.pageNo}`,
+			);
 		},
 	},
 	methods: {
 		changeTap(idx) {
-			this.selectNo = idx;
+			if (idx == Number(this.tapCode[this.$route.params.type] - 1)) {
+				return;
+			}
+			this.$router.push(`/community/${this.tapEn[idx]}/1`);
 		},
 		changeBoard() {
 			this.$store
@@ -164,8 +179,6 @@ export default {
 				.then(({ data }) => {
 					this.pageInfo = data.page;
 					this.boardList = [];
-					// this.pageNo = 1;
-					// console.log(data);
 					for (let post of data.board) {
 						this.$store
 							.dispatch('getUserByNo', post.mbr_no)
@@ -177,9 +190,17 @@ export default {
 					}
 				});
 		},
+		goToPost(no) {
+			this.$router.push(`/post/${this.tapEn[this.selectNo]}/${no}`);
+		},
 		write() {},
 	},
+	computed: {
+		...mapGetters(['isLogin']),
+	},
 	mounted() {
+		this.selectNo = Number(this.tapCode[this.$route.params.type] - 1);
+		this.pageNo = Number(this.$route.params.page);
 		this.changeBoard();
 	},
 };
@@ -209,7 +230,26 @@ export default {
 	color: #8059d4;
 }
 .card-title {
-	background-color: rgba(30, 30, 30, 0.7);
+	background-color: rgba(30, 30, 30, 0.8);
+	cursor: pointer;
+}
+.text-content {
+	display: block;
+	max-height: 44px;
+	display: block;
+	display: -webkit-box;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	word-break: break-all;
+	word-wrap: break-word;
+	word-break: break-word;
+	color: #666;
+	cursor: pointer;
+}
+.text-content:hover {
+	text-decoration: underline;
 }
 </style>
 <style>

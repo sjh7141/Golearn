@@ -400,7 +400,7 @@ export default {
 				},
 				{
 					title: '커뮤니티',
-					link: '/community',
+					link: '/community/notice/1',
 				},
 			],
 			video: false,

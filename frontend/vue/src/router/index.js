@@ -9,7 +9,8 @@ import Request from '@/views/course/Request.vue';
 import RequestDetail from '@/views/course/RequestDetail.vue';
 import EditCourse from '@/views/course/Edit.vue';
 import EditLoadMap from '@/views/loadmap/Edit.vue';
-import Community from '@/views/Community.vue';
+import Community from '@/views/community/Community.vue';
+import Post from '@/views/community/Post.vue';
 
 import EditVideo from '@/views/channel/EditVideo.vue';
 
@@ -104,7 +105,11 @@ const routes = [
 		component: VideoUpload,
 	},
 	{
-		path: '/community',
+		path: '/post/:type/:id',
+		component: Post,
+	},
+	{
+		path: '/community/:type/:page',
 		name: 'Community',
 		component: Community,
 	},
