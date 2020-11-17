@@ -40,7 +40,6 @@ export default {
 					Authorization: context.rootGetters.token,
 				},
 			};
-			console.log(payload);
 			return axios.put(URL.boardBuild(), payload, config);
 		},
 		deletePost(context, payload) {
