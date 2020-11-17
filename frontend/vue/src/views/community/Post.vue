@@ -63,7 +63,10 @@
 										삭제
 									</v-btn>
 								</div>
-								<v-card-title class="card-title bold">
+								<v-card-title
+									class="card-title bold"
+									style="font-family: 'BMJUA';"
+								>
 									{{ post.title }}
 								</v-card-title>
 								<v-card-text

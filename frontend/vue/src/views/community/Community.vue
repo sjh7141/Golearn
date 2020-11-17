@@ -69,10 +69,9 @@
 									class="text--primary"
 									@click="goToPost(item.brd_no)"
 								>
-									<div
-										class="text-content"
-										v-html="item.content"
-									></div>
+									<div class="text-content">
+										{{ delTag(item.content) }}
+									</div>
 								</v-card-text>
 								<v-card-text
 									class="text--primary"
@@ -201,6 +200,9 @@ export default {
 		},
 		write() {
 			this.$router.push(`/community/write`);
+		},
+		delTag(html) {
+			return html.replace(/(<([^>]+)>)/gi, '');
 		},
 	},
 	computed: {
