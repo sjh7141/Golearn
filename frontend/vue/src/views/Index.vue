@@ -126,7 +126,7 @@
 							sm="6"
 							md="6"
 							lg="3"
-							v-for="(course, i) in courses.slice(0, 4)"
+							v-for="(course, i) in recommendation"
 							:key="`course_${i}`"
 						>
 							<course-card :course="course"> </course-card>
@@ -406,10 +406,11 @@ export default {
 				},
 			],
 			courses: [],
+			recommendation: [],
 		};
 	},
 	methods: {
-		...mapActions(['getSearchResult', 'getTagList']),
+		...mapActions(['getSearchResult', 'getTagList', 'getRecommendCourse']),
 
 		goToSearch(value) {
 			this.$router.push(`/video?tag=${value}`);
@@ -440,6 +441,10 @@ export default {
 		});
 		this.getTagList().then(res => {
 			this.tags = res.data;
+		});
+		this.getRecommendCourse().then(res => {
+			console.log(res);
+			this.recommendation = res.data;
 		});
 	},
 	mounted() {
