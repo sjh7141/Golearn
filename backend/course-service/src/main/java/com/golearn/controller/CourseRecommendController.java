@@ -23,7 +23,7 @@ public class CourseRecommendController {
     }
 
     @GetMapping("/recommendation")
-    public ResponseEntity<List<Course>> getRecommendCourse(@RequestHeader("X-USERNO") int mbrNo) throws TasteException, IOException {
+    public ResponseEntity<List<Course>> getRecommendCourse(@RequestHeader(value = "X-USERNO", defaultValue = "-1", required = false) int mbrNo) throws TasteException, IOException {
         return new ResponseEntity(courseRecommendService.getRecommendCourse(mbrNo), HttpStatus.OK);
     }
 }
