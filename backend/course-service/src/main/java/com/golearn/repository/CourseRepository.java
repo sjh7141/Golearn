@@ -2,6 +2,7 @@ package com.golearn.repository;
 
 import java.util.List;
 
+import com.golearn.domain.CoursePrefer;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -20,4 +21,9 @@ public interface CourseRepository extends CrudRepository<Course, Long>{
 	boolean existsByCosNoAndMbrNo(long cosNo, long mbrNo);
 
 	public List<Course> findByMbrNoOrderByRegDtDesc(long id);
+
+	@Query(value = "select  g1.mbr_no as mbrNo, g2.cos_no as cosNo,(g1.mbr_no, g2.cos_no)in (select mbr_no,cos_no from gl_course_viewer) as value from gl_course_viewer as g1 join gl_course_viewer g2 group by g1.mbr_no, g2.cos_no having g1.mbr_no = :mbrNo",nativeQuery = true)
+	List<CoursePrefer> getPrefer(@Param("mbrNo") long mbrNo);
 }
+
+
