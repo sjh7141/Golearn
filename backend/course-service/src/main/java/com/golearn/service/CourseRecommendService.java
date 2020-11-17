@@ -2,10 +2,14 @@ package com.golearn.service;
 
 
 import com.golearn.domain.*;
+import com.golearn.mapper.CourseMapper;
+import com.golearn.mapper.TagMapper;
 import com.golearn.repository.CourseRepository;
 import com.golearn.repository.CourseViewerRepository;
+import com.golearn.repository.LikeReqository;
 import com.golearn.repository.MemberRepository;
 import com.mysql.cj.jdbc.MysqlDataSource;
+import com.netflix.discovery.converters.Auto;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.ArrayUtils;
@@ -53,6 +57,11 @@ public class CourseRecommendService {
     private final CourseRepository courseRepository;
 
     private final MemberRepository memberRepository;
+
+    @Autowired
+    private CourseMapper courseMapper;
+    @Autowired
+    private TagMapper tagMapper;
     CourseRecommendService(CourseRepository courseRepository,MemberRepository memberRepository){
         this.courseRepository = courseRepository;
         this.memberRepository = memberRepository;
@@ -62,7 +71,12 @@ public class CourseRecommendService {
         List<Course> list = new LinkedList<>();
         List<Long> cosList = new LinkedList<>();
         if(mbrNo==-1){
-            list.addAll(courseRepository.getBestCourseByCourseList(4));
+            for(Course course : courseRepository.getBestCourseByCourseList(4)){
+                course.setLikeCount(courseMapper.findCourseLikeCount(course.getCosNo()));
+                course.setViewerCount(courseMapper.findCourseViewerCount(course.getCosNo()));
+                course.setTags(tagMapper.findByCosNo((int)course.getCosNo()));
+                list.add(course);
+            }
             return list;
         }
         FastByIDMap<PreferenceArray> userData = new FastByIDMap<>();
@@ -92,6 +106,11 @@ public class CourseRecommendService {
 
         if(list.size()<=4){
             list.addAll(courseRepository.getBestCourse(cosList, 4-list.size()));
+        }
+        for(Course course : list){
+            course.setLikeCount(courseMapper.findCourseLikeCount(course.getCosNo()));
+            course.setViewerCount(courseMapper.findCourseViewerCount(course.getCosNo()));
+            course.setTags(tagMapper.findByCosNo((int)course.getCosNo()));
         }
         return list;
     }

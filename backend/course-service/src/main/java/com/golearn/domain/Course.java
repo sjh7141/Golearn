@@ -1,6 +1,9 @@
 package com.golearn.domain;
 
+import com.golearn.dto.Tag;
+
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,6 +41,8 @@ public class Course {
 	private int likeCount;
 	@Transient
 	private int viewerCount;
+	@Transient
+	private List<Tag> tags;
 
 	public Course() {
 
@@ -121,6 +126,14 @@ public class Course {
 
 	public void setViewerCount(int viewerCount) {
 		this.viewerCount = viewerCount;
+	}
+
+	public List<Tag> getTags(){
+		return tags;
+	}
+
+	public void setTags(List<Tag> tags){
+		this.tags =tags;
 	}
 
 	@PrePersist
