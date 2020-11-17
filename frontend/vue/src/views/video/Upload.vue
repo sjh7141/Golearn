@@ -107,7 +107,14 @@ export default {
 		},
 	},
 	computed: {
-		...mapGetters(['course']),
+		...mapGetters(['course', 'isLogin']),
+	},
+	mounted() {
+		if (this.isLogin != 1) {
+			this.$store.commit('setSBMessage', '로그인이 필요한 서비스입니다.');
+			this.$store.commit('setSnackbar', true);
+			this.$router.push('/login');
+		}
 	},
 };
 </script>

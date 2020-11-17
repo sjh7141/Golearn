@@ -25,6 +25,7 @@
 					<v-spacer></v-spacer>
 					<v-col cols="4" class="text-right">
 						<v-btn
+							v-if="isLogin == 1"
 							dark
 							depressed
 							color="#7640e3"
@@ -89,7 +90,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import LoadmapCard from './LoadmapCard2';
 import InfiniteLoading from 'vue-infinite-loading';
 export default {
@@ -101,7 +102,9 @@ export default {
 		pageNo: 1,
 		loadmaps: [],
 	}),
-	computed: {},
+	computed: {
+		...mapGetters(['isLogin']),
+	},
 	components: {
 		InfiniteLoading,
 		LoadmapCard,

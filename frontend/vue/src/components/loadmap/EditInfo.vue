@@ -123,7 +123,7 @@ export default {
 		},
 	},
 	computed: {
-		...mapGetters(['loadmap']),
+		...mapGetters(['loadmap', 'isLogin', 'user']),
 	},
 	created() {
 		this.$store
@@ -136,6 +136,15 @@ export default {
 					);
 				} else {
 					this.$store.commit('setLoadmapBanner', null);
+				}
+				if (this.user.no != data.loadmap.mbr_no) {
+					this.$store.commit(
+						'setSBMessage',
+						'유효하지 않은 접근입니다.',
+					);
+					this.$store.commit('setSnackbar', true);
+					this.$router.push('/');
+					return;
 				}
 				this.$store.commit('setLoadmap', data.loadmap);
 				let self = data.course;
@@ -167,6 +176,13 @@ export default {
 						? this.preContent
 						: this.loadmap.ldm_content;
 			});
+	},
+	mounted() {
+		if (this.isLogin != 1) {
+			this.$store.commit('setSBMessage', '로그인이 필요한 서비스입니다.');
+			this.$store.commit('setSnackbar', true);
+			this.$router.push('/login');
+		}
 	},
 };
 </script>
