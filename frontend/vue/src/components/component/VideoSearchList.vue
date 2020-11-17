@@ -209,14 +209,14 @@ export default {
 			this.searchChannel();
 			this.videos = [];
 			this.pageNo = 1;
-			this.$refs.InfiniteLoading.stateChanger.reset();
+			// this.$refs.InfiniteLoading.stateChanger.reset();
 		},
 		'$route.query.tag'() {
 			this.search = this.$route.query.search;
 			this.tags = this.$route.query.tag;
 			this.videos = [];
 			this.pageNo = 1;
-			this.$refs.InfiniteLoading.stateChanger.reset();
+			// this.$refs.InfiniteLoading.stateChanger.reset();
 		},
 	},
 };
