@@ -109,6 +109,11 @@ export default {
 		},
 	},
 	mounted() {
+		if (this.isLogin != 1) {
+			this.$store.commit('setSBMessage', '로그인이 필요한 서비스입니다.');
+			this.$store.commit('setSnackbar', true);
+			this.$router.push('/login');
+		}
 		this.$store.dispatch('getLikeVideos').then(({ data }) => {
 			this.likeVideos = data;
 		});
