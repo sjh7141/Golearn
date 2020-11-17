@@ -379,6 +379,7 @@ export default {
 			'getChapterDetail',
 			'getVideoDetail',
 			'returnResponse',
+			'sendNotification',
 		]),
 
 		responseVideo(yn) {

@@ -487,6 +487,7 @@ export default {
 			'getCourseIndexs',
 			'sendRequest',
 			'getCourse',
+			'sendNotification',
 		]),
 
 		requestVideo() {

@@ -241,6 +241,7 @@ export default {
 			'_getVideoSubComments',
 			'_writeComment',
 			'_writeSubComment',
+			'sendNotification',
 		]),
 
 		getVideoComments() {
@@ -260,6 +261,12 @@ export default {
 				vid_comment: this.replyText,
 			}).then(() => {
 				this.getVideoComments();
+				this.sendNotification({
+					noti_msg: `${this.user.nickname}님이 영상에 댓글을 달았습니다.`,
+					noti_type: 3,
+					noti_path: `/channel/play/${this.no}`,
+					dest: this.no,
+				});
 			});
 		},
 
