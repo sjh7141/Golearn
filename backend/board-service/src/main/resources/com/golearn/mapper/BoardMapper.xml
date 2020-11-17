@@ -47,4 +47,5 @@
 		from gl_board
 		where brd_type = #{type}
 	</select>
+
 </mapper>

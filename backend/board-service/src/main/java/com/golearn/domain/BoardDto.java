@@ -78,6 +78,7 @@ public class BoardDto {
 		this.viewCount = viewCount;
 	}
 
+
 	public int getCommentCount() {
 		return commentCount;
 	}
