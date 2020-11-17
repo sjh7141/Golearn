@@ -279,5 +279,11 @@ export default {
 			};
 			return axios.get(URL.courseBuild() + '/recommendation', config);
 		},
+		getHitCourse() {
+			return axios.get(URL.courseBuild() + '/hit');
+		},
+		getInflationCourse() {
+			return axios.get(URL.courseBuild() + '/inflation');
+		},
 	},
 };

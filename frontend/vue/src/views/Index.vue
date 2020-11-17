@@ -140,7 +140,7 @@
 							sm="6"
 							md="6"
 							lg="3"
-							v-for="(course, i) in courses.slice(4, 8)"
+							v-for="(course, i) in hit"
 							:key="`course_${i}`"
 						>
 							<course-card :course="course"> </course-card>
@@ -154,7 +154,7 @@
 							sm="6"
 							md="6"
 							lg="3"
-							v-for="(course, i) in courses.slice(8, 12)"
+							v-for="(course, i) in inflation"
 							:key="`course_${i}`"
 						>
 							<course-card :course="course"> </course-card>
@@ -194,7 +194,7 @@
 							sm="6"
 							md="6"
 							lg="3"
-							v-for="(course, i) in courses.slice(3, 7)"
+							v-for="(course, i) in courses.slice(0, 4)"
 							:key="`course_${i}`"
 						>
 							<course-card :course="course"> </course-card>
@@ -407,10 +407,18 @@ export default {
 			],
 			courses: [],
 			recommendation: [],
+			hit: [],
+			inflation: [],
 		};
 	},
 	methods: {
-		...mapActions(['getSearchResult', 'getTagList', 'getRecommendCourse']),
+		...mapActions([
+			'getSearchResult',
+			'getTagList',
+			'getRecommendCourse',
+			'getHitCourse',
+			'getInflationCourse',
+		]),
 
 		goToSearch(value) {
 			this.$router.push(`/video?tag=${value}`);
@@ -444,6 +452,12 @@ export default {
 		});
 		this.getRecommendCourse().then(res => {
 			this.recommendation = res.data;
+		});
+		this.getHitCourse().then(res => {
+			this.hit = res.data;
+		});
+		this.getInflationCourse().then(res => {
+			this.inflation = res.data;
 		});
 	},
 	mounted() {
