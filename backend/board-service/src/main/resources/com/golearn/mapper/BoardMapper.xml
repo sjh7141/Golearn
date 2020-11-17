@@ -24,9 +24,15 @@
 	</delete>
 	
 	<select id="findBoardList" resultType="com.golearn.domain.BoardDto">
-		select brd_no brdNo, mbr_no mbrNo, brd_title title, brd_content content, reg_dt regDate, chg_dt updateDate, brd_type type, brd_view viewCount
-		from gl_board
-		where brd_type = #{type}
+		select sub.*, count(bc.brd_no) commentCount
+		from (
+				select brd_no brdNo, mbr_no mbrNo, brd_title title, brd_content content, reg_dt regDate, chg_dt updateDate, brd_type type, brd_view viewCount
+				from gl_board
+				where brd_type = #{type}
+			 ) sub left join gl_board_comment bc
+	    on sub.brdNo = bc.brd_no
+	    group by sub.brdNo
+	    order by sub.regDate desc
 		limit #{startIndex}, #{perPageNum}
 	</select>
 	
@@ -41,4 +47,5 @@
 		from gl_board
 		where brd_type = #{type}
 	</select>
+
 </mapper>

@@ -11,6 +11,7 @@ public class CommentDto {
 	private String comment;
 	private Date regDate;
 	private Date updateDate;
+	private int childCount;
 
 	public int getCmtNo() {
 		return cmtNo;
@@ -66,6 +67,14 @@ public class CommentDto {
 
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
+	}
+
+	public int getChildCount() {
+		return childCount;
+	}
+
+	public void setChildCount(int childCount) {
+		this.childCount = childCount;
 	}
 
 }

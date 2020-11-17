@@ -9,8 +9,8 @@ import com.golearn.domain.CommentDto;
 import com.golearn.mapper.CommentMapper;
 
 @Service
-public class CommentServiceImpl implements CommentService{
-	
+public class CommentServiceImpl implements CommentService {
+
 	@Autowired
 	private CommentMapper commentMapper;
 
@@ -21,7 +21,13 @@ public class CommentServiceImpl implements CommentService{
 
 	@Override
 	public List<CommentDto> findByCommentNo(int brdNo, int parentNo, int startIndex, int perPageNum) {
-		return commentMapper.findByCommentNo(brdNo, parentNo, startIndex, perPageNum);
+		List<CommentDto> list = commentMapper.findByCommentNo(brdNo, parentNo, startIndex, perPageNum); 
+		if(parentNo == 0) {
+			for(CommentDto cur : list) {
+				cur.setChildCount(commentMapper.findDetailsCount(cur.getCmtNo()));
+			}
+		}
+		return list;
 	}
 
 	@Override
