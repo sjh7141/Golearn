@@ -502,12 +502,7 @@ export default {
 
 					movie.addLayer(
 						new vd.layer.Text(
-							{
-								0: this.sumCaption,
-								1: this.sumCaption + '1',
-								2: this.sumCaption + '2',
-								10: this.sumCaption,
-							},
+							media.startTime,
 							media.duration,
 							media.name,
 							{
@@ -516,7 +511,6 @@ export default {
 								font: `${media.size}px BMJUA`,
 								textAlign,
 								textBaseline,
-								background: '#FF0000',
 								x: 0,
 								y: 0,
 
@@ -529,7 +523,6 @@ export default {
 							},
 						),
 					);
-					this.sumCaption += media.duration;
 					resolve();
 				}
 			});
