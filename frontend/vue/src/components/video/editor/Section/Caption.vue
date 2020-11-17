@@ -52,6 +52,7 @@ export default {
 				color: '#FFFFFF',
 				fadeIn: 0,
 				fadeOut: 0,
+				startTime: 0,
 			});
 		},
 	},
