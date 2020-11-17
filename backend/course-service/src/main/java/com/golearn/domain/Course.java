@@ -43,6 +43,8 @@ public class Course {
 	private int viewerCount;
 	@Transient
 	private List<Tag> tags;
+	@Transient
+	private String mbrNickname;
 
 	public Course() {
 
@@ -135,7 +137,8 @@ public class Course {
 	public void setTags(List<Tag> tags){
 		this.tags =tags;
 	}
-
+	public String getMbrNickname(){return mbrNickname;}
+	public void setMbrNickname(String mbrNickname){}
 	@PrePersist
 	void prePersist() {
 		this.regDt = this.chgDt = new Date();
