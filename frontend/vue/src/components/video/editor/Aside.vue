@@ -53,7 +53,7 @@
 				mdi-skip-next
 			</v-icon>
 		</v-row>
-		<v-dialog v-model="dialog" max-width="700" persistent>
+		<v-dialog v-model="dialog" max-width="700" persistent eager>
 			<v-card color="#1C1C26" dark>
 				<v-card-title>
 					{{ fileName ? fileName : 'Untitled' }}
@@ -129,10 +129,6 @@ export default {
 			remainingTime: 0,
 			progressRate: 0,
 			isSuccess: false,
-
-			recording: false,
-			recordingMovie: null,
-			exportPreviewMovie: null,
 		};
 	},
 	computed: {
@@ -169,6 +165,7 @@ export default {
 			},
 		},
 	},
+
 	watch: {
 		mediaList() {
 			this.isChange = true;
@@ -181,26 +178,27 @@ export default {
 		},
 	},
 	mounted() {
-		window.addEventListener('blur', () => {
-			if (this.recording) {
-				this.recordingMovie._mediaRecorder.onpause = () => {
-					this.recordingMovie.pause();
-					this.exportPreviewMovie.pause();
-				};
+		// window.addEventListener('blur', () => {
+		// 	if (this.recording) {
+		// 		this.recordingMovie._mediaRecorder.onpause = () => {
+		// 			this.recordingMovie.pause();
+		// 			this.exportPreviewMovie.pause();
+		// 		};
 
-				this.recordingMovie._mediaRecorder.pause();
-			}
-		});
-		window.addEventListener('focus', () => {
-			if (this.recording) {
-				this.recordingMovie._mediaRecorder.onresume = () => {
-					this.recordingMovie.play();
-					this.exportPreviewMovie.play();
-				};
-				this.recordingMovie._mediaRecorder.resume();
-			}
-			// console.log('focus');
-		});
+		// 		this.recordingMovie._mediaRecorder.pause();
+		// 		console.dir('')
+		// 	}
+		// });
+		// window.addEventListener('focus', () => {
+		// 	if (this.recording) {
+		// 		this.recordingMovie._mediaRecorder.onresume = () => {
+		// 			this.recordingMovie.play();
+		// 			this.exportPreviewMovie.play();
+		// 		};
+		// 		this.recordingMovie._mediaRecorder.resume();
+		// 	}
+		// 	// console.log('focus');
+		// });
 		this.canvasResize();
 		window.addEventListener('resize', this.canvasResize);
 
@@ -218,15 +216,19 @@ export default {
 		this.currentTime = 0;
 		this.duration = 0;
 	},
+
 	methods: {
 		...mapActions(['upload', 'uploadVideo', 'saveVideo']),
 
 		playHandler(e) {
 			if (e.which == 32) {
+				e.preventDefault();
 				this.isPlay ? this.pause() : this.play();
 			} else if (e.which == 37) {
+				e.preventDefault();
 				this.moveCurrentTime(-10);
 			} else if (e.which == 39) {
+				e.preventDefault();
 				this.moveCurrentTime(10);
 			} else if (e.ctrlKey && e.which == 83) {
 				e.preventDefault();
@@ -308,8 +310,6 @@ export default {
 			this.pause();
 			// delete this.movie;
 
-			if (this.recording) return;
-			this.recording = true;
 			this.dialog = true;
 
 			let canvas = document.createElement('canvas');
@@ -341,7 +341,6 @@ export default {
 				() => {
 					let canvas = document.getElementById('exportPreview');
 					let tmpMovie = new vd.Movie(canvas);
-					this.exportPreviewMovie = tmpMovie;
 
 					this.sumVideo = 0;
 					this.sumAudio = 0;
@@ -363,8 +362,6 @@ export default {
 		},
 
 		movieToBlob(movie) {
-			// console.dir(this.mediaList);
-			this.recordingMovie = movie;
 			movie.record(25).then(res => {
 				let formData = new FormData();
 				formData.append('file', res);
@@ -550,6 +547,7 @@ export default {
 							},
 						),
 					);
+					this.sumCaption += media.duration;
 					resolve();
 				}
 			});

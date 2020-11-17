@@ -109,6 +109,8 @@
 							:list="videoList"
 							style="position:relative !important;display:flex;"
 							@end="dragHandler"
+							handle=".handle"
+							disabled
 						>
 							<div
 								v-for="(item, i) in videoList"
@@ -117,7 +119,7 @@
 							>
 								<v-btn
 									small
-									class="px-0"
+									class="px-0 handle"
 									depressed
 									style="background-color:#766af6;
 								color:white; font-weight:300;
@@ -342,7 +344,7 @@ export default {
 				this.$refs.caret.offsetLeft - this.$refs.box.scrollLeft >
 				this.$refs.box.clientWidth
 			) {
-				this.$refs.box.scrollLeft += this.$refs.box.clientWidth / 7;
+				this.$refs.box.scrollLeft += this.$refs.box.clientWidth / 5;
 			}
 		},
 		selectedItem() {
@@ -586,7 +588,7 @@ export default {
 			}
 		},
 		resizeImage(e) {
-			let curX = e.x - 60 + this.$refs.box.scrollLeft;
+			let curX = e.x - 110 + this.$refs.box.scrollLeft;
 			let width = curX - this.resizeElement.offsetLeft;
 			if (width < 1) width = 1;
 			this.videoDuration -= this.resizeItem.duration;
@@ -617,13 +619,14 @@ export default {
 		},
 
 		resizeStart(e, item, type) {
+			console.log('resizeStart');
 			this.resizeType = type;
 			this.resizeItem = item;
 			this.resizeElement = e.target.parentElement;
 		},
 
 		resizeEnd() {
-			if (this.dragCaption) {
+			if (this.dragCaption || this.resizeType != -1) {
 				this.alignCaption();
 				this.mediaList = [
 					...this.videoList,
@@ -631,11 +634,10 @@ export default {
 					...this.captionList,
 				];
 				this.dragCaption = false;
+				this.resizeType = -1;
+				this.resizeItem = null;
+				this.resizeElement = null;
 			}
-
-			this.resizeType = -1;
-			this.resizeItem = null;
-			this.resizeElement = null;
 		},
 
 		calcDuration() {
@@ -689,7 +691,9 @@ export default {
 
 		pasteItem() {
 			if (this.cmdBtns[1].disabled) return;
-			EventBus.$emit('addPlayer', this.copiedItem);
+			var newItem = {};
+			for (let i in this.copiedItem) newItem[i] = this.copiedItem[i];
+			EventBus.$emit('addPlayer', newItem);
 		},
 
 		deleteItem() {
