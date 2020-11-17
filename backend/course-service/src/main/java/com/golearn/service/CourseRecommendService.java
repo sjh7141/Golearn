@@ -115,4 +115,25 @@ public class CourseRecommendService {
         return list;
     }
 
+    public List<Course> getHitCourse() {
+        List<Course> list = new LinkedList<>();
+        for(Course course : courseRepository.getHitCourse()){
+            course.setLikeCount(courseMapper.findCourseLikeCount(course.getCosNo()));
+            course.setViewerCount(courseMapper.findCourseViewerCount(course.getCosNo()));
+            course.setTags(tagMapper.findByCosNo((int)course.getCosNo()));
+            list.add(course);
+        }
+        return list;
+    }
+
+    public List<Course> getIncreaseCourse() {
+        List<Course> list = new LinkedList<>();
+        for(Course course : courseRepository.getIncreaseCourse()){
+            course.setLikeCount(courseMapper.findCourseLikeCount(course.getCosNo()));
+            course.setViewerCount(courseMapper.findCourseViewerCount(course.getCosNo()));
+            course.setTags(tagMapper.findByCosNo((int)course.getCosNo()));
+            list.add(course);
+        }
+        return list;
+    }
 }

@@ -26,4 +26,14 @@ public class CourseRecommendController {
     public ResponseEntity<List<Course>> getRecommendCourse(@RequestHeader(value = "X-USERNO", defaultValue = "-1", required = false) int mbrNo) throws TasteException, IOException {
         return new ResponseEntity(courseRecommendService.getRecommendCourse(mbrNo), HttpStatus.OK);
     }
+
+    @GetMapping("/hit")
+    public ResponseEntity<List<Course>> getHitCourse() throws TasteException, IOException {
+        return new ResponseEntity(courseRecommendService.getHitCourse(), HttpStatus.OK);
+    }
+
+    @GetMapping("/inflation")
+    public ResponseEntity<List<Course>> getIncreaseCourse() throws TasteException, IOException {
+        return new ResponseEntity(courseRecommendService.getIncreaseCourse(), HttpStatus.OK);
+    }
 }
