@@ -30,6 +30,12 @@ public interface CourseRepository extends CrudRepository<Course, Long>{
 
 	@Query(value = "select  *,(select count(distinct g2.mbr_no, g2.cos_no) from gl_course_viewer as g2 where g2.cos_no=g1.cos_no ) as v from gl_course as g1 group by g1.cos_no  order by v desc limit :num", nativeQuery = true)
 	List<Course> getBestCourseByCourseList(@Param("num") int num);
+
+	@Query(value= "select *,(select count(distinct g2.mbr_no, g2.cos_no) from gl_course_like as g2 where g2.cos_no=g1.cos_no ) as v from gl_course as g1 where g1.reg_dt > date(now()-interval 7 day) order by v desc limit 4",nativeQuery = true)
+	List<Course> getHitCourse();
+
+	@Query(value= "select *,(select count(distinct g2.mbr_no, g2.cos_no) from gl_course_viewer as g2 where g2.cos_no=g1.cos_no ) as v from gl_course as g1 where g1.reg_dt > date(now()-interval 7 day) order by v desc limit 4",nativeQuery = true)
+	List<Course> getIncreaseCourse();
 }
 
 
