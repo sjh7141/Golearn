@@ -59,7 +59,12 @@ public class CourseRecommendService {
     }
 
     public List<Course> getRecommendCourse(int mbrNo) throws TasteException, IOException {
-
+        List<Course> list = new LinkedList<>();
+        List<Long> cosList = new LinkedList<>();
+        if(mbrNo==-1){
+            list.addAll(courseRepository.getBestCourseByCourseList(4));
+            return list;
+        }
         FastByIDMap<PreferenceArray> userData = new FastByIDMap<>();
         List<Member> members = memberRepository.findAll();
         for(Member member : members){
@@ -78,8 +83,7 @@ public class CourseRecommendService {
         UserNeighborhood neighborhood = new ThresholdUserNeighborhood(-1234123, similarity, model);
         Recommender recommender = new GenericUserBasedRecommender(model,neighborhood,similarity);
         List<RecommendedItem> recommendedItems = recommender.recommend(mbrNo,4);
-        List<Course> list = new LinkedList<>();
-        List<Long> cosList = new LinkedList<>();
+
 
         for(RecommendedItem recommendedItem : recommendedItems){
             cosList.add(recommendedItem.getItemID());
