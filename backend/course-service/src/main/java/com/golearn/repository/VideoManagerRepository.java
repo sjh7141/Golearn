@@ -33,6 +33,6 @@ public interface VideoManagerRepository extends CrudRepository<VideoManager, Lon
 
 	@Modifying
 	@Transactional
-	@Query(value = "update into gl_video_request set req_admin_no = :reqAdminNo, vid_req_accept_yn = :vidReqAcceptYn, vid_res_comment = :vidResComment where vid_req_no = :vidReqNo", nativeQuery = true)
-	int updateRequest(@Param("reqAdminNo") long reqAdminNo, @Param("vidReqAcceptYn") int vidReqAcceptYn, @Param("vidResComment") String vidResComment,@Param("vidReqNo") long vidReqNo);
+	@Query(value = "update gl_video_request set mbr_admin_no = :mbrAdminNo, vid_req_accept_yn = :vidReqAcceptYn, vid_res_comment = :vidResComment where vid_req_no = :vidReqNo", nativeQuery = true)
+	int updateRequest(@Param("mbrAdminNo") long mbrAdminNo, @Param("vidReqAcceptYn") int vidReqAcceptYn, @Param("vidResComment") String vidResComment,@Param("vidReqNo") long vidReqNo);
 }
