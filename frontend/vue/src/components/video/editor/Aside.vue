@@ -53,7 +53,7 @@
 				mdi-skip-next
 			</v-icon>
 		</v-row>
-		<v-dialog v-model="dialog" max-width="700" persistent>
+		<v-dialog v-model="dialog" max-width="700" persistent eager>
 			<v-card color="#1C1C26" dark>
 				<v-card-title>
 					{{ fileName ? fileName : 'Untitled' }}
@@ -165,6 +165,7 @@ export default {
 			},
 		},
 	},
+
 	watch: {
 		mediaList() {
 			this.isChange = true;
@@ -178,7 +179,25 @@ export default {
 	},
 	mounted() {
 		// window.addEventListener('blur', () => {
-		// todo: mediaRecoder stop
+		// 	if (this.recording) {
+		// 		this.recordingMovie._mediaRecorder.onpause = () => {
+		// 			this.recordingMovie.pause();
+		// 			this.exportPreviewMovie.pause();
+		// 		};
+
+		// 		this.recordingMovie._mediaRecorder.pause();
+		// 		console.dir('')
+		// 	}
+		// });
+		// window.addEventListener('focus', () => {
+		// 	if (this.recording) {
+		// 		this.recordingMovie._mediaRecorder.onresume = () => {
+		// 			this.recordingMovie.play();
+		// 			this.exportPreviewMovie.play();
+		// 		};
+		// 		this.recordingMovie._mediaRecorder.resume();
+		// 	}
+		// 	// console.log('focus');
 		// });
 		this.canvasResize();
 		window.addEventListener('resize', this.canvasResize);
@@ -197,15 +216,19 @@ export default {
 		this.currentTime = 0;
 		this.duration = 0;
 	},
+
 	methods: {
 		...mapActions(['upload', 'uploadVideo', 'saveVideo']),
 
 		playHandler(e) {
 			if (e.which == 32) {
+				e.preventDefault();
 				this.isPlay ? this.pause() : this.play();
 			} else if (e.which == 37) {
+				e.preventDefault();
 				this.moveCurrentTime(-10);
 			} else if (e.which == 39) {
+				e.preventDefault();
 				this.moveCurrentTime(10);
 			} else if (e.ctrlKey && e.which == 83) {
 				e.preventDefault();
@@ -213,7 +236,7 @@ export default {
 			}
 		},
 		canvasResize() {
-			const { clientWidth, clientHeight } = this.$refs.editAside;
+			let { clientWidth, clientHeight } = this.$refs.editAside;
 			if (clientWidth > ((clientHeight - 50) * 16) / 9) {
 				this.height = clientHeight - 50;
 				this.width = (this.height * 16) / 9;
@@ -250,7 +273,7 @@ export default {
 				this.sumCaption = 0;
 				this.loading = true;
 
-				const { clientWidth, clientHeight } = document.getElementById(
+				let { clientWidth, clientHeight } = document.getElementById(
 					'preview',
 				);
 				this.addMedias(
@@ -285,13 +308,15 @@ export default {
 			}
 
 			this.pause();
+			// delete this.movie;
+
 			this.dialog = true;
 
-			const canvas = document.createElement('canvas');
+			let canvas = document.createElement('canvas');
 
 			canvas.width = 1920;
 			canvas.height = 1080;
-			const movie = new vd.Movie(canvas);
+			let movie = new vd.Movie(canvas);
 
 			this.sumVideo = 0;
 			this.sumAudio = 0;
@@ -314,8 +339,8 @@ export default {
 
 			this.addMedias(movie, this.mediaList, 0, 1920, 1080, false).finally(
 				() => {
-					const canvas = document.getElementById('exportPreview');
-					const tmpMovie = new vd.Movie(canvas);
+					let canvas = document.getElementById('exportPreview');
+					let tmpMovie = new vd.Movie(canvas);
 
 					this.sumVideo = 0;
 					this.sumAudio = 0;
@@ -393,7 +418,6 @@ export default {
 					video.src = media.blob;
 
 					let opacity = {};
-
 					opacity[0] = 0;
 					opacity[media.fadeIn / 10] = 1;
 					opacity[media.duration] = 0;
@@ -476,22 +500,22 @@ export default {
 					};
 				} else if (media.type == 'caption') {
 					let opacity = {};
-					const areaWidth = width / 3;
-					const areaHeight = height / 3;
-					const textAlign =
+					let areaWidth = width / 3;
+					let areaHeight = height / 3;
+					let textAlign =
 						media.position % 3 == 1
 							? 'start'
 							: media.position % 3 == 2
 							? 'center'
 							: 'end';
-					const textBaseline = 'middle';
-					const textX =
+					let textBaseline = 'middle';
+					let textX =
 						media.position % 3 == 1
 							? areaWidth / 20
 							: media.position % 3 == 2
 							? width / 2
 							: width - areaWidth / 20;
-					const textY =
+					let textY =
 						areaHeight / 2 +
 						parseInt((media.position - 1) / 3) * areaHeight;
 
@@ -502,12 +526,7 @@ export default {
 
 					movie.addLayer(
 						new vd.layer.Text(
-							{
-								0: this.sumCaption,
-								1: this.sumCaption + '1',
-								2: this.sumCaption + '2',
-								10: this.sumCaption,
-							},
+							media.startTime,
 							media.duration,
 							media.name,
 							{
@@ -516,7 +535,6 @@ export default {
 								font: `${media.size}px BMJUA`,
 								textAlign,
 								textBaseline,
-								background: '#FF0000',
 								x: 0,
 								y: 0,
 

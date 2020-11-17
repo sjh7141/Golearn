@@ -3,7 +3,10 @@
 		id="edit-article"
 		style="background-color:#17171E; width:100%; height:100%;"
 		@mouseup="resizeEnd"
-		@mousemove.capture="resizeLayer($event)"
+		@mousemove.capture="
+			resizeLayer($event);
+			captionDragHandler($event);
+		"
 	>
 		<v-layout class="px-8 py-1">
 			<v-btn
@@ -72,6 +75,7 @@
 			<div
 				style="position: absolute; border-left:2px solid white; height:100%; margin-left:50px; z-index:1; margin-top:1px;"
 				:style="{ left: caretPosition + 'px' }"
+				ref="caret"
 			></div>
 
 			<v-layout ref="timeline">
@@ -101,85 +105,107 @@
 						<v-icon color="#80818B" style="width:50px;">
 							mdi-movie-outline</v-icon
 						>
-
-						<div
-							v-for="(item, i) in videoList"
-							:key="`video_${i}`"
-							style="position:relative;"
+						<draggable
+							:list="videoList"
+							style="position:relative !important;display:flex;"
+							@end="dragHandler"
+							handle=".handle"
+							disabled
 						>
-							<v-btn
-								small
-								class="px-0"
-								depressed
-								style="background-color:#766af6;
+							<div
+								v-for="(item, i) in videoList"
+								:key="`video_${i}`"
+								style="position:relative;display:flex;"
+							>
+								<v-btn
+									small
+									class="px-0 handle"
+									depressed
+									style="background-color:#766af6;
 								color:white; font-weight:300;
 								font-size:14px; display:flex; min-width: 0px;
 								overflow: hidden;"
-								:style="{
-									width:
-										durationToWidth(item.duration) + 'px',
-								}"
-								:class="{
-									'selected-item': selectedItem == item,
-								}"
-								:ripple="false"
-								@mousedown.stop="1"
-								@click.stop="selectedItem = item"
-							>
-								<span class="px-2"> {{ item.name }}</span>
-							</v-btn>
-							<div
-								v-if="
-									item.type == 'image' ||
-										item.type == 'background'
-								"
-								style="position: absolute; top:0px; right:-5px; width:10px; height:28px; cursor:col-resize;"
-								class="resize"
-								@mousedown.stop="resizeStart($event, item, 0)"
-								@click.stop="1"
-							></div>
-						</div>
+									:style="{
+										width:
+											durationToWidth(item.duration) +
+											'px',
+									}"
+									:class="{
+										'selected-item': selectedItem == item,
+									}"
+									:ripple="false"
+									@mousedown.stop="selectedItem = item"
+								>
+									<span class="px-2"> {{ item.name }}</span>
+								</v-btn>
+								<div
+									v-if="
+										item.type == 'image' ||
+											item.type == 'background'
+									"
+									style="position: absolute; top:0px; right:-5px; width:10px; height:28px; cursor:col-resize;"
+									class="resize"
+									@mousedown.stop="
+										resizeStart($event, item, 0)
+									"
+								></div>
+							</div>
+						</draggable>
 					</v-row>
 					<v-row align="center" class="ma-0" style="height:50px;">
 						<v-icon color="#80818B" style="width:50px;">
 							mdi-music-note</v-icon
 						>
-						<div
-							v-for="(item, i) in audioList"
-							:key="`audio_${i}`"
-							style="position:relative;"
+						<draggable
+							:list="audioList"
+							style="position:relative !important;display:flex;"
+							@end="dragHandler"
 						>
-							<v-btn
-								small
-								class="px-0"
-								depressed
-								style="background-color:#4980F1;
+							<div
+								v-for="(item, i) in audioList"
+								:key="`audio_${i}`"
+								style="position:relative;display:flex;"
+							>
+								<v-btn
+									small
+									class="px-0"
+									depressed
+									style="background-color:#4980F1;
 								color:white; font-weight:300;
 								font-size:14px; display:flex; min-width: 0px;
 								overflow: hidden;"
-								:style="{
-									width:
-										durationToWidth(item.duration) + 'px',
-								}"
-								:class="{
-									'selected-item': selectedItem == item,
-								}"
-								:ripple="false"
-								@mousedown.stop="1"
-								@click.stop="selectedItem = item"
-							>
-								<span class="px-2"> {{ item.name }}</span>
-							</v-btn>
-						</div>
+									:style="{
+										width:
+											durationToWidth(item.duration) +
+											'px',
+									}"
+									:class="{
+										'selected-item': selectedItem == item,
+									}"
+									:ripple="false"
+									@mousedown.stop="selectedItem = item"
+								>
+									<span class="px-2"> {{ item.name }}</span>
+								</v-btn>
+							</div>
+						</draggable>
 					</v-row>
-					<v-row align="center" class="ma-0" style="height:50px;">
+					<v-row
+						align="center"
+						class="ma-0"
+						style="height:50px;position:relative;"
+					>
 						<v-icon color="#80818B" style="width:50px;">
 							mdi-format-text</v-icon
 						>
 						<div
 							v-for="(item, i) in captionList"
 							:key="`caption_${i}`"
-							style="position:relative;"
+							style="position: absolute;"
+							:style="{
+								left:
+									durationToWidth(item.startTime) + 50 + 'px',
+							}"
 						>
 							<v-btn
 								small
@@ -197,8 +223,9 @@
 									'selected-item': selectedItem == item,
 								}"
 								:ripple="false"
-								@mousedown.stop="1"
-								@click.stop="selectedItem = item"
+								@mousedown.stop="
+									captionDragStartHandler($event, item)
+								"
 							>
 								<span class="px-2"> {{ item.name }}</span>
 							</v-btn>
@@ -219,8 +246,13 @@
 
 <script>
 import EventBus from '@/util/EventBus.js';
+import draggable from 'vuedraggable';
+
 export default {
 	name: 'EditArticle',
+	components: {
+		draggable,
+	},
 	computed: {
 		currentTime: {
 			get() {
@@ -308,6 +340,12 @@ export default {
 			if (this.currentTime > this.duration) {
 				this.currentTime = this.duration;
 			}
+			if (
+				this.$refs.caret.offsetLeft - this.$refs.box.scrollLeft >
+				this.$refs.box.clientWidth
+			) {
+				this.$refs.box.scrollLeft += this.$refs.box.clientWidth / 5;
+			}
 		},
 		selectedItem() {
 			this.cmdBtns[0].disabled = this.selectedItem == null;
@@ -390,6 +428,8 @@ export default {
 			caretPosition: 0,
 
 			setTimerDrag: false,
+			dragCaption: false,
+			startX: 0,
 		};
 	},
 	mounted() {
@@ -407,8 +447,14 @@ export default {
 				this.audioList.push(item);
 				this.audioDuration += item.duration;
 			} else if (item.type == 'caption') {
+				if (this.captionList.length) {
+					const lastItem = this.captionList[
+						this.captionList.length - 1
+					];
+					item.startTime = lastItem.startTime + lastItem.duration;
+				}
 				this.captionList.push(item);
-				this.captionDuration += item.duration;
+				this.captionDuration = item.startTime + item.duration;
 			}
 			this.mediaList = [
 				...this.videoList,
@@ -430,6 +476,50 @@ export default {
 		window.removeEventListener('resize', this.handleTimeLine);
 	},
 	methods: {
+		captionDragStartHandler(e, item) {
+			this.selectedItem = item;
+			this.startX = e.offsetX;
+			// console.dir(e);
+			this.dragCaption = true;
+		},
+		captionDragHandler(e) {
+			if (this.dragCaption) {
+				let curX = e.x - this.startX - 110 + this.$refs.box.scrollLeft;
+				if (curX < -0.1) curX = -0.001;
+				curX =
+					curX *
+					(this.interval /
+						((this.$refs.timeline.clientWidth - 50) / 20));
+				this.selectedItem.startTime = curX;
+			}
+		},
+		alignCaption() {
+			this.captionList.sort((c1, c2) => {
+				return c1.startTime - c2.startTime;
+			});
+			if (this.captionList.length && this.captionList[0].startTime < 0)
+				this.captionList[0].startTime = 0;
+
+			let sumDuration = 0;
+			for (let i in this.captionList) {
+				if (this.captionList[i].startTime < sumDuration)
+					this.captionList[i].startTime = sumDuration;
+				sumDuration =
+					this.captionList[i].startTime +
+					this.captionList[i].duration;
+			}
+			if (this.captionList.length)
+				this.captionDuration =
+					this.captionList[this.captionList.length - 1].startTime +
+					this.captionList[this.captionList.length - 1].duration;
+		},
+		dragHandler() {
+			this.mediaList = [
+				...this.videoList,
+				...this.audioList,
+				...this.captionList,
+			];
+		},
 		controlHandler(e) {
 			if (e.ctrlKey && e.which == 67) {
 				e.preventDefault();
@@ -498,7 +588,7 @@ export default {
 			}
 		},
 		resizeImage(e) {
-			let curX = e.x - 60 + this.$refs.box.scrollLeft;
+			let curX = e.x - 110 + this.$refs.box.scrollLeft;
 			let width = curX - this.resizeElement.offsetLeft;
 			if (width < 1) width = 1;
 			this.videoDuration -= this.resizeItem.duration;
@@ -529,15 +619,25 @@ export default {
 		},
 
 		resizeStart(e, item, type) {
+			console.log('resizeStart');
 			this.resizeType = type;
 			this.resizeItem = item;
 			this.resizeElement = e.target.parentElement;
 		},
 
 		resizeEnd() {
-			this.resizeType = -1;
-			this.resizeItem = null;
-			this.resizeElement = null;
+			if (this.dragCaption || this.resizeType != -1) {
+				this.alignCaption();
+				this.mediaList = [
+					...this.videoList,
+					...this.audioList,
+					...this.captionList,
+				];
+				this.dragCaption = false;
+				this.resizeType = -1;
+				this.resizeItem = null;
+				this.resizeElement = null;
+			}
 		},
 
 		calcDuration() {
@@ -591,7 +691,9 @@ export default {
 
 		pasteItem() {
 			if (this.cmdBtns[1].disabled) return;
-			EventBus.$emit('addPlayer', this.copiedItem);
+			var newItem = {};
+			for (let i in this.copiedItem) newItem[i] = this.copiedItem[i];
+			EventBus.$emit('addPlayer', newItem);
 		},
 
 		deleteItem() {
