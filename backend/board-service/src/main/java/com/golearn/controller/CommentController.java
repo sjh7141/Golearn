@@ -47,10 +47,10 @@ public class CommentController {
 	
 	@ApiOperation(value = "대댓글 불러오기")
 	@GetMapping(value = "/{brd_no}/{brd_cmt_pno}")
-	public ResponseEntity<Map<String, Object>> getCommentDetailsList(@PathVariable("brd_no") int brdNo, @PathVariable("brd_cmt_pno") int parentNo, @RequestParam("page_no") int pageNo){
-		PageDto page = new PageDto(pageNo);
+	public ResponseEntity<Map<String, Object>> getCommentDetailsList(@PathVariable("brd_no") int brdNo, @PathVariable("brd_cmt_pno") int parentNo){
+		PageDto page = new PageDto(1);
 		page.setTotalCount(commentService.findCommentCount(brdNo, parentNo));
-		List<CommentDto> comment = commentService.findByCommentNo(brdNo, parentNo, page.getStartIndex(), page.getPerPageNum());
+		List<CommentDto> comment = commentService.findByCommentNo(brdNo, parentNo, page.getStartIndex(), page.getTotalCount());
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("page", page);
