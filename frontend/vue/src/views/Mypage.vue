@@ -32,6 +32,7 @@
 							class="tap-font"
 							:class="{ select: idx == selectNo }"
 							@click="changeTap(idx)"
+							style="	font-family: 'BMJUA';"
 						>
 							{{ item.name }}
 						</span>
