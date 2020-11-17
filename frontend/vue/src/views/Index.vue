@@ -443,7 +443,6 @@ export default {
 			this.tags = res.data;
 		});
 		this.getRecommendCourse().then(res => {
-			console.log(res);
 			this.recommendation = res.data;
 		});
 	},
