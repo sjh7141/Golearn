@@ -362,6 +362,7 @@ export default {
 		},
 
 		movieToBlob(movie) {
+			// console.dir(this.mediaList);
 			this.recordingMovie = movie;
 			movie.record(25).then(res => {
 				let formData = new FormData();
@@ -418,7 +419,7 @@ export default {
 					let video = document.createElement('video');
 					video.src = media.blob;
 
-					let opacity = {};
+					var opacity = {};
 
 					opacity[0] = 0;
 					opacity[media.fadeIn / 10] = 1;
@@ -528,7 +529,7 @@ export default {
 
 					movie.addLayer(
 						new vd.layer.Text(
-							this.sumCaption,
+							media.startTime,
 							media.duration,
 							media.name,
 							{
