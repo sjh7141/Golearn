@@ -26,11 +26,11 @@ public class VideoManagerService {
 	}
 
 	// 영상 요청 승인|거부
-	public VideoManager updateVideo(String mbrNo, VideoManager request) {
+	public int updateVideo(String mbrNo, VideoManager request) {
 		request.setRegDt(new Date());
 		request.setMbrAdminNo(Long.parseLong(mbrNo));
 		createVersioning(request);
-		return videoManagerRepository.save(request);
+		return videoManagerRepository.updateRequest(request.getMbrAdminNo(),request.getVidReqAcceptYn(),request.getVidResComment(),request.getVidReqNo());
 	}
 
 	// 영상 요청 승인 시 버저닝 생성

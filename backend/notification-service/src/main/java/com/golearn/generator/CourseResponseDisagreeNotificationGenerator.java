@@ -1,8 +1,8 @@
 package com.golearn.generator;
 
-import com.golearn.client.CourseRestClient;
 import com.golearn.model.Notification;
-import com.golearn.model.VideoRequestResponse;
+import com.golearn.model.VideoRequest;
+import com.golearn.repository.VideoRequestRepository;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -13,17 +13,16 @@ import java.util.List;
 @Component
 public class CourseResponseDisagreeNotificationGenerator implements NotificationGenerator{
     private int type=7;
-    private final CourseRestClient courseRestClient;
-
-    CourseResponseDisagreeNotificationGenerator(CourseRestClient courseRestClient) {
-        this.courseRestClient = courseRestClient;
+    private final VideoRequestRepository videoRequestRepository;
+    CourseResponseDisagreeNotificationGenerator(VideoRequestRepository videoRequestRepository) {
+        this.videoRequestRepository = videoRequestRepository;
     }
 
     @Override
     public List<Integer> generate(Notification notification) {
-        VideoRequestResponse videoRequestResponse = courseRestClient.getVideoRequest(notification.getDest());
+        VideoRequest videoRequest = videoRequestRepository.findById(notification.getDest()).get();
         List<Integer> list = new LinkedList<>();
-        list.add(videoRequestResponse.getMbrReqNo());
+        list.add(videoRequest.getMbrReqNo());
         return list;
     }
 }

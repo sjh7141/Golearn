@@ -35,4 +35,5 @@ public class Notification {
     private String profile;
     @Transient
     private String senderNickname;
+
 }
