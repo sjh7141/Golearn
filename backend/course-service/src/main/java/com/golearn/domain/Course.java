@@ -140,7 +140,7 @@ public class Course {
 
 	public String getMbrNickname(){return mbrNickname;}
 
-	public void setMbrNickname(String mbrNickname){this.mbrNickname = mbrNickname}
+	public void setMbrNickname(String mbrNickname){this.mbrNickname = mbrNickname;}
 
 	@PrePersist
 	void prePersist() {
