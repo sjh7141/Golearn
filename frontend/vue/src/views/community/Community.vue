@@ -69,9 +69,10 @@
 									class="text--primary"
 									@click="goToPost(item.brd_no)"
 								>
-									<div class="text-content">
-										{{ item.content }}
-									</div>
+									<div
+										class="text-content"
+										v-html="item.content"
+									></div>
 								</v-card-text>
 								<v-card-text
 									class="text--primary"
@@ -127,6 +128,7 @@
 					</v-col>
 					<v-pagination
 						v-model="pageNo"
+						color="#7640e3"
 						:length="pageInfo.end_page"
 						style="text-align:center !important;"
 					></v-pagination>
@@ -158,9 +160,11 @@ export default {
 	},
 	watch: {
 		pageNo() {
-			this.$router.push(
-				`/community/${this.tapEn[this.selectNo]}/${this.pageNo}`,
-			);
+			if (this.pageNo != Number(this.$route.params.page)) {
+				this.$router.push(
+					`/community/${this.tapEn[this.selectNo]}/${this.pageNo}`,
+				);
+			}
 		},
 	},
 	methods: {
@@ -180,20 +184,24 @@ export default {
 					this.pageInfo = data.page;
 					this.boardList = [];
 					for (let post of data.board) {
+						post.mbr_nickname = '';
+						post.mbr_profile = '';
 						this.$store
 							.dispatch('getUserByNo', post.mbr_no)
 							.then(({ data }) => {
 								post.mbr_nickname = data.nickname;
 								post.mbr_profile = data.profile;
-								this.boardList.push(post);
 							});
 					}
+					this.boardList = data.board;
 				});
 		},
 		goToPost(no) {
 			this.$router.push(`/post/${this.tapEn[this.selectNo]}/${no}`);
 		},
-		write() {},
+		write() {
+			this.$router.push(`/community/write`);
+		},
 	},
 	computed: {
 		...mapGetters(['isLogin']),

@@ -3,7 +3,7 @@
 		<div style="font-size:18px;" class="mb-5">
 			<span> 댓글 </span>
 			<span class="basic" style="font-weight:600">
-				{{ reply.length }}
+				{{ numCmt }}
 			</span>
 		</div>
 		<div v-if="$store.getters.isLogin">
@@ -69,6 +69,14 @@
 										item.reg_date
 											| moment('YYYY-MM-DD hh:mm:ss')
 									}}
+								</span>
+								<span
+									class="ml-2"
+									v-if="isLogin && item.mbr_no == user.no"
+									style="font-size:12px; font-weight:400; color:#979797; cursor: pointer;"
+									@click="deleteBoardComment(item)"
+								>
+									삭제
 								</span>
 							</span>
 						</div>
@@ -144,6 +152,19 @@
 														)
 												}}
 											</span>
+											<span
+												class="ml-2"
+												v-if="
+													isLogin &&
+														child.mbr_no == user.no
+												"
+												style="font-size:12px; font-weight:400; color:#979797; cursor: pointer;"
+												@click="
+													deleteBoardComment(child)
+												"
+											>
+												삭제
+											</span>
 										</span>
 									</div>
 									<div>
@@ -214,19 +235,31 @@
 				</div>
 				<v-divider style="clear: both;" />
 			</div>
+			<infinite-loading @infinite="infiniteHandler">
+				<div slot="no-more"></div>
+				<div slot="no-results"></div>
+			</infinite-loading>
 		</v-card>
 	</div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
+import InfiniteLoading from 'vue-infinite-loading';
+
 export default {
 	name: 'BoardComment',
-	props: ['no'],
+	props: ['no', 'numCmt'],
+	components: {
+		InfiniteLoading,
+	},
 	watch: {
 		no() {
 			this.getBoardComments();
 		},
+	},
+	computed: {
+		...mapGetters(['isLogin']),
 	},
 	data() {
 		return {
@@ -245,6 +278,7 @@ export default {
 			'_getBoardComments',
 			'_getBoardSubComments',
 			'_writeBoardComment',
+			'_deleteBoardComment',
 		]),
 
 		getBoardComments() {
@@ -257,15 +291,17 @@ export default {
 					data.comment[i].replyText = '';
 					data.comment[i].active = false;
 					data.comment[i].child = [];
+					data.comment[i].mbr_nickname = '';
+					data.comment[i].mbr_profile = '';
 					let user = data.comment[i];
 					this.$store
 						.dispatch('getUserByNo', user.mbr_no)
 						.then(({ data }) => {
 							user.mbr_nickname = data.nickname;
 							user.mbr_profile = data.profile;
-							this.reply.push(user);
 						});
 				}
+				this.reply = data.comment;
 			});
 		},
 
@@ -286,18 +322,19 @@ export default {
 				this._getBoardSubComments({
 					brd_no: this.no,
 					brd_cmt_pno: item.cmt_no,
-					page_no: 1,
 				}).then(({ data }) => {
 					for (let i in data.comment) {
+						data.comment[i].mbr_nickname = '';
+						data.comment[i].mbr_profile = '';
 						let user = data.comment[i];
 						this.$store
 							.dispatch('getUserByNo', user.mbr_no)
 							.then(({ data }) => {
 								user.mbr_nickname = data.nickname;
 								user.mbr_profile = data.profile;
-								item.child.push(user);
 							});
 					}
+					item.child = data.comment;
 				});
 			} else {
 				item.child = [];
@@ -314,11 +351,48 @@ export default {
 			});
 		},
 
+		deleteBoardComment(item) {
+			this._deleteBoardComment({ cmt_no: item.cmt_no }).then(() => {
+				this.getBoardComments();
+			});
+		},
+
 		disableFocus() {
 			const qs = document.querySelector('.v-input--is-focused');
 			if (qs) {
 				qs.classList.toggle('v-input--is-focused');
 			}
+		},
+
+		infiniteHandler($state) {
+			this._getBoardComments({
+				brd_no: this.no,
+				page_no: this.page + 1,
+			}).then(({ data }) => {
+				if (data.comment.length > 0) {
+					for (let i in data.comment) {
+						data.comment[i].replyText = '';
+						data.comment[i].active = false;
+						data.comment[i].child = [];
+						data.comment[i].mbr_nickname = '';
+						data.comment[i].mbr_profile = '';
+						let user = data.comment[i];
+						this.$store
+							.dispatch('getUserByNo', user.mbr_no)
+							.then(({ data }) => {
+								user.mbr_nickname = data.nickname;
+								user.mbr_profile = data.profile;
+							});
+					}
+					for (let comment of data.comment) {
+						this.reply.push(comment);
+					}
+					$state.loaded();
+					this.page += 1;
+				} else {
+					$state.complete();
+				}
+			});
 		},
 	},
 };

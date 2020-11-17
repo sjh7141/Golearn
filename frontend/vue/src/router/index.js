@@ -11,6 +11,7 @@ import EditCourse from '@/views/course/Edit.vue';
 import EditLoadMap from '@/views/loadmap/Edit.vue';
 import Community from '@/views/community/Community.vue';
 import Post from '@/views/community/Post.vue';
+import CommunityWrite from '@/views/community/Write.vue';
 
 import EditVideo from '@/views/channel/EditVideo.vue';
 
@@ -106,7 +107,18 @@ const routes = [
 	},
 	{
 		path: '/post/:type/:id',
+		name: 'Post',
 		component: Post,
+	},
+	{
+		path: '/community/write',
+		name: 'CommunityWrite',
+		component: CommunityWrite,
+	},
+	{
+		path: '/community/modify/:type/:id',
+		name: 'CommunityModify',
+		component: CommunityWrite,
 	},
 	{
 		path: '/community/:type/:page',

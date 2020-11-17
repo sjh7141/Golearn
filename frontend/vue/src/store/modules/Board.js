@@ -40,6 +40,7 @@ export default {
 					Authorization: context.rootGetters.token,
 				},
 			};
+			console.log(payload);
 			return axios.put(URL.boardBuild(), payload, config);
 		},
 		deletePost(context, payload) {
@@ -48,7 +49,10 @@ export default {
 					Authorization: context.rootGetters.token,
 				},
 			};
-			return axios.delete(URL.boardBuild() + `/${payload}`, config);
+			return axios.delete(
+				URL.boardBuild() + `/${payload.brd_no}`,
+				config,
+			);
 		},
 		_getBoardComments(context, payload) {
 			return axios.get(URL.commentBuild() + `/${payload.brd_no}`, {
@@ -73,23 +77,21 @@ export default {
 			};
 			return axios.put(URL.commentBuild() + '/', payload, config);
 		},
-		_deleteBoardComment(context) {
+		_deleteBoardComment(context, payload) {
 			const config = {
 				headers: {
 					Authorization: context.rootGetters.token,
 				},
 			};
-			return axios.delete(URL.commentBuild() + '/', config);
+			return axios.delete(
+				URL.commentBuild() + `/${payload.cmt_no}`,
+				config,
+			);
 		},
 		_getBoardSubComments(context, payload) {
 			return axios.get(
 				URL.commentBuild() +
 					`/${payload.brd_no}/${payload.brd_cmt_pno}`,
-				{
-					params: {
-						page_no: payload.page_no,
-					},
-				},
 			);
 		},
 	},

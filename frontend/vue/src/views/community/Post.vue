@@ -36,6 +36,33 @@
 						</div>
 						<div style="width:100%;">
 							<v-card class="mb-6 pa-6">
+								<div
+									align="end"
+									v-if="isLogin && post.mbr_no == user.no"
+								>
+									<v-btn
+										class="mr-3 bold"
+										depressed
+										rounded
+										dark
+										color="#7640e3"
+										@click="modify"
+										style="	font-family: 'BMJUA';"
+									>
+										수정
+									</v-btn>
+									<v-btn
+										depressed
+										rounded
+										dark
+										color="#7640e3"
+										class="bold"
+										@click="confirmDelete"
+										style="	font-family: 'BMJUA';"
+									>
+										삭제
+									</v-btn>
+								</div>
 								<v-card-title class="card-title bold">
 									{{ post.title }}
 								</v-card-title>
@@ -98,25 +125,18 @@
 									</v-row>
 								</v-card-text>
 								<v-divider />
-								<v-card-text class="post-content">
-									{{ post.content }}
+								<v-card-text
+									v-html="post.content"
+									class="post-content"
+								>
 								</v-card-text>
-								<!-- <v-card-text>
-									<v-row align="center">
-										<v-icon small class="mr-2">
-											mdi-message-processing-outline
-										</v-icon>
-
-										<span
-											style="font-size:14px; font-family: 'BMJUA';"
-										>
-											댓글 {{ post.comment_count }}
-										</span>
-									</v-row>
-								</v-card-text> -->
 								<v-divider />
 								<v-card-text>
-									<Comment :no="postNo" v-if="postNo" />
+									<Comment
+										:no="postNo"
+										:numCmt="post.comment_count"
+										v-if="postNo"
+									/>
 								</v-card-text>
 								<v-card-text>
 									<v-btn
@@ -144,6 +164,7 @@
 
 <script>
 import Comment from '@/components/board/Comment.vue';
+import { mapGetters } from 'vuex';
 
 export default {
 	components: {
@@ -173,15 +194,37 @@ export default {
 	},
 	methods: {
 		changeTap(idx) {
-			if (idx == Number(this.tapCode[this.$route.params.type] - 1)) {
-				return;
-			}
 			this.$router.push(`/community/${this.tapEn[idx]}/1`);
 		},
 		scrollUp() {
 			window.scrollTo(0, 0);
 		},
-		write() {},
+		confirmDelete() {
+			if (confirm('정말 삭제하시겠습니까?')) {
+				this.$store
+					.dispatch('deletePost', {
+						brd_no: this.post.brd_no,
+					})
+					.then(() => {
+						this.$store.commit(
+							'setSBMessage',
+							'정상적으로 삭제되었습니다.',
+						);
+						this.$store.commit('setSnackbar', true);
+						this.$router.push('/community/notice/1');
+					});
+			}
+		},
+		modify() {
+			this.$router.push(
+				`/community/modify/${this.tapEn[this.selectNo]}/${
+					this.post.brd_no
+				}`,
+			);
+		},
+	},
+	computed: {
+		...mapGetters(['isLogin', 'user']),
 	},
 	mounted() {
 		this.selectNo = Number(this.tapCode[this.$route.params.type] - 1);

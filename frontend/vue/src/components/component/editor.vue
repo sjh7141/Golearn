@@ -388,4 +388,7 @@ symbol {
 	background-color: white;
 	cursor: pointer;
 }
+.menubar__button {
+	font-size: 15px;
+}
 </style>
