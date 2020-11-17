@@ -133,7 +133,7 @@
 					</v-tab>
 				</v-tabs>
 
-				<v-container class="mx-auto px-0">
+				<v-container class="mx-auto px-0" style="min-height:400px;">
 					<v-tabs-items v-model="tab" class="transparent ">
 						<v-tab-item>
 							<video-slider :videos="videos"> </video-slider>

@@ -496,6 +496,7 @@ export default {
 			'getCourseIndexs',
 			'sendRequest',
 			'getCourse',
+			'sendNotification',
 			'getVideo',
 		]),
 
@@ -508,6 +509,12 @@ export default {
 				vid_no: this.videos[this.videoIndex].vid_no,
 				vid_req_comment: this.message,
 			}).then(() => {
+				this.sendNotification({
+					noti_msg: `${this.user.nickname}님이 영상을 요청하였습니다. "${this.message}"`,
+					noti_type: 5,
+					noti_path: `/course/${this.cos_no}/requestlist`,
+					dest: this.cos_no,
+				});
 				alert('요청을 보냈습니다.');
 				this.$router.push(
 					`/course/${this.cos_no}/requestlist${

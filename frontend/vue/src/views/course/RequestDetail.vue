@@ -386,6 +386,7 @@ export default {
 			'getChapterDetail',
 			'getVideoDetail',
 			'returnResponse',
+			'sendNotification',
 			'checkCourseManager',
 		]),
 
@@ -398,6 +399,16 @@ export default {
 				vid_req_no: parseInt(this.req_no),
 				vid_res_comment: this.message,
 			}).then(() => {
+				this.sendNotification({
+					noti_msg:
+						yn == 1
+							? `요청한 영상이 정상적으로 승인 되었습니다. "${this.message}"`
+							: `요청한 영상이 반려되었습니다. "${this.message}"`,
+					noti_type: yn + 5,
+					noti_path: `/course/${this.cos_no}/requestlist`,
+					dest: parseInt(this.req_no),
+				});
+
 				alert('처리되었습니다.');
 				this.$router.push(
 					`/course/${this.cos_no}/requestlist${
