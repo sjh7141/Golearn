@@ -10,6 +10,12 @@
 		limit #{startIndex}, #{perPageNum}
 	</select>
 	
+	<select id="findDetailsCount" resultType="Integer">
+		select count(*)
+		from gl_board_comment
+		where brd_cmt_pno = #{parentNo}
+	</select>
+	
 	<select id="findCommentCount" resultType="Integer">
 		select count(*)
 		from gl_board_comment
@@ -37,5 +43,4 @@
 		from gl_board_comment
 		where brd_cmt_no = #{cmtNo}	
 	</select>
-	
 </mapper>
