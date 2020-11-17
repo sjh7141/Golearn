@@ -8,6 +8,7 @@ import com.golearn.repository.MemberRepository;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.impl.common.FastByIDMap;
 import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
@@ -36,6 +37,7 @@ import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import sun.security.util.ArrayUtil;
 
 import javax.sql.DataSource;
 import java.io.File;
@@ -49,14 +51,11 @@ import java.util.List;
 public class CourseRecommendService {
 
     private final CourseRepository courseRepository;
-    private final CourseViewerRepository courseViewerRepository;
-    private final DataSource dataSource;
+
     private final MemberRepository memberRepository;
-    CourseRecommendService(CourseRepository courseRepository,DataSource dataSource,MemberRepository memberRepository, CourseViewerRepository courseViewerRepository){
+    CourseRecommendService(CourseRepository courseRepository,MemberRepository memberRepository){
         this.courseRepository = courseRepository;
-        this.dataSource = dataSource;
         this.memberRepository = memberRepository;
-        this.courseViewerRepository = courseViewerRepository;
     }
 
     public List<Course> getRecommendCourse(int mbrNo) throws TasteException, IOException {
@@ -65,9 +64,7 @@ public class CourseRecommendService {
         List<Member> members = memberRepository.findAll();
         for(Member member : members){
             List<CoursePrefer> coursePrefers = courseRepository.getPrefer(member.getMbrNo());
-            if(coursePrefers.size()==0){
-                continue;
-            }
+
             List<GenericPreference> genericPreferences = new LinkedList<>();
             for(CoursePrefer coursePrefer : coursePrefers){
                 genericPreferences.add(new GenericPreference(coursePrefer.getMbrNo(),coursePrefer.getCosNo(),coursePrefer.getValue()));
@@ -75,62 +72,24 @@ public class CourseRecommendService {
             userData.put(member.getMbrNo(),new GenericUserPreferenceArray(genericPreferences));
         }
 
-        ClassPathResource resource = new ClassPathResource("file.csv");
-//        DataModel model = new GenericDataModel(userData);
-        DataModel model = new FileDataModel(resource.getFile());
+        DataModel model = new GenericDataModel(userData);
         UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
-//        for (LongPrimitiveIterator it = model.getUserIDs(); it.hasNext(); ) {
-//            for(LongPrimitiveIterator it2 = model.getUserIDs(); it2.hasNext(); ){
-//                System.out.println(""+it.peek()+" "+it2.peek());
-//                log.info("============>"+similarity.userSimilarity(it.peek(),it2.nextLong()));
-//            }
-//            it.nextLong();
-//        }
-        ParallelSGDFactorizer factorizer = new ParallelSGDFactorizer(model,1,0.1,1);
-//        UserNeighborhood neighborhood = new ThresholdUserNeighborhood(-1, similarity, model);
-//        Recommender recommender = new GenericItemBasedRecommender(model,similarity);
-        SVDRecommender recommender = new SVDRecommender(model, factorizer);
-        List<RecommendedItem> recommendedItems = recommender.recommend(mbrNo,1);
+
+        UserNeighborhood neighborhood = new ThresholdUserNeighborhood(-1234123, similarity, model);
+        Recommender recommender = new GenericUserBasedRecommender(model,neighborhood,similarity);
+        List<RecommendedItem> recommendedItems = recommender.recommend(mbrNo,4);
         List<Course> list = new LinkedList<>();
+        List<Long> cosList = new LinkedList<>();
 
         for(RecommendedItem recommendedItem : recommendedItems){
-            System.out.println(recommendedItem);
+            cosList.add(recommendedItem.getItemID());
             list.add(courseRepository.findById(recommendedItem.getItemID()));
         }
 
-//        for(Member member : members){
-//            for(Member member1 : members){
-//                log.info("==>"+similarity.userSimilarity(member.getMbrNo(),member1.getMbrNo()));
-//            }
-//        }
-//        ClassPathResource resource = new ClassPathResource("file.csv");
-//
-//        DataModel dm = new FileDataModel(resource.getFile());
-//
-//        log.info("file read");
-//        UserSimilarity similarity = new PearsonCorrelationSimilarity(dm);
-
-//        UserNeighborhood neighborhood = new ThresholdUserNeighborhood(0.1, similarity, dm);
-//        UserBasedRecommender recommender = new GenericUserBasedRecommender(dm, neighborhood, similarity);
-//        List<RecommendedItem> recommendations = recommender.recommend(2, 2);
-//        for (RecommendedItem recommendation : recommendations) {
-//            System.out.println(recommendation);
-//        }
+        if(list.size()<=4){
+            list.addAll(courseRepository.getBestCourse(cosList, 4-list.size()));
+        }
         return list;
     }
 
-    private List<CoursePreference> mapCoursePreference(List<CourseViewer> courseViewers){
-        List<CoursePreference> coursePreferences = new LinkedList<>();
-        for(CourseViewer courseViewer : courseViewers){
-            coursePreferences.add(new CoursePreference(courseViewer.getMbrNo(),courseViewer.getCosNo()));
-        }
-        return coursePreferences;
-    }
-    private List<GenericPreference> mapPreference(List<CourseViewer> courseViewers){
-        List<GenericPreference> genericPreferences = new LinkedList<>();
-        for(CourseViewer courseViewer : courseViewers){
-            genericPreferences.add(new GenericPreference(courseViewer.getMbrNo(),courseViewer.getCosNo(),1));
-        }
-        return genericPreferences;
-    }
 }

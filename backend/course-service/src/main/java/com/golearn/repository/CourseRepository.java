@@ -22,8 +22,11 @@ public interface CourseRepository extends CrudRepository<Course, Long>{
 
 	public List<Course> findByMbrNoOrderByRegDtDesc(long id);
 
-	@Query(value = "select  g1.mbr_no as mbrNo, g2.cos_no as cosNo,(g1.mbr_no, g2.cos_no)in (select mbr_no,cos_no from gl_course_viewer) as value from gl_course_viewer as g1 join gl_course_viewer g2 group by g1.mbr_no, g2.cos_no having g1.mbr_no = :mbrNo",nativeQuery = true)
+	@Query(value = "select mbr_no as mbrNo, cos_no as cosNo, (select count(g2.cos_no) from gl_course_viewer as g2 where g2.cos_no=g1.cos_no )  as value from gl_course_viewer as g1  group by g1.mbr_no, g1.cos_no having g1.mbr_no=:mbrNo",nativeQuery = true)
 	List<CoursePrefer> getPrefer(@Param("mbrNo") long mbrNo);
+
+	@Query(value = "select  *,(select count(distinct g2.mbr_no, g2.cos_no) from gl_course_viewer as g2 where g2.cos_no=g1.cos_no ) as v from gl_course as g1 where g1.cos_no not in :cos group by g1.cos_no  order by v desc limit :num", nativeQuery = true)
+	List<Course> getBestCourse(@Param("cos") List<Long > cos, @Param("num") int num);
 }
 
 
