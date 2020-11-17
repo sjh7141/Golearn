@@ -50,7 +50,7 @@
 				>
 					<v-icon left size="20"> mdi-file-upload-outline </v-icon>
 					<span style="font-size:14px; font-weight:400; ">
-						내 PC
+						내 컴퓨터
 					</span>
 				</v-btn>
 			</v-hover>
@@ -197,6 +197,7 @@ export default {
 				'image/png',
 				'image/bmp',
 				'audio/mpeg',
+				'audio/wav',
 				'video/mp4',
 				'video/webm',
 			],

@@ -404,7 +404,7 @@
 			</div>
 
 			<v-avatar size="48" style="float:left;" class="mr-5">
-				<v-img src="@/assets/default_profile.png" />
+				<v-img :src="user.profile" />
 			</v-avatar>
 
 			<v-textarea
@@ -465,16 +465,25 @@ export default {
 		};
 	},
 	mounted() {
+		if (!this.$store.getters.isLogin) this.$router.push('/login');
 		this.ldm_no = this.$route.query.ldm_no;
 
 		this.user = this.$store.getters.user;
 		this.cos_no = this.$route.query.cos_no;
+		const self = this;
 		this.getChannelVideos(this.user.no).then(({ data }) => {
 			this.videos = data;
 			if (data.length > 0) this.videoIndex = 0;
 		});
 		this.getCourseIndexs(this.cos_no).then(({ data }) => {
+			data.forEach(res => {
+				res.vid_url = '';
+				self.getVideo(res.vid_no).then(result => {
+					res.vid_url = result.data.video.vid_url;
+				});
+			});
 			this.chapters = data;
+
 			if (data.length > 0) this.chapterIndex = 0;
 		});
 		this.getCourse(this.cos_no).then(({ data }) => {
@@ -488,6 +497,7 @@ export default {
 			'sendRequest',
 			'getCourse',
 			'sendNotification',
+			'getVideo',
 		]),
 
 		requestVideo() {
@@ -499,6 +509,12 @@ export default {
 				vid_no: this.videos[this.videoIndex].vid_no,
 				vid_req_comment: this.message,
 			}).then(() => {
+				this.sendNotification({
+					noti_msg: `${this.user.nickname}님이 영상을 요청하였습니다. "${this.message}"`,
+					noti_type: 5,
+					noti_path: `/course/${this.cos_no}/requestlist`,
+					dest: this.cos_no,
+				});
 				alert('요청을 보냈습니다.');
 				this.$router.push(
 					`/course/${this.cos_no}/requestlist${

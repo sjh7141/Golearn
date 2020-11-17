@@ -141,6 +141,7 @@
 						:items="people"
 						filled
 						chips
+						multiple
 						color="blue-grey lighten-2"
 						item-text="mbr_nickname"
 						return-object
@@ -240,7 +241,7 @@ export default {
 			deleteIdx: -1,
 			isAdd: false,
 			people: [],
-			candidate: {},
+			candidate: [],
 		};
 	},
 	methods: {
@@ -262,19 +263,21 @@ export default {
 			this.$emit('changeActive');
 		},
 		addManager() {
-			this.$store
-				.dispatch('setManager', {
-					authority: 'Manager',
-					cos_no: Number(this.$route.params.id),
-					mbr_no: this.candidate.mbr_no,
-				})
-				.then(() => {
-					this.$store
-						.dispatch('getManagers', this.$route.params.id)
-						.then(({ data }) => {
-							this.manager = data;
-						});
-				});
+			for (let people of this.candidate) {
+				this.$store
+					.dispatch('setManager', {
+						authority: 'Manager',
+						cos_no: Number(this.$route.params.id),
+						mbr_no: people.mbr_no,
+					})
+					.then(() => {
+						this.$store
+							.dispatch('getManagers', this.$route.params.id)
+							.then(({ data }) => {
+								this.manager = data;
+							});
+					});
+			}
 			this.isAdd = false;
 		},
 	},

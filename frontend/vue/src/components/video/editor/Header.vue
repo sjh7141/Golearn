@@ -86,7 +86,7 @@
 							mdi-picture-in-picture-bottom-right mdi-flip-h
 						</v-icon>
 						<span style="color:#C0C0CD;font-size:14px;">
-							위치
+							크기
 						</span>
 					</v-btn>
 				</v-slide-y-reverse-transition>
@@ -317,10 +317,7 @@
 		</v-tooltip>
 		<v-spacer />
 		<v-btn color="#665DC3" @click="exportVideo">
-			<v-icon left size="24" class="mr-3">
-				mdi-cloud-upload-outline
-			</v-icon>
-			업로드
+			영상 업로드
 		</v-btn>
 	</v-app-bar>
 </template>
@@ -385,7 +382,7 @@ export default {
 	},
 	methods: {
 		exportVideo() {
-			EventBus.$emit('exportVideo');
+			this.$emit('exportVideo');
 		},
 	},
 };

@@ -209,14 +209,14 @@ export default {
 			this.searchChannel();
 			this.videos = [];
 			this.pageNo = 1;
-			this.$refs.InfiniteLoading.stateChanger.reset();
+			// this.$refs.InfiniteLoading.stateChanger.reset();
 		},
 		'$route.query.tag'() {
 			this.search = this.$route.query.search;
 			this.tags = this.$route.query.tag;
 			this.videos = [];
 			this.pageNo = 1;
-			this.$refs.InfiniteLoading.stateChanger.reset();
+			// this.$refs.InfiniteLoading.stateChanger.reset();
 		},
 	},
 };
@@ -225,7 +225,6 @@ export default {
 <style scoped>
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
 .content-component {
-	background-color: #fafafa;
 }
 
 .asd {

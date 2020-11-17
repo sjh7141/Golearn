@@ -34,7 +34,7 @@
 								좋아요
 							</span>
 							<span>
-								{{ course.mbr_no }}
+								{{ course.like_count }}
 							</span>
 							<span style="font-size:8px" class="my-auto mx-2"
 								>|</span
@@ -42,7 +42,7 @@
 							<span style="opacity:0.6" class="my-auto">
 								수강자
 							</span>
-							<span> {{ course.cos_no }} </span>
+							<span> {{ course.viewer_count }} </span>
 						</span>
 
 						<v-icon
@@ -68,9 +68,10 @@
 				<div
 					class="mx-auto"
 					style="color:white; font-family: 'BMJUA', sans-serif !important; font-weight:400;"
+					v-if="roadmap != null"
 				>
 					<span
-						v-for="(item, i) in roadmap"
+						v-for="(item, i) in roadmap.course"
 						:key="`courseTitle_${i}`"
 						class="mx-5"
 						style="cursor:pointer"
@@ -91,7 +92,7 @@
 <script>
 import { mapActions } from 'vuex';
 export default {
-	props: ['course', 'src'],
+	props: ['course', 'src', 'ldm_no'],
 	data() {
 		return {
 			member: null,
@@ -103,7 +104,6 @@ export default {
 			// 	{ cos_title: 'HTML' },
 			// ],
 			roadmap: null,
-			ldm_no: 0,
 		};
 	},
 	watch: {
@@ -116,7 +116,7 @@ export default {
 			});
 		},
 		ldm_no() {
-			if (this.idm_no) {
+			if (this.ldm_no) {
 				this.getLoadmap(this.ldm_no).then(({ data }) => {
 					this.roadmap = data;
 				});
@@ -132,7 +132,7 @@ export default {
 				this.isManager = data;
 			});
 		}
-		if (this.idm_no) {
+		if (this.ldm_no) {
 			this.getLoadmap(this.ldm_no).then(({ data }) => {
 				this.roadmap = data;
 			});

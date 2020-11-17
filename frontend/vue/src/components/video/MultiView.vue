@@ -33,7 +33,7 @@
 					color: dark ? '#f4f4f7' : '#262647',
 				}"
 			>
-				구름IDE에서 파이썬 코딩 시작하기
+				{{ title }}
 			</span>
 			<v-spacer />
 			<v-btn
@@ -247,10 +247,10 @@
 
 <script src="" />
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 export default {
 	name: 'MultiView',
-	props: ['width', 'height', 'source', 'type', 'poster', 'src'],
+	props: ['width', 'height', 'source', 'type', 'poster', 'src', 'title'],
 	watch: {
 		dark() {
 			var editor = ace.edit('editor');
@@ -258,8 +258,7 @@ export default {
 			else editor.setTheme('ace/theme/sqlserver');
 		},
 		source() {
-			this.languages[this.type].script = this.source;
-			this.changeMode(this.type, this.language);
+			this.initCode();
 		},
 		src() {
 			var myPlayer = videojs('video-player');
@@ -317,6 +316,7 @@ export default {
 	mounted() {
 		this.createChapterButton();
 		this.initCodeEditer();
+		this.initCode();
 
 		window.addEventListener('resize', this.resizeVideo);
 		this.videoWidth = window.innerWidth * 0.6;
@@ -329,6 +329,9 @@ export default {
 		this.removeVideo();
 		window.removeEventListener('resize', this.resizeVideo);
 	},
+	computed: {
+		...mapGetters(['isLogin']),
+	},
 	methods: {
 		...mapActions(['compile']),
 		removeVideo() {
@@ -336,6 +339,10 @@ export default {
 			player.dispose();
 		},
 		executeScript() {
+			if (!this.isLogin) {
+				alert('로그인을 해주세요!');
+				return;
+			}
 			var editor = ace.edit('editor');
 			const script = ace.edit('editor').getValue();
 			this.loading = true;
@@ -390,7 +397,7 @@ export default {
 			var MyButton = videojs.extend(Button, {
 				constructor: function() {
 					Button.apply(this, arguments);
-					this.addClass('vjs-chapters-button');
+					this.addClass('vjs-subtitles-button');
 				},
 				handleClick: function() {
 					self.editMode = !self.editMode;
@@ -413,8 +420,12 @@ export default {
 			document.getElementById('editor').style.fontSize = '16px';
 		},
 		initCode() {
-			var editor = ace.edit('editor');
-
+			if (
+				this.type == null ||
+				this.type < 0 ||
+				typeof this.type == 'string'
+			)
+				return;
 			this.languages[this.type].script = this.source;
 			this.changeMode(this.type, this.language);
 		},

@@ -11,6 +11,15 @@
 					<div
 						style="max-width:133.3px; max-height:75px; width:133.3px; background-color:black; height:75px;display:flex; border-radius:3px; position:relative;"
 					>
+						<v-overlay
+							v-show="item.loading && item.type == 'video'"
+							absolute
+						>
+							<v-progress-circular
+								indeterminate
+								size="32"
+							></v-progress-circular>
+						</v-overlay>
 						<img
 							:src="item.blob"
 							v-if="item.type == 'image'"
@@ -106,6 +115,7 @@ export default {
 				volume: 100,
 				thumbnail: '',
 				blob: '',
+				loading: true,
 			};
 			this.typeList.forEach(type => {
 				if (f.type.indexOf(type) != -1) newFile.type = type;
@@ -140,6 +150,7 @@ export default {
 									canvas.height,
 								);
 								newFile.thumbnail = canvas.toDataURL();
+								newFile.loading = false;
 							});
 						}
 					};

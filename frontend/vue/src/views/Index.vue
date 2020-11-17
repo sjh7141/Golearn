@@ -4,37 +4,59 @@
 			<!-- 배너 -->
 			<swiper class="swiper" :options="swiperOption" ref="swiper">
 				<swiper-slide
-					class="slide pb-5 pt-9"
+					class="slide"
 					v-for="(item, index) in banner"
 					:key="`banner_${index}`"
-					:style="{
-						'background-image': 'url(' + item.cos_thumbnail + ')',
-						'background-size': '10000%',
-					}"
 				>
 					<v-row
 						@click="$router.push(`/course/${item.cos_no}/intro`)"
-						class="info-upper"
-						style="width:85%;"
+						class="info-upper mx-0"
+						style="width:100%;"
 					>
-						<v-col cols="6">
-							<img
-								class="swiper-img"
-								height="400px"
-								width="100%"
-								:src="item.cos_thumbnail"
-							/>
+						<v-col cols="6" class="pa-0">
+							<img :src="item.src" width="100%" height="500" />
 						</v-col>
-						<v-col cols="6" class="pl-10">
+						<v-col
+							cols="6"
+							class="pa-0"
+							:style="{
+								'background-color': item.color,
+								color: item.dark ? '#f2f2f2' : 'black',
+							}"
+							style="font-family: 'BMJUA';"
+						>
 							<div
-								class="title py-5"
-								v-html="item.cos_title"
-							></div>
-							<div
-								class="text content"
-								v-html="item.cos_content"
-							></div>
-							<div>
+								class="banner-title pt-15 pb-5 pl-15"
+								style="font-family: 'BMJUA'"
+							>
+								<v-btn
+									class="mb-5"
+									depressed
+									:color="item.dark ? '#dbdbdb' : '#b948d9'"
+									style="display:block;"
+								>
+									<span
+										class="bold"
+										:style="{
+											color: item.dark
+												? 'black'
+												: '#f2f2f2',
+										}"
+									>
+										{{ item.symbol }}
+									</span>
+								</v-btn>
+								<span v-html="item.title" />
+							</div>
+							<div class="text content pl-15">
+								<div class="mb-6" v-html="item.content" />
+								<div
+									style="font-size:1.0rem;"
+									v-html="item.footer"
+								/>
+							</div>
+
+							<div class="pl-15">
 								<v-row>
 									<div class="px-5">
 										<span style="font-size: 15px;">
@@ -49,7 +71,7 @@
 													100
 											"
 											rounded
-											color="white"
+											color="#969696"
 											style="display:inline-block"
 										></v-progress-linear>
 									</div>
@@ -104,7 +126,7 @@
 							sm="6"
 							md="6"
 							lg="3"
-							v-for="(course, i) in courses.slice(0, 4)"
+							v-for="(course, i) in recommendation"
 							:key="`course_${i}`"
 						>
 							<course-card :course="course"> </course-card>
@@ -118,7 +140,7 @@
 							sm="6"
 							md="6"
 							lg="3"
-							v-for="(course, i) in courses.slice(4, 8)"
+							v-for="(course, i) in hit"
 							:key="`course_${i}`"
 						>
 							<course-card :course="course"> </course-card>
@@ -132,7 +154,7 @@
 							sm="6"
 							md="6"
 							lg="3"
-							v-for="(course, i) in courses.slice(8, 12)"
+							v-for="(course, i) in inflation"
 							:key="`course_${i}`"
 						>
 							<course-card :course="course"> </course-card>
@@ -172,7 +194,7 @@
 							sm="6"
 							md="6"
 							lg="3"
-							v-for="(course, i) in courses.slice(3, 7)"
+							v-for="(course, i) in courses.slice(0, 4)"
 							:key="`course_${i}`"
 						>
 							<course-card :course="course"> </course-card>
@@ -321,12 +343,82 @@ export default {
 			},
 			cycle: true,
 			tags: [],
-			banner: [],
+			banner: [
+				{
+					src:
+						'https://cdn.pixabay.com/photo/2018/08/18/13/26/interface-3614766_960_720.png',
+					color: '#b4c6f0',
+					dark: false,
+					cos_no: 89,
+					symbol: 'Go learn',
+					title: '현직자들의<br />다수 참여로 만들어진 강의',
+					content:
+						'너무 열심히 만들었어요 <br /> 11월, 주목할 강의 👀',
+					footer: '#입문 #취준생 #숙련자 모두',
+				},
+				{
+					src:
+						'https://cdn.pixabay.com/photo/2019/04/10/12/40/watercolour-4117017_960_720.png',
+					color: '#fcfcfc',
+					dark: false,
+					cos_no: 99,
+					symbol: '인기',
+					title: '고런고런의<br />11월 최고 인기 강의',
+					content:
+						'최고 인기강의를 데려왔어요 <br /> 모두 코딩실력을 높이러 Learn! Run!',
+					footer: '#예제까지 완벽',
+				},
+				{
+					src:
+						'https://cdn.pixabay.com/photo/2016/02/09/15/57/book-1189776_960_720.png',
+					color: '#fcfcfc',
+					dark: false,
+					cos_no: 83,
+					symbol: '기초 강의',
+					title: '기초부터 튼튼히 쌓고싶다면?<br />바로 이 강의',
+					content:
+						'어떻게 시작하실지 모르시겠다구요? <br /> 바로 고런고런의 기초 강의에서 😎',
+					footer: '#배우고 #달려가',
+				},
+				{
+					src:
+						'https://cdn.pixabay.com/photo/2017/06/23/15/22/balloons-2434982_960_720.jpg',
+					color: '#e0e0e0',
+					dark: false,
+					cos_no: 94,
+					symbol: '기초 강의',
+					title: '기초부터 튼튼히 쌓고싶다면?<br />바로 이 강의',
+					content:
+						'누가 코딩의 시작이 어렵다고 했는가 <br /> 고런고런의 기초 강의와 함께라면 🥇',
+					footer: '#배우고 #달려가',
+				},
+				{
+					src:
+						'https://cdn.pixabay.com/photo/2018/05/14/16/25/cyber-security-3400657_960_720.jpg',
+					color: '#09090d',
+					dark: true,
+					cos_no: 100,
+					symbol: 'Go learn',
+					title: '고런고런에서 배우는<br />자바의 정석',
+					content:
+						'자바의 프로들이 모였다! <br /> 모든 Go-learner들이 기다린 강의',
+					footer: '#Go learn, Go run #누구든 함께해요',
+				},
+			],
 			courses: [],
+			recommendation: [],
+			hit: [],
+			inflation: [],
 		};
 	},
 	methods: {
-		...mapActions(['getSearchResult', 'getTagList']),
+		...mapActions([
+			'getSearchResult',
+			'getTagList',
+			'getRecommendCourse',
+			'getHitCourse',
+			'getInflationCourse',
+		]),
 
 		goToSearch(value) {
 			this.$router.push(`/video?tag=${value}`);
@@ -352,19 +444,36 @@ export default {
 			type: 'course',
 		};
 		this.getSearchResult(payload).then(res => {
-			this.banner = res.data.course;
+			// this.banner = res.data.course;
 			this.courses = res.data.course;
 		});
 		this.getTagList().then(res => {
 			this.tags = res.data;
 		});
+		this.getRecommendCourse().then(res => {
+			this.recommendation = res.data;
+		});
+		this.getHitCourse().then(res => {
+			this.hit = res.data;
+		});
+		this.getInflationCourse().then(res => {
+			this.inflation = res.data;
+		});
+	},
+	mounted() {
+		let img = new Image();
+		for (let sample of this.banner2) {
+			img.src = sample.src;
+		}
 	},
 };
 </script>
 
 <style scoped>
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
-
+.v-card {
+	font-family: 'BMJUA';
+}
 .container {
 	max-width: 1440px;
 }
@@ -397,7 +506,7 @@ export default {
 .swiper {
 	height: 500px;
 	width: 100%;
-	color: white;
+	/* color: white; */
 }
 
 .swiper-img {
@@ -420,7 +529,7 @@ export default {
 	right: 0;
 	bottom: 0;
 	left: 0;
-	background-color: rgba(1, 1, 1, 0.3);
+	background-color: rgba(1, 1, 1, 0.01);
 	display: block;
 	z-index: 1;
 }
@@ -432,8 +541,8 @@ export default {
 	transform: translateX(-50%);
 }
 
-.title {
-	font-size: 35px !important;
+.banner-title {
+	font-size: 35px;
 	font-weight: bold;
 	line-height: 1.32;
 }
@@ -446,7 +555,6 @@ export default {
 	max-width: 430px;
 	min-height: 200px;
 	line-height: 1.7;
-	color: #ededed;
 }
 
 #description {
@@ -454,9 +562,8 @@ export default {
 	font-family: 'Lato', 'Spoqa Han Sans';
 }
 .content {
-	color: black;
 	font-weight: bold;
-	font-size: 0.85rem;
+	font-size: 1.3rem;
 	word-break: break-all;
 	display: -webkit-box;
 	margin-bottom: 0.5rem;
@@ -466,6 +573,7 @@ export default {
 	-webkit-line-clamp: 7;
 	-webkit-box-orient: vertical;
 }
+
 .tag {
 	font-family: 'BMJUA';
 }

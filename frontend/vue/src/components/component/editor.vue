@@ -285,12 +285,21 @@ export default {
 		},
 		setImg() {
 			var file = document.getElementById('editor-file').files[0];
-
 			if (file) {
-				const src = URL.createObjectURL(file);
-				if (src !== null) {
-					this.callBack({ src });
+				let formData = new FormData();
+				if (file) {
+					formData.append('file', file);
+					this.$store
+						.dispatch('upload', {
+							data: formData,
+							target: 'contents',
+						})
+						.then(({ data }) => {
+							const src = data;
+							this.callBack({ src });
+						});
 				}
+				// const src = URL.createObjectURL(file);
 			}
 		},
 	},

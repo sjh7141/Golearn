@@ -11,8 +11,8 @@
 		<div class="mt-3">
 			<v-img
 				src="@/assets/edit_logo2.png"
-				max-width="40"
-				max-height="40"
+				width="40"
+				height="40"
 				@click="$router.push('/')"
 				style="cursor:pointer; border-radius:5px;"
 				class="mx-auto mb-1"
@@ -26,13 +26,13 @@
 			@click="$emit('change', i)"
 		>
 			<div style="margin-top:auto; margin-bottom:auto;">
-				<div>
+				<div class="mb-1">
 					<v-icon class="ma-0">
 						{{ tab.icon }}
 					</v-icon>
 				</div>
 
-				<span v-html="tab.title" class="pt-10" />
+				<span v-html="tab.title" class="mt-10" />
 			</div>
 		</v-tab>
 		<v-spacer />

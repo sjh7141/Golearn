@@ -22,7 +22,11 @@
 								<v-card>
 									<v-card-title class="d-flex">
 										<v-row>
-											<v-col cols="12" align="end">
+											<v-col
+												cols="12"
+												align="end"
+												class="px-0"
+											>
 												<v-btn
 													class="mx-2"
 													fab
@@ -38,9 +42,9 @@
 												</v-btn>
 											</v-col>
 											<v-col cols="12">
-												<span class="headline"
-													>개인정보 처리방침</span
-												>
+												<h1 class="headline">
+													개인정보 처리방침
+												</h1>
 											</v-col>
 										</v-row>
 									</v-card-title>
@@ -64,7 +68,11 @@
 								<v-card>
 									<v-card-title class="d-flex">
 										<v-row>
-											<v-col cols="12" align="end">
+											<v-col
+												cols="12"
+												align="end"
+												class="px-0"
+											>
 												<v-btn
 													class="mx-2"
 													fab
@@ -80,9 +88,9 @@
 												</v-btn>
 											</v-col>
 											<v-col cols="12">
-												<span class="headline">
-													이용약관</span
-												>
+												<h1 class="headline">
+													이용약관
+												</h1>
 											</v-col>
 										</v-row>
 									</v-card-title>
@@ -174,6 +182,10 @@ export default {
 </script>
 
 <style scoped>
+.headline {
+	font-weight: 600;
+	font-size: 30px;
+}
 .wrap {
 	height: 180px;
 	/* background-color:#333; */

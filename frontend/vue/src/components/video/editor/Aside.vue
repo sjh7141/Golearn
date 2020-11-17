@@ -53,7 +53,7 @@
 				mdi-skip-next
 			</v-icon>
 		</v-row>
-		<v-dialog v-model="dialog" max-width="700" persistent>
+		<v-dialog v-model="dialog" max-width="700" persistent eager>
 			<v-card color="#1C1C26" dark>
 				<v-card-title>
 					{{ fileName ? fileName : 'Untitled' }}
@@ -107,6 +107,7 @@ import EventBus from '@/util/EventBus.js';
 
 export default {
 	name: 'EditAside',
+	props: ['doExport'],
 	data() {
 		return {
 			width: 0,
@@ -164,6 +165,7 @@ export default {
 			},
 		},
 	},
+
 	watch: {
 		mediaList() {
 			this.isChange = true;
@@ -171,10 +173,36 @@ export default {
 		isChange() {
 			if (this.isChange) this.pause();
 		},
+		doExport() {
+			this.export();
+		},
 	},
 	mounted() {
+		// window.addEventListener('blur', () => {
+		// 	if (this.recording) {
+		// 		this.recordingMovie._mediaRecorder.onpause = () => {
+		// 			this.recordingMovie.pause();
+		// 			this.exportPreviewMovie.pause();
+		// 		};
+
+		// 		this.recordingMovie._mediaRecorder.pause();
+		// 		console.dir('')
+		// 	}
+		// });
+		// window.addEventListener('focus', () => {
+		// 	if (this.recording) {
+		// 		this.recordingMovie._mediaRecorder.onresume = () => {
+		// 			this.recordingMovie.play();
+		// 			this.exportPreviewMovie.play();
+		// 		};
+		// 		this.recordingMovie._mediaRecorder.resume();
+		// 	}
+		// 	// console.log('focus');
+		// });
 		this.canvasResize();
 		window.addEventListener('resize', this.canvasResize);
+
+		document.addEventListener('keydown', this.playHandler);
 
 		EventBus.$on('exportVideo', this.export);
 		EventBus.$on('pause', () => {
@@ -182,15 +210,33 @@ export default {
 		});
 	},
 	beforeDestroy() {
+		document.removeEventListener('keydown', this.playHandler);
 		window.removeEventListener('resize', this.canvasResize);
 		this.movie.stop();
 		this.currentTime = 0;
 		this.duration = 0;
 	},
+
 	methods: {
 		...mapActions(['upload', 'uploadVideo', 'saveVideo']),
+
+		playHandler(e) {
+			if (e.which == 32) {
+				e.preventDefault();
+				this.isPlay ? this.pause() : this.play();
+			} else if (e.which == 37) {
+				e.preventDefault();
+				this.moveCurrentTime(-10);
+			} else if (e.which == 39) {
+				e.preventDefault();
+				this.moveCurrentTime(10);
+			} else if (e.ctrlKey && e.which == 83) {
+				e.preventDefault();
+				this.export();
+			}
+		},
 		canvasResize() {
-			const { clientWidth, clientHeight } = this.$refs.editAside;
+			let { clientWidth, clientHeight } = this.$refs.editAside;
 			if (clientWidth > ((clientHeight - 50) * 16) / 9) {
 				this.height = clientHeight - 50;
 				this.width = (this.height * 16) / 9;
@@ -227,7 +273,7 @@ export default {
 				this.sumCaption = 0;
 				this.loading = true;
 
-				const { clientWidth, clientHeight } = document.getElementById(
+				let { clientWidth, clientHeight } = document.getElementById(
 					'preview',
 				);
 				this.addMedias(
@@ -256,17 +302,21 @@ export default {
 		},
 
 		export() {
+			if (this.mediaList.length == 0) {
+				alert('영상이 없습니다.');
+				return;
+			}
+
 			this.pause();
+			// delete this.movie;
+
 			this.dialog = true;
 
-			this.fileName = '';
-			this.vid = null;
-
-			const canvas = document.createElement('canvas');
+			let canvas = document.createElement('canvas');
 
 			canvas.width = 1920;
 			canvas.height = 1080;
-			const movie = new vd.Movie(canvas);
+			let movie = new vd.Movie(canvas);
 
 			this.sumVideo = 0;
 			this.sumAudio = 0;
@@ -289,8 +339,8 @@ export default {
 
 			this.addMedias(movie, this.mediaList, 0, 1920, 1080, false).finally(
 				() => {
-					const canvas = document.getElementById('exportPreview');
-					const tmpMovie = new vd.Movie(canvas);
+					let canvas = document.getElementById('exportPreview');
+					let tmpMovie = new vd.Movie(canvas);
 
 					this.sumVideo = 0;
 					this.sumAudio = 0;
@@ -315,37 +365,17 @@ export default {
 			movie.record(25).then(res => {
 				let formData = new FormData();
 				formData.append('file', res);
-				// console.dir(URL.createObjectURL(res));
 				this.upload({
 					data: formData,
 					target: 'video',
 				})
 					.then(({ data }) => {
 						this.isSuccess = true;
-						// this.createVideo(data);
 						this.$store.commit('setEditURL', data);
 						this.$router.push('/video/upload');
 					})
 					.catch(() => {
 						alert('업로드 실패!');
-						this.dialog = false;
-					});
-			});
-		},
-
-		createVideo(url) {
-			this.uploadVideo({
-				vid_url: url,
-				vid_pno: this.vid,
-			}).then(({ data }) => {
-				this.saveVideo({
-					vid_no: data,
-				})
-					.then(({ data }) => {
-						this.$router.push('/video/upload');
-					})
-					.catch(res => {
-						alert('업로드 실패!!');
 						this.dialog = false;
 					});
 			});
@@ -388,7 +418,6 @@ export default {
 					video.src = media.blob;
 
 					let opacity = {};
-
 					opacity[0] = 0;
 					opacity[media.fadeIn / 10] = 1;
 					opacity[media.duration] = 0;
@@ -471,6 +500,24 @@ export default {
 					};
 				} else if (media.type == 'caption') {
 					let opacity = {};
+					let areaWidth = width / 3;
+					let areaHeight = height / 3;
+					let textAlign =
+						media.position % 3 == 1
+							? 'start'
+							: media.position % 3 == 2
+							? 'center'
+							: 'end';
+					let textBaseline = 'middle';
+					let textX =
+						media.position % 3 == 1
+							? areaWidth / 20
+							: media.position % 3 == 2
+							? width / 2
+							: width - areaWidth / 20;
+					let textY =
+						areaHeight / 2 +
+						parseInt((media.position - 1) / 3) * areaHeight;
 
 					opacity[0] = 0;
 					opacity[media.fadeIn / 10] = 1;
@@ -479,17 +526,24 @@ export default {
 
 					movie.addLayer(
 						new vd.layer.Text(
-							this.sumCaption,
+							media.startTime,
 							media.duration,
 							media.name,
 							{
-								font: `${media.size}px sans-serif`,
-								x: (width / 3) * ((media.position - 1) % 3),
-								y:
-									(height / 3) *
-									parseInt((media.position - 1) / 3),
+								width,
+								height,
+								font: `${media.size}px BMJUA`,
+								textAlign,
+								textBaseline,
+								x: 0,
+								y: 0,
+
 								color: media.color,
+
 								opacity,
+
+								textX,
+								textY,
 							},
 						),
 					);

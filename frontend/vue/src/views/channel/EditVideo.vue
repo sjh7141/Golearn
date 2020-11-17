@@ -1,6 +1,6 @@
 <template>
 	<div
-		style="position: fixed; height:100%; width:100%; z-index: 9999; background-color:white; top:0;"
+		style="position: fixed; height:100%; width:100%; z-index: 9999; background-color:white; top:0;font-family: 'BMJUA', sans-serif"
 		@click="focusOut"
 	>
 		<Navigation :index="index" @change="changeIndex" />
@@ -8,13 +8,13 @@
 		<div
 			style="position: absolute;top:0; left:60px; background-color:#1C1C26; width: calc(100% - 60px); height:100%;"
 		>
-			<Header />
+			<Header @exportVideo="exportFlag = !exportFlag" />
 			<v-layout wrap style="height: 50%" class="mt-3">
 				<v-flex md6 lg6 xl6 class="pl-10">
 					<Section :index="index" @change="changeIndex" />
 				</v-flex>
 				<v-flex md6 lg6 xl6 class="pr-10">
-					<Aside />
+					<Aside :doExport="exportFlag" />
 				</v-flex>
 			</v-layout>
 			<v-layout wrap style="height: calc(50% - 92px); margin-top:16px;">
@@ -43,7 +43,12 @@ export default {
 	data() {
 		return {
 			index: 0,
+			exportFlag: false,
 		};
+	},
+	mounted() {
+		if (!this.$store.getters.isLogin) this.$router.push('/login');
+		this.$store.dispatch('initEditVideo');
 	},
 	methods: {
 		changeIndex(index) {

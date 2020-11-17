@@ -83,12 +83,11 @@ export default {
 			resultHeight: 0,
 			editor: null,
 			innerType: {
-				C: 'c_cpp',
 				'C++': 'c_cpp',
 				Java: 'java',
 				Python: 'python',
 			},
-			outerType: ['C', 'C++', 'Java', 'Python'],
+			outerType: ['C++', 'Java', 'Python'],
 			selectType: 'Java',
 			source_code: `import java.util.ArrayList;
 import java.util.Vector;
@@ -156,7 +155,6 @@ public class InfiniteLoop {
 	mounted() {
 		this.initCodeEditer();
 		this.totalHeight = 500;
-		// console.log(this.editor.getValue());
 	},
 	computed: {
 		...mapGetters(['uploadVideo']),

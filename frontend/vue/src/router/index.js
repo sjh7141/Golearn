@@ -9,6 +9,7 @@ import Request from '@/views/course/Request.vue';
 import RequestDetail from '@/views/course/RequestDetail.vue';
 import EditCourse from '@/views/course/Edit.vue';
 import EditLoadMap from '@/views/loadmap/Edit.vue';
+import Community from '@/views/Community.vue';
 
 import EditVideo from '@/views/channel/EditVideo.vue';
 
@@ -17,6 +18,7 @@ import Mypage from '@/views/Mypage.vue';
 import VideoUpload from '@/views/video/Upload.vue';
 import CourseList from '@/views/course/CourseList.vue';
 import LoadmapList from '@/views/loadmap/LoadmapList.vue';
+import Loadmap from '@/views/loadmap/Index.vue';
 import VideoList from '@/views/video/VideoList.vue';
 Vue.use(VueRouter);
 
@@ -62,6 +64,11 @@ const routes = [
 		component: LoadmapList,
 	},
 	{
+		path: '/roadmap/:ldm_no',
+		name: 'LoadmapDetail',
+		component: Loadmap,
+	},
+	{
 		path: '/video',
 		name: 'VideoList',
 		component: VideoList,
@@ -95,6 +102,11 @@ const routes = [
 		path: '/video/upload',
 		name: 'VideoUpload',
 		component: VideoUpload,
+	},
+	{
+		path: '/community',
+		name: 'Community',
+		component: Community,
 	},
 ];
 

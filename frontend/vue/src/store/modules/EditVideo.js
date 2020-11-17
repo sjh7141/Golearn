@@ -58,6 +58,13 @@ export default {
 		},
 	},
 	actions: {
+		initEditVideo(context) {
+			context.commit('setCurrentTime', 0);
+			context.commit('setDuration', 0);
+			context.commit('setSelectedItem', null);
+			context.commit('setMediaList', []);
+			context.commit('setIsChange', false);
+		},
 		uploadVideo(context, payload) {
 			const config = {
 				headers: {
