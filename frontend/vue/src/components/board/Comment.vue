@@ -352,9 +352,11 @@ export default {
 		},
 
 		deleteBoardComment(item) {
-			this._deleteBoardComment({ cmt_no: item.cmt_no }).then(() => {
-				this.getBoardComments();
-			});
+			if (confirm('정말 삭제하시겠습니까?')) {
+				this._deleteBoardComment({ cmt_no: item.cmt_no }).then(() => {
+					this.getBoardComments();
+				});
+			}
 		},
 
 		disableFocus() {
