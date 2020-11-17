@@ -82,9 +82,8 @@ public class CommentController {
 	}
 	
 	@ApiOperation(value = "댓글 삭제하기")
-	@DeleteMapping(value = "/")
-	public ResponseEntity<String> removeComment(@ApiIgnore @RequestHeader("X-USERNO") String userNo, @RequestBody Map<String, Object> map){
-		int cmtNo = (int)map.get("cmt_no");
+	@DeleteMapping(value = "/{cmt_no}")
+	public ResponseEntity<String> removeComment(@ApiIgnore @RequestHeader("X-USERNO") String userNo, @PathVariable("cmt_no") int cmtNo){
 		int res = commentService.deleteComment(cmtNo, Integer.parseInt(userNo));
 		if(res == 0) {
 			return ResponseEntity.ok("삭제 실패");
