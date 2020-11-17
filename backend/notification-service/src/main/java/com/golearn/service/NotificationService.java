@@ -30,9 +30,8 @@ public class NotificationService {
         log.info("제네레이터 입니다. : " + notificationGenerator);
         List<Integer> list = notificationGenerator.generate(notification);
         for (int no : list) {
-            log.info("====>"+no);
-            notification.setMbrNo(no);
-            notificationRepository.save(notification);
+            Notification tempNoti = new Notification(no,notification.getNotiType(),notification.getNotiPath(),notification.getNotiMsg(),notification.getNotiSender());
+            notificationRepository.save(tempNoti);
         }
     }
 
