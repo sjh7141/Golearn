@@ -12,6 +12,7 @@ public class BoardDto {
 	private Date updateDate;
 	private int type;
 	private int viewCount;
+	private int commentCount;
 
 	public int getBrdNo() {
 		return brdNo;
@@ -77,4 +78,7 @@ public class BoardDto {
 		this.viewCount = viewCount;
 	}
 
+	public int getCommentCount(){return commentCount;}
+
+	public void setCommentCount(int commentCount){this.commentCount = commentCount;}
 }
