@@ -129,6 +129,10 @@ export default {
 			remainingTime: 0,
 			progressRate: 0,
 			isSuccess: false,
+
+			recording: false,
+			recordingMovie: null,
+			exportPreviewMovie: null,
 		};
 	},
 	computed: {
@@ -177,9 +181,26 @@ export default {
 		},
 	},
 	mounted() {
-		// window.addEventListener('blur', () => {
-		// todo: mediaRecoder stop
-		// });
+		window.addEventListener('blur', () => {
+			if (this.recording) {
+				this.recordingMovie._mediaRecorder.onpause = () => {
+					this.recordingMovie.pause();
+					this.exportPreviewMovie.pause();
+				};
+
+				this.recordingMovie._mediaRecorder.pause();
+			}
+		});
+		window.addEventListener('focus', () => {
+			if (this.recording) {
+				this.recordingMovie._mediaRecorder.onresume = () => {
+					this.recordingMovie.play();
+					this.exportPreviewMovie.play();
+				};
+				this.recordingMovie._mediaRecorder.resume();
+			}
+			// console.log('focus');
+		});
 		this.canvasResize();
 		window.addEventListener('resize', this.canvasResize);
 
@@ -285,6 +306,9 @@ export default {
 			}
 
 			this.pause();
+
+			if (this.recording) return;
+			this.recording = true;
 			this.dialog = true;
 
 			const canvas = document.createElement('canvas');
@@ -316,6 +340,7 @@ export default {
 				() => {
 					const canvas = document.getElementById('exportPreview');
 					const tmpMovie = new vd.Movie(canvas);
+					this.exportPreviewMovie = tmpMovie;
 
 					this.sumVideo = 0;
 					this.sumAudio = 0;
@@ -337,6 +362,7 @@ export default {
 		},
 
 		movieToBlob(movie) {
+			this.recordingMovie = movie;
 			movie.record(25).then(res => {
 				let formData = new FormData();
 				formData.append('file', res);
@@ -502,12 +528,7 @@ export default {
 
 					movie.addLayer(
 						new vd.layer.Text(
-							{
-								0: this.sumCaption,
-								1: this.sumCaption + '1',
-								2: this.sumCaption + '2',
-								10: this.sumCaption,
-							},
+							this.sumCaption,
 							media.duration,
 							media.name,
 							{
@@ -516,7 +537,6 @@ export default {
 								font: `${media.size}px BMJUA`,
 								textAlign,
 								textBaseline,
-								background: '#FF0000',
 								x: 0,
 								y: 0,
 
