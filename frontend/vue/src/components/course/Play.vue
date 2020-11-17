@@ -161,9 +161,7 @@ export default {
 			});
 		},
 		vid_no() {
-			// console.dir(this.vid_no);
 			this.getVideoDetail(this.vid_no).then(({ data }) => {
-				// console.dir(data);
 				data.video.vid_code_type = ['c_cpp', 'java', 'python'].indexOf(
 					data.video.vid_code_type,
 				);

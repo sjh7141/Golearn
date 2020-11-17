@@ -6,45 +6,46 @@
 				{{ reply.length }}
 			</span>
 		</div>
+		<div v-if="$store.getters.isLogin">
+			<v-avatar size="48" style="float:left;" class="mr-5">
+				<v-img
+					:src="
+						user
+							? user.profile
+							: 'https://go-learn.s3.ap-northeast-2.amazonaws.com/member/profile/profile_default1.png'
+					"
+				/>
+			</v-avatar>
 
-		<v-avatar size="48" style="float:left;" class="mr-5">
-			<v-img
-				:src="
-					user
-						? user.profile
-						: 'https://go-learn.s3.ap-northeast-2.amazonaws.com/member/profile/profile_default1.png'
-				"
-			/>
-		</v-avatar>
-
-		<v-textarea
-			v-model="replyText"
-			no-resize
-			outlined
-			auto-grow
-			flat
-			rows="5"
-			color="#8e8e8e"
-			@click="disableFocus"
-			placeholder="내용을 입력해주세요."
-			style="border-radius:1px;"
-		>
-			<template slot="append">
-				<v-btn
-					absolute
-					right
-					bottom
-					depressed
-					outlined
-					tile
-					:color="replyText.length ? '#9382D7' : '#e4e4e4'"
-					style="font-size:14px;"
-					@click="replyText.length ? writeComment() : null"
-				>
-					등록
-				</v-btn>
-			</template>
-		</v-textarea>
+			<v-textarea
+				v-model="replyText"
+				no-resize
+				outlined
+				auto-grow
+				flat
+				rows="5"
+				color="#8e8e8e"
+				@click="disableFocus"
+				placeholder="내용을 입력해주세요."
+				style="border-radius:1px;"
+			>
+				<template slot="append">
+					<v-btn
+						absolute
+						right
+						bottom
+						depressed
+						outlined
+						tile
+						:color="replyText.length ? '#9382D7' : '#e4e4e4'"
+						style="font-size:14px;"
+						@click="replyText.length ? writeComment() : null"
+					>
+						등록
+					</v-btn>
+				</template>
+			</v-textarea>
+		</div>
 
 		<v-card shaped outlined tile color="rgb(249,249,255)" class="mb-10">
 			<div
@@ -155,7 +156,10 @@
 								</div>
 							</div>
 
-							<div class="pl-16 pr-6">
+							<div
+								class="pl-16 pr-6"
+								v-if="$store.getters.isLogin"
+							>
 								<v-divider class="my-5" style="clear: both;" />
 								<v-avatar
 									size="48"
@@ -260,6 +264,7 @@ export default {
 				vid_comment: this.replyText,
 			}).then(() => {
 				this.getVideoComments();
+				this.replyText = '';
 			});
 		},
 

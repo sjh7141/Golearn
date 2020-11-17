@@ -177,8 +177,13 @@ export default {
 		},
 	},
 	mounted() {
+		// window.addEventListener('blur', () => {
+		// todo: mediaRecoder stop
+		// });
 		this.canvasResize();
 		window.addEventListener('resize', this.canvasResize);
+
+		document.addEventListener('keydown', this.playHandler);
 
 		EventBus.$on('exportVideo', this.export);
 		EventBus.$on('pause', () => {
@@ -186,6 +191,7 @@ export default {
 		});
 	},
 	beforeDestroy() {
+		document.removeEventListener('keydown', this.playHandler);
 		window.removeEventListener('resize', this.canvasResize);
 		this.movie.stop();
 		this.currentTime = 0;
@@ -193,6 +199,19 @@ export default {
 	},
 	methods: {
 		...mapActions(['upload', 'uploadVideo', 'saveVideo']),
+
+		playHandler(e) {
+			if (e.which == 32) {
+				this.isPlay ? this.pause() : this.play();
+			} else if (e.which == 37) {
+				this.moveCurrentTime(-10);
+			} else if (e.which == 39) {
+				this.moveCurrentTime(10);
+			} else if (e.ctrlKey && e.which == 83) {
+				e.preventDefault();
+				this.export();
+			}
+		},
 		canvasResize() {
 			const { clientWidth, clientHeight } = this.$refs.editAside;
 			if (clientWidth > ((clientHeight - 50) * 16) / 9) {
@@ -483,20 +502,26 @@ export default {
 
 					movie.addLayer(
 						new vd.layer.Text(
-							this.sumCaption,
+							{
+								0: this.sumCaption,
+								1: this.sumCaption + '1',
+								2: this.sumCaption + '2',
+								10: this.sumCaption,
+							},
 							media.duration,
 							media.name,
 							{
 								width,
 								height,
-								font: `${media.size}px sans-serif`,
+								font: `${media.size}px BMJUA`,
 								textAlign,
 								textBaseline,
-
+								background: '#FF0000',
 								x: 0,
 								y: 0,
 
 								color: media.color,
+
 								opacity,
 
 								textX,

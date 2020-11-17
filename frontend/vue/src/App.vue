@@ -95,7 +95,8 @@ export default {
 		},
 	},
 	watch: {
-		$route() {
+		$route(val, prev) {
+			this.$store.commit('setPrevPage', prev.fullPath);
 			this.$refs.header.getTotalNotice();
 			window.scrollTo(0, 0);
 		},
