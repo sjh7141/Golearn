@@ -3,7 +3,7 @@
 		<v-card class="transparent" flat>
 			<v-card-title class="px-0">
 				<v-row align="center" class="pb-5">
-					<div class="modify-text">
+					<div class="modify-text" style="font-family: 'BMJUA';">
 						{{ this.title[this.type] }}
 					</div>
 					<v-spacer />
@@ -12,7 +12,10 @@
 						@click="goToLikeCourse"
 						style="cursor: pointer;"
 					>
-						<span class="bold" style="font-size: 20px;">
+						<span
+							class="bold"
+							style="font-size: 20px; font-family: 'BMJUA';"
+						>
 							더보기
 						</span>
 						<v-icon large color="blue-grey">
@@ -77,7 +80,7 @@ export default {
 	background: #f9f9f9 !important;
 }
 .modify-text {
-	font-size: 30px;
+	font-size: 40px;
 	font-weight: 600;
 }
 .empty-box {

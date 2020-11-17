@@ -1,7 +1,7 @@
 <template>
 	<div style="">
 		<v-card-title class="px-0">
-			<span class="modify-text">
+			<span class="modify-text" style="font-family: 'BMJUA';">
 				프로필 수정
 			</span>
 		</v-card-title>
@@ -669,7 +669,7 @@ a {
 
 .modify-text {
 	padding-bottom: 20px;
-	font-size: 30px;
+	font-size: 40px;
 	font-weight: 600;
 }
 
