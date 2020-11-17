@@ -30,4 +30,9 @@ public interface VideoManagerRepository extends CrudRepository<VideoManager, Lon
 	// page 별로 20개씩 가져오기
 	@Query(value = "SELECT * FROM gl_video_request WHERE cos_no=:cosNo LIMIT :page, 20", nativeQuery = true)
 	List<VideoManager> perPageBy20(@Param("cosNo") long cosNo, @Param("page") int page);
+
+	@Modifying
+	@Transactional
+	@Query(value = "update into gl_video_request set req_admin_no = :reqAdminNo, vid_req_accept_yn = :vidReqAcceptYn, vid_res_comment = :vidResComment where vid_req_no = :vidReqNo", nativeQuery = true)
+	int updateRequest(@Param("reqAdminNo") long reqAdminNo, @Param("vidReqAcceptYn") int vidReqAcceptYn, @Param("vidResComment") String vidResComment,@Param("vidReqNo") long vidReqNo);
 }

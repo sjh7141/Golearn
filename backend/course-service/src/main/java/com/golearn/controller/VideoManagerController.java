@@ -48,14 +48,16 @@ public class VideoManagerController {
 	// 영상 요청 승인|거부
 	@RequestMapping(method = RequestMethod.PUT, value = "/video")
 	@ApiOperation(value = "영상 요청 승인|거부")
-	public ResponseEntity<VideoManager> updateVideo(@ApiIgnore @RequestHeader(value = "X-USERNO") String mbrNo,
+	public ResponseEntity updateVideo(@ApiIgnore @RequestHeader(value = "X-USERNO") String mbrNo,
 			@RequestBody VideoManager request) {
 		logger.info(">> LOAD updateVideo <<");
 		if(courseManagerService.checkManager(request.getCosNo(), Long.parseLong(mbrNo)) == 0) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
-		VideoManager response = videoManagerService.updateVideo(mbrNo, request);
-		return new ResponseEntity<VideoManager>(response, HttpStatus.CREATED);
+		if(videoManagerService.updateVideo(mbrNo, request)==0){
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity(HttpStatus.CREATED);
 	}
 
 	// 영상 요청 목록
