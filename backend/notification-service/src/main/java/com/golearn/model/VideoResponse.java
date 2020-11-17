@@ -13,15 +13,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class VideoResponse {
-    private int vidNo;
-
-    private int mbrNo;
-
-    private String vidTitle;
-
+    Map<String, Object> video;
 }
