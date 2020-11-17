@@ -75,6 +75,7 @@ public class CourseRecommendService {
                 course.setLikeCount(courseMapper.findCourseLikeCount(course.getCosNo()));
                 course.setViewerCount(courseMapper.findCourseViewerCount(course.getCosNo()));
                 course.setTags(tagMapper.findByCosNo((int)course.getCosNo()));
+                course.setMbrNickname(memberRepository.findById((int)course.getMbrNo()).get().getMbrNickname());
                 list.add(course);
             }
             return list;
@@ -111,6 +112,7 @@ public class CourseRecommendService {
             course.setLikeCount(courseMapper.findCourseLikeCount(course.getCosNo()));
             course.setViewerCount(courseMapper.findCourseViewerCount(course.getCosNo()));
             course.setTags(tagMapper.findByCosNo((int)course.getCosNo()));
+            course.setMbrNickname(memberRepository.findById((int)course.getMbrNo()).get().getMbrNickname());
         }
         return list;
     }
@@ -121,6 +123,7 @@ public class CourseRecommendService {
             course.setLikeCount(courseMapper.findCourseLikeCount(course.getCosNo()));
             course.setViewerCount(courseMapper.findCourseViewerCount(course.getCosNo()));
             course.setTags(tagMapper.findByCosNo((int)course.getCosNo()));
+            course.setMbrNickname(memberRepository.findById((int)course.getMbrNo()).get().getMbrNickname());
             list.add(course);
         }
         return list;
@@ -132,6 +135,7 @@ public class CourseRecommendService {
             course.setLikeCount(courseMapper.findCourseLikeCount(course.getCosNo()));
             course.setViewerCount(courseMapper.findCourseViewerCount(course.getCosNo()));
             course.setTags(tagMapper.findByCosNo((int)course.getCosNo()));
+            course.setMbrNickname(memberRepository.findById((int)course.getMbrNo()).get().getMbrNickname());
             list.add(course);
         }
         return list;
