@@ -234,7 +234,7 @@ export default {
 			}
 		},
 		canvasResize() {
-			let { clientWidth, clientHeight } = this.$refs.editAside;
+			const { clientWidth, clientHeight } = this.$refs.editAside;
 			if (clientWidth > ((clientHeight - 50) * 16) / 9) {
 				this.height = clientHeight - 50;
 				this.width = (this.height * 16) / 9;
@@ -259,7 +259,7 @@ export default {
 			this.isPlay = true;
 
 			if (this.isChange) {
-				delete this.movie;
+				// delete this.movie;
 				this.movie = new vd.Movie(document.getElementById('preview'));
 
 				vd.event.subscribe(this.movie, 'movie.timeupdate', () => {
@@ -271,7 +271,7 @@ export default {
 				this.sumCaption = 0;
 				this.loading = true;
 
-				let { clientWidth, clientHeight } = document.getElementById(
+				const { clientWidth, clientHeight } = document.getElementById(
 					'preview',
 				);
 				this.addMedias(
@@ -306,17 +306,16 @@ export default {
 			}
 
 			this.pause();
-			// delete this.movie;
 
 			if (this.recording) return;
 			this.recording = true;
 			this.dialog = true;
 
-			let canvas = document.createElement('canvas');
+			const canvas = document.createElement('canvas');
 
 			canvas.width = 1920;
 			canvas.height = 1080;
-			let movie = new vd.Movie(canvas);
+			const movie = new vd.Movie(canvas);
 
 			this.sumVideo = 0;
 			this.sumAudio = 0;
@@ -339,8 +338,8 @@ export default {
 
 			this.addMedias(movie, this.mediaList, 0, 1920, 1080, false).finally(
 				() => {
-					let canvas = document.getElementById('exportPreview');
-					let tmpMovie = new vd.Movie(canvas);
+					const canvas = document.getElementById('exportPreview');
+					const tmpMovie = new vd.Movie(canvas);
 					this.exportPreviewMovie = tmpMovie;
 
 					this.sumVideo = 0;
@@ -363,7 +362,6 @@ export default {
 		},
 
 		movieToBlob(movie) {
-			// console.dir(this.mediaList);
 			this.recordingMovie = movie;
 			movie.record(25).then(res => {
 				let formData = new FormData();
@@ -419,13 +417,6 @@ export default {
 					}
 					let video = document.createElement('video');
 					video.src = media.blob;
-
-					let opacity = {};
-					opacity[0] = 0;
-					opacity[media.fadeIn / 10] = 1;
-					opacity[media.duration] = 0;
-					opacity[media.duration - media.fadeOut / 10] = 1;
-
 					video.onloadeddata = () => {
 						movie.addLayer(
 							new vd.layer.Video(this.sumVideo, video, {
@@ -434,7 +425,12 @@ export default {
 								width: width,
 								height: height,
 								volume: media.volume / 100,
-								opacity,
+								opacity: {
+									0: 0,
+									[media.fadeIn / 10]: 1,
+									[media.duration]: 0,
+									[media.duration - media.fadeOut / 10]: 1,
+								},
 								muted,
 							}),
 						);
@@ -442,13 +438,6 @@ export default {
 						resolve();
 					};
 				} else if (media.type == 'image') {
-					let opacity = {};
-
-					opacity[0] = 0;
-					opacity[media.fadeIn / 10] = 1;
-					opacity[media.duration] = 0;
-					opacity[media.duration - media.fadeOut / 10] = 1;
-
 					let image = document.createElement('img');
 					image.src = media.blob;
 					image.onload = () => {
@@ -460,7 +449,13 @@ export default {
 								{
 									width: width,
 									height: height,
-									opacity,
+									opacity: {
+										0: 0,
+										[media.fadeIn / 10]: 1,
+										[media.duration]: 0,
+										[media.duration -
+										media.fadeOut / 10]: 1,
+									},
 								},
 							),
 						);
@@ -468,19 +463,27 @@ export default {
 						resolve();
 					};
 				} else if (media.type == 'background') {
-					let opacity = {};
-
-					opacity[0] = 0;
-					opacity[media.fadeIn / 10] = 1;
-					opacity[media.duration] = 0;
-					opacity[media.duration - media.fadeOut / 10] = 1;
-
+					console.dir({
+						'0': 0,
+						[media.fadeIn / 10]: 1,
+						[media.duration]: 0,
+						[media.duration - media.fadeOut / 10]: 1,
+					});
 					movie.addLayer(
 						new vd.layer.Visual(this.sumVideo, media.duration, {
 							background: media.color,
 							width: width,
 							height: height,
-							opacity,
+							opacity: {
+								// '0': 0,
+								// [media.fadeIn / 10]: 1,
+								// [media.duration]: 0,
+								// [media.duration - media.fadeOut / 10]: 1,
+								0: 0,
+								2: 1,
+								8: 1,
+								10: 0,
+							},
 						}),
 					);
 					this.sumVideo += media.duration;
@@ -502,30 +505,24 @@ export default {
 						resolve();
 					};
 				} else if (media.type == 'caption') {
-					let opacity = {};
-					let areaWidth = width / 3;
-					let areaHeight = height / 3;
-					let textAlign =
+					const areaWidth = width / 3;
+					const areaHeight = height / 3;
+					const textAlign =
 						media.position % 3 == 1
 							? 'start'
 							: media.position % 3 == 2
 							? 'center'
 							: 'end';
-					let textBaseline = 'middle';
-					let textX =
+					const textBaseline = 'middle';
+					const textX =
 						media.position % 3 == 1
 							? areaWidth / 20
 							: media.position % 3 == 2
 							? width / 2
 							: width - areaWidth / 20;
-					let textY =
+					const textY =
 						areaHeight / 2 +
 						parseInt((media.position - 1) / 3) * areaHeight;
-
-					opacity[0] = 0;
-					opacity[media.fadeIn / 10] = 1;
-					opacity[media.duration] = 0;
-					opacity[media.duration - media.fadeOut / 10] = 1;
 
 					movie.addLayer(
 						new vd.layer.Text(
@@ -543,7 +540,12 @@ export default {
 
 								color: media.color,
 
-								opacity,
+								opacity: {
+									0: 0,
+									[media.fadeIn / 10]: 1,
+									[media.duration]: 0,
+									[media.duration - media.fadeOut / 10]: 1,
+								},
 
 								textX,
 								textY,
