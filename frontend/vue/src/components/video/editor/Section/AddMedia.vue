@@ -197,6 +197,7 @@ export default {
 				'image/png',
 				'image/bmp',
 				'audio/mpeg',
+				'audio/wav',
 				'video/mp4',
 				'video/webm',
 			],

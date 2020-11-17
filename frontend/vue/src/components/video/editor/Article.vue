@@ -101,76 +101,91 @@
 						<v-icon color="#80818B" style="width:50px;">
 							mdi-movie-outline</v-icon
 						>
-
-						<div
-							v-for="(item, i) in videoList"
-							:key="`video_${i}`"
-							style="position:relative;"
+						<draggable
+							:list="videoList"
+							style="position:relative !important;display:flex;"
+							@end="dragHandler"
 						>
-							<v-btn
-								small
-								class="px-0"
-								depressed
-								style="background-color:#766af6;
+							<div
+								v-for="(item, i) in videoList"
+								:key="`video_${i}`"
+								style="position:relative;display:flex;"
+							>
+								<v-btn
+									small
+									class="px-0"
+									depressed
+									style="background-color:#766af6;
 								color:white; font-weight:300;
 								font-size:14px; display:flex; min-width: 0px;
 								overflow: hidden;"
-								:style="{
-									width:
-										durationToWidth(item.duration) + 'px',
-								}"
-								:class="{
-									'selected-item': selectedItem == item,
-								}"
-								:ripple="false"
-								@mousedown.stop="1"
-								@click.stop="selectedItem = item"
-							>
-								<span class="px-2"> {{ item.name }}</span>
-							</v-btn>
-							<div
-								v-if="
-									item.type == 'image' ||
-										item.type == 'background'
-								"
-								style="position: absolute; top:0px; right:-5px; width:10px; height:28px; cursor:col-resize;"
-								class="resize"
-								@mousedown.stop="resizeStart($event, item, 0)"
-								@click.stop="1"
-							></div>
-						</div>
+									:style="{
+										width:
+											durationToWidth(item.duration) +
+											'px',
+									}"
+									:class="{
+										'selected-item': selectedItem == item,
+									}"
+									:ripple="false"
+									@mousedown.stop="1"
+									@click.stop="selectedItem = item"
+								>
+									<span class="px-2"> {{ item.name }}</span>
+								</v-btn>
+								<div
+									v-if="
+										item.type == 'image' ||
+											item.type == 'background'
+									"
+									style="position: absolute; top:0px; right:-5px; width:10px; height:28px; cursor:col-resize;"
+									class="resize"
+									@mousedown.stop="
+										resizeStart($event, item, 0)
+									"
+									@click.stop="1"
+								></div>
+							</div>
+						</draggable>
 					</v-row>
 					<v-row align="center" class="ma-0" style="height:50px;">
 						<v-icon color="#80818B" style="width:50px;">
 							mdi-music-note</v-icon
 						>
-						<div
-							v-for="(item, i) in audioList"
-							:key="`audio_${i}`"
-							style="position:relative;"
+						<draggable
+							:list="audioList"
+							style="position:relative !important;display:flex;"
+							@end="dragHandler"
 						>
-							<v-btn
-								small
-								class="px-0"
-								depressed
-								style="background-color:#4980F1;
+							<div
+								v-for="(item, i) in audioList"
+								:key="`audio_${i}`"
+								style="position:relative;display:flex;"
+							>
+								<v-btn
+									small
+									class="px-0"
+									depressed
+									style="background-color:#4980F1;
 								color:white; font-weight:300;
 								font-size:14px; display:flex; min-width: 0px;
 								overflow: hidden;"
-								:style="{
-									width:
-										durationToWidth(item.duration) + 'px',
-								}"
-								:class="{
-									'selected-item': selectedItem == item,
-								}"
-								:ripple="false"
-								@mousedown.stop="1"
-								@click.stop="selectedItem = item"
-							>
-								<span class="px-2"> {{ item.name }}</span>
-							</v-btn>
-						</div>
+									:style="{
+										width:
+											durationToWidth(item.duration) +
+											'px',
+									}"
+									:class="{
+										'selected-item': selectedItem == item,
+									}"
+									:ripple="false"
+									@mousedown.stop="1"
+									@click.stop="selectedItem = item"
+								>
+									<span class="px-2"> {{ item.name }}</span>
+								</v-btn>
+							</div>
+						</draggable>
 					</v-row>
 					<v-row align="center" class="ma-0" style="height:50px;">
 						<v-icon color="#80818B" style="width:50px;">
@@ -219,8 +234,13 @@
 
 <script>
 import EventBus from '@/util/EventBus.js';
+import draggable from 'vuedraggable';
+
 export default {
 	name: 'EditArticle',
+	components: {
+		draggable,
+	},
 	computed: {
 		currentTime: {
 			get() {
@@ -430,6 +450,13 @@ export default {
 		window.removeEventListener('resize', this.handleTimeLine);
 	},
 	methods: {
+		dragHandler() {
+			this.mediaList = [
+				...this.videoList,
+				...this.audioList,
+				...this.captionList,
+			];
+		},
 		controlHandler(e) {
 			if (e.ctrlKey && e.which == 67) {
 				e.preventDefault();
