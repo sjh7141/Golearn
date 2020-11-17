@@ -397,7 +397,7 @@ export default {
 			var MyButton = videojs.extend(Button, {
 				constructor: function() {
 					Button.apply(this, arguments);
-					this.addClass('vjs-chapters-button');
+					this.addClass('vjs-subtitles-button');
 				},
 				handleClick: function() {
 					self.editMode = !self.editMode;

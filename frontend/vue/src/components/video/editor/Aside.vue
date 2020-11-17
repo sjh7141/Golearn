@@ -129,6 +129,10 @@ export default {
 			remainingTime: 0,
 			progressRate: 0,
 			isSuccess: false,
+
+			recording: false,
+			recordingMovie: null,
+			exportPreviewMovie: null,
 		};
 	},
 	computed: {
@@ -177,9 +181,26 @@ export default {
 		},
 	},
 	mounted() {
-		// window.addEventListener('blur', () => {
-		// todo: mediaRecoder stop
-		// });
+		window.addEventListener('blur', () => {
+			if (this.recording) {
+				this.recordingMovie._mediaRecorder.onpause = () => {
+					this.recordingMovie.pause();
+					this.exportPreviewMovie.pause();
+				};
+
+				this.recordingMovie._mediaRecorder.pause();
+			}
+		});
+		window.addEventListener('focus', () => {
+			if (this.recording) {
+				this.recordingMovie._mediaRecorder.onresume = () => {
+					this.recordingMovie.play();
+					this.exportPreviewMovie.play();
+				};
+				this.recordingMovie._mediaRecorder.resume();
+			}
+			// console.log('focus');
+		});
 		this.canvasResize();
 		window.addEventListener('resize', this.canvasResize);
 
@@ -213,7 +234,7 @@ export default {
 			}
 		},
 		canvasResize() {
-			const { clientWidth, clientHeight } = this.$refs.editAside;
+			let { clientWidth, clientHeight } = this.$refs.editAside;
 			if (clientWidth > ((clientHeight - 50) * 16) / 9) {
 				this.height = clientHeight - 50;
 				this.width = (this.height * 16) / 9;
@@ -250,7 +271,7 @@ export default {
 				this.sumCaption = 0;
 				this.loading = true;
 
-				const { clientWidth, clientHeight } = document.getElementById(
+				let { clientWidth, clientHeight } = document.getElementById(
 					'preview',
 				);
 				this.addMedias(
@@ -285,13 +306,17 @@ export default {
 			}
 
 			this.pause();
+			// delete this.movie;
+
+			if (this.recording) return;
+			this.recording = true;
 			this.dialog = true;
 
-			const canvas = document.createElement('canvas');
+			let canvas = document.createElement('canvas');
 
 			canvas.width = 1920;
 			canvas.height = 1080;
-			const movie = new vd.Movie(canvas);
+			let movie = new vd.Movie(canvas);
 
 			this.sumVideo = 0;
 			this.sumAudio = 0;
@@ -314,8 +339,9 @@ export default {
 
 			this.addMedias(movie, this.mediaList, 0, 1920, 1080, false).finally(
 				() => {
-					const canvas = document.getElementById('exportPreview');
-					const tmpMovie = new vd.Movie(canvas);
+					let canvas = document.getElementById('exportPreview');
+					let tmpMovie = new vd.Movie(canvas);
+					this.exportPreviewMovie = tmpMovie;
 
 					this.sumVideo = 0;
 					this.sumAudio = 0;
@@ -337,6 +363,8 @@ export default {
 		},
 
 		movieToBlob(movie) {
+			// console.dir(this.mediaList);
+			this.recordingMovie = movie;
 			movie.record(25).then(res => {
 				let formData = new FormData();
 				formData.append('file', res);
@@ -393,7 +421,6 @@ export default {
 					video.src = media.blob;
 
 					let opacity = {};
-
 					opacity[0] = 0;
 					opacity[media.fadeIn / 10] = 1;
 					opacity[media.duration] = 0;
@@ -476,22 +503,22 @@ export default {
 					};
 				} else if (media.type == 'caption') {
 					let opacity = {};
-					const areaWidth = width / 3;
-					const areaHeight = height / 3;
-					const textAlign =
+					let areaWidth = width / 3;
+					let areaHeight = height / 3;
+					let textAlign =
 						media.position % 3 == 1
 							? 'start'
 							: media.position % 3 == 2
 							? 'center'
 							: 'end';
-					const textBaseline = 'middle';
-					const textX =
+					let textBaseline = 'middle';
+					let textX =
 						media.position % 3 == 1
 							? areaWidth / 20
 							: media.position % 3 == 2
 							? width / 2
 							: width - areaWidth / 20;
-					const textY =
+					let textY =
 						areaHeight / 2 +
 						parseInt((media.position - 1) / 3) * areaHeight;
 

@@ -1,5 +1,6 @@
 <template>
 	<div ref="app">
+		<div id="cl-banner" />
 		<course-list> </course-list>
 	</div>
 </template>
@@ -16,4 +17,12 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+#cl-banner {
+	height: 200px;
+	width: 100%;
+	background-image: url('../../assets/course_banner.gif');
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+</style>

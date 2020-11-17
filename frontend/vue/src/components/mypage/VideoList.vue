@@ -3,7 +3,7 @@
 		<v-card class="transparent" flat>
 			<v-card-title class="px-0">
 				<v-row align="center" class="pb-5">
-					<div class="modify-text">
+					<div class="modify-text" style="font-family: 'BMJUA';">
 						좋아요한 영상
 					</div>
 					<v-spacer />
@@ -12,7 +12,10 @@
 						@click="goToLikeVideo"
 						style="cursor: pointer;"
 					>
-						<span class="bold" style="font-size: 20px;">
+						<span
+							class="bold"
+							style="font-size: 20px; font-family: 'BMJUA';"
+						>
 							더보기
 						</span>
 						<v-icon large color="blue-grey">
@@ -72,7 +75,7 @@ export default {
 
 <style scoped>
 .modify-text {
-	font-size: 30px;
+	font-size: 40px;
 	font-weight: 600;
 }
 
