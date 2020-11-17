@@ -36,4 +36,11 @@ public class Notification {
     @Transient
     private String senderNickname;
 
+    public Notification(int mbrNo, int notiType, String notiPath, String notiMsg, int notiSender) {
+        this.mbrNo = mbrNo;
+        this.notiType = notiType;
+        this.notiPath = notiPath;
+        this.notiMsg = notiMsg;
+        this.notiSender = notiSender;
+    }
 }

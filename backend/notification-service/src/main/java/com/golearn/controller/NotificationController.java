@@ -29,6 +29,7 @@ public class NotificationController {
     @PostMapping
     public ResponseEntity sendNotification(@RequestBody Notification notification,@ApiIgnore @RequestHeader("X-USERNO") int mbrNo) {
         notification.setNotiSender(mbrNo);
+        log.info("===================>보내기");
         notificationService.sendNotification(notification);
         return new ResponseEntity(HttpStatus.CREATED);
     }
