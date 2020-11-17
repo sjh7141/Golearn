@@ -48,8 +48,11 @@ public class CourseService {
 	// 코스 수정
 	public Course update(String mbrNo, Course course) {
 		long userNo = Long.parseLong(mbrNo);
-		course.setMbrNo(userNo);
-		return courseRepository.save(course);
+		if(courseRepository.existsByCosNoAndMbrNo(course.getCosNo(),userNo)){
+			course.setMbrNo(userNo);
+			return courseRepository.save(course);
+		}
+		return null;
 	}
 	
 	public List<Course> findByMbrNo(long id){

@@ -17,5 +17,7 @@ public interface CourseRepository extends CrudRepository<Course, Long>{
 	// 코스 상세정보 가져오기
 	Course findById(long id);
 	
+	boolean existsByCosNoAndMbrNo(long cosNo, long mbrNo);
+
 	public List<Course> findByMbrNoOrderByRegDtDesc(long id);
 }
