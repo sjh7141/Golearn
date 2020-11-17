@@ -137,8 +137,11 @@ public class Course {
 	public void setTags(List<Tag> tags){
 		this.tags =tags;
 	}
+
 	public String getMbrNickname(){return mbrNickname;}
-	public void setMbrNickname(String mbrNickname){}
+
+	public void setMbrNickname(String mbrNickname){this.mbrNickname = mbrNickname}
+
 	@PrePersist
 	void prePersist() {
 		this.regDt = this.chgDt = new Date();
