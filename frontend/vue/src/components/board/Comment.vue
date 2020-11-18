@@ -78,9 +78,11 @@
 							</span>
 						</div>
 						<div>
-							<span style="font-size:13px; font-weight:400;">
-								{{ item.comment }}
-							</span>
+							<v-row>
+								<span style="font-size:13px; font-weight:400;">
+									{{ item.comment }}
+								</span>
+							</v-row>
 						</div>
 						<div class="mt-5" style="margin-left:88px;">
 							<v-btn

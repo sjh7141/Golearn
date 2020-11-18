@@ -40,7 +40,7 @@
 										outlined
 										ref="title"
 										placeholder="제목을 입력해주세요"
-										maxlength="30"
+										maxlength="80"
 									></v-text-field>
 								</div>
 								<editor

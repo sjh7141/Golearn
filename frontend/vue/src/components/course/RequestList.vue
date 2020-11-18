@@ -71,7 +71,10 @@
 				</v-list-item-subtitle>
 			</v-col>
 		</v-row>
-		<infinite-loading @infinite="infiniteHandler"> </infinite-loading>
+		<infinite-loading @infinite="infiniteHandler">
+			<div slot="no-more"></div>
+			<div slot="no-results"></div>
+		</infinite-loading>
 	</div>
 </template>
 
