@@ -71,19 +71,26 @@
 				</v-list-item-subtitle>
 			</v-col>
 		</v-row>
+		<infinite-loading @infinite="infiniteHandler"> </infinite-loading>
 	</div>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
+import InfiniteLoading from 'vue-infinite-loading';
+
 export default {
 	name: 'RequestList',
+	components: {
+		InfiniteLoading,
+	},
 	data() {
 		return {
 			tabs: 0,
 			requestList: [],
 			no: -1,
 			ldm_no: 0,
+			page: 1,
 		};
 	},
 	mounted() {
@@ -93,6 +100,28 @@ export default {
 	},
 	methods: {
 		...mapActions(['getRequestList', 'getVideoDetail', 'getChapterDetail']),
+		infiniteHandler($state) {
+			this.getRequestList({
+				cos_no: this.no,
+				page: this.page + 1,
+			}).then(({ data }) => {
+				if (data.length > 1) {
+					for (let i in data) {
+						data[i].info = {};
+						data[i].chapter = {};
+					}
+					for (let i in data) {
+						this.getVideoInfo(data[i]);
+						this.getChapterInfo(data[i]);
+						this.requestList.push(data[i]);
+					}
+					this.page += 1;
+					$state.loaded();
+				} else {
+					$state.complete();
+				}
+			});
+		},
 		initRequestList() {
 			this.getRequestList({
 				cos_no: this.no,
