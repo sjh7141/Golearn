@@ -104,8 +104,10 @@ public class CourseRecommendService {
             cosList.add(recommendedItem.getItemID());
             list.add(courseRepository.findById(recommendedItem.getItemID()));
         }
-
-        if(list.size()<=4){
+        if(cosList.size()==0){
+            list.addAll(courseRepository.getBestCourseByCourseList(4));
+        }
+        else{
             list.addAll(courseRepository.getBestCourse(cosList, 4-list.size()));
         }
         for(Course course : list){
