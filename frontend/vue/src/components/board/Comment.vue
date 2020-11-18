@@ -65,10 +65,7 @@
 									style="font-size:12px; font-weight:400; color:#979797;"
 								>
 									&middot;
-									{{
-										item.reg_date
-											| moment('YYYY-MM-DD hh:mm:ss')
-									}}
+									{{ getFormatDate(item.reg_date) }}
 								</span>
 								<span
 									class="ml-2"
@@ -146,10 +143,9 @@
 											>
 												&middot;
 												{{
-													child.reg_date
-														| moment(
-															'YYYY-MM-DD hh:mm:ss',
-														)
+													getFormatDate(
+														child.reg_date,
+													)
 												}}
 											</span>
 											<span
@@ -395,6 +391,9 @@ export default {
 					$state.complete();
 				}
 			});
+		},
+		getFormatDate(date) {
+			return date.substring(0, 10) + ' ' + date.substring(11, 19);
 		},
 	},
 };
