@@ -619,7 +619,6 @@ export default {
 		},
 
 		resizeStart(e, item, type) {
-
 			this.resizeType = type;
 			this.resizeItem = item;
 			this.resizeElement = e.target.parentElement;
