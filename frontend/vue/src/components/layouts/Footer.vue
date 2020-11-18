@@ -101,17 +101,17 @@
 							</v-dialog>
 						</li>
 						<li class="br1">
-							<router-link to="#">
+							<router-link to="/community/faq/1">
 								Help
 							</router-link>
 						</li>
 						<li class="br1">
-							<router-link to="#">
+							<router-link to="/community/notice/1">
 								Contact
 							</router-link>
 						</li>
 						<li>
-							<router-link to="#">
+							<router-link to="/community/notice/1">
 								About
 							</router-link>
 						</li>

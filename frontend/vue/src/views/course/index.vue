@@ -1,7 +1,11 @@
 <template>
 	<div>
 		<course-banner :course="info" :src="info.cos_banner" :ldm_no="ldm_no" />
-		<v-layout wrap style="width:1080px; margin:0 auto;" ref="contain">
+		<v-layout
+			wrap
+			style="width:1080px; margin:0 auto; min-height:800px;"
+			ref="contain"
+		>
 			<v-flex md3 lg3 xl3>
 				<v-card flat tile class="mt-10" style="font-family: 'BMJUA';">
 					<v-list-item>

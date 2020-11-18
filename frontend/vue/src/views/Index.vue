@@ -163,7 +163,7 @@
 					<v-row class="mt-15" style="height:220px;">
 						<v-img
 							:src="require('@/assets/nature.jpg')"
-							style="position: absolute; left:0px;"
+							style="position: absolute; left:0px; cursor: default;"
 							height="220"
 							width="100%"
 							position="50% 75%"

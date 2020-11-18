@@ -242,7 +242,7 @@
 							<v-list-item-content class="justify-center pb-0">
 								<div class="mx-auto">
 									<v-row class="mx-4">
-										<v-avatar color="brown">
+										<v-avatar>
 											<img
 												:src="
 													user.profile
@@ -400,7 +400,7 @@ export default {
 				},
 				{
 					title: '커뮤니티',
-					link: '/community',
+					link: '/community/notice/1',
 				},
 			],
 			video: false,

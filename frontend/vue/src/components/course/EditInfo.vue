@@ -194,12 +194,21 @@ export default {
 		},
 	},
 	computed: {
-		...mapGetters(['course']),
+		...mapGetters(['course', 'isLogin', 'user']),
 	},
 	created() {
 		this.$store
 			.dispatch('getCourse', this.$route.params.id)
 			.then(({ data }) => {
+				if (this.user.no != data.mbr_no) {
+					this.$store.commit(
+						'setSBMessage',
+						'유효하지 않은 접근입니다.',
+					);
+					this.$store.commit('setSnackbar', true);
+					this.$router.push('/');
+					return;
+				}
 				this.$store.commit('setCourse', data);
 				this.title =
 					this.course.cos_title == null
@@ -224,6 +233,13 @@ export default {
 				}
 				this.originalTags = data;
 			});
+	},
+	mounted() {
+		if (this.isLogin != 1) {
+			this.$store.commit('setSBMessage', '로그인이 필요한 서비스입니다.');
+			this.$store.commit('setSnackbar', true);
+			this.$router.push('/login');
+		}
 	},
 };
 </script>

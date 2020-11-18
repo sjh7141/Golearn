@@ -15,14 +15,17 @@
 							class="px-1 mx-2"
 							active-class="white--text"
 							text
+							large
+							rounded
 							@click="goToSearch(tag)"
 							elevation="0"
-							style="text-transform:none; color:#8675a9;font-size:13px"
+							style="text-transform:none; color:#454545 ;font-size:14px; font-family: 'BMJUA';"
 							:class="{
 								selected: tags == tag.tag_no,
+								'upper-list': true,
 							}"
 						>
-							{{ tag.tag_name }}
+							#{{ tag.tag_name }}
 						</v-btn>
 					</v-slide-item>
 				</v-slide-group>
@@ -228,7 +231,7 @@ export default {
 }
 
 .asd {
-	max-width: 1220px;
+	max-width: 1400px;
 }
 .v-btn-toggle {
 	flex-direction: column;
@@ -237,9 +240,6 @@ export default {
 .side-bar {
 	position: fixed;
 	width: 10.7%;
-}
-.selected {
-	background-color: rgba(31, 179, 215, 0.12);
 }
 
 .v-btn-toggle {
@@ -251,12 +251,18 @@ export default {
 	width: 10.7%;
 }
 .selected {
-	background-color: #c3aed633;
+	background-color: #ededed;
 }
 .swiper-button {
 	color: #8675a9;
 	margin: 0px;
 	top: 30%;
+}
+#csl {
+	min-height: 800px;
+}
+.upper-list:hover {
+	text-decoration: underline;
 }
 </style>
 
