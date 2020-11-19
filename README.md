@@ -32,9 +32,57 @@
 
 ## 👩‍💻 개발자
 
-<img src="./img/developers.png" width=100%>
-
-|                            김명석                            |                   김현수                    |                            서지훈                            |                            안성민                            |                            심효빈                            |
-| :----------------------------------------------------------: | :-----------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| <span style="color:white">.</span>[msnodeve](https://github.com/msnodeve) | [happy16123](https://github.com/happy16123) | <span style="color:white">00</span>[sjh7141](https://github.com/sjh7141)<span style="color:white">00</span> | <span style="color:white">0 </span>[asm9677](https://github.com/)<span style="color:white">0</span> | <span style="color:white">. </span>[kommadot](https://github.com/kommadot) |
+<table>
+    <tr>
+        <td>
+        	<img src="./img/developer_1.png" width=100%>
+        </td>
+        <td>
+            <img src="./img/developer_2.png" width=100%>
+        </td>
+        <td>
+            <img src="./img/developer_3.png" width=100%>
+        </td>
+        <td>
+            <img src="./img/developer_4.png" width=100%>
+        </td>
+        <td>
+            <img src="./img/developer_5.png" width=100%>
+        </td>
+    </tr>
+     <tr style="text-align:center;">
+        <td>
+        	김명석
+        </td>
+        <td>
+            김현수
+        </td>
+        <td>
+            서지훈
+        </td>
+        <td>
+            안성민
+        </td>
+        <td>
+			심효빈
+         </td>
+    </tr>
+     <tr style="text-align:center;">
+        <td>
+        	<a href="https://github.com/msnodeve">msnodeve</a>
+        </td>
+        <td>
+            <a href="https://github.com/happy16123">happy16123</a>
+        </td>
+        <td>
+           <a href="https://github.com/sjh7141">sjh7141</a>
+        </td>
+        <td>
+            <a href="https://github.com/asm9677">asm9677</a>
+        </td>
+        <td>
+			<a href="https://github.com/kommadot">kommadot</a>
+         </td>
+    </tr>
+</table>
 
