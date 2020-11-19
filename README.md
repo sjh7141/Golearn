@@ -68,7 +68,7 @@
          </td>
     </tr>
      <tr style="text-align:center;">
-        <td style="text-align:center;>
+        <td style="text-align:center;">
         	<a href="https://github.com/msnodeve">msnodeve</a>
         </td>
         <td>
