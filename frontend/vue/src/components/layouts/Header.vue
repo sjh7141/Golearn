@@ -493,9 +493,7 @@ export default {
 	computed: {
 		...mapGetters(['isLogin', 'user']),
 	},
-	mounted() {
-		this.getTotalNotice();
-	},
+	mounted() {},
 	filters: {
 		diffDate(date) {
 			return moment(date).fromNow();
