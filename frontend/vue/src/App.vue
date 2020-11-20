@@ -48,6 +48,7 @@ export default {
 		...mapGetters({
 			sb: 'snackbar',
 			SBMessage: 'SBMessage',
+			isLogin: 'isLogin',
 		}),
 		snackbar: {
 			get() {
@@ -103,7 +104,9 @@ export default {
 	watch: {
 		$route(val, prev) {
 			this.$store.commit('setPrevPage', prev.fullPath);
-			this.$refs.header.getTotalNotice();
+			if (this.isLogin) {
+				this.$refs.header.getTotalNotice();
+			}
 			window.scrollTo(0, 0);
 		},
 	},
