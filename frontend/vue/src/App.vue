@@ -59,7 +59,10 @@ export default {
 		},
 		showHeader() {
 			let render = true;
-			if (this.$route.path.indexOf('/login') > -1) {
+			if (
+				this.$route.path.indexOf('/login') > -1 ||
+				this.$route.path.indexOf('/404') > -1
+			) {
 				render = false;
 				this.setSpace(0);
 			} else {
@@ -69,7 +72,10 @@ export default {
 		},
 		showFooter() {
 			let render = true;
-			if (this.$route.path.indexOf('/login') > -1) {
+			if (
+				this.$route.path.indexOf('/login') > -1 ||
+				this.$route.path.indexOf('/404') > -1
+			) {
 				render = false;
 			}
 			return render;
