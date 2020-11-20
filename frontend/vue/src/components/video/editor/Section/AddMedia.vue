@@ -239,12 +239,8 @@
 							}}
 						</v-icon>
 					</v-btn>
-					<v-btn fab>
-						<v-icon
-							size="24"
-							color="error"
-							@click="previewMediaRecorder.stop()"
-						>
+					<v-btn fab @click="previewMediaRecorder.stop()">
+						<v-icon size="24" color="error">
 							mdi-stop
 						</v-icon>
 					</v-btn>
