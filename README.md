@@ -100,21 +100,25 @@
 ## ✅ 주요 기능
 
 - 온라인 컴파일러
+
   <img src="./img/main_function_1.gif" width=50%>
 
 
 
 - 버저닝
+
   <img src="./img/main_function_2.gif" width=50%>
 
 
 
 - 온라인 영상 편집
+
   <img src="./img/main_function_3.gif" width=50%>
 
 
 
 - 안드로이드 네이티브 앱
+
   <img src="./img/main_function_4.gif" width=50%>
 
 
@@ -175,7 +179,7 @@
      <tr style="text-align:center;">
         <td>
             <span>
-	        	<img src="./img/github.svg" width="30px;">
+	        	<img src="./img/github_logo.png" width="30px;">
             </span>
             <span>
                 <a href="https://github.com/msnodeve">msnodeve</a>
@@ -183,7 +187,7 @@
         </td>
         <td>
             <span>
-	        	<img src="./img/github.svg" width="30px;">
+	        	<img src="./img/github_logo.png" width="30px;">
             </span>
             <span>
             	<a href="https://github.com/happy16123">happy16123</a>
@@ -191,7 +195,7 @@
         </td>
         <td>
             <span>
-	        	<img src="./img/github.svg" width="30px;">
+	        	<img src="./img/github_logo.png" width="30px;">
             </span>
             <span>
 	           	<a href="https://github.com/sjh7141">sjh7141</a>
@@ -199,7 +203,7 @@
         </td>
         <td>
             <span>
-	        	<img src="./img/github.svg" width="30px;">
+	        	<img src="./img/github_logo.png" width="30px;">
             </span>
             <span>
 	            <a href="https://github.com/asm9677">asm9677</a>
@@ -207,7 +211,7 @@
         </td>
         <td>
             <span>
-	        	<img src="./img/github.svg" width="30px;">
+	        	<img src="./img/github_logo.png" width="30px;">
             </span>
             <span>
 				<a href="https://github.com/kommadot">kommadot</a>
