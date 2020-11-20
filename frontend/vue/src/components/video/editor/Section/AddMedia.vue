@@ -420,7 +420,6 @@ export default {
 		},
 
 		loadVideo(video) {
-			console.dir(video);
 			const self = this;
 			this.loading = true;
 			axios
