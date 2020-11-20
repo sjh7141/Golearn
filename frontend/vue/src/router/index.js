@@ -23,6 +23,7 @@ import LoadmapList from '@/views/loadmap/LoadmapList.vue';
 import Loadmap from '@/views/loadmap/Index.vue';
 import VideoList from '@/views/video/VideoList.vue';
 
+import NotFoundPage from '@/views/NotFoundPage.vue';
 Vue.use(VueRouter);
 
 const routes = [
@@ -135,6 +136,15 @@ const routes = [
 		path: '/terms',
 		name: 'Terms',
 		component: Privacy,
+	},
+	{
+		path: '*',
+		redirect: '/404',
+	},
+	{
+		path: '/404',
+		name: 'NotFoundPage',
+		component: NotFoundPage,
 	},
 ];
 
