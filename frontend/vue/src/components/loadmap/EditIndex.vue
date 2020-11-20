@@ -381,8 +381,39 @@ export default {
 					insert: insertList,
 					update: updateList,
 				})
+				.then(() => {
+					this.getloadmap();
+				})
 				.finally(() => {
 					this.loading = false;
+				});
+		},
+		getloadmap() {
+			this.$store
+				.dispatch('getLoadmap', this.$route.params.id)
+				.then(async ({ data }) => {
+					this.$store.commit('setLoadmap', data.loadmap);
+					for (let course of data.course) {
+						course.isEdit = false;
+						course.mbr_nickname = '';
+						course.mbr_profile = '';
+						course.tags = [];
+						await this.$store
+							.dispatch('getUserByNo', course.mbr_no)
+							.then(({ data }) => {
+								course.mbr_nickname = data.nickname;
+								course.mbr_profile = data.profile;
+							});
+						await this.$store
+							.dispatch('getCourseTag', course.cos_no)
+							.then(({ data }) => {
+								for (let tag of data) {
+									course.tags.push(tag.tag_name);
+								}
+							});
+						this.$store.commit('setLoadmapCourse', self);
+					}
+					this.list = data.course;
 				});
 		},
 	},
