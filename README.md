@@ -100,21 +100,25 @@
 ## ✅ 주요 기능
 
 - 온라인 컴파일러
+
   <img src="./img/main_function_1.gif" width=50%>
 
 
 
 - 버저닝
+
   <img src="./img/main_function_2.gif" width=50%>
 
 
 
 - 온라인 영상 편집
+
   <img src="./img/main_function_3.gif" width=50%>
 
 
 
 - 안드로이드 네이티브 앱
+
   <img src="./img/main_function_4.gif" width=50%>
 
 
