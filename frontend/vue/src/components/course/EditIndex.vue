@@ -457,9 +457,24 @@ export default {
 					delete: deleteList,
 					insert: insertList,
 					update: updateList,
+					cos_no: Number(this.$route.params.id),
+				})
+				.then(() => {
+					this.getIndex();
 				})
 				.finally(() => {
 					this.loading = false;
+				});
+		},
+		getIndex() {
+			this.$store
+				.dispatch('getIndex', this.$route.params.id)
+				.then(({ data }) => {
+					for (let index of data) {
+						index.isEdit = false;
+					}
+					this.list = data;
+					order = data.length + 1;
 				});
 		},
 	},
@@ -467,15 +482,7 @@ export default {
 		...mapGetters(['course', 'user']),
 	},
 	mounted() {
-		this.$store
-			.dispatch('getIndex', this.$route.params.id)
-			.then(({ data }) => {
-				for (let index of data) {
-					index.isEdit = false;
-				}
-				this.list = data;
-				order = data.length + 1;
-			});
+		this.getIndex();
 		this.$store.dispatch('getVideos').then(({ data }) => {
 			for (let video of data) {
 				video.mbr_nick_name = this.user.nickname;

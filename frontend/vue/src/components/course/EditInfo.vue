@@ -198,17 +198,20 @@ export default {
 	},
 	created() {
 		this.$store
-			.dispatch('getCourse', this.$route.params.id)
+			.dispatch('checkCourseManager', this.$route.params.id)
 			.then(({ data }) => {
-				if (this.user.no != data.mbr_no) {
+				if (!data) {
 					this.$store.commit(
 						'setSBMessage',
 						'유효하지 않은 접근입니다.',
 					);
 					this.$store.commit('setSnackbar', true);
 					this.$router.push('/');
-					return;
 				}
+			});
+		this.$store
+			.dispatch('getCourse', this.$route.params.id)
+			.then(({ data }) => {
 				this.$store.commit('setCourse', data);
 				this.title =
 					this.course.cos_title == null
