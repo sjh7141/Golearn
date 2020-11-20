@@ -47,5 +47,11 @@
 		from gl_board
 		where brd_type = #{type}
 	</select>
+	
+	<select id="checkAdmin" resultType="Integer">
+		select count(*)
+		from gl_member_authority
+		where mbr_no = #{userNo} and auth_no = 2
+	</select>
 
 </mapper>

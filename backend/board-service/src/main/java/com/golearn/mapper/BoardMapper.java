@@ -17,4 +17,5 @@ public interface BoardMapper {
 	public List<BoardDto> findBoardList(@Param("type") int type, @Param("startIndex") int startIndex, @Param("perPageNum") int perPageNum);
 	public BoardDto findBoardDetails(int brdNo);
 	public int findBoardCount(int type);
+	public int checkAdmin(int userNo);
 }
