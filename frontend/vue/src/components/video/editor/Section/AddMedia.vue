@@ -303,17 +303,14 @@ export default {
 		...mapActions(['getStorageList']),
 		startRecordingScreen() {
 			const screen = document.querySelector('#screen-video-preview');
-			console.log(screen.videoWidth, screen.videoHeight);
+			this.previewMediaRecorder = null;
+			this.camcorder = null;
 
-			// const screenPreview = document.querySelector('#screen-preview');
-			// screenPreview.width = screen.videoWidth;
-			// screenPreview.height = screen.videoHeight;
+			this.playCamcorder = false;
+			this.playMicrophone = false;
+
 			navigator.mediaDevices
 				.getDisplayMedia({ video: true, audio: false })
-				// navigator.mediaDevices
-				// 	.getUserMedia({
-				// 		audio: true,
-				// 	})
 				.then(stream => {
 					this.screenDialog = true;
 					screen.srcObject = stream;
@@ -338,20 +335,22 @@ export default {
 
 					mediaRecorder.onstop = () => {
 						this.screenDialog = false;
-						// stream.getAudioTracks()[0].addEventListener('ended', () => {
+						if (this.camcorder) {
+							document.exitPictureInPicture();
+							this.camcorder.pause();
+						}
 
 						const mergedBlob = new Blob(this.recordedChunks, {
 							type: 'video/webm; codecs=vp9',
 						});
-						console.dir(URL.createObjectURL(mergedBlob));
+
+						this.addRecordedScreen(mergedBlob);
 					};
 				});
 		},
 		handleDataAvailable(event) {
 			if (event.data.size > 0) {
 				this.recordedChunks.push(event.data);
-				console.dir(this.recordedChunks.length);
-				console.dir(event.data);
 			} else {
 				// ...
 			}
@@ -364,10 +363,10 @@ export default {
 		},
 		toggleCamcorder() {
 			if (this.playCamcorder) {
-				this.camcorder.pause();
+				document.exitPictureInPicture();
 			} else {
 				if (this.camcorder) {
-					this.camcorder.play();
+					this.camcorder.requestPictureInPicture();
 				} else {
 					alert('웹캠이 올바르게 연결되었는지 확인해주십시오.');
 					return;
@@ -421,6 +420,7 @@ export default {
 		},
 
 		loadVideo(video) {
+			console.dir(video);
 			const self = this;
 			this.loading = true;
 			axios
@@ -439,6 +439,22 @@ export default {
 				.finally(() => {
 					this.loading = false;
 				});
+		},
+
+		addRecordedScreen(blob) {
+			const self = this;
+			var reader = new FileReader();
+			reader.onload = function(file) {
+				const video = {
+					vid_title: '녹화 화면',
+				};
+
+				video.blob = file.target.result;
+				video.type = blob.type;
+				EventBus.$emit('loadVideo', video);
+				self.$emit('uploadFile', 1);
+			};
+			reader.readAsDataURL(blob);
 		},
 	},
 };
