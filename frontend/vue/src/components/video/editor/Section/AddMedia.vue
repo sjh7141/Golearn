@@ -36,7 +36,7 @@
 			/>
 			<v-hover v-slot="{ hover }">
 				<v-btn
-					width="49%"
+					width="31%"
 					depressed
 					:ripple="false"
 					outlined
@@ -44,7 +44,7 @@
 						'background-color': hover ? '#2B2947' : '#2C2C38',
 						'border-color': hover ? '#9382D7' : '#4a4a56',
 					}"
-					style="height:70%;"
+					style="height:70%;margin-right:3%"
 					dark
 					@click="$refs.file.click()"
 				>
@@ -56,7 +56,7 @@
 			</v-hover>
 			<v-hover v-slot="{ hover }">
 				<v-btn
-					width="49%"
+					width="32%"
 					depressed
 					:ripple="false"
 					outlined
@@ -64,7 +64,7 @@
 						'background-color': hover ? '#2B2947' : '#2C2C38',
 						'border-color': hover ? '#9382D7' : '#4a4a56',
 					}"
-					style="height:70%;margin-left:2%;opacity: 1 !important;"
+					style="height:70%;margin-right:3%;opacity: 1 !important;"
 					dark
 					@click="storage = true"
 				>
@@ -73,6 +73,26 @@
 					</v-icon>
 					<span style="font-size:14px; font-weight:400;">
 						보관함
+					</span>
+				</v-btn>
+			</v-hover>
+			<v-hover v-slot="{ hover }">
+				<v-btn
+					width="31%"
+					depressed
+					:ripple="false"
+					outlined
+					:style="{
+						'background-color': hover ? '#2B2947' : '#2C2C38',
+						'border-color': hover ? '#9382D7' : '#4a4a56',
+					}"
+					style="height:70%;"
+					dark
+					@click="startRecordingScreen"
+				>
+					<v-icon left size="20"> mdi-video-outline </v-icon>
+					<span style="font-size:14px; font-weight:400; ">
+						화면 녹화
 					</span>
 				</v-btn>
 			</v-hover>
@@ -171,8 +191,70 @@
 				</v-list>
 			</v-card>
 		</v-dialog>
+		<v-dialog
+			v-model="screenDialog"
+			fullscreen
+			hide-overlay
+			transition="dialog-bottom-transition"
+			eager
+		>
+			<v-card class="preview-card" style="width:100%; height:100%;" tile>
+				<div style="width:100%; height:10%; background-color:#26282A" />
+
+				<video
+					id="screen-video-preview"
+					playsinline
+					autoplay
+					muted
+					style="height:80%; display:block;"
+					class="mx-auto"
+				></video>
+				<v-row
+					align="center"
+					justify="center"
+					class="ma-0"
+					style="height:10%; background-color:#1C1E1F"
+				>
+					<v-btn fab class="mr-3" @click="toggleMic">
+						<v-icon
+							size="24"
+							:color="playMicrophone ? 'success' : 'error'"
+						>
+							{{
+								playMicrophone
+									? 'mdi-microphone'
+									: 'mdi-microphone-off'
+							}}
+						</v-icon>
+					</v-btn>
+					<v-btn fab class="mr-3" @click="toggleCamcorder">
+						<v-icon
+							size="24"
+							:color="playCamcorder ? 'success' : 'error'"
+						>
+							{{
+								playCamcorder
+									? 'mdi-video'
+									: 'mdi-video-off-outline'
+							}}
+						</v-icon>
+					</v-btn>
+					<v-btn fab>
+						<v-icon
+							size="24"
+							color="error"
+							@click="previewMediaRecorder.stop()"
+						>
+							mdi-stop
+						</v-icon>
+					</v-btn>
+				</v-row>
+			</v-card>
+		</v-dialog>
 	</div>
 </template>
+
+<script src=""></script>
 
 <script>
 import { mapActions } from 'vuex';
@@ -205,11 +287,94 @@ export default {
 			storage: false,
 			selected: -1,
 			loading: false,
+
+			recordedChunks: [],
+			screenDialog: false,
+
+			previewMediaRecorder: null,
+			camcorder: null,
+
+			playCamcorder: false,
+			playMicrophone: false,
 		};
 	},
 	mounted() {},
 	methods: {
 		...mapActions(['getStorageList']),
+		startRecordingScreen() {
+			const screen = document.querySelector('#screen-video-preview');
+			console.log(screen.videoWidth, screen.videoHeight);
+
+			// const screenPreview = document.querySelector('#screen-preview');
+			// screenPreview.width = screen.videoWidth;
+			// screenPreview.height = screen.videoHeight;
+			navigator.mediaDevices
+				.getDisplayMedia({ video: true, audio: false })
+				// navigator.mediaDevices
+				// 	.getUserMedia({
+				// 		audio: true,
+				// 	})
+				.then(stream => {
+					this.screenDialog = true;
+					screen.srcObject = stream;
+
+					navigator.mediaDevices
+						.getUserMedia({ video: true })
+						.then(stream => {
+							const camcorder = document.createElement('video');
+							this.camcorder = camcorder;
+
+							camcorder.srcObject = stream;
+							camcorder.muted = true;
+							camcorder.play();
+						});
+
+					var options = { mimeType: 'video/webm; codecs=vp9' };
+					const mediaRecorder = new MediaRecorder(stream, options);
+					this.previewMediaRecorder = mediaRecorder;
+
+					mediaRecorder.ondataavailable = this.handleDataAvailable;
+					mediaRecorder.start();
+
+					mediaRecorder.onstop = () => {
+						this.screenDialog = false;
+						// stream.getAudioTracks()[0].addEventListener('ended', () => {
+
+						const mergedBlob = new Blob(this.recordedChunks, {
+							type: 'video/webm; codecs=vp9',
+						});
+						console.dir(URL.createObjectURL(mergedBlob));
+					};
+				});
+		},
+		handleDataAvailable(event) {
+			if (event.data.size > 0) {
+				this.recordedChunks.push(event.data);
+				console.dir(this.recordedChunks.length);
+				console.dir(event.data);
+			} else {
+				// ...
+			}
+		},
+		toggleMic() {
+			if (this.playMicrophone) {
+			} else {
+			}
+			this.playMicrophone = !this.playMicrophone;
+		},
+		toggleCamcorder() {
+			if (this.playCamcorder) {
+				this.camcorder.pause();
+			} else {
+				if (this.camcorder) {
+					this.camcorder.play();
+				} else {
+					alert('웹캠이 올바르게 연결되었는지 확인해주십시오.');
+					return;
+				}
+			}
+			this.playCamcorder = !this.playCamcorder;
+		},
 		dragFiles(e) {
 			let flag = false;
 			let droppedFiles = e.dataTransfer.files;
@@ -287,5 +452,13 @@ export default {
 
 .edit-card:focus::before {
 	opacity: 0 !important;
+}
+
+.preview-card {
+	background-color: #222222 !important;
+}
+
+.preview-tab .v-tabs-bar {
+	height: 100% !important;
 }
 </style>
