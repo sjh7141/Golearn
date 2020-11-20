@@ -9,96 +9,14 @@
 				<v-row>
 					<ul class="footLink">
 						<li class="point br1" style="padding-left: 0;">
-							<v-dialog v-model="policy" width="600px">
-								<template v-slot:activator="{ on, attrs }">
-									<span
-										v-bind="attrs"
-										@click="policy = !policy"
-										v-on="on"
-									>
-										개인정보 처리방침
-									</span>
-								</template>
-								<v-card>
-									<v-card-title class="d-flex">
-										<v-row>
-											<v-col
-												cols="12"
-												align="end"
-												class="px-0"
-											>
-												<v-btn
-													class="mx-2"
-													fab
-													x-small
-													:outlined="false"
-													:depressed="true"
-													color="rgba(0, 153, 204, 0)"
-													@click="policy = false"
-												>
-													<v-icon dark>
-														mdi-close
-													</v-icon>
-												</v-btn>
-											</v-col>
-											<v-col cols="12">
-												<h1 class="headline">
-													개인정보 처리방침
-												</h1>
-											</v-col>
-										</v-row>
-									</v-card-title>
-									<v-card-text style="word-break:keep-all">
-										<private-policy />
-									</v-card-text>
-								</v-card>
-							</v-dialog>
+							<router-link to="/privacy">
+								개인정보처리방침
+							</router-link>
 						</li>
 						<li class="br1">
-							<v-dialog v-model="terms" width="600px">
-								<template v-slot:activator="{ on, attrs }">
-									<span
-										v-bind="attrs"
-										@click="terms = !terms"
-										v-on="on"
-									>
-										이용약관
-									</span>
-								</template>
-								<v-card>
-									<v-card-title class="d-flex">
-										<v-row>
-											<v-col
-												cols="12"
-												align="end"
-												class="px-0"
-											>
-												<v-btn
-													class="mx-2"
-													fab
-													x-small
-													:outlined="false"
-													:depressed="true"
-													color="rgba(0, 153, 204, 0)"
-													@click="terms = false"
-												>
-													<v-icon dark>
-														mdi-close
-													</v-icon>
-												</v-btn>
-											</v-col>
-											<v-col cols="12">
-												<h1 class="headline">
-													이용약관
-												</h1>
-											</v-col>
-										</v-row>
-									</v-card-title>
-									<v-card-text style="word-break:keep-all">
-										<terms />
-									</v-card-text>
-								</v-card>
-							</v-dialog>
+							<router-link to="/terms">
+								이용약관
+							</router-link>
 						</li>
 						<li class="br1">
 							<router-link to="/community/faq/1">
@@ -151,7 +69,7 @@
 					</li>
 					<li class="icon">
 						<a
-							href="https://go-learn.s3.ap-northeast-2.amazonaws.com/app-release.apk"
+							href="https://play.google.com/store/apps/details?id=kr.co.golearn"
 						>
 							<v-icon class="mdi-36px">mdi-android</v-icon>
 						</a>
@@ -164,14 +82,7 @@
 </template>
 
 <script>
-import PrivatePolicy from '@/components/component/Policy.vue';
-import Terms from '@/components/component/Terms.vue';
-
 export default {
-	components: {
-		PrivatePolicy,
-		Terms,
-	},
 	data() {
 		return {
 			policy: false,

@@ -48,6 +48,7 @@ export default {
 		...mapGetters({
 			sb: 'snackbar',
 			SBMessage: 'SBMessage',
+			isLogin: 'isLogin',
 		}),
 		snackbar: {
 			get() {
@@ -59,7 +60,10 @@ export default {
 		},
 		showHeader() {
 			let render = true;
-			if (this.$route.path.indexOf('/login') > -1) {
+			if (
+				this.$route.path.indexOf('/login') > -1 ||
+				this.$route.path.indexOf('/404') > -1
+			) {
 				render = false;
 				this.setSpace(0);
 			} else {
@@ -69,7 +73,10 @@ export default {
 		},
 		showFooter() {
 			let render = true;
-			if (this.$route.path.indexOf('/login') > -1) {
+			if (
+				this.$route.path.indexOf('/login') > -1 ||
+				this.$route.path.indexOf('/404') > -1
+			) {
 				render = false;
 			}
 			return render;
@@ -97,7 +104,9 @@ export default {
 	watch: {
 		$route(val, prev) {
 			this.$store.commit('setPrevPage', prev.fullPath);
-			this.$refs.header.getTotalNotice();
+			if (this.isLogin) {
+				this.$refs.header.getTotalNotice();
+			}
 			window.scrollTo(0, 0);
 		},
 	},

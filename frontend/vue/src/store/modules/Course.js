@@ -83,7 +83,15 @@ export default {
 					Authorization: context.rootGetters.token,
 				},
 			};
-			return axios.put(URL.courseBuild() + '/index', payload, config);
+			return axios.put(
+				URL.courseBuild() + `/index/${payload.cos_no}`,
+				{
+					delete: payload.delete,
+					insert: payload.insert,
+					update: payload.update,
+				},
+				config,
+			);
 		},
 		getCourseTag(context, payload) {
 			return axios.get(URL.courseBuild() + `/tag/${payload}`);

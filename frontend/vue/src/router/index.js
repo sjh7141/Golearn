@@ -12,7 +12,7 @@ import EditLoadMap from '@/views/loadmap/Edit.vue';
 import Community from '@/views/community/Community.vue';
 import Post from '@/views/community/Post.vue';
 import CommunityWrite from '@/views/community/Write.vue';
-
+import Privacy from '@/views/Privacy.vue';
 import EditVideo from '@/views/channel/EditVideo.vue';
 
 import Channel from '@/views/channel/Channel.vue';
@@ -22,6 +22,8 @@ import CourseList from '@/views/course/CourseList.vue';
 import LoadmapList from '@/views/loadmap/LoadmapList.vue';
 import Loadmap from '@/views/loadmap/Index.vue';
 import VideoList from '@/views/video/VideoList.vue';
+
+import NotFoundPage from '@/views/NotFoundPage.vue';
 Vue.use(VueRouter);
 
 const routes = [
@@ -124,6 +126,25 @@ const routes = [
 		path: '/community/:type/:page',
 		name: 'Community',
 		component: Community,
+	},
+	{
+		path: '/privacy',
+		name: 'Privacy',
+		component: Privacy,
+	},
+	{
+		path: '/terms',
+		name: 'Terms',
+		component: Privacy,
+	},
+	{
+		path: '*',
+		redirect: '/404',
+	},
+	{
+		path: '/404',
+		name: 'NotFoundPage',
+		component: NotFoundPage,
 	},
 ];
 
