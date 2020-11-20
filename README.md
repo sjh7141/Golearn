@@ -179,7 +179,7 @@
      <tr style="text-align:center;">
         <td>
             <span>
-	        	<img src="./img/github.svg" width="30px;">
+	        	<img src="./img/github_logo.png" width="30px;">
             </span>
             <span>
                 <a href="https://github.com/msnodeve">msnodeve</a>
@@ -187,7 +187,7 @@
         </td>
         <td>
             <span>
-	        	<img src="./img/github.svg" width="30px;">
+	        	<img src="./img/github_logo.png" width="30px;">
             </span>
             <span>
             	<a href="https://github.com/happy16123">happy16123</a>
@@ -195,7 +195,7 @@
         </td>
         <td>
             <span>
-	        	<img src="./img/github.svg" width="30px;">
+	        	<img src="./img/github_logo.png" width="30px;">
             </span>
             <span>
 	           	<a href="https://github.com/sjh7141">sjh7141</a>
@@ -203,7 +203,7 @@
         </td>
         <td>
             <span>
-	        	<img src="./img/github.svg" width="30px;">
+	        	<img src="./img/github_logo.png" width="30px;">
             </span>
             <span>
 	            <a href="https://github.com/asm9677">asm9677</a>
@@ -211,7 +211,7 @@
         </td>
         <td>
             <span>
-	        	<img src="./img/github.svg" width="30px;">
+	        	<img src="./img/github_logo.png" width="30px;">
             </span>
             <span>
 				<a href="https://github.com/kommadot">kommadot</a>
