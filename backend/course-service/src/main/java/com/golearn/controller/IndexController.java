@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.golearn.client.VideoClient;
 import com.golearn.domain.CourseViewer;
 import com.golearn.domain.Index;
+import com.golearn.service.CourseManagerService;
 import com.golearn.service.CourseViewerService;
 import com.golearn.service.IndexService;
 
@@ -36,16 +37,22 @@ public class IndexController {
 
 	@Autowired
 	CourseViewerService courseViewerService;
+	
+	@Autowired
+	CourseManagerService courseManagerService;
 
 	@Autowired
 	private VideoClient videoClient;
 
 	// 목차 생성|수정|삭제
-	@RequestMapping(method = RequestMethod.PUT, value = "/index")
+	@RequestMapping(method = RequestMethod.PUT, value = "/index/{cos_no}")
 	@ApiOperation(value = "목차 생성|수정|삭제")
 	public ResponseEntity updateIndex(@ApiIgnore @RequestHeader(value = "X-USERNO") String mbrNo,
-			@RequestBody HashMap<String, ArrayList<Index>> request) {
+			@RequestBody HashMap<String, ArrayList<Index>> request, @PathVariable("cos_no") int cosNo) {
 		logger.info(">> LOAD updateIndex <<");
+		if(courseManagerService.checkManager(cosNo, Long.parseLong(mbrNo)) == 0) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
 		ArrayList<Index> insertIndexs = request.get("insert");
 		ArrayList<Index> updateIndexs = request.get("update");
 		ArrayList<Index> deleteIndexs = request.get("delete");

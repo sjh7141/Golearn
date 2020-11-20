@@ -20,6 +20,12 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public int registBoard(BoardDto dto) {
+		if (dto.getType() == 1) { // 공지사항이면
+			int res = boardMapper.checkAdmin(dto.getMbrNo());
+			if (res == 0) {
+				return 0;
+			}
+		}
 		return boardMapper.registBoard(dto);
 	}
 
@@ -48,7 +54,7 @@ public class BoardServiceImpl implements BoardService {
 	public BoardDto findBoardDetails(int brdNo) {
 		increaseView(brdNo);
 		BoardDto boardDto = boardMapper.findBoardDetails(brdNo);
-		boardDto.setCommentCount(commentMapper.findCommentCount(brdNo,0));
+		boardDto.setCommentCount(commentMapper.findCommentCount(brdNo, 0));
 		return boardDto;
 	}
 
