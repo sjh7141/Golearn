@@ -104,8 +104,11 @@
 			overlay-opacity="1"
 			overlay-color="white"
 		>
-			<v-card tile outlined>
-				<v-list class="pa-0 ma-0">
+			<v-card
+				outlined
+				style="font-family:'BMJUA'; background-color:#fafafa"
+			>
+				<v-list class="pa-0 ma-0" style="background-color:transparent;">
 					<v-list-item>
 						<v-list-item-title>
 							보관함
@@ -131,8 +134,6 @@
 							<v-card
 								height="190"
 								tile
-								flat
-								outlined
 								link
 								class="edit-card"
 								@click.stop="selected = i"
@@ -145,7 +146,7 @@
 							>
 								<v-img :src="item.vid_thumbnail" />
 								<v-list-item-title
-									style="font-size:14px;"
+									style="font-size:14px;font-weight:400; color:#555555"
 									class="pa-3"
 								>
 									{{
@@ -292,6 +293,11 @@ export default {
 
 			playCamcorder: false,
 			playMicrophone: false,
+
+			camPerm: false,
+			micPerm: false,
+
+			recordingCount: 1,
 		};
 	},
 	mounted() {},
@@ -306,23 +312,56 @@ export default {
 			this.playMicrophone = false;
 
 			navigator.mediaDevices
-				.getDisplayMedia({ video: true, audio: false })
+				.getDisplayMedia({ video: true, audio: true })
 				.then(stream => {
+					let camStream = null;
+					let micStream = null;
 					this.screenDialog = true;
 					screen.srcObject = stream;
 
 					navigator.mediaDevices
 						.getUserMedia({ video: true })
 						.then(stream => {
-							const camcorder = document.createElement('video');
-							this.camcorder = camcorder;
+							this.camPerm = true;
 
-							camcorder.srcObject = stream;
-							camcorder.muted = true;
-							camcorder.play();
+							// const camcorder = document.createElement('video');
+							// this.camcorder = camcorder;
+
+							// camcorder.srcObject = stream;
+							// camcorder.play();
+						})
+						.finally(() => {
+							navigator.mediaDevices
+								.getUserMedia({
+									audio: true,
+								})
+								.then(stream => {
+									this.micPerm = true;
+									micStream = stream;
+								})
+								.finally(() => {
+									navigator.mediaDevices
+										.getUserMedia({
+											video: this.camPerm,
+											audio: this.micPerm,
+										})
+										.then(stream => {
+											camStream = stream;
+											const camcorder = document.createElement(
+												'video',
+											);
+											this.camcorder = camcorder;
+
+											camcorder.srcObject = stream;
+											camcorder.muted = true;
+											camcorder.play();
+										});
+								});
 						});
 
-					var options = { mimeType: 'video/webm; codecs=vp9' };
+					var options = {
+						mimeType: 'video/webm; codecs=vp9',
+					};
 					const mediaRecorder = new MediaRecorder(stream, options);
 					this.previewMediaRecorder = mediaRecorder;
 
@@ -334,6 +373,18 @@ export default {
 						if (this.camcorder) {
 							document.exitPictureInPicture();
 							this.camcorder.pause();
+						}
+
+						if (camStream) {
+							camStream.getTracks().forEach(function(track) {
+								track.stop();
+							});
+						}
+
+						if (stream) {
+							stream.getTracks().forEach(function(track) {
+								track.stop();
+							});
 						}
 
 						const mergedBlob = new Blob(this.recordedChunks, {
@@ -352,8 +403,14 @@ export default {
 			}
 		},
 		toggleMic() {
-			if (this.playMicrophone) {
+			if (this.micPerm) {
+				if (this.playMicrophone) {
+					this.camcorder.muted = true;
+				} else {
+					this.camcorder.muted = false;
+				}
 			} else {
+				alert('마이크가 올바르게 연결되었는지 확인해주십시오.');
 			}
 			this.playMicrophone = !this.playMicrophone;
 		},
@@ -361,7 +418,7 @@ export default {
 			if (this.playCamcorder) {
 				document.exitPictureInPicture();
 			} else {
-				if (this.camcorder) {
+				if (this.camPerm) {
 					this.camcorder.requestPictureInPicture();
 				} else {
 					alert('웹캠이 올바르게 연결되었는지 확인해주십시오.');
@@ -441,12 +498,14 @@ export default {
 			var reader = new FileReader();
 			reader.onload = function(file) {
 				const video = {
-					vid_title: '녹화 화면',
+					vid_title: '녹화 화면' + self.recordingCount,
 				};
+				self.recordingCount += 1;
 
 				video.blob = file.target.result;
 				video.type = blob.type;
 				EventBus.$emit('loadVideo', video);
+
 				self.$emit('uploadFile', 1);
 			};
 			reader.readAsDataURL(blob);
