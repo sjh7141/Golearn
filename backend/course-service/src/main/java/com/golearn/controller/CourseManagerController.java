@@ -37,7 +37,6 @@ public class CourseManagerController {
 	public ResponseEntity insertCourseManager(@ApiIgnore @RequestHeader(value = "X-USERNO") String mbrNo,
 			@RequestBody CourseManager request) {
 		logger.info(">> LOAD insertCourseManager <<");
-		System.out.println(request);
 		if(courseManagerService.checkManager(request.getCosNo(), Long.parseLong(mbrNo)) == 0) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}

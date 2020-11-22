@@ -90,5 +90,4 @@ public class PagerHomeFragment extends Fragment {
         gridLayoutManager = new GridLayoutManager(getContext(), 1);
         recyclerViewVideo.setLayoutManager(gridLayoutManager);
     }
-
 }

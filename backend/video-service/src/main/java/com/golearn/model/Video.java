@@ -29,7 +29,6 @@ public class Video {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int vidNo;
-
     private int mbrNo;
     private int vidPno;
 

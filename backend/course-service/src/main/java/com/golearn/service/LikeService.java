@@ -21,7 +21,6 @@ public class LikeService {
 	public void save(String mbrNo, long cosNo) {
 		likeReqository.save(Long.parseLong(mbrNo), cosNo);
 	}
-
 	// 좋아요 취소
 	public void delete(String mbrNo, long cosNo) {
 		likeReqository.delete(Long.parseLong(mbrNo), cosNo);
