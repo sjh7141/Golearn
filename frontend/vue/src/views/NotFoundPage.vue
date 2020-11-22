@@ -1,12 +1,6 @@
 <template>
 	<v-container class="wrapper">
-		<v-img class="asm" src="@/assets/asm9677.jpg" style="z-index: 0;">
-			<span class="a">
-				<h4>
-					&lt;개발자 text="안성민" /&gt;
-				</h4>
-			</span>
-		</v-img>
+		<v-img class="asm" src="@/assets/logo.png" style="z-index: 0;"> </v-img>
 		<v-row style="z-index: 99;">
 			<v-row class="hunit">
 				<v-col cols="12" style="z-index: 99;">
