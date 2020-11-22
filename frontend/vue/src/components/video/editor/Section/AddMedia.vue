@@ -305,6 +305,8 @@ export default {
 		...mapActions(['getStorageList']),
 		startRecordingScreen() {
 			const screen = document.querySelector('#screen-video-preview');
+
+			this.recordedChunks = [];
 			this.previewMediaRecorder = null;
 			this.camcorder = null;
 

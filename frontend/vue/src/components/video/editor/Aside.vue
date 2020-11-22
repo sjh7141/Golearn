@@ -75,7 +75,7 @@
 									color="#9382d7"
 									width="80%"
 									rounded
-									style="margin: 6px 0px;"
+									style="margin: 6px 0px;transition:none !important;"
 								></v-progress-linear>
 							</div>
 						</v-col>
@@ -532,7 +532,7 @@ export default {
 							{
 								width,
 								height,
-								font: `${media.size}px BMJUA`,
+								font: `${media.size}px ${media.family}`,
 								textAlign,
 								textBaseline,
 								x: 0,
